@@ -15,7 +15,7 @@
 
 ### 설치 및 환경 구성
 
-- Tailwind 4.x 기반 (ESM 환경 대응)
+- Tailwind 3.x 기반 (ESM 환경 대응)
 - 다음 파일 생성 및 수정 완료:
   - `tailwind.config.mjs`
   - `postcss.config.mjs`
