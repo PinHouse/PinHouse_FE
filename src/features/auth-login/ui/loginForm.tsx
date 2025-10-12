@@ -29,11 +29,17 @@ export function LoginForm({
 
       <button
         onClick={onSubmit}
-        className="font-suit bg-button-light text-button-text hover:bg-button-hover active:bg-button-active disabled:bg-button-muted w-full rounded-lg py-3 text-lg font-semibold transition-all duration-200"
+        className="hover:bg-button-hover w-full rounded-lg bg-button-light py-3 font-suit text-lg font-semibold text-button-text transition-all duration-200 active:bg-button-active disabled:bg-button-muted"
       >
         {"로그인"}
         {/* {isLoading ? "로그인 중..." : "로그인"} */}
       </button>
+
+      <div className="text-md flex justify-center gap-4 text-sm font-[500] text-text-secondary">
+        <p>이메일 찾기</p>
+        <p className="text-text-tertiary">|</p>
+        <p>비밀번호 찾기</p>
+      </div>
     </div>
   );
 }
