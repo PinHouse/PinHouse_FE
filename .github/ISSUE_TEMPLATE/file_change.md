@@ -19,6 +19,7 @@ assignees: ""
 - 로그인 폼 기능 및 기본 UI 추가
 - `email`, `password` 입력 필드 및 상태 관리 로직 구현
 - 로그인 이벤트 (`onChange`, `onSubmit`) 처리 추가
+- 브랜드 로고및 PINHOUSE SVG로 처리 추가
 
 #### 🔹 프로젝트 구조 변경
 
