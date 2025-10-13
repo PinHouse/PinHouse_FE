@@ -1,4 +1,5 @@
 "use client";
+import { requestOAuthLogin } from "@/src/shared/api/endpoints";
 import { ChangeEvent, useState } from "react";
 
 export default function useLogin() {
@@ -17,7 +18,8 @@ export default function useLogin() {
 
   const handleLogin = async () => {
     try {
-      await new Promise(res => setTimeout(res, 1000));
+      await requestOAuthLogin("KAKAO");
+      //await new Promise(res => setTimeout(res, 1000));
     } catch (error) {
       console.log(error);
     } finally {
