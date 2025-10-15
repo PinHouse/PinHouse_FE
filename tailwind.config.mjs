@@ -74,7 +74,7 @@ export default {
           muted: "#6b7280",
         },
         button: {
-          light: "#3182F6",
+          light: "#306FFF",
           dark: "#1E429F",
           active: "#1E429F",
           muted: "#E5E7EB",
