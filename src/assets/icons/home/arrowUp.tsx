@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export default function ArrowUp(props: SVGProps<SVGSVGElement>) {
+export function ArrowUp(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="62"

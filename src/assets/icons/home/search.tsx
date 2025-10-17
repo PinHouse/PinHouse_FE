@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export default function Search(props: SVGProps<SVGSVGElement>) {
+export function Search(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="21"
