@@ -1,9 +1,8 @@
-"use client";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ButtonHTMLAttributes } from "react";
+import { InputHTMLAttributes } from "react";
 import { cn } from "../../lib/utils";
 
-const buttonVariants = cva(
+const inputVariants = cva(
   "inline-flex items-center justify-center rounded-2xl font-medium transition-all focus:outline-none disabled:opacity-50 disabled:pointer-events-none",
   {
     variants: {
@@ -26,10 +25,10 @@ const buttonVariants = cva(
   }
 );
 
-interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+interface InputProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size">,
+    VariantProps<typeof inputVariants> {}
 
-export function Button({ className, variant, size, ...props }: ButtonProps) {
-  return <button className={cn(buttonVariants({ variant, size }), className)} {...props} />;
+export function Input({ className, variant, size, ...props }: InputProps) {
+  return <input className={cn(inputVariants({ variant, size }), className)} {...props} />;
 }
