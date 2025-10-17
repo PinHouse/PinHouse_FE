@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export function Search(props: SVGProps<SVGSVGElement>) {
+export const Search = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="21"
@@ -26,4 +26,4 @@ export function Search(props: SVGProps<SVGSVGElement>) {
       />
     </svg>
   );
-}
+};

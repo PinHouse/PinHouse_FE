@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export default function PinhouseLogo(props: SVGProps<SVGSVGElement>) {
+export const PinhouseLogo = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="130"
@@ -51,4 +51,4 @@ export default function PinhouseLogo(props: SVGProps<SVGSVGElement>) {
       </defs>
     </svg>
   );
-}
+};

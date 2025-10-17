@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export function LeftButton(props: SVGProps<SVGSVGElement>) {
+export const LeftButton = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="20"
@@ -26,4 +26,4 @@ export function LeftButton(props: SVGProps<SVGSVGElement>) {
       </defs>
     </svg>
   );
-}
+};

@@ -92,20 +92,32 @@ assignees: ""
 #### 🔹 공통 UI 컴포넌트
 
 - 공통UI(Input) 추가
+- SVG아이콘 추가 ( 컴포넌트화 완료)
+- 온보딩 페이지 추가
 
 #### 🔹 정적 리소스 관련
 
--
+- `assets` 폴더 내 **SVG ICONS 추가**
+- 프론트 페이지에 사용될 SVG ICONS 추가
 
 ### 위치
 
 - src/shared/lib/utils
 - src/shared/ui/button
 - src/shared/ui/input
+- src/assets/icons/button
+- src/assets/icons/composites
+- src/assets/icons/home
+- src/assets/icons/logo
+- src/assets/icons/onboarding
+- src/assets/icons/svgFile
+- app/onboarding/[type]
 
 ## 📌 파일 변경 내용 및 위치
 
 - 공통 UI에 사용될 Input 추가
+- 프로젝트 페이지에 사용될 SVG ICONS추가
+- 온보딩 페이지 추가
 
 ## 📝 변경 이유
 
