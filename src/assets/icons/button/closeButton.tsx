@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export default function CloseButton(props: SVGProps<SVGSVGElement>) {
+export function CloseButton(props: SVGProps<SVGSVGElement>) {
   return (
     <svg width="20" height="21" viewBox="0 0 20 21" fill="none" {...props}>
       <g clip-path="url(#clip0_8454_739)">
