@@ -1,5 +1,8 @@
-import { HomeIcon } from "@/src/assets/icons/home";
+import { AddButton, OnOffFalse, OnOffTrue, XButton } from "@/src/assets/icons/button";
+import { PinCelebration } from "@/src/assets/icons/composites";
+import { Alram, Hambarger, HomeIcon } from "@/src/assets/icons/home";
 import { LogoIcon } from "@/src/assets/icons/logo";
+import { LoadingPin, SearchPin } from "@/src/assets/icons/onboarding";
 import { Button } from "@/src/shared/ui/button/deafult";
 import { Input } from "@/src/shared/ui/input/deafult";
 
@@ -15,6 +18,15 @@ export default function DefaultTest() {
       <LogoIcon />
       <HomeIcon />
       <Input variant={"outline"} size={"lg"} />
+      <LoadingPin />
+      <SearchPin />
+      <XButton />
+      <AddButton />
+      <Alram />
+      <OnOffTrue />
+      <OnOffFalse />
+      <Hambarger />
+      <PinCelebration />
     </div>
   );
 }
