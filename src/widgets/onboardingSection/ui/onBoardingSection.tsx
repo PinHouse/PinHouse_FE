@@ -7,7 +7,7 @@ interface OnboardingSectionProps {
   description: string;
   onNext?: () => void;
 }
-
+//git hub test
 export const OnboardingSection = ({
   title,
   description,
