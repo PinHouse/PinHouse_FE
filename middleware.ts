@@ -6,11 +6,11 @@ import type { NextRequest } from "next/server";
  * 모든 요청이 서버로 가기 전에 실행됨
  */
 
-// 보호된 라우트들
-const PROTECTED_ROUTES = ["/dashboard", "/signup"];
+// 보호된 라우트들 (인증 필요)
+const PROTECTED_ROUTES = ["/", "/dashboard", "/signup"];
 
 // 공개 라우트들 (인증이 필요 없는)
-const PUBLIC_ROUTES = ["/", "/login"];
+const PUBLIC_ROUTES = ["/login"];
 
 /**
  * 인증 상태 확인 함수
