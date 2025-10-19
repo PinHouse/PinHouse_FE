@@ -1,7 +1,8 @@
 "use client";
+import { Suspense } from "react";
 import { useOAuthRedirectToOnBoarding } from "@/src/features/auth-login/hooks/useOAuthRedirectToOnBoarding";
 
-export default function SignupPage() {
+function SignupContent() {
   // OAuth 리다이렉트 처리
   useOAuthRedirectToOnBoarding();
 
@@ -17,5 +18,22 @@ export default function SignupPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        /**
+         * TODO: 추후 로딩 스피너 컴포넌트로 교체 요망
+         */
+        <div className="flex h-screen items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+        </div>
+      }
+    >
+      <SignupContent />
+    </Suspense>
   );
 }
