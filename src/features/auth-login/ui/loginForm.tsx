@@ -1,7 +1,7 @@
 "use client";
-import { LoginFormProps } from "../model/auth.cilent.type";
+import { ILoginFormProps } from "../model/auth.cilent.type";
 
-export function LoginForm({ onOuth2Login }: LoginFormProps) {
+export function LoginForm({ onOuth2Login }: ILoginFormProps) {
   return (
     <div className="flex flex-col justify-center gap-8">
       <button
