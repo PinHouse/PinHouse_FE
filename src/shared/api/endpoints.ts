@@ -1,19 +1,17 @@
-import { OAuthProvider } from "../types/auth";
-import { http } from "./http";
+import { OAuthProviderType } from "@/src/features/auth-login/model/auth.cilent.type";
 
-const redirectUrl: string = process.env.NEXT_PUBLIC_REDIRECT_URL || "Empty_Redirect_Url";
-const kakaoKey: string = process.env.NEXT_PUBLIC_KAKAO || "Empty_Key";
-const naverKey: string = process.env.NEXT_PUBLIC_NAVER || "Empty_Key";
-const authorizeUrl: Record<OAuthProvider, string> = {
-  KAKAO: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoKey}&redirect_uri=${redirectUrl}`,
-  NAVER: `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverKey}&redirect_uri=${redirectUrl}`,
+const oAuthRequestUrl: string = process.env.NEXT_PUBLIC_OAUTH2 || "Empty_Oauth_Request_Url";
+
+const authorizeUrl: Record<OAuthProviderType, string> = {
+  KAKAO: `${oAuthRequestUrl}/kakao`,
+  NAVER: `${oAuthRequestUrl}/naver`,
 };
 
 /**
  * provider의 authorize 페이지로 이동하는 함수
  * @param provider
  */
-export const requestOAuthLogin = (provider: OAuthProvider) => {
+export const requestOAuthLogin = (provider: OAuthProviderType) => {
   window.open(authorizeUrl[provider], "_blank");
 };
 
