@@ -1,1 +1,1 @@
-export * from "./onboardingApi";
+export * from "./onBoardingApi";
