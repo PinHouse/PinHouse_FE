@@ -1,51 +1,34 @@
 "use client";
 
+import { IOnboardingCompleteRequest } from "@/src/features/onboarding/model";
 import { onboardingContentMap } from "@/src/features/onboarding/model/onboardingContentMap";
+import { useOnboardingFlow } from "@/src/features/onboarding/hooks";
 import { OnboardingSection } from "@/src/widgets/onboardingSection";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 export default function OnboardingPage() {
   const { type } = useParams(); // e.g. "compare" | "diagnosis" | "agent"
-  const router = useRouter();
+  const { handleNextStep } = useOnboardingFlow();
   const content = onboardingContentMap[type as keyof typeof onboardingContentMap];
 
   if (!content) return <div>잘못된 접근입니다.</div>;
 
   const { Icon, title, description } = content;
 
-  const handelOnNext = async () => {
-    const currentType = type as string;
+  /**
+   * TODO: 회원 가입 요청 샘플 추후 백엔드 API 연동 완료되면 삭제 요망
+   */
+  const sampleRequestOnBoarding: IOnboardingCompleteRequest = {
+    facilityTypes: ["도서관", "산책로"],
+    pinpoint: {
+      address: "테스트 주소",
+      name: "핀 포인트 샘플",
+      first: true,
+    },
+  };
 
-    // 온보딩 순서: diagnosis -> compare -> agent
-    switch (currentType) {
-      case "diagnosis":
-        router.push("/onboarding/compare");
-        break;
-      case "compare":
-        router.push("/onboarding/agent");
-        break;
-      case "agent":
-        // 마지막 단계에서는 백엔드 요청을 보내고 메인 페이지로 이동
-        try {
-          //   await completeOnboarding({
-          //     preferences: {
-          //       // TODO: 각 단계에서 수집한 사용자 데이터를 여기에 추가
-          //       diagnosis: {},
-          //       compare: {},
-          //       agent: {},
-          //     },
-          //   });
-          console.log("온보딩 완료 성공");
-          router.push("/"); // 메인 페이지로 이동
-        } catch (error) {
-          console.error("온보딩 완료 실패:", error);
-          // 에러가 발생해도 메인 페이지로 이동 (사용자 경험 고려)
-          router.push("/");
-        }
-        break;
-      default:
-        console.error("알 수 없는 온보딩 타입:", currentType);
-    }
+  const handleOnNext = () => {
+    handleNextStep(type as string, sampleRequestOnBoarding);
   };
   return (
     <main className="flex h-screen flex-col items-center justify-center">
@@ -53,7 +36,7 @@ export default function OnboardingPage() {
         image={<Icon />}
         title={title}
         description={description}
-        onNext={handelOnNext}
+        onNext={handleOnNext}
       />
     </main>
   );
