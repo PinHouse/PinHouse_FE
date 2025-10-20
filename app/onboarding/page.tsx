@@ -1,5 +1,5 @@
 "use client";
-import { useOAuthStore } from "@/src/features/auth-login/model/authStore";
+import { useOAuthStore } from "@/src/features/login/model/authStore";
 import { useEffect, useState } from "react";
 
 export default function OnBoardingPage() {

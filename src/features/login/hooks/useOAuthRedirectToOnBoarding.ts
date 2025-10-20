@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useOAuthStore } from "@/src/features/auth-login/model/authStore";
+import { useOAuthStore } from "@/src/features/login/model/authStore";
 import { extractTempUserId } from "@/src/shared/utils";
 
 export const useOAuthRedirectToOnBoarding = () => {

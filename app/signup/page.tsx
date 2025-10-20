@@ -1,6 +1,6 @@
 "use client";
 import { Suspense } from "react";
-import { useOAuthRedirectToOnBoarding } from "@/src/features/auth-login/hooks/useOAuthRedirectToOnBoarding";
+import { useOAuthRedirectToOnBoarding } from "@/src/features/login/hooks/useOAuthRedirectToOnBoarding";
 
 function SignupContent() {
   // OAuth 리다이렉트 처리

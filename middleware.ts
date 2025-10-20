@@ -10,7 +10,12 @@ import type { NextRequest } from "next/server";
 const PROTECTED_ROUTES = ["/", "/dashboard", "/signup"];
 
 // 공개 라우트들 (인증이 필요 없는)
-const PUBLIC_ROUTES = ["/login"];
+const PUBLIC_ROUTES = [
+  "/login",
+  "/onboarding/diagnosis",
+  "/onboarding/compare",
+  "/onboarding/agent",
+];
 
 /**
  * 인증 상태 확인 함수

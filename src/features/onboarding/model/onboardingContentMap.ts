@@ -1,4 +1,4 @@
-import { LoadingPin, MapPin, RentalProperty } from "@/src/assets/icons/onboarding";
+import { MapPin, RentalProperty } from "@/src/assets/icons/onboarding";
 import { TaskList } from "@/src/assets/icons/onboarding/TaskList";
 
 export const onboardingContentMap = {

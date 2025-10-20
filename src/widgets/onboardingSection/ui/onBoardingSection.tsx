@@ -25,7 +25,7 @@ export const OnboardingSection = ({
 
       {/* 버튼 */}
       <div className="mt-10 w-full">
-        <OnboardingNextButton />
+        <OnboardingNextButton onNext={onNext} />
       </div>
     </section>
   );
