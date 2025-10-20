@@ -1,5 +1,5 @@
 "use client";
-import { ILoginFormProps } from "../model/auth.cilent.type";
+import { ILoginFormProps } from "@/src/features/auth-login/model";
 
 export function LoginForm({ onOuth2Login }: ILoginFormProps) {
   return (

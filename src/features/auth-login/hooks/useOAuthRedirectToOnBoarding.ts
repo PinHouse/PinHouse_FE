@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useOAuthStore } from "@/src/features/auth-login/model/authStore";
-import { extractTempUserId } from "../../../shared/utils/urlUtils";
+import { extractTempUserId } from "@/src/shared/utils";
 
 export const useOAuthRedirectToOnBoarding = () => {
   const router = useRouter();
@@ -21,7 +21,7 @@ export const useOAuthRedirectToOnBoarding = () => {
         setTempUserId(tempUserId);
 
         // onBoarding 페이지로 리다이렉션
-        router.push("/onboarding");
+        router.push("/onboarding/diagnosis");
       } else {
         console.error("잘못된 state 파라미터 형식:", stateParam);
         // 에러 처리 - 로그인 페이지로 리다이렉션
