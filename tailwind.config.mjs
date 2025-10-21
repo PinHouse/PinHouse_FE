@@ -79,6 +79,7 @@ export default {
           active: "#1E429F",
           muted: "#E5E7EB",
           text: "#FFFFFF",
+          tag: "#EFEFF3",
         },
       },
       keyframes: {
