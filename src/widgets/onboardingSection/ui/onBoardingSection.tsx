@@ -1,30 +1,45 @@
 "use client";
-import { OnboardingNextButton } from "@/src/features/onboarding/ui";
+import {
+  OnbaordingTagButton,
+  OnboardingNextButton,
+  OnboardingProgressDots,
+  OnboardingSectionProps,
+  OnboardingSelcted,
+} from "@/src/features/onboarding/ui";
+import { ENVIRONMENT_TAGS } from "@/src/shared/ui/button/tagButton/types";
 
-interface OnboardingSectionProps {
-  image: React.ReactNode;
-  title: string;
-  description: string;
-  onNext?: () => void;
-}
-//git hub test
-export const OnboardingSection = ({
-  title,
-  description,
-  onNext,
-  image,
-}: OnboardingSectionProps) => {
+export const OnboardingSection = ({ title, description, image, type }: OnboardingSectionProps) => {
   return (
-    <section className="flex h-full w-full flex-col items-center justify-between px-5 py-5">
-      {/* 카드 */}
-      <div className="flex flex-col items-center text-center">
+    <section className="flex h-screen w-full flex-col justify-between overflow-hidden px-5 py-5">
+      <OnboardingProgressDots activeKey={type} />
+
+      <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto text-center">
         <div>{image}</div>
-        {title && <h2 className="mt-6 text-xl font-semibold">{title}</h2>}
-        {description && <p className="mt-2 text-sm text-gray-500">{description}</p>}
+
+        {title && <h2 className="mt-4 text-[24px] font-bold">{title}</h2>}
+
+        {description && (
+          <p className="mt-1 whitespace-pre-line text-center text-sm text-gray-500">
+            {description}
+          </p>
+        )}
+
+        {type === "agent" && (
+          <div className="mt-8 w-full">
+            <OnboardingSelcted />
+          </div>
+        )}
+
+        {type === "environment" && (
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
+            {ENVIRONMENT_TAGS.map(tag => (
+              <OnbaordingTagButton key={tag.key} label={tag.label} />
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* 버튼 */}
-      <div className="mt-10 w-full">
+      <div className="mt-10 w-full flex-none">
         <OnboardingNextButton />
       </div>
     </section>
