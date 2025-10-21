@@ -7,10 +7,10 @@ import type { NextRequest } from "next/server";
  */
 
 // 보호된 라우트들 (인증 필요)
-const PROTECTED_ROUTES = ["/", "/dashboard", "/signup"];
-
+const PROTECTED_ROUTES = ["/dashboard", "/signup"];
 // 공개 라우트들 (인증이 필요 없는)
 const PUBLIC_ROUTES = [
+  "/",
   "/login",
   "/onboarding/diagnosis",
   "/onboarding/compare",
@@ -22,7 +22,7 @@ const PUBLIC_ROUTES = [
  */
 function isAuthenticated(request: NextRequest): boolean {
   // 쿠키에서 토큰 확인
-  const token = request.cookies.get("acess-token")?.value;
+  const token = request.cookies.get("refresh_token")?.value;
   if (token) return true;
 
   return false;

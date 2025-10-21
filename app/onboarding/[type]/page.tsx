@@ -5,6 +5,7 @@ import { onboardingContentMap } from "@/src/features/onboarding/model/onboarding
 import { useOnboardingFlow } from "@/src/features/onboarding/hooks";
 import { OnboardingSection } from "@/src/widgets/onboardingSection";
 import { useParams } from "next/navigation";
+import { useOAuthStore } from "@/src/features/login/model";
 
 export default function OnboardingPage() {
   const { type } = useParams(); // e.g. "compare" | "diagnosis" | "agent"
@@ -12,7 +13,7 @@ export default function OnboardingPage() {
   const content = onboardingContentMap[type as keyof typeof onboardingContentMap];
 
   if (!content) return <div>잘못된 접근입니다.</div>;
-
+  const { tempUserId: userId } = useOAuthStore();
   const { Icon, title, description } = content;
 
   /**
@@ -20,11 +21,6 @@ export default function OnboardingPage() {
    */
   const sampleRequestOnBoarding: IOnboardingCompleteRequest = {
     facilityTypes: ["도서관", "산책로"],
-    pinpoint: {
-      address: "테스트 주소",
-      name: "핀 포인트 샘플",
-      first: true,
-    },
   };
 
   const handleOnNext = () => {

@@ -1,4 +1,5 @@
 import { OAuthProviderType } from "@/src/features/login/model/auth.cilent.type";
+import { http } from "@/src/shared/api";
 
 // 백엔드에서 제공하는 OAuth 엔드포인트
 const oAuthRequestUrl: string = process.env.NEXT_PUBLIC_OAUTH2 || "Empty_Oauth_Request_Url";
@@ -23,4 +24,13 @@ export const requestOAuthLogin = (provider: OAuthProviderType) => {
     console.error(`${provider} 로그인 요청 실패:`, error);
     throw error;
   }
+};
+
+/**
+ * 엑세스 토큰 재발급
+ */
+export const refreshAccessToken = async () => {
+  const response = await http.put("/auth");
+  console.log(response);
+  return response;
 };
