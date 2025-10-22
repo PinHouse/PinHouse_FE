@@ -16,9 +16,9 @@ export const OnboardingSection = ({ title, description, image, type }: Onboardin
       <PageTransition>
         <div className="mb-8 mt-10 flex flex-[1] flex-col items-center justify-start text-center">
           <div className="flex">{image}</div>
-          {title && <h2 className="text-[24px] font-bold">{title}</h2>}
+          {title && <h2 className="text-lg font-bold">{title}</h2>}
           {description && (
-            <p className="mt-1 whitespace-pre-line text-center text-[16px] text-gray-500">
+            <p className="mt-1 whitespace-pre-line text-center text-sm text-gray-500">
               {description}
             </p>
           )}

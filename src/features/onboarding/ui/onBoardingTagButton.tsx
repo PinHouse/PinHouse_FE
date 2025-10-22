@@ -1,14 +1,15 @@
 "use client";
+import { useEnvtagStore } from "@/src/entities/tag/envTag";
 import { cn } from "@/src/shared/lib/utils";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { TagProps } from "@/src/shared/ui/button/tagButton/types";
-import { useState } from "react";
+import { MouseEvent } from "react";
 
 export const OnbaordingTagButton = ({ label }: TagProps) => {
-  const [isSelected, setIsSelected] = useState(false);
-
-  const handleClick = () => {
-    setIsSelected(prev => !prev); // 토글
+  const { envTag, toggleEnvtag } = useEnvtagStore();
+  const isSelected = envTag.includes(label);
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    toggleEnvtag(label);
   };
 
   return (

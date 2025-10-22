@@ -25,15 +25,19 @@ export const AddressSearch = () => {
         src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
         strategy="afterInteractive"
       />
+
       <div className="flex flex-col gap-2">
         {address ? (
-          <Input
-            size={"lg"}
-            variant={"ghost"}
-            placeholder="핀포인트 1"
-            onChange={onPinPointChange}
-            className="text-sm placeholder:text-sm placeholder:font-medium placeholder:text-gray-400"
-          />
+          <>
+            <p className="text-left text-sm font-bold">핀포인트 명을 입력해주세요(학교/직장)</p>
+            <Input
+              size={"lg"}
+              variant={"ghost"}
+              placeholder="핀포인트 1"
+              onChange={onPinPointChange}
+              className="text-sm placeholder:text-sm placeholder:font-medium placeholder:text-gray-400"
+            />
+          </>
         ) : null}
         <IconButton size={"lg"} variant={"ghost"}>
           <div className="flex w-full items-center gap-3">
