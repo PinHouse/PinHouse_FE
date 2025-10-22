@@ -77,7 +77,7 @@ export default {
           light: "#306FFF",
           dark: "#1E429F",
           active: "#1E429F",
-          muted: "#E5E7EB",
+          muted: "#BBBAC5",
           text: "#FFFFFF",
           tag: "#EFEFF3",
         },

@@ -6,7 +6,7 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         solid:
-          "g-primary text-white hover:bg-primary/90 active:scale-[0.98] text-white bg-button-light rounded-3xl",
+          "g-primary text-white hover:bg-primary/90 active:scale-[0.98] text-white bg-button-light rounded-3xl disabled:bg-button-muted",
         outline: "border border-gray-300 text-gray-800 hover:bg-gray-50 active:scale-[0.98]",
         ghost: "bg-transparent text-gray-700 hover:bg-gray-100 active:scale-[0.98]",
       },

@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "../../../lib/utils";
 import { InputProps } from "./type";
 import { inputVariants } from "./input.bariants";

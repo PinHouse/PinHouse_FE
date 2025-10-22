@@ -1,10 +1,10 @@
 "use client";
+import { AddressSearch } from "@/src/features/addressSearch/ui/addressSearch";
 import {
   OnbaordingTagButton,
   OnboardingNextButton,
   OnboardingProgressDots,
   OnboardingSectionProps,
-  OnboardingSelcted,
 } from "@/src/features/onboarding/ui";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { ENVIRONMENT_TAGS } from "@/src/shared/ui/button/tagButton/types";
@@ -25,7 +25,7 @@ export const OnboardingSection = ({ title, description, image, type }: Onboardin
 
           {type === "agent" && (
             <div className="mt-5 w-full">
-              <OnboardingSelcted />
+              <AddressSearch />
             </div>
           )}
 

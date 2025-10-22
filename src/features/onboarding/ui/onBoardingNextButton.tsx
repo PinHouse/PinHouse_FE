@@ -2,6 +2,7 @@
 import { Button } from "@/src/shared/ui/button/deafult";
 import { onboardingContentMap } from "../model/onboardingContentMap";
 import { usePathname, useRouter } from "next/navigation";
+import { useAddressStore } from "@/src/entities/address";
 
 export const OnboardingNextButton = () => {
   const steps = Object.values(onboardingContentMap);
@@ -9,9 +10,16 @@ export const OnboardingNextButton = () => {
   const currentIndex = steps.findIndex(s => s.path === pathname);
   const next = steps[currentIndex + 1];
   const router = useRouter();
+  const { address } = useAddressStore();
+  const btnDisable = pathname.includes("/agent") && address === "" ? true : false;
 
   return (
-    <Button size={"lg"} variant={"solid"} onClick={() => next && router.push(next.path)}>
+    <Button
+      size={"lg"}
+      variant={"solid"}
+      onClick={() => next && router.push(next.path)}
+      disabled={btnDisable}
+    >
       다음
     </Button>
   );
