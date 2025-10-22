@@ -11,13 +11,12 @@ import { ENVIRONMENT_TAGS } from "@/src/shared/ui/button/tagButton/types";
 
 export const OnboardingSection = ({ title, description, image, type }: OnboardingSectionProps) => {
   return (
-    <PageTransition>
-      <section className="flex h-full w-full flex-col justify-between overflow-hidden px-5 py-5">
-        <OnboardingProgressDots activeKey={type} />
-
-        <div className="mt-10 flex flex-[1] flex-col items-center justify-start overflow-y-auto text-center">
+    <section className="flex h-full w-full flex-col justify-between overflow-hidden px-5 py-5">
+      <OnboardingProgressDots activeKey={type} />
+      <PageTransition>
+        <div className="mb-8 mt-10 flex flex-[1] flex-col items-center justify-start text-center">
           <div className="flex">{image}</div>
-          {title && <h2 className="mt-4 text-[24px] font-bold">{title}</h2>}
+          {title && <h2 className="text-[24px] font-bold">{title}</h2>}
           {description && (
             <p className="mt-1 whitespace-pre-line text-center text-[16px] text-gray-500">
               {description}
@@ -25,7 +24,7 @@ export const OnboardingSection = ({ title, description, image, type }: Onboardin
           )}
 
           {type === "agent" && (
-            <div className="mt-8 w-full">
+            <div className="mt-5 w-full">
               <OnboardingSelcted />
             </div>
           )}
@@ -38,11 +37,10 @@ export const OnboardingSection = ({ title, description, image, type }: Onboardin
             </div>
           )}
         </div>
-
-        <div className="w-full flex-none py-2.5">
-          <OnboardingNextButton />
-        </div>
-      </section>
-    </PageTransition>
+      </PageTransition>
+      <div className="w-full flex-none py-2.5">
+        <OnboardingNextButton />
+      </div>
+    </section>
   );
 };
