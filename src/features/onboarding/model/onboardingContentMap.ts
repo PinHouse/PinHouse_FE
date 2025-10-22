@@ -24,7 +24,7 @@ export const onboardingContentMap = {
     Icon: RentalProperty,
     title: "방 비교",
     path: "/onboarding/compare",
-    description: "공고에 있는 수많은 방 타입을 \n hhhhhhhhhhhhhh한눈에 비교해 보세요!",
+    description: "공고에 있는 수많은 방 타입을 \n 한눈에 비교해 보세요!",
   },
   agent: {
     Icon: MapPin,
