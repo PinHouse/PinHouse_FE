@@ -3,12 +3,12 @@ import { useEnvtagStore } from "@/src/entities/tag/envTag";
 import { cn } from "@/src/shared/lib/utils";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { TagProps } from "@/src/shared/ui/button/tagButton/types";
-import { MouseEvent } from "react";
 
 export const OnbaordingTagButton = ({ label }: TagProps) => {
   const { envTag, toggleEnvtag } = useEnvtagStore();
   const isSelected = envTag.includes(label);
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+
+  const handleClick = () => {
     toggleEnvtag(label);
   };
 

@@ -14,7 +14,7 @@ export const OnboardingSection = ({ title, description, image, type }: Onboardin
     <section className="flex h-full w-full flex-col justify-between overflow-hidden px-5 py-5">
       <OnboardingProgressDots activeKey={type} />
       <PageTransition>
-        <div className="mb-8 mt-10 flex flex-[1] flex-col items-center justify-start text-center">
+        <div className="mb-3 mt-7 flex flex-[1] flex-col items-center justify-start text-center">
           <div className="flex">{image}</div>
           {title && <h2 className="text-lg font-bold">{title}</h2>}
           {description && (
