@@ -1,9 +1,9 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
-export const PageTransition = ({ children }: { children: React.ReactNode }) => {
+export const PageTransition = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isBottom, setIsBottom] = useState(false);
