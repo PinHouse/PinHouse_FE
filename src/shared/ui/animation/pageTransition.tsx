@@ -1,4 +1,5 @@
 "use client";
+import { useAddressStore } from "@/src/entities/address";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect, useRef, useState } from "react";
@@ -7,6 +8,7 @@ export const PageTransition = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isBottom, setIsBottom] = useState(false);
+  const { address } = useAddressStore();
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -17,7 +19,7 @@ export const PageTransition = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     handleScroll();
-  }, [pathname]);
+  }, [pathname, address]);
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
