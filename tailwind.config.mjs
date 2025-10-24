@@ -81,6 +81,10 @@ export default {
           text: "#FFFFFF",
           tag: "#EFEFF3",
         },
+
+        hover: {
+          dropDown: "#E8EDFF",
+        },
       },
       keyframes: {
         logoBounce: {

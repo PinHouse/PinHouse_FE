@@ -4,3 +4,5 @@ export * from "./xButton";
 export * from "./addButton";
 export * from "./onOffFalse";
 export * from "./onOffTrue";
+export * from "./downButton";
+export * from "./upButton";
