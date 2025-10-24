@@ -8,7 +8,6 @@ import { IOnboardingCompleteRequest } from "@/src/features/onboarding/model";
  */
 export const useOnboardingFlow = () => {
   const router = useRouter();
-
   /**
    * 다음 온보딩 단계로 이동하거나 완료 처리
    * @param currentType 현재 온보딩 타입
@@ -30,9 +29,16 @@ export const useOnboardingFlow = () => {
         // 마지막 단계에서는 백엔드 요청을 보내고 메인 페이지로 이동
         try {
           if (onboardingData) {
-            await completeOnboarding(onboardingData);
+            const success = await completeOnboarding(onboardingData);
+            if (success) {
+              console.log("온보딩 완료 성공");
+              router.push("/"); // 메인 페이지로 이동
+            } else {
+              console.error("온보딩 완료 실패");
+              router.push("/");
+            }
           }
-          console.log("온보딩 완료 성공");
+          console.log("온보딩 완료 실패");
           router.push("/"); // 메인 페이지로 이동
         } catch (error) {
           console.error("온보딩 완료 실패:", error);

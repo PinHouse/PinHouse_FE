@@ -23,9 +23,10 @@ export const completeOnboarding = async (data?: IOnboardingCompleteRequest) => {
       urlWithParams,
       data
     );
-    return response;
+    console.log("response", response);
+    return response.success;
   } catch (error) {
     console.error("온보딩 완료 요청 실패:", error);
-    throw error;
+    return false;
   }
 };

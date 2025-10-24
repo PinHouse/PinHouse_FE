@@ -17,20 +17,10 @@ const authorizeUrl: Record<OAuthProviderType, string> = {
 export const requestOAuthLogin = (provider: OAuthProviderType) => {
   try {
     const url = authorizeUrl[provider];
-
     // 현재 탭에서 이동하기 위해 window.location.replace 사용
     window.location.replace(url);
   } catch (error) {
     console.error(`${provider} 로그인 요청 실패:`, error);
     throw error;
   }
-};
-
-/**
- * 엑세스 토큰 재발급
- */
-export const refreshAccessToken = async () => {
-  const response = await http.put("/auth");
-  console.log(response);
-  return response;
 };
