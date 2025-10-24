@@ -9,6 +9,9 @@ export const useOAuthRedirectToOnBoarding = () => {
   const { setTempUserId } = useOAuthStore();
 
   useEffect(() => {
+    // searchParams가 로드될 때까지 기다림
+    if (!searchParams) return;
+
     const stateParam = searchParams.get("state");
 
     if (stateParam) {
