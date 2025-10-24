@@ -1,7 +1,7 @@
 "use client";
 
 import { useOAuthRedirectToOnBoarding } from "@/src/features/login/hooks/useOAuthRedirectToOnBoarding";
-import { Spinner } from "@/src/shared/ui/spinner";
+import { Spinner } from "@/src/shared/ui/spinner/default";
 
 export default function SignupPage() {
   // OAuth 리다이렉트 처리

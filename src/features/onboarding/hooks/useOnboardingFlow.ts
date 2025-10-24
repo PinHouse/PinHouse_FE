@@ -33,13 +33,16 @@ export const useOnboardingFlow = () => {
             if (success) {
               console.log("온보딩 완료 성공");
               router.push("/"); // 메인 페이지로 이동
+              return;
             } else {
               console.error("온보딩 완료 실패");
               router.push("/");
+              return;
             }
           }
-          console.log("온보딩 완료 실패");
+          console.error("온보딩 데이터가 없습니다");
           router.push("/"); // 메인 페이지로 이동
+          return;
         } catch (error) {
           console.error("온보딩 완료 실패:", error);
           // 에러가 발생해도 메인 페이지로 이동 (사용자 경험 고려)

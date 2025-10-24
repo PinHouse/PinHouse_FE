@@ -1,6 +1,6 @@
 "use client";
+import { useAuthCheck } from "@/src/entities/auth/hooks/useAuthHook";
 import Image from "next/image";
-import { useAuthCheck } from "@/src/shared/hooks/useAuthCheck";
 
 export default function Home() {
   // 인증 상태 확인

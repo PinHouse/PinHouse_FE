@@ -1,4 +1,4 @@
-import { ONBOARDING_COMPLETE_ENDPOINT } from "@/src/shared/api";
+import { USER_SIGNUP_ENDPOINT } from "@/src/shared/api";
 import { http } from "@/src/shared/api/http";
 import {
   IOnboardingCompleteRequest,
@@ -15,7 +15,7 @@ export const completeOnboarding = async (data?: IOnboardingCompleteRequest) => {
     const { tempUserId } = useOAuthStore.getState();
 
     // GET 파라미터 추가 (zustand store 값 사용)
-    let urlWithParams = ONBOARDING_COMPLETE_ENDPOINT;
+    let urlWithParams = USER_SIGNUP_ENDPOINT;
     if (tempUserId) {
       urlWithParams += `?tempKey=${encodeURIComponent(tempUserId)}`;
     }

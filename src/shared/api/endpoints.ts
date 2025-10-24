@@ -39,7 +39,7 @@ export const USER_ACCESS_TOKEN_REFRESH_ENDPOINT = "/auth";
  */
 
 // 임대주택 상세 조회 API
-export const getComplexDetailEndpoint = (complexId: string) => `/complexes/${complexId}`;
+export const COMPLEXES_ENDPOINT = "/complexes";
 
 // 거리 시뮬레이터 API (전체)
 export const getComplexTransitFullEndpoint = (complexId: string) =>

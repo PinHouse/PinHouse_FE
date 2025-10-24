@@ -1,6 +1,62 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 import { IResponse } from "../types/response";
+// 토큰 갱신 상태 관리
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (value?: any) => void;
+  reject: (error?: any) => void;
+}> = [];
+
+/**
+ * 로그아웃 처리 함수
+ */
+export const handleLogout = () => {
+  // 1. is_auth 쿠키를 false로 설정
+  document.cookie = "is_auth=false; path=/; max-age=900";
+
+  // 2. localStorage 정리
+  localStorage.clear();
+
+  // 3. 로그인 페이지로 리다이렉트
+  window.location.href = "/login";
+
+  console.log("🚪 토큰 갱신 실패로 인한 로그아웃 처리 완료");
+};
+
+// 토큰 갱신 전용 axios 인스턴스 (인터셉터 없음)
+const refreshApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// 토큰 갱신 함수
+const refreshToken = async () => {
+  try {
+    // 인터셉터가 없는 별도 인스턴스 사용
+    const response = await refreshApi.put("/auth", {});
+    return response.data;
+  } catch (error) {
+    console.error("토큰 갱신 실패:", error);
+    throw error;
+  }
+};
+
+// 대기 중인 요청들을 처리하는 함수
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach(({ resolve, reject }) => {
+    if (error) {
+      reject(error);
+    } else {
+      resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -11,46 +67,6 @@ const api: AxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-// 토큰 갱신 중인지 확인하는 플래그
-let isRefreshing = false;
-
-/**
- * 로그아웃 처리 함수
- */
-const handleLogout = () => {
-  // 1. is_auth 쿠키를 false로 설정
-  document.cookie = "is_auth=false; path=/; max-age=86400";
-  // 2. localStorage 정리
-  localStorage.clear();
-  // 3. 로그인 페이지로 리다이렉트
-  window.location.href = "/login";
-  console.log("🚪 토큰 갱신 실패로 인한 로그아웃 처리 완료");
-};
-
-/**
- * 엑세스 토큰 재발급
- * 원시 axios 인스턴스를 사용하여 interceptor를 우회
- */
-export const refreshAccessToken = async () => {
-  const response = await api.put("/auth");
-  console.log(response);
-  return response;
-};
-/**
- * 토큰 갱신 함수
- */
-const refreshToken = async (): Promise<boolean> => {
-  try {
-    console.log("🔄 토큰 갱신 시도 중...");
-    await refreshAccessToken();
-    console.log("✅ 토큰 갱신 성공");
-    return true;
-  } catch (error) {
-    console.error("❌ 토큰 갱신 실패:", error);
-    return false;
-  }
-};
 
 /**
  *
@@ -74,34 +90,49 @@ const onResponse = <T extends IResponse>(res: AxiosResponse<T>) => {
  * @param error
  */
 const onError = async <T extends IResponse>(error: AxiosError<T>) => {
-  const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+  const originalRequest = error.config as AxiosRequestConfig & {
+    _retry?: boolean;
+  };
 
   // 401 에러이고 아직 재시도하지 않은 경우
-  if (error.response?.status === 401 && !originalRequest._retry && !isRefreshing) {
+  if (error.response?.status === 401 && !originalRequest._retry) {
+    if (isRefreshing) {
+      // 이미 토큰 갱신 중이면 대기열에 추가
+      return new Promise((resolve, reject) => {
+        failedQueue.push({ resolve, reject });
+      })
+        .then(() => {
+          return api(originalRequest);
+        })
+        .catch(err => {
+          return Promise.reject(err);
+        });
+    }
+
     originalRequest._retry = true;
     isRefreshing = true;
 
     try {
-      const refreshSuccess = await refreshToken();
-
-      if (refreshSuccess) {
-        // 토큰 갱신 성공 시 원래 요청 재시도
-        return api(originalRequest);
-      } else {
-        // 토큰 갱신 실패 시 로그아웃 처리
-        handleLogout();
-        return Promise.reject(error);
-      }
+      await refreshToken();
+      processQueue(null);
+      return api(originalRequest);
     } catch (refreshError) {
-      // 토큰 갱신 중 에러 발생
-      handleLogout();
+      processQueue(refreshError, null);
+      // 토큰 갱신 실패 시 로그아웃 처리
+      console.error("토큰 갱신 실패, 로그아웃 처리:", refreshError);
+
+      // 로그아웃 처리는 비동기로 실행 (현재 요청의 에러 처리를 먼저 완료)
+      // Promise.resolve()를 사용하여 다음 이벤트 루프에서 실행
+      Promise.resolve().then(() => {
+        handleLogout();
+      });
+
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
     }
   }
 
-  // 401이 아닌 다른 에러들
   if (error.response) {
     const { code, message } = error.response.data;
     //Error 처리
