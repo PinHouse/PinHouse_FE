@@ -3,6 +3,7 @@ import { Button } from "@/src/shared/ui/button/deafult";
 import { onboardingContentMap } from "../model/onboardingContentMap";
 import { usePathname, useRouter } from "next/navigation";
 import { useAddressStore } from "@/src/entities/address";
+import { onBoardingButtonPreset } from "@/src/shared/ui/button/preset";
 
 export const OnboardingNextButton = () => {
   const steps = Object.values(onboardingContentMap);
@@ -15,8 +16,7 @@ export const OnboardingNextButton = () => {
 
   return (
     <Button
-      size={"lg"}
-      variant={"solid"}
+      {...onBoardingButtonPreset}
       onClick={() => next && router.push(next.path)}
       disabled={btnDisable}
     >

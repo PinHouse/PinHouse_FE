@@ -1,5 +1,6 @@
 import { House, MapPin, RentalProperty } from "@/src/assets/icons/onboarding";
 import { TaskList } from "@/src/assets/icons/onboarding/TaskList";
+import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
 
 export interface OnboardingSectionProps {
   image: React.ReactNode;
@@ -39,6 +40,16 @@ export const onboardingContentMap = {
     description: "맞춤 태그로 라이프 스타일에 맞는 \n 임대주택을 찾아보세요!",
   },
 } as const;
+
+const pinPoints: PinPoint[] = [
+  { key: "우리집", value: "우리집", description: "서울시 한강구 노을로 123" },
+  { key: "핀포인트1", value: "핀포인트1", description: "" },
+  { key: "핀포인트2", value: "핀포인트1", description: "" },
+];
+
+export const pinPoint: PinPointMap = {
+  myHome: pinPoints,
+};
 
 export const ONBOARDING_STEPS = [
   {

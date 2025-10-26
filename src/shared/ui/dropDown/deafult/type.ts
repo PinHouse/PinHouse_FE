@@ -6,12 +6,13 @@ export interface DropDownProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof dropDownVariants> {
   types?: string;
+  data: PinPointMap;
 }
 
 export type PinPoint = {
   key: string;
   value: string;
-  discription: string;
+  description: string;
 };
 
 export interface PinPointMap {

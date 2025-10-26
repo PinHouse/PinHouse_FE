@@ -2,26 +2,36 @@
 
 import { cn } from "@/src/shared/lib/utils";
 import { dropDownVariants } from "./dropDown.bariants";
-import { DropDownProps, PinPoint } from "./type";
-import { MouseEvent as LiMouseEvent, useEffect, useRef, useState } from "react";
-import { pinPoint } from "./model";
-import { DownButton, UpButton } from "@/src/assets/icons/button";
+import { DropDownProps } from "./type";
+import { useEffect, useRef, useState } from "react";
 
-export function DropDown({ className, variant, size, types, children, ...props }: DropDownProps) {
+import { DownButton, UpButton } from "@/src/assets/icons/button";
+import { dropDownPreset } from "./deafultPreset";
+import { pinPoint } from "@/src/features/onboarding/ui";
+
+export const DropDown = ({
+  className,
+  variant = dropDownPreset.variant,
+  size = dropDownPreset.size,
+  types,
+  children,
+  data,
+  ...props
+}: DropDownProps) => {
   const [open, setOpen] = useState<boolean>(false);
-  const optionData = types ? pinPoint[types] : [];
-  const [selected, setSelect] = useState<string>(optionData[0].value);
+  const optionData = types ? data[types] : [];
+  const [selected, setSelect] = useState<string>(optionData[0]?.value ?? "");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const onChangeButton = () => setOpen(prev => !prev);
 
-  const onColose = ({ value }: { value: string }) => {
+  const onClose = ({ value }: { value: string }) => {
     setSelect(value);
     setOpen(false);
   };
 
   const handleClickOutside = (e: MouseEvent) => {
     if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-      close();
+      setOpen(false);
     }
   };
 
@@ -53,15 +63,15 @@ export function DropDown({ className, variant, size, types, children, ...props }
           {optionData.map(item => (
             <li
               key={item.key}
-              onClick={() => onColose({ value: item.value })}
-              className="hover:bg-hover-dropDown flex cursor-pointer flex-col px-3 py-2 hover:text-text-brand"
+              onClick={() => onClose({ value: item.value })}
+              className="flex cursor-pointer flex-col px-3 py-2 hover:bg-hover-dropDown hover:text-text-brand"
             >
               <span>{item.value}</span>
-              <span className="text-sm">{item.discription}</span>
+              <span className="text-sm">{item.description}</span>
             </li>
           ))}
         </ul>
       )}
     </div>
   );
-}
+};
