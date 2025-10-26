@@ -5,8 +5,8 @@ export default {
   theme: {
     /** 화면 폭 */
     screens: {
-      sm: "100%",
-      md: "100%",
+      sm: "375px",
+      md: "640px",
       lg: "768px",
     },
 

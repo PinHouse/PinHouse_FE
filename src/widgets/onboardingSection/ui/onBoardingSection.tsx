@@ -7,7 +7,7 @@ import {
   OnboardingSectionProps,
 } from "@/src/features/onboarding/ui";
 import { PageTransition } from "@/src/shared/ui/animation";
-import { ENVIRONMENT_TAGS } from "@/src/shared/ui/button/tagButton/types";
+import { ENVIRONMENT_TAGS } from "@/src/shared/ui/button/tagButton/preset";
 
 export const OnboardingSection = ({ title, description, image, type }: OnboardingSectionProps) => {
   return (

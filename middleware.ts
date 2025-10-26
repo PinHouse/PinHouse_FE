@@ -6,11 +6,11 @@ import type { NextRequest } from "next/server";
  * 모든 요청이 서버로 가기 전에 실행됨
  */
 
-// 보호된 라우트들 (인증 필요)
-const PROTECTED_ROUTES = ["/", "/dashboard", "/signup"];
+// 보호된 라우트들
+const PROTECTED_ROUTES = ["/dashboard", "/signup"];
 
 // 공개 라우트들 (인증이 필요 없는)
-const PUBLIC_ROUTES = ["/login"];
+const PUBLIC_ROUTES = ["/", "/login"];
 
 /**
  * 인증 상태 확인 함수
@@ -37,19 +37,19 @@ export function middleware(request: NextRequest) {
   // 2. 공개 라우트는 항상 허용
   if (PUBLIC_ROUTES.includes(pathname)) {
     // 로그인된 사용자가 로그인 페이지에 접근하면 홈으로 리다이렉트
-    // if (pathname === "/login" && isAuth) {
-    //   console.log("🔄 로그인된 사용자 - 홈으로 리다이렉트");
-    //   return NextResponse.redirect(new URL("/", request.url));
-    // }
-    // return NextResponse.next();
+    if (pathname === "/login" && isAuth) {
+      console.log("🔄 로그인된 사용자 - 홈으로 리다이렉트");
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    return NextResponse.next();
   }
 
   // 3. 보호된 라우트 체크
   if (PROTECTED_ROUTES.some(route => pathname.startsWith(route))) {
-    // if (!isAuth) {
-    //   console.log("🚫 인증 필요 - 로그인 페이지로 리다이렉트");
-    //   return NextResponse.redirect(new URL("/login", request.url));
-    // }
+    if (!isAuth) {
+      console.log("🚫 인증 필요 - 로그인 페이지로 리다이렉트");
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
   console.log("✅ 라우트 접근 허용");
