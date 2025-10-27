@@ -17,7 +17,7 @@ export default function LoginPage() {
         </div>
       </div>
       {/* 중간 폼 */}
-      <div className="flex flex-[5] flex-col justify-center px-md">
+      <div className="flex flex-[5] flex-col justify-center px-lg">
         <LoginForm onOuth2Login={handleOuth2Login} />
       </div>
     </div>
