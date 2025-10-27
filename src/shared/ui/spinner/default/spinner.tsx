@@ -9,7 +9,6 @@ export const Spinner = ({
 }: SpinnerProps) => {
   return (
     <div className="flex h-screen items-center justify-center">
-      ㅇ
       <div className="text-center">
         <div className="mb-4">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>

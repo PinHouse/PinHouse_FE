@@ -3,7 +3,11 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { http } from "@/src/shared/api/http";
 import { IResponse } from "@/src/shared/types";
+import { USER_JWT_TOKEN_VALIDATE_ENDPOINT } from "@/src/shared/api";
 
+interface IJwtTokenValidateResponse extends IResponse {
+  data: boolean;
+}
 /**
  * 쿠키 설정 함수들
  */
@@ -29,12 +33,16 @@ export const useAuthCheck = () => {
     const checkAuthStatus = async () => {
       try {
         // axios instance로 백엔드에 /user/mypage 요청
-        const response = await http.get<IResponse>("/users/mypage");
+        const response = await http.get<IJwtTokenValidateResponse>(
+          USER_JWT_TOKEN_VALIDATE_ENDPOINT
+        );
 
-        if (response.success) {
+        if (response.data) {
           setAuthSuccess();
+          router.push("/home");
         } else {
           setAuthFailure();
+          router.push("/login");
         }
       } catch (error) {
         console.error("❌ 인증 확인 중 에러:", error);

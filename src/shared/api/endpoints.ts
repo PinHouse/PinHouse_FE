@@ -29,6 +29,9 @@ export const USER_SIGNUP_ENDPOINT = "/users";
  * 인증 API 엔드포인트
  */
 
+//JWT 토큰 검증 API
+export const USER_JWT_TOKEN_VALIDATE_ENDPOINT = "/auth";
+
 //로그아웃 API
 export const USER_LOGOUT_ENDPOINT = "/auth";
 //엑세스토큰 재발급 API
