@@ -2,14 +2,11 @@
 
 import { IOnboardingCompleteRequest } from "@/src/features/onboarding/model";
 import { onboardingContentMap } from "@/src/features/onboarding/model/onboardingContentMap";
-import { useOnboardingFlow } from "@/src/features/onboarding/hooks";
 import { OnboardingSection } from "@/src/widgets/onboardingSection";
 import { useParams } from "next/navigation";
-import { useOAuthStore } from "@/src/features/login/model";
 
 export default function OnboardingPage() {
-  const { type } = useParams(); // e.g. "compare" | "diagnosis" | "agent"
-  const { handleNextStep } = useOnboardingFlow();
+  const { type } = useParams() as { type: string }; // e.g. "compare" | "diagnosis" | "agent | environment"
   const content = onboardingContentMap[type as keyof typeof onboardingContentMap];
 
   if (!content) return <div>잘못된 접근입니다.</div>;
@@ -22,17 +19,9 @@ export default function OnboardingPage() {
     facilityTypes: ["도서관", "산책로"],
   };
 
-  const handleOnNext = () => {
-    handleNextStep(type as string, sampleRequestOnBoarding);
-  };
   return (
-    <main className="flex h-screen flex-col items-center justify-center">
-      <OnboardingSection
-        image={<Icon />}
-        title={title}
-        description={description}
-        onNext={handleOnNext}
-      />
+    <main className="flex h-full flex-col">
+      <OnboardingSection image={<Icon />} title={title} description={description} type={type} />
     </main>
   );
 }

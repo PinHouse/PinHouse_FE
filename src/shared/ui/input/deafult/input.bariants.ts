@@ -8,7 +8,7 @@ export const inputVariants = cva(
         solid:
           "g-primary text-white hover:bg-primary/90 active:scale-[0.98] rounded-2xl w-full border border-gray-300",
         outline: "border border-gray-300 text-gray-800 hover:bg-gray-50 active:scale-[0.98]",
-        ghost: "bg-transparent text-gray-700 hover:bg-gray-100 active:scale-[0.98]",
+        ghost: "bg-transparent text-gray-700 hover:bg-gray-100 active:scale-[0.98] border",
       },
       size: {
         sm: "h-8 px-3 text-sm",
