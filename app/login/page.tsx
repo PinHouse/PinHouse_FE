@@ -1,8 +1,8 @@
 "use client";
 import { LogoIcon } from "@/src/assets/icons/logo/logIcon";
 import { PinhouseLogo } from "@/src/assets/icons/logo";
-import { LoginForm } from "@/src/features/auth-login/ui/loginForm";
-import useLogin from "@/src/features/auth-login/hooks/useLogin";
+import { LoginForm } from "@/src/features/login/ui/loginForm";
+import useLogin from "@/src/features/login/hooks/useLogin";
 
 export default function LoginPage() {
   const { handleOuth2Login } = useLogin();

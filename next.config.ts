@@ -2,8 +2,7 @@ import type { NextConfig } from "next";
 import type { Configuration, RuleSetRule } from "webpack";
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
-  buildActivity: false,
+  reactStrictMode: false,
   webpack(config: Configuration) {
     const fileLoaderRule = config.module?.rules?.find(
       (rule): rule is RuleSetRule =>

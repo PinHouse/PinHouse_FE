@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { QueryProvider } from "@/src/app/providers/queryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,17 +35,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} h-full text-gray-900 antialiased`}
       >
-        <div className="flex h-full min-h-screen items-stretch justify-center">
-          <div className="relative flex h-full w-full max-w-[768px] flex-col bg-white shadow-md">
-            {/* 헤더자리 */}
-            <header className="h-[44px] flex-none items-center bg-red-100 text-center">
-              deafult ui
-            </header>
-            <main className="flex-1 overflow-y-auto">{children}</main>
-            {/* 바텀자리 */}
-            {/* <footer className="flex-none">푸터</footer> */}
+        <QueryProvider>
+          <div className="flex h-full min-h-screen items-stretch justify-center">
+            <div className="relative flex h-full w-full max-w-[768px] flex-col bg-white shadow-md">
+              {/* 헤더자리 */}
+              <header className="h-[44px] flex-none items-center bg-red-100 text-center">
+                deafult ui
+              </header>
+              <main className="flex-1 overflow-y-auto">{children}</main>
+              {/* 바텀자리 */}
+              {/* <footer className="flex-none">푸터</footer> */}
+            </div>
           </div>
-        </div>
+        </QueryProvider>
       </body>
     </html>
   );
