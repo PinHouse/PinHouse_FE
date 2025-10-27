@@ -21,6 +21,8 @@ export default {
         md: "1.5rem",
         lg: "2rem",
         xl: "3rem",
+        30: "7.5rem", // 120px
+        45: "11.25rem", // 180px
       },
 
       colors: {
