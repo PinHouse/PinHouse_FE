@@ -9,6 +9,7 @@ const PUBLIC_ROUTES = [
   "/onboarding/diagnosis",
   "/onboarding/compare",
   "/onboarding/agent",
+  "/onboarding/environment",
 ];
 
 /**

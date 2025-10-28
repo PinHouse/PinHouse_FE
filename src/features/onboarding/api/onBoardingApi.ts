@@ -9,7 +9,7 @@ import { useOAuthStore } from "@/src/features/login/model/authStore";
  * 온보딩 완료 API 호출 함수
  * @param data 온보딩 완료 요청 데이터
  */
-export const completeOnboarding = async (data?: IOnboardingCompleteRequest) => {
+export const completeOnboarding = async (data: IOnboardingCompleteRequest) => {
   try {
     // zustand store에서 tempUserId 가져오기
     const { tempUserId } = useOAuthStore.getState();

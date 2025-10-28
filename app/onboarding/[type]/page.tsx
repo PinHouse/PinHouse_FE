@@ -1,6 +1,5 @@
 "use client";
 
-import { IOnboardingCompleteRequest } from "@/src/features/onboarding/model";
 import { onboardingContentMap } from "@/src/features/onboarding/model/onboardingContentMap";
 import { OnboardingSection } from "@/src/widgets/onboardingSection";
 import { useParams } from "next/navigation";
@@ -11,13 +10,6 @@ export default function OnboardingPage() {
 
   if (!content) return <div>잘못된 접근입니다.</div>;
   const { Icon, title, description } = content;
-
-  /**
-   * TODO: 회원 가입 요청 샘플 추후 백엔드 API 연동 완료되면 삭제 요망
-   */
-  const sampleRequestOnBoarding: IOnboardingCompleteRequest = {
-    facilityTypes: ["도서관", "산책로"],
-  };
 
   return (
     <main className="flex h-full flex-col">
