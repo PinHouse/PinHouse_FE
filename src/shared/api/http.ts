@@ -1,28 +1,14 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 import { IResponse } from "../types/response";
+import { logout } from "@/src/features/login/utils/logout";
+
 // 토큰 갱신 상태 관리
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: any) => void;
   reject: (error?: any) => void;
 }> = [];
-
-/**
- * 로그아웃 처리 함수
- */
-export const handleLogout = () => {
-  // 1. is_auth 쿠키를 false로 설정
-  document.cookie = "is_auth=false; path=/; max-age=900";
-
-  // 2. localStorage 정리
-  localStorage.clear();
-
-  // 3. 로그인 페이지로 리다이렉트
-  window.location.href = "/login";
-
-  console.log("🚪 토큰 갱신 실패로 인한 로그아웃 처리 완료");
-};
 
 // 토큰 갱신 전용 axios 인스턴스 (인터셉터 없음)
 const refreshApi = axios.create({
@@ -124,7 +110,7 @@ const onError = async <T extends IResponse>(error: AxiosError<T>) => {
       // 로그아웃 처리는 비동기로 실행 (현재 요청의 에러 처리를 먼저 완료)
       // Promise.resolve()를 사용하여 다음 이벤트 루프에서 실행
       Promise.resolve().then(() => {
-        handleLogout();
+        logout();
       });
 
       return Promise.reject(refreshError);

@@ -1,21 +1,22 @@
 "use client";
+import { KakaoLogo } from "@/src/assets/icons/button/kakaoLogo";
+import { NaverLogo } from "@/src/assets/icons/button/naverLogo";
 import { ILoginFormProps } from "@/src/features/login/model";
+import { IconButton } from "@/src/shared/ui/button/iconButton";
 
 export function LoginForm({ onOuth2Login }: ILoginFormProps) {
   return (
     <div className="flex flex-col justify-center gap-8">
-      <button
-        onClick={() => onOuth2Login("KAKAO")}
-        className="hover:bg-button-hover w-full rounded-lg bg-button-light py-3 font-suit text-lg font-semibold text-button-text transition-all duration-200 active:bg-button-active disabled:bg-button-muted"
-      >
-        {"카카오 로그인(임시)"}
-      </button>
-      <button
-        onClick={() => onOuth2Login("NAVER")}
-        className="hover:bg-button-hover w-full rounded-lg bg-button-light py-3 font-suit text-lg font-semibold text-button-text transition-all duration-200 active:bg-button-active disabled:bg-button-muted"
-      >
-        {"네이버 로그인(임시)"}
-      </button>
+      <IconButton variant="kakao" size="lg" onClick={() => onOuth2Login("KAKAO")}>
+        <KakaoLogo className="h-5 w-5" />
+        <p className="text-base">카카오로 시작하기</p>
+        <div className="h-5 w-5" />
+      </IconButton>
+      <IconButton variant="naver" size="lg" onClick={() => onOuth2Login("NAVER")}>
+        <NaverLogo className="h-5 w-5" />
+        <p className="text-base">네이버로 시작하기</p>
+        <div className="h-5 w-5" />
+      </IconButton>
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { OAuthProviderType } from "@/src/features/login/model/auth.cilent.type";
-import { http } from "@/src/shared/api";
 
 // 백엔드에서 제공하는 OAuth 엔드포인트
 const oAuthRequestUrl: string = process.env.NEXT_PUBLIC_OAUTH2 || "Empty_Oauth_Request_Url";
