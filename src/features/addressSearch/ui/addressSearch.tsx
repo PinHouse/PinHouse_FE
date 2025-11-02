@@ -1,6 +1,6 @@
 "use client";
 import Script from "next/script";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { IconButton } from "@/src/shared/ui/button/iconButton";
 import { Search } from "@/src/assets/icons/home";
 import { useDaumPostcode } from "../hook/useDaumPostcode";
@@ -15,17 +15,22 @@ declare global {
 
 export const AddressSearch = () => {
   const { address, setAddress, setPinPoint } = useAddressStore();
-  const { open } = useDaumPostcode(data => setAddress(data.address));
+  const { embedRef, openEmbed, clearEmbed } = useDaumPostcode(
+    data => setAddress(data.address),
+    "분당"
+  );
+
   const onPinPointChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPinPoint(e.target.value);
+    clearEmbed();
   };
+
   return (
     <>
       <Script
         src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
         strategy="afterInteractive"
       />
-
       <div className="flex flex-col gap-2">
         {address ? (
           <>
@@ -40,13 +45,18 @@ export const AddressSearch = () => {
           </>
         ) : null}
         <IconButton size={"lg"} variant={"ghost"}>
-          <div className="flex w-full items-center gap-3">
+          <div className="flex w-full items-center gap-3" onClick={openEmbed}>
             <Search />
-            <span className="text-text-tertiary" onClick={open}>
+            <span className="text-text-tertiary">
               <p className="text-sm">{address === "" ? "주소를 입력해주세요" : address}</p>
             </span>
           </div>
         </IconButton>
+        <div
+          ref={embedRef}
+          className="mt-1 h-64 w-full rounded-lg border-none transition-all duration-300"
+          style={{ display: "none" }}
+        />
       </div>
     </>
   );
