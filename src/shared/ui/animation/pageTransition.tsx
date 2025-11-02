@@ -8,7 +8,7 @@ export const PageTransition = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isBottom, setIsBottom] = useState(false);
-  const { address } = useAddressStore();
+  const { address, isEmbed } = useAddressStore();
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -19,7 +19,7 @@ export const PageTransition = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     handleScroll();
-  }, [pathname, address]);
+  }, [pathname, address, isEmbed]);
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
