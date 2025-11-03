@@ -1,1 +1,1 @@
-export * from "./ui/addressSearch";
+export * from "./ui/index";

@@ -6,10 +6,11 @@ const PUBLIC_ROUTES = [
   "/",
   "/login",
   "/signup",
-  "/onboarding/diagnosis",
-  "/onboarding/compare",
-  "/onboarding/agent",
-  "/onboarding/environment",
+  "/onboarding",
+  // "/onboarding/diagnosis",
+  // "/onboarding/compare",
+  // "/onboarding/agent",
+  // "/onboarding/environment",
 ];
 
 /**
@@ -39,7 +40,7 @@ export function middleware(request: NextRequest) {
   }
 
   // 2. 공개 라우트는 항상 허용
-  if (PUBLIC_ROUTES.includes(pathname)) {
+  if (PUBLIC_ROUTES.some(route => pathname.startsWith(route))) {
     // 로그인된 사용자가 로그인 페이지에 접근하면 홈으로 리다이렉트
     if (pathname === "/login" && isAuth) {
       console.log("🔄 로그인된 사용자 - 홈으로 리다이렉트");

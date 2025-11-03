@@ -1,5 +1,6 @@
 "use client";
-import { AddressSearch } from "@/src/features/addressSearch/ui/addressSearch";
+
+import { AddressSearch } from "@/src/features/addressSearch";
 import {
   OnbaordingTagButton,
   OnboardingNextButton,

@@ -21,9 +21,10 @@ export const useDaumPostcode = (onComplete: (data: any) => void, defaultQuery?: 
       const postcode = new window.daum.Postcode({
         width: "100%",
         height: "100%",
-        autoClose: true,
-        autoShowFirst: false,
         animation: false,
+        autoMapping: true,
+        autoShowFirst: true,
+        autoSearch: true,
         theme: themeObj,
         oncomplete: (data: string) => {
           onComplete(data);
