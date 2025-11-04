@@ -1,5 +1,6 @@
 import { Search } from "@/src/assets/icons/home";
 import { useAddressStore } from "@/src/entities/address";
+import { PageTransition } from "@/src/shared/ui/animation";
 import { IconButton } from "@/src/shared/ui/button/iconButton";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
