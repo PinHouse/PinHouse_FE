@@ -3,17 +3,17 @@ import path from "path";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(ts|tsx)", "../app/**/*.stories.@(ts|tsx)"],
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "@storybook/addon-a11y",
-    "@storybook/addon-viewport",
-  ],
+  addons: ["storybook/essentials", "storybook/a11y", "storybook/links", "storybook/interactions"],
   framework: {
     name: "@storybook/nextjs",
-    options: {},
+    options: {
+      builder: {
+        useNextRouter: true,
+      },
+    },
   },
+
+  previewAnnotations: (entris = []) => [...entris, require.resolve("./preview.tsx")],
   // @ts-expect-error Storybook 9.x autodocs 타입 버그
   autodocs: "tag",
   staticDirs: ["../public"],
@@ -23,6 +23,7 @@ const config: StorybookConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
       "@": path.resolve(__dirname, "../src"),
+      // "next/navigation": path.resolve(__dirname, "./nextNavigationMock.ts"),
     };
 
     config.module?.rules?.push({
