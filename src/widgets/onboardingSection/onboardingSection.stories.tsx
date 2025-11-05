@@ -1,20 +1,10 @@
-import type { Decorator, Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { onboardingContentMap } from "@/src/features/onboarding/model/onboardingContentMap";
 import { OnboardingSection } from "./ui/onBoardingSection";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
-
-const withQueryClient: Decorator = Story => (
-  <QueryClientProvider client={queryClient}>
-    <Story />
-  </QueryClientProvider>
-);
 
 const meta: Meta<typeof OnboardingSection> = {
   title: "Widgets/Onboarding/OnboardingSection",
   component: OnboardingSection,
-  decorators: [withQueryClient],
   parameters: {
     layout: "fullscreen",
     docs: {
@@ -39,6 +29,15 @@ export const Diagnosis: Story = {
     description: onboardingContentMap.diagnosis.description,
     type: "diagnosis",
   },
+
+  parameters: {
+    nextjs: {
+      navigation: {
+        pathname: "/onboarding/diagnosis",
+        query: { type: "diagnosis" },
+      },
+    },
+  },
 };
 
 export const Compare: Story = {
@@ -47,6 +46,14 @@ export const Compare: Story = {
     title: onboardingContentMap.compare.title,
     description: onboardingContentMap.compare.description,
     type: "compare",
+  },
+  parameters: {
+    nextjs: {
+      navigation: {
+        pathname: "/onboarding/compare",
+        query: { type: "compare" },
+      },
+    },
   },
 };
 
@@ -57,14 +64,29 @@ export const Agent: Story = {
     description: onboardingContentMap.agent.description,
     type: "agent",
   },
+  parameters: {
+    nextjs: {
+      navigation: {
+        pathname: "/onboarding/agent",
+        query: { type: "agent" },
+      },
+    },
+  },
 };
 
-// ✅ 4. 주변환경
 export const Environment: Story = {
   args: {
     image: <onboardingContentMap.environment.Icon />,
     title: onboardingContentMap.environment.title,
     description: onboardingContentMap.environment.description,
     type: "environment",
+  },
+  parameters: {
+    nextjs: {
+      navigation: {
+        pathname: "/onboarding/environment",
+        query: { type: "environment" },
+      },
+    },
   },
 };

@@ -1,0 +1,50 @@
+<style>
+  /* ===== Storybook: 스크롤 없이 화면에 꽉 차는 실제 해상도 ===== */
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #e5e7eb;
+    overflow: hidden;
+  }
+
+  #storybook-root {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  iframe {
+    border: none !important;
+    background: #fff;
+    display: block;
+
+    aspect-ratio: 390 / 844;
+    height: 100vh;
+    width: calc(100vh * (390 / 844));
+
+    max-height: 100vh;
+    max-width: 100vw;
+
+    transform: none !important;
+    transform-origin: center center !important;
+    zoom: 1 !important;
+
+    border-radius: 16px;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.1),
+      0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  #storybook-preview-iframe,
+  #storybook-preview-wrapper {
+    overflow: hidden !important;
+    width: 100%;
+    height: 100%;
+  }
+</style>
