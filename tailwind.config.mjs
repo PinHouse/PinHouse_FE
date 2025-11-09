@@ -11,7 +11,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        suit: ["var(--font-suit)", ...fontFamily.sans],
+        suit: ["var(--font-pretendard)", ...fontFamily.sans],
+        pretendard: ["var(--font-pretendard)", ...fontFamily.sans],
       },
       spacing: {
         30: "7.5rem",
@@ -57,6 +58,7 @@ export default {
         greyscale: {
           grey: {
             50: "#EFEFF3",
+            900: "#110C22",
           },
         },
 
@@ -119,6 +121,9 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+      },
+      fontSize: {
+        "xl-22": ["1.375rem", { lineHeight: "1.6" }],
       },
       keyframes: {
         logoBounce: {
