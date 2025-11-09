@@ -58,6 +58,7 @@ export default {
         greyscale: {
           grey: {
             50: "#EFEFF3",
+            500: "#7F7FBF",
             900: "#110C22",
           },
         },
