@@ -28,6 +28,9 @@ export default {
           dark: "#1d4ed8",
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          blue: {
+            300: "#306FFF",
+          },
         },
         secondary: {
           light: "#6b7280",
@@ -51,6 +54,12 @@ export default {
           light: "#60a5fa",
           dark: "#1d4ed8",
         },
+        greyscale: {
+          grey: {
+            50: "#EFEFF3",
+          },
+        },
+
         background: "hsl(var(--background))",
         surface: {
           light: "#ffffff",
