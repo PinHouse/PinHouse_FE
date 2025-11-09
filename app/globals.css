@@ -26,6 +26,7 @@ a:hover {
 
 ::-webkit-scrollbar {
   width: 8px;
+  height: 6px;
 }
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.15);
@@ -55,8 +56,6 @@ a:hover {
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
-
-
 
 @layer base {
   :root {
@@ -113,8 +112,6 @@ a:hover {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {
