@@ -1,2 +1,2 @@
-export * from "./quickSearchStepCard";
-export * from "./quickSearchNextButton";
+export * from "./common/quickSearchStepCard";
+export * from "./common/quickSearchNextButton";

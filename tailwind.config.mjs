@@ -31,6 +31,7 @@ export default {
           foreground: "hsl(var(--primary-foreground))",
           blue: {
             300: "#306FFF",
+            500: "#1434E0",
           },
         },
         secondary: {

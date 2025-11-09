@@ -1,8 +1,8 @@
 "use client";
 
 import { QuickSearchNextButton, QuickSearchSectionProps } from "@/src/features/quickSearch";
-import { QuickSearchProgressBar } from "@/src/features/quickSearch/ui/quickSearchProgressBar";
-import QuickSearchStepCard from "@/src/features/quickSearch/ui/quickSearchStepCard";
+import { QuickSearchProgressBar } from "@/src/features/quickSearch/ui/common/quickSearchProgressBar";
+import QuickSearchStepCard from "@/src/features/quickSearch/ui/common/quickSearchStepCard";
 import { PageTransition } from "@/src/shared/ui/animation";
 
 export const QuickSearchSection = ({
@@ -14,10 +14,10 @@ export const QuickSearchSection = ({
   progress,
 }: QuickSearchSectionProps) => {
   return (
-    <section className="flex h-full w-full flex-col">
+    <section className="flex h-full w-full flex-col px-5">
       <QuickSearchProgressBar progress={progress} />
       <PageTransition>
-        <div className="flex flex-col px-5 py-10">
+        <div className="flex flex-col py-10">
           <QuickSearchStepCard
             title={title}
             description={description}
@@ -26,7 +26,7 @@ export const QuickSearchSection = ({
           />
         </div>
       </PageTransition>
-      <div className="w-full flex-none py-2.5">
+      <div className="w-full flex-none pb-3">
         <QuickSearchNextButton />
       </div>
     </section>

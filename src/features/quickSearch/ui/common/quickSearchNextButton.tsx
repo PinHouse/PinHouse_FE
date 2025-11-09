@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/src/shared/lib/headlessUi";
-import { quickSearchStepCardContentMap } from "../model/quickSearch.constants";
+import { quickSearchStepCardContentMap } from "../../model/quickSearch.constants";
 import { usePathname, useRouter } from "next/navigation";
 
 export const QuickSearchNextButton = () => {
@@ -14,5 +14,9 @@ export const QuickSearchNextButton = () => {
   const handleClick = async () => {
     next && router.push(next.path);
   };
-  return <Button onClick={handleClick}>다음</Button>;
+  return (
+    <Button variant="quicksearch" size="lg" text="lg" onClick={handleClick}>
+      다음
+    </Button>
+  );
 };

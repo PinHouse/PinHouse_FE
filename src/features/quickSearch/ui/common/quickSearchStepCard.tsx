@@ -1,5 +1,5 @@
 import { StepCardIcon } from "@/src/assets/icons/quickSearch/stepCardIcon";
-import { QuickSearchStepCardProps } from "../model/quickSearch.client.type";
+import { QuickSearchStepCardProps } from "../../model/quickSearch.client.type";
 
 const QuickSearchStepCard = ({
   title,
