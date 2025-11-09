@@ -1,4 +1,6 @@
 import { cn } from "@/src/shared/lib/utils";
+import { Dialog, DialogContent, DialogTitle } from "@/src/shared/lib/headlessUi/modal/dialog";
+
 import { Button } from "../../button/deafult";
 import { modalButtonPreset } from "../../button/preset";
 import { discription, modalContainerPreset, modalOverlayPreset } from "../preset";
@@ -10,26 +12,36 @@ export const Modal = ({ children, open = true, type, className, overlayClassName
   const modalScript = discription[type];
 
   return (
-    <div className={cn(modalOverlayPreset, overlayClassName)}>
-      <div className={cn(modalContainerPreset, className)}>
+    <Dialog open={open}>
+      <DialogContent
+        className={cn(modalContainerPreset, className)}
+        overlayClassName={cn(modalOverlayPreset, overlayClassName)}
+        showCloseButton={false}
+      >
         <div className="flex flex-col gap-5">
-          <p className="text-md mt-1 whitespace-pre-line text-center font-bold">
+          <DialogTitle className="text-md mt-1 whitespace-pre-line text-center font-bold">
             {children ?? modalScript?.descript}
-          </p>
+          </DialogTitle>
 
           <div className="flex items-center justify-center gap-2">
-            {modalScript?.btnlabel?.map(item => (
+            {modalScript?.btnlabel?.map((item, index) => (
               <Button
                 key={item}
                 {...modalButtonPreset}
-                className="min-w-[140px] flex-1 font-bold active:bg-button-light active:font-sans active:text-button-text"
+                variant={index === 0 ? "ghost" : "solid"}
+                className={cn(
+                  "min-w-[140px] flex-1 font-bold",
+                  index === 0
+                    ? "border-[#CECED7] bg-white text-[#1F1F25]"
+                    : "bg-[#306FFF] text-white"
+                )}
               >
                 {item}
               </Button>
             ))}
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };

@@ -13,6 +13,12 @@ export const filterScript: ModalDescriptProps = {
   btnlabel: ["계속 탐색하기", "나가기"],
 };
 
+export const quickSearchScript: ModalDescriptProps = {
+  descript: "이전에 탐색한 기록이 있어요!\n 새로 시작할까요?",
+  btnlabel: ["새로 시작하기", "결과보기"],
+};
+
 export const discription: ModalDescriptMap = {
   filterSearch: filterScript,
+  quickSearch: quickSearchScript,
 };
