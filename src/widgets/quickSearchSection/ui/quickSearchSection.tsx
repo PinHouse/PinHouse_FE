@@ -1,6 +1,9 @@
 "use client";
 
 import { QuickSearchNextButton, QuickSearchSectionProps } from "@/src/features/quickSearch";
+import ChooseDistance from "@/src/features/quickSearch/ui/chooseDistance/chooseDistance";
+import ChoosePinPoint from "@/src/features/quickSearch/ui/choosePinPoint/choosePinPoint";
+import ChooseLivingNumber from "@/src/features/quickSearch/ui/chooseLivingNumber/chooseLivingNumber";
 import { QuickSearchProgressBar } from "@/src/features/quickSearch/ui/common/quickSearchProgressBar";
 import QuickSearchStepCard from "@/src/features/quickSearch/ui/common/quickSearchStepCard";
 import { PageTransition } from "@/src/shared/ui/animation";
@@ -25,6 +28,9 @@ export const QuickSearchSection = ({
             boldRange={boldRange}
           />
         </div>
+        {type === "choosePinPoint" && <ChoosePinPoint />}
+        {type === "chooseDistance" && <ChooseDistance />}
+        {type === "chooseLivingNumber" && <ChooseLivingNumber />}
       </PageTransition>
       <div className="w-full flex-none pb-3">
         <QuickSearchNextButton />
