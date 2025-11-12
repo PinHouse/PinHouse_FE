@@ -4,7 +4,13 @@ import { quickSearchPinPoint } from "../../model";
 const ChoosePinPoint = () => {
   return (
     <div className="h-full">
-      <DropDown variant={"solid"} types="myHome" data={quickSearchPinPoint} />
+      <DropDown
+        variant={"solid"}
+        size="lg"
+        types="myHome"
+        data={quickSearchPinPoint}
+        className="rounded text-sm"
+      />
     </div>
   );
 };

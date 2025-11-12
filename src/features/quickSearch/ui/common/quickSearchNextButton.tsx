@@ -23,10 +23,11 @@ export const QuickSearchNextButton = () => {
   return (
     <Button
       variant="quicksearch"
-      size="lg"
       text="lg"
+      size="lg"
       onClick={handleClick}
       disabled={isDisabled}
+      className="h-[54px] rounded-[50px] font-semibold"
     >
       다음
     </Button>

@@ -43,7 +43,12 @@ export const DropDown = ({
   return (
     <div className="relative inline-block w-full" ref={wrapperRef}>
       <button
-        className={cn(dropDownVariants({ variant, size }), "w-full min-w-[160px]", className)}
+        className={cn(
+          dropDownVariants({ variant, size }),
+          "w-full min-w-[160px]",
+          open ? "border-[1.5px] border-primary-blue-300" : "border-greyscale-grey-75",
+          className
+        )}
         onClick={onChangeButton}
         {...props}
       >
@@ -57,7 +62,7 @@ export const DropDown = ({
       {open && (
         <ul
           className={cn(
-            "absolute left-0 top-full z-10 mt-1 w-full rounded-lg border bg-white font-bold text-text-tertiary shadow-lg"
+            "absolute left-0 top-full z-10 mt-2 w-full rounded border border-gray-200 bg-white font-bold text-text-tertiary"
           )}
         >
           {optionData.map(item => (

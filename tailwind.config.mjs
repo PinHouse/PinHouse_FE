@@ -60,6 +60,7 @@ export default {
         greyscale: {
           grey: {
             50: "#EFEFF3",
+            75: "#E7E7ED",
             500: "#7F7FBF",
             700: "#4F4B5C",
             900: "#110C22",
@@ -183,6 +184,12 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        custom: "0 8px 24px 50px rgba(0, 0, 0, 0.15)",
+      },
+      borderWidth: {
+        1.5: "1.5px",
       },
     },
   },

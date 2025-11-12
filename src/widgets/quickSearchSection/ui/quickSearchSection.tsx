@@ -7,6 +7,8 @@ import ChooseLivingNumber from "@/src/features/quickSearch/ui/chooseLivingNumber
 import { QuickSearchProgressBar } from "@/src/features/quickSearch/ui/common/quickSearchProgressBar";
 import QuickSearchStepCard from "@/src/features/quickSearch/ui/common/quickSearchStepCard";
 import { PageTransition } from "@/src/shared/ui/animation";
+import ChooseRoomSize from "@/src/features/quickSearch/ui/chooseRoomSize/chooseRoomSize";
+import ChooseBudget from "@/src/features/quickSearch/ui/chooseBudget/chooseBudget";
 
 export const QuickSearchSection = ({
   title,
@@ -31,6 +33,8 @@ export const QuickSearchSection = ({
         {type === "choosePinPoint" && <ChoosePinPoint />}
         {type === "chooseDistance" && <ChooseDistance />}
         {type === "chooseLivingNumber" && <ChooseLivingNumber />}
+        {type === "chooseRoomSize" && <ChooseRoomSize />}
+        {type === "chooseBudget" && <ChooseBudget />}
       </PageTransition>
       <div className="w-full flex-none pb-3">
         <QuickSearchNextButton />
