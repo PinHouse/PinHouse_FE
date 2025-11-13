@@ -1,0 +1,27 @@
+import { SVGProps } from "react";
+
+export const ArrowUpArrowDown = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g clipPath="url(#clip0_9375_2107)">
+        <path d="M3.5 1.5V10.5V1.5Z" fill="#2E293D" />
+        <path d="M3.5 1.5V10.5" stroke="#2E293D" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M5 3L3.5 1.5L2 3" stroke="black" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M10 9L8.5 10.5L7 9" stroke="black" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M8.5 10.5V1.5" stroke="black" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+      <defs>
+        <clipPath id="clip0_9375_2107">
+          <rect width="12" height="12" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};

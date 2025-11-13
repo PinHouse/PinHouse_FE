@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { QueryProvider } from "@/src/app/providers/queryProvider";
+import { TempHeaders } from "@/src/assets/images/common/header";
+import { BottomNavigation } from "@/src/shared/ui/bottomNavigation/";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,10 +41,14 @@ export default function RootLayout({
           <div className="flex h-full min-h-screen items-stretch justify-center">
             <div className="relative flex h-full w-full max-w-[768px] flex-col bg-white shadow-md">
               {/* 헤더자리 */}
-              <header className="items-cente h-[44px] flex-none text-center"></header>
+              <header className="flex h-[44px] w-full items-center">
+                {/* <TempHeaders className="h-full w-full" /> */}
+              </header>
               <main className="flex-1 overflow-y-auto">{children}</main>
               {/* 바텀자리 */}
-              {/* <footer className="flex-none">푸터</footer> */}
+              <footer>
+                <BottomNavigation />
+              </footer>
             </div>
           </div>
         </QueryProvider>

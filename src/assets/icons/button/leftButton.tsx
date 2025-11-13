@@ -10,7 +10,7 @@ export const LeftButton = (props: SVGProps<SVGSVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clip-path="url(#clip0_8454_736)">
+      <g clipPath="url(#clip0_8454_736)">
         <path
           d="M12.5 5.5L7.5 10.5L12.5 15.5"
           stroke="#9F9FAB"

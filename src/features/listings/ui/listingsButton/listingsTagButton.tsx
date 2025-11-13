@@ -15,12 +15,13 @@ export const ListingTagButton = ({ label }: { label: string }) => {
     <TagButton
       size="sm"
       onClick={handleClick}
-      className={cn(
-        "rounded-full border px-3 py-1 text-sm font-medium transition-all",
-        isSelected
-          ? "border-primary bg-button-light text-white"
-          : "border-gray-200 bg-gray-100 text-gray-700"
-      )}
+      variant={"ghost"}
+      // className={cn(
+      //   "rounded-full border px-3 py-1 text-sm font-medium transition-all",
+      //   isSelected
+      //     ? "border-primary bg-button-light text-white"
+      //     : "border-gray-200 bg-gray-100 text-gray-700"
+      // )}
     >
       {label}
     </TagButton>
