@@ -1,0 +1,49 @@
+import { SVGProps } from "react";
+
+export const NyearHouseType2 = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <rect x="25" y="18" width="10" height="17" fill="#D6E7A6" />
+      <rect x="29" y="20" width="4" height="4" rx="0.5" fill="#E9F5C7" />
+      <rect x="29" y="25" width="4" height="4" rx="0.5" fill="#E9F5C7" />
+      <path
+        d="M25 11C25 10.4477 25.4477 10 26 10H32.4181C32.7619 10 33.0817 10.1767 33.2647 10.4678L37.0367 16.4678C37.4554 17.1337 36.9767 18 36.1901 18H26C25.4477 18 25 17.5523 25 17V11Z"
+        fill="#C2D68E"
+      />
+      <rect width="10" height="17" transform="matrix(-1 0 0 1 15 18)" fill="#D6E7A6" />
+      <rect width="4" height="4" rx="0.5" transform="matrix(-1 0 0 1 11 20)" fill="#E9F5C7" />
+      <rect width="4" height="4" rx="0.5" transform="matrix(-1 0 0 1 11 25)" fill="#E9F5C7" />
+      <path
+        d="M15 11C15 10.4477 14.5523 10 14 10H7.58194C7.23808 10 6.91835 10.1767 6.73534 10.4678L2.96328 16.4678C2.54461 17.1337 3.02326 18 3.80988 18H14C14.5523 18 15 17.5523 15 17V11Z"
+        fill="#C2D68E"
+      />
+      <path d="M27 12V36H13V12L19.9555 5L27 12Z" fill="#E9F5C7" />
+      <path
+        d="M22.9326 35H17.0599C17.03 35 17 34.9733 17 34.9465V27.9089C17 27.4077 17.4569 27 18.0187 27H21.9813C22.5431 27 23 27.4077 23 27.9089V34.9465C22.9925 34.9733 22.9625 35 22.9326 35Z"
+        fill="#C2D68E"
+      />
+      <path
+        d="M12 12L20 4L28 12"
+        stroke="#A9BF71"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <rect x="16" y="15" width="3.55556" height="3.55556" rx="0.5" fill="white" />
+      <rect x="16" y="19.4443" width="3.55556" height="3.55556" rx="0.5" fill="white" />
+      <rect x="20.4445" y="15" width="3.55556" height="3.55556" rx="0.5" fill="white" />
+      <rect x="20.4446" y="19.4443" width="3.55556" height="3.55556" rx="0.5" fill="white" />
+      <path
+        d="M3.96069 34.002H14.8508C14.8556 34.002 14.8605 34 14.8653 34H36.0286C36.5648 34 37 34.4574 37 35.0209V36.9791C37 37.5426 36.5648 38 36.0286 38H3.97137C3.43518 38 3 37.5426 3 36.9791V35.0209C3 34.4604 3.42934 34.0082 3.96069 34.002Z"
+        fill="#C2D68E"
+      />
+    </svg>
+  );
+};

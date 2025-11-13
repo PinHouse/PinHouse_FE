@@ -1,6 +1,5 @@
 "use client";
-import { ListingsHeaders } from "@/src/features/listings";
-import { ListingFilterPanel } from "@/src/features/listings/ui/listingsFilter/listingsFilterPanel";
+import { ListingFilterPanel, ListingsContent, ListingsHeaders } from "@/src/features/listings";
 
 export const ListingsSection = () => {
   return (
@@ -9,6 +8,9 @@ export const ListingsSection = () => {
         <ListingsHeaders />
         <div className="-mx-5">
           <ListingFilterPanel />
+        </div>
+        <div className="pt-3">
+          <ListingsContent />
         </div>
       </div>
     </section>

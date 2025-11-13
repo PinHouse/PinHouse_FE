@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import { AllFitler_OPTIONS, FILTER_OPTIONS } from "../../model";
 import { ListingTagButton } from "../listingsButton/listingsTagButton";
 
