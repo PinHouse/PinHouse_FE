@@ -1,6 +1,6 @@
 import { VariantProps } from "class-variance-authority";
 import { ButtonHTMLAttributes } from "react";
-import { dropDownVariants } from "./dropDown.bariants";
+import { dropDownVariants } from "./dropDown.variants";
 
 export interface DropDownProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,

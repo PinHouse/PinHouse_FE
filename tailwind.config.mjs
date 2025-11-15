@@ -30,6 +30,7 @@ export default {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
           blue: {
+            25: "#E8EDFF",
             300: "#306FFF",
             400: "#2751FF",
             500: "#1434E0",
@@ -62,6 +63,7 @@ export default {
             50: "#EFEFF3",
             75: "#E7E7ED",
             500: "#7F7FBF",
+            400: "#9F9FAB",
             700: "#4F4B5C",
             900: "#110C22",
           },
@@ -78,6 +80,16 @@ export default {
           tertiary: "#9CA3AF",
           brand: "#3182F6",
           inverse: "#FFFFFF",
+          greyscale: {
+            grey: {
+              50: "#EFEFF3",
+              75: "#E7E7ED",
+              400: "#9F9FAB",
+              500: "#7F7FBF",
+              700: "#4F4B5C",
+              900: "#110C22",
+            },
+          },
         },
         log: {
           light: "#306FFF",
@@ -91,9 +103,6 @@ export default {
           muted: "#BBBAC5",
           text: "#FFFFFF",
           tag: "#EFEFF3",
-        },
-        hover: {
-          dropDown: "#E8EDFF",
         },
         foreground: "hsl(var(--foreground))",
         card: {
@@ -128,7 +137,12 @@ export default {
         },
       },
       fontSize: {
-        "xl-22": ["1.375rem", { lineHeight: "1.6" }],
+        "xs-10": "0.625rem", //10px
+        "xs-13": "0.8125rem", //13px
+        "sm-15": "0.9375rem", //15px
+        "base-17": "1.0625rem", //17px
+        "lg-19": "1.1875rem", //19px
+        "xl-22": "1.375rem", //22px
       },
       keyframes: {
         logoBounce: {
@@ -186,10 +200,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        custom: "0 8px 24px 50px rgba(0, 0, 0, 0.15)",
-      },
-      borderWidth: {
-        1.5: "1.5px",
+        "md-16": "0 8px 16px 0 rgba(0, 0, 0, 0.15)",
       },
     },
   },

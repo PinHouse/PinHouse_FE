@@ -27,7 +27,7 @@ export const QuickSearchNextButton = () => {
       size="lg"
       onClick={handleClick}
       disabled={isDisabled}
-      className="h-[54px] rounded-[50px] font-semibold"
+      className="h-[54px] rounded-[50px] font-semibold leading-[100%]"
     >
       다음
     </Button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/src/shared/lib/utils";
-import { dropDownVariants } from "./dropDown.bariants";
+import { dropDownVariants } from "./dropDown.variants";
 import { DropDownProps } from "./type";
 import { useEffect, useRef, useState } from "react";
 
@@ -62,17 +62,19 @@ export const DropDown = ({
       {open && (
         <ul
           className={cn(
-            "absolute left-0 top-full z-10 mt-2 w-full rounded border border-gray-200 bg-white font-bold text-text-tertiary"
+            "shadow-md-16 absolute left-0 top-full z-10 mt-2 w-full rounded border border-gray-200 bg-white font-bold text-text-tertiary"
           )}
         >
           {optionData.map(item => (
             <li
               key={item.key}
               onClick={() => onClose({ value: item.value })}
-              className="flex cursor-pointer flex-col px-3 py-2 hover:bg-hover-dropDown hover:text-text-brand"
+              className="text-greyscale-grey-400 hover:bg-primary-blue-25 flex cursor-pointer flex-col gap-[0.5rem] px-3 py-[0.625rem] hover:text-primary-blue-400"
             >
-              <span>{item.value}</span>
-              <span className="text-sm">{item.description}</span>
+              <span className="truncate text-sm font-medium leading-[132%] tracking-[-0.01em]">
+                {item.value}
+              </span>
+              <span className="truncate text-[0.625rem] leading-[132%]">{item.description}</span>
             </li>
           ))}
         </ul>

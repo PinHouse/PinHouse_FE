@@ -2,21 +2,21 @@ import { SVGProps } from "react";
 
 export const UpButton = (props: SVGProps<SVGSVGElement>) => {
   return (
-    <svg
-      width="14"
-      height="8"
-      viewBox="0 0 14 8"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path
-        d="M0.75 6.75L6.75 0.75L12.75 6.75"
-        stroke="#9F9FAB"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_9421_754)">
+        <path
+          d="M6 15L12 9L18 15"
+          stroke="#9F9FAB"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_9421_754">
+          <rect width="24" height="24" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   );
 };

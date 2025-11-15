@@ -69,7 +69,12 @@ export const quickSearchStepCardContentMap = {
 
 export const myHomePinPoint: PinPoint[] = [
   { key: "우리집", value: "우리집", description: "서울시 한강구 노을로 123" },
-  { key: "핀포인트1", value: "핀포인트1", description: "서울시 한강구 노을로 123" },
+  {
+    key: "핀포인트1",
+    value: "핀포인트1",
+    description:
+      "주소가 입력되는 영역입니다. 주소가 만약 이 영역을 넘어갈 경우 이렇게 말줄임 표시입니담ㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㅇㄴㅁㅇ",
+  },
   { key: "핀포인트2", value: "핀포인트1", description: "서울시 한강구 노을로 123" },
 ];
 
