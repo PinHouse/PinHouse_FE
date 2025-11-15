@@ -20,13 +20,13 @@ const ChooseDistance = ({ min = 0, max = 120, defaultValue = 60 }: ChooseDistanc
   return (
     <div className="flex flex-col gap-6">
       {/* 동적 텍스트 */}
-      <p className="text-greyscale-grey-700 text-base font-semibold leading-4">
+      <p className="text-base font-semibold leading-4 tracking-[-0.01em] text-greyscale-grey-700">
         {prefix}
-        <span className="text-primary-blue-400 font-bold leading-4">{valueText}</span>
+        <span className="font-bold text-primary-blue-400">{valueText}</span>
       </p>
 
       {/* 슬라이더 */}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-[0.625rem]">
         <Slider
           min={min}
           max={max}
@@ -36,7 +36,7 @@ const ChooseDistance = ({ min = 0, max = 120, defaultValue = 60 }: ChooseDistanc
           className="w-full"
         />
         {/* 최소/최대값 라벨 */}
-        <div className="flex justify-between text-xs font-semibold text-greyscale-grey-500">
+        <div className="flex justify-between text-xs font-semibold leading-[100%] tracking-[-0.01em] text-greyscale-grey-500">
           <span>{min}분</span>
           <span>{max}분</span>
         </div>
