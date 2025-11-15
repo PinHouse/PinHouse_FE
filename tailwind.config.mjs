@@ -11,7 +11,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        suit: ["var(--font-suit)", ...fontFamily.sans],
+        suit: ["var(--font-pretendard)", ...fontFamily.sans],
+        pretendard: ["var(--font-pretendard)", ...fontFamily.sans],
       },
       spacing: {
         30: "7.5rem",
@@ -28,6 +29,12 @@ export default {
           dark: "#1d4ed8",
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          blue: {
+            25: "#E8EDFF",
+            300: "#306FFF",
+            400: "#2751FF",
+            500: "#1434E0",
+          },
         },
         secondary: {
           light: "#6b7280",
@@ -51,6 +58,17 @@ export default {
           light: "#60a5fa",
           dark: "#1d4ed8",
         },
+        greyscale: {
+          grey: {
+            50: "#EFEFF3",
+            75: "#E7E7ED",
+            500: "#7F7FBF",
+            400: "#9F9FAB",
+            700: "#4F4B5C",
+            900: "#110C22",
+          },
+        },
+
         background: "hsl(var(--background))",
         surface: {
           light: "#ffffff",
@@ -62,6 +80,16 @@ export default {
           tertiary: "#9CA3AF",
           brand: "#3182F6",
           inverse: "#FFFFFF",
+          greyscale: {
+            grey: {
+              50: "#EFEFF3",
+              75: "#E7E7ED",
+              400: "#9F9FAB",
+              500: "#7F7FBF",
+              700: "#4F4B5C",
+              900: "#110C22",
+            },
+          },
         },
         log: {
           light: "#306FFF",
@@ -75,9 +103,6 @@ export default {
           muted: "#BBBAC5",
           text: "#FFFFFF",
           tag: "#EFEFF3",
-        },
-        hover: {
-          dropDown: "#E8EDFF",
         },
         foreground: "hsl(var(--foreground))",
         card: {
@@ -110,6 +135,14 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+      },
+      fontSize: {
+        "xs-10": "0.625rem", //10px
+        "xs-13": "0.8125rem", //13px
+        "sm-15": "0.9375rem", //15px
+        "base-17": "1.0625rem", //17px
+        "lg-19": "1.1875rem", //19px
+        "xl-22": "1.375rem", //22px
       },
       keyframes: {
         logoBounce: {
@@ -165,6 +198,9 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        "md-16": "0 8px 16px 0 rgba(0, 0, 0, 0.15)",
       },
     },
   },

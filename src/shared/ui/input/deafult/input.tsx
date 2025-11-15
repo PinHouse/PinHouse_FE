@@ -3,7 +3,7 @@
 import { cn } from "@/src/shared/lib/utils";
 import { inputPreset } from "../preset";
 import { InputProps } from "./type";
-import { inputVariants } from "./input.bariants";
+import { inputVariants } from "./input.variants";
 
 export const Input = ({
   className,

@@ -2,17 +2,10 @@ import { SVGProps } from "react";
 
 export const DownButton = (props: SVGProps<SVGSVGElement>) => {
   return (
-    <svg
-      width="20"
-      height="21"
-      viewBox="0 0 20 21"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <g clipPath="url(#clip0_8011_901)">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clipPath="url(#clip0_9421_1045)">
         <path
-          d="M5 8L10 13L15 8"
+          d="M6 9L12 15L18 9"
           stroke="#9F9FAB"
           strokeWidth="1.5"
           strokeLinecap="round"
@@ -20,8 +13,8 @@ export const DownButton = (props: SVGProps<SVGSVGElement>) => {
         />
       </g>
       <defs>
-        <clipPath id="clip0_8011_901">
-          <rect width="20" height="20" fill="white" transform="translate(0 0.5)" />
+        <clipPath id="clip0_9421_1045">
+          <rect width="24" height="24" fill="white" />
         </clipPath>
       </defs>
     </svg>

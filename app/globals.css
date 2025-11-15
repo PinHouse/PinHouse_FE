@@ -6,12 +6,22 @@
    Global Reset & Base Style
 ============================= */
 
+@font-face {
+  font-family: "Pretendard";
+  src:
+    url("/fonts/PretendardVariable.woff2") format("woff2-variations"),
+    url("/fonts/PretendardVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
 html,
 body {
   height: 100%;
   background-color: #f9fafb;
   color: #111827;
-  font-family: var(--font-suit), system-ui, sans-serif;
+  font-family: var(--font-pretendard), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -59,6 +69,8 @@ a:hover {
 
 @layer base {
   :root {
+    --font-pretendard: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-suit: var(--font-pretendard);
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;

@@ -4,9 +4,10 @@ import { Alram, Hambarger, HomeIcon } from "@/src/assets/icons/home";
 import { LogoIcon } from "@/src/assets/icons/logo";
 import { LoadingPin, SearchPin } from "@/src/assets/icons/onboarding";
 import { pinPoint } from "@/src/features/onboarding/ui";
+import ChoosePinPoint from "@/src/features/quickSearch/ui/choosePinPoint/choosePinPoint";
 import { Button } from "@/src/shared/ui/button/deafult";
 import { DropDown } from "@/src/shared/ui/dropDown/deafult";
-import { Input } from "@/src/shared/ui/input/deafult";
+
 import { Modal } from "@/src/shared/ui/modal/default";
 
 export default function DefaultTest() {
@@ -30,8 +31,7 @@ export default function DefaultTest() {
       <OnOffFalse />
       <Hambarger />
       <PinCelebration /> */}
-      <DropDown variant={"solid"} types="myHome" data={pinPoint} />
-      <Modal type={"filterSearch"} />
+      {/* <Modal type={"filterSearch"} /> */}
     </div>
   );
 }
