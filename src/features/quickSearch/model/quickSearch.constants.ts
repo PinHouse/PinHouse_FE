@@ -30,7 +30,7 @@ export const quickSearchStepCardContentMap = {
     title: "원하는 방 크기 범위를 입력해 주세요",
     description: "다음은 선택하신 1인 가구 기준 평수 범위예요",
     isFillAll: false,
-    boldRange: [9, 13],
+    boldRange: [9, 14],
     progress: 60,
   },
   chooseBudget: {

@@ -1,10 +1,11 @@
 import { cva } from "class-variance-authority";
 
 export const inputVariants = cva(
-  "inline-flex items-center justify-center rounded-2xl font-medium transition-all focus:outline-none disabled:opacity-50 disabled:pointer-events-none",
+  "box-border flex flex-row items-center font-medium transition-all focus:outline-none disabled:opacity-50 disabled:pointer-events-none",
   {
     variants: {
       variant: {
+        default: "bg-white border border-greyscale-grey-75 rounded-lg px-5 py-[13px] gap-4 h-12",
         solid:
           "g-primary text-white hover:bg-primary/90 active:scale-[0.98] rounded-2xl w-full border border-gray-300",
         outline: "border border-gray-300 text-gray-800 hover:bg-gray-50 active:scale-[0.98]",
@@ -17,7 +18,7 @@ export const inputVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "solid",
+      variant: "default",
       size: "md",
     },
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Slider } from "@/src/shared/lib/headlessUi/slider/slider";
+import { Slider } from "@/src/shared/ui/slider";
 
 interface ChooseDistanceProps {
   min?: number;
@@ -26,21 +26,14 @@ const ChooseDistance = ({ min = 0, max = 120, defaultValue = 60 }: ChooseDistanc
       </p>
 
       {/* 슬라이더 */}
-      <div className="flex flex-col gap-[0.625rem]">
-        <Slider
-          min={min}
-          max={max}
-          step={1}
-          value={value}
-          onValueChange={setValue}
-          className="w-full"
-        />
-        {/* 최소/최대값 라벨 */}
-        <div className="flex justify-between text-xs font-semibold leading-[100%] tracking-[-0.01em] text-greyscale-grey-500">
-          <span>{min}분</span>
-          <span>{max}분</span>
-        </div>
-      </div>
+      <Slider
+        min={min}
+        max={max}
+        step={1}
+        value={value}
+        onValueChange={setValue}
+        labelSuffix="분"
+      />
     </div>
   );
 };

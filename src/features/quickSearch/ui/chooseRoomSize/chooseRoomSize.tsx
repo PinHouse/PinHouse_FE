@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
-import { Input } from "@/src/shared/lib/headlessUi/input/input";
+
 import { XButton } from "@/src/assets/icons/button";
+import { Input } from "@/src/shared/ui/input/deafult";
 
 interface ChooseRoomSizeProps {
   className?: string;
@@ -45,7 +46,7 @@ const ChooseRoomSize = ({ className, onMinChange, onMaxChange }: ChooseRoomSizeP
   };
 
   return (
-    <div className={cn("flex w-full flex-col gap-4", className)}>
+    <div className="flex w-full flex-col gap-4">
       {/* 최소 평수 입력 */}
       <div className="flex items-center gap-3">
         <label className="whitespace-nowrap text-base font-medium text-greyscale-grey-900">

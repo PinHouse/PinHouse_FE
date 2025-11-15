@@ -7,9 +7,8 @@ import { pinPoint } from "@/src/features/onboarding/ui";
 import ChoosePinPoint from "@/src/features/quickSearch/ui/choosePinPoint/choosePinPoint";
 import { Button } from "@/src/shared/ui/button/deafult";
 import { DropDown } from "@/src/shared/ui/dropDown/deafult";
-import { Input } from "@/src/shared/ui/input/deafult";
+
 import { Modal } from "@/src/shared/ui/modal/default";
-import { Slider } from "@radix-ui/react-slider";
 
 export default function DefaultTest() {
   return (
@@ -32,7 +31,6 @@ export default function DefaultTest() {
       <OnOffFalse />
       <Hambarger />
       <PinCelebration /> */}
-      <Slider />
       {/* <Modal type={"filterSearch"} /> */}
     </div>
   );
