@@ -34,7 +34,9 @@ export const Input = ({
     }
   };
 
-  const handleClear = () => {
+  const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (isControlled) {
       const syntheticEvent = {
         target: { value: "" },
@@ -43,16 +45,16 @@ export const Input = ({
       onChange?.(syntheticEvent);
     } else {
       setInternalValue("");
-      if (inputRef.current) {
-        inputRef.current.value = "";
-        const syntheticEvent = {
-          target: { value: "" },
-          currentTarget: { value: "" },
-        } as React.ChangeEvent<HTMLInputElement>;
-        onChange?.(syntheticEvent);
-      }
+      const syntheticEvent = {
+        target: { value: "" },
+        currentTarget: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>;
+      onChange?.(syntheticEvent);
     }
-    inputRef.current?.focus();
+    // focus를 약간 지연시켜서 state 업데이트 후 실행
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -70,15 +72,19 @@ export const Input = ({
       <input
         ref={inputRef}
         className={cn(inputVariants({ variant, size }), showClearButton && "pr-10", className)}
+        {...props}
         value={isControlled ? value : internalValue}
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        {...props}
       />
       {showClearButton && (
         <button
           type="button"
+          onMouseDown={e => {
+            e.preventDefault(); // x 버튼 클릭 시 focus blur 이벤트 방지
+            e.stopPropagation();
+          }}
           onClick={handleClear}
           className="absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer text-greyscale-grey-500 hover:text-greyscale-grey-700"
           aria-label="Clear input"
