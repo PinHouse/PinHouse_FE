@@ -1,25 +1,21 @@
 import { cva } from "class-variance-authority";
 
 export const inputVariants = cva(
-  "box-border flex flex-row items-center font-medium transition-all focus:outline-none disabled:opacity-50 disabled:pointer-events-none",
+  "flex flex-row items-center font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none disabled:bg-greyscale-grey-50 disabled:gap-[1px]",
   {
     variants: {
       variant: {
-        default: "bg-white border border-greyscale-grey-75 rounded-lg px-5 py-[13px] gap-4 h-12",
-        solid:
-          "g-primary text-white hover:bg-primary/90 active:scale-[0.98] rounded-2xl w-full border border-gray-300",
-        outline: "border border-gray-300 text-gray-800 hover:bg-gray-50 active:scale-[0.98]",
-        ghost: "bg-transparent text-gray-700 hover:bg-gray-100 active:scale-[0.98] border",
+        default:
+          "placeholder:text-gray-300 bg-white border border-greyscale-grey-75 rounded-lg focus:border-[1.5px] focus:border-primary-blue-300",
+        error: "placeholder:text-gray-300 bg-white border-[1.5px] border-danger-400 rounded-lg",
       },
       size: {
-        sm: "h-8 px-3 text-sm",
-        md: "h-10 px-4 text-base",
-        lg: "h-12 w-full px-5 text-lg",
+        default: "w-full h-12 px-5 py-[0.8125rem] text-base leading-[140%] tracking-[-0.01em]",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "md",
+      size: "default",
     },
   }
 );

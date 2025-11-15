@@ -1,6 +1,6 @@
 import type { InputProps } from "./deafult/type";
 
 export const inputPreset = {
-  size: "lg",
-  variant: "ghost",
+  size: "default",
+  variant: "default",
 } as const satisfies Partial<InputProps>;

@@ -78,6 +78,12 @@ export const myHomePinPoint: PinPoint[] = [
   { key: "핀포인트2", value: "핀포인트2", description: "서울시 한강구 노을로 123" },
 ];
 
+export const quickSearchPinPointMenu: PinPointMap = {
+  myHome: [
+    { key: "핀포인트1", value: "핀포인트1" },
+    { key: "핀포인트2", value: "핀포인트2" },
+  ],
+};
 export const quickSearchPinPoint: PinPointMap = {
   myHome: myHomePinPoint,
 };

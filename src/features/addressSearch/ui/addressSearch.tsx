@@ -24,8 +24,8 @@ export const AddressSearch = () => {
           <>
             <p className="text-left text-sm font-bold">핀포인트 명을 입력해주세요(학교/직장)</p>
             <Input
-              size={"lg"}
-              variant={"ghost"}
+              size={"default"}
+              variant={"default"}
               placeholder="핀포인트 1"
               onChange={onPinPointChange}
               className="text-sm placeholder:text-sm placeholder:font-medium placeholder:text-gray-400"
