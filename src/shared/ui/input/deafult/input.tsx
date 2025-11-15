@@ -86,7 +86,7 @@ export const Input = ({
             e.stopPropagation();
           }}
           onClick={handleClear}
-          className="absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer text-greyscale-grey-500 hover:text-greyscale-grey-700"
+          className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-greyscale-grey-500 hover:text-greyscale-grey-700"
           aria-label="Clear input"
         >
           <XButton className="h-5 w-5" />
