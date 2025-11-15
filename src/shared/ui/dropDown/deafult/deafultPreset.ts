@@ -1,6 +1,6 @@
 import { DropDownProps } from "./type";
 
 export const dropDownPreset = {
-  variant: "solid",
+  variant: "box",
   size: "md",
 } as const satisfies Partial<DropDownProps>;

@@ -7,14 +7,12 @@ export interface DropDownProps
     VariantProps<typeof dropDownVariants> {
   types?: string;
   data: PinPointMap;
-  label?: string;
-  direction?: "vertical" | "horizontal";
 }
 
 export type PinPoint = {
   key: string;
   value: string;
-  description: string;
+  description?: string;
 };
 
 export interface PinPointMap {
