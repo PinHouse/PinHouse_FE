@@ -10,20 +10,20 @@ const ChooseLivingNumber = () => {
   const { livingNumber, setLivingNumber } = useQuickSearchStore();
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {LIVING_NUMBER_OPTIONS.map(option => {
         const isSelected = livingNumber === option;
         return (
           <Button
             key={option}
-            variant={isSelected ? "quicksearch" : "outline"}
+            variant={"outline"}
             size="lg"
             radius="sm"
             text="md"
             className={cn(
-              "w-full justify-start",
-              !isSelected &&
-                "border-greyscale-grey-200 text-greyscale-grey-700 bg-greyscale-grey-50"
+              "h-[3.625rem] justify-start border-none bg-greyscale-grey-50 py-[1.3125rem] leading-4 tracking-[-0.01em] text-greyscale-grey-700 hover:bg-greyscale-grey-50",
+              isSelected &&
+                "bg-primary-blue-300 text-white hover:bg-primary-blue-300 hover:text-white"
             )}
             onClick={() => setLivingNumber(isSelected ? null : option)}
           >
