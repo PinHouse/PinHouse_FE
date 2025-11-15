@@ -51,6 +51,7 @@ export default {
           dark: "#d97706",
         },
         danger: {
+          400: "#f95e5e",
           light: "#f87171",
           dark: "#dc2626",
         },

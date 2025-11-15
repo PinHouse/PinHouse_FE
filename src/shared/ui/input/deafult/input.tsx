@@ -4,12 +4,88 @@ import { cn } from "@/src/shared/lib/utils";
 import { inputPreset } from "../preset";
 import { InputProps } from "./type";
 import { inputVariants } from "./input.variants";
+import { XButton } from "@/src/assets/icons/button";
+import { useRef, useState } from "react";
 
 export const Input = ({
   className,
   variant = inputPreset.variant,
   size = inputPreset.size,
+  value,
+  onChange,
+  onFocus,
+  onBlur,
   ...props
 }: InputProps) => {
-  return <input className={cn(inputVariants({ variant, size }), className)} {...props} />;
+  const [internalValue, setInternalValue] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
+  const hasValue = currentValue !== "" && currentValue !== null && currentValue !== undefined;
+  const showClearButton = hasValue && isFocused;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isControlled) {
+      onChange?.(e);
+    } else {
+      setInternalValue(e.target.value);
+      onChange?.(e);
+    }
+  };
+
+  const handleClear = () => {
+    if (isControlled) {
+      const syntheticEvent = {
+        target: { value: "" },
+        currentTarget: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>;
+      onChange?.(syntheticEvent);
+    } else {
+      setInternalValue("");
+      if (inputRef.current) {
+        inputRef.current.value = "";
+        const syntheticEvent = {
+          target: { value: "" },
+          currentTarget: { value: "" },
+        } as React.ChangeEvent<HTMLInputElement>;
+        onChange?.(syntheticEvent);
+      }
+    }
+    inputRef.current?.focus();
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(true);
+    onFocus?.(e);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(false);
+    onBlur?.(e);
+  };
+
+  return (
+    <div className="relative w-full">
+      <input
+        ref={inputRef}
+        className={cn(inputVariants({ variant, size }), showClearButton && "pr-10", className)}
+        value={isControlled ? value : internalValue}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...props}
+      />
+      {showClearButton && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer text-greyscale-grey-500 hover:text-greyscale-grey-700"
+          aria-label="Clear input"
+        >
+          <XButton className="h-5 w-5" />
+        </button>
+      )}
+    </div>
+  );
 };
