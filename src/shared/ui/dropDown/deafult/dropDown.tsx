@@ -62,21 +62,29 @@ export const DropDown = ({
       {open && (
         <ul
           className={cn(
-            "shadow-md-16 absolute left-0 top-full z-10 mt-2 w-full rounded border border-gray-200 bg-white font-bold text-text-tertiary"
+            "shadow-md-16 group absolute left-0 top-full z-10 mt-2 w-full rounded border border-gray-200 bg-white font-bold text-text-tertiary"
           )}
         >
-          {optionData.map(item => (
-            <li
-              key={item.key}
-              onClick={() => onClose({ value: item.value })}
-              className="text-greyscale-grey-400 hover:bg-primary-blue-25 flex cursor-pointer flex-col gap-[0.5rem] px-3 py-[0.625rem] hover:text-primary-blue-400"
-            >
-              <span className="truncate text-sm font-medium leading-[132%] tracking-[-0.01em]">
-                {item.value}
-              </span>
-              <span className="truncate text-[0.625rem] leading-[132%]">{item.description}</span>
-            </li>
-          ))}
+          {optionData.map(item => {
+            const isSelected = item.value === selected;
+            return (
+              <li
+                key={item.key}
+                onClick={() => onClose({ value: item.value })}
+                className={cn(
+                  "flex cursor-pointer flex-col gap-[0.5rem] px-3 py-[0.625rem]",
+                  isSelected
+                    ? "bg-primary-blue-25 group-hover:text-greyscale-grey-400 hover:!bg-primary-blue-25 text-primary-blue-400 hover:!text-primary-blue-400 group-hover:bg-transparent"
+                    : "text-greyscale-grey-400 hover:bg-primary-blue-25 hover:text-primary-blue-400"
+                )}
+              >
+                <span className="truncate text-sm font-medium leading-[132%] tracking-[-0.01em]">
+                  {item.value}
+                </span>
+                <span className="truncate text-[0.625rem] leading-[132%]">{item.description}</span>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
