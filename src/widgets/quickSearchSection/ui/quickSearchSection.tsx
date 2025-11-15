@@ -19,24 +19,26 @@ export const QuickSearchSection = ({
   progress,
 }: QuickSearchSectionProps) => {
   return (
-    <section className="flex h-full w-full flex-col px-5">
+    <section className="flex h-full w-full flex-col">
       <QuickSearchProgressBar progress={progress} />
       <PageTransition>
-        <div className="flex flex-col py-10">
-          <QuickSearchStepCard
-            title={title}
-            description={description}
-            isFillAll={isFillAll}
-            boldRange={boldRange}
-          />
+        <div className="px-5">
+          <div className="flex flex-col py-10">
+            <QuickSearchStepCard
+              title={title}
+              description={description}
+              isFillAll={isFillAll}
+              boldRange={boldRange}
+            />
+          </div>
+          {type === "choosePinPoint" && <ChoosePinPoint />}
+          {type === "chooseDistance" && <ChooseDistance />}
+          {type === "chooseLivingNumber" && <ChooseLivingNumber />}
+          {type === "chooseRoomSize" && <ChooseRoomSize />}
+          {type === "chooseBudget" && <ChooseBudget />}
         </div>
-        {type === "choosePinPoint" && <ChoosePinPoint />}
-        {type === "chooseDistance" && <ChooseDistance />}
-        {type === "chooseLivingNumber" && <ChooseLivingNumber />}
-        {type === "chooseRoomSize" && <ChooseRoomSize />}
-        {type === "chooseBudget" && <ChooseBudget />}
       </PageTransition>
-      <div className="w-full flex-none pb-3">
+      <div className="w-full flex-none px-5 pb-3">
         <QuickSearchNextButton />
       </div>
     </section>
