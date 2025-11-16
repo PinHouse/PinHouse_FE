@@ -109,3 +109,8 @@ export const SCHOOL_AVAILABILITY_ENDPOINT = "/school";
 
 // 고등학교 검색 API
 export const SCHOOL_SEARCH_ENDPOINT = "/school/search";
+
+/**
+ * 학교 API
+ */
+export const LISTING_LIST_NOTICES = "/notices";

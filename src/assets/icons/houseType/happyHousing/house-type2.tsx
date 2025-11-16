@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export const HapplyHouseType2 = (props: SVGProps<SVGSVGElement>) => {
+export const HappyHouseType2 = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="40"
