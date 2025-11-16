@@ -7,6 +7,8 @@ export interface DropDownProps<T = PinPoint[]>
     VariantProps<typeof dropDownVariants> {
   types?: string;
   data: PinPointMap<T>;
+  setSelect?: any;
+  selected?: string;
 }
 
 export type PinPoint = {

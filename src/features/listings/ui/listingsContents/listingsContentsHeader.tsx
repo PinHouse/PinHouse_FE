@@ -1,20 +1,30 @@
 import { ArrowUpArrowDown } from "@/src/assets/icons/button/arrowUpArrowDown";
-import { CaretDown } from "@/src/assets/icons/button/caretDown";
-
+import { listingPoint } from "../../model";
+import { CaretDropDown } from "@/src/shared/ui/dropDown/CaretDropDown";
+import { useListingState } from "../../model/listingsStore";
 export const ListingsContentHeader = () => {
+  const { status, setStatus } = useListingState();
+
   return (
-    <div className="flex">
-      <div className="flex w-full flex-1 gap-3 text-2xl font-bold">
-        <p className="text-text-primary">공고</p>
-        <p className="text-text-tertiary">00</p>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-1 text-xl font-bold">
+        <p className="text-sm text-text-primary">공고</p>
+        <p className="text-sm text-text-numberTertiary">00</p>
       </div>
-      <div className="flex w-full flex-1 justify-end gap-7">
+
+      <div className="flex items-center">
         <div className="flex items-center gap-1">
-          <p className="font-bold">전체</p>
-          <CaretDown />
+          <CaretDropDown
+            variant="ghost"
+            types="drop"
+            data={listingPoint}
+            setSelect={setStatus}
+            selected={status}
+          />
         </div>
+
         <div className="flex items-center gap-1">
-          <div className="font-bold">최신순</div>
+          <div className="text-xs font-bold">최신순</div>
           <ArrowUpArrowDown />
         </div>
       </div>

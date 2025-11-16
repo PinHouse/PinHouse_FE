@@ -52,6 +52,9 @@ export default {
           dark: "#1d4ed8",
         },
         background: "hsl(var(--background))",
+        bgColor: {
+          mute: "#F7F7F9",
+        },
         surface: {
           light: "#ffffff",
           dark: "#111827",
@@ -62,6 +65,8 @@ export default {
           tertiary: "#9CA3AF",
           brand: "#3182F6",
           inverse: "#FFFFFF",
+          numberTertiary: "#7F7F8F",
+          gray100: "#9F9FAB",
         },
         log: {
           light: "#306FFF",
