@@ -45,10 +45,7 @@ export default function RootLayout({
                 {/* <TempHeaders className="h-full w-full" /> */}
               </header>
               <main className="flex-1 overflow-y-auto">{children}</main>
-              {/* 바텀자리 */}
-              <footer>
-                <BottomNavigation />
-              </footer>
+              <BottomNavigation />
             </div>
           </div>
         </QueryProvider>

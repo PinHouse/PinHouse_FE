@@ -72,6 +72,9 @@ export default {
         },
 
         background: "hsl(var(--background))",
+        bgColor: {
+          mute: "#F7F7F9",
+        },
         surface: {
           light: "#ffffff",
           dark: "#111827",
