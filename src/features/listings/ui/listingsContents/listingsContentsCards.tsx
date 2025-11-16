@@ -38,14 +38,14 @@ export const ListingContentsCards = () => {
           <div className="flex w-[65%] flex-col justify-start gap-2 pb-3 pl-4 pr-4 pt-3">
             <div className="flex items-baseline gap-2">
               <HouseRental {...item} />
-              <p className="text-text-gray100 text-xs font-bold">방타입 00 개</p>
+              <p className="text-xs font-bold text-text-greyscale-grey-400">방타입 00 개</p>
             </div>
             <div className="max-w-full">
               <p className="truncate text-sm font-bold">{item.name}</p>
             </div>
             <div className="max-w-full">
-              <p className="text-text-gray100 text-sm font-bold">모집일정</p>
-              <p className="text-text-gray100 text-sm font-bold">{item.applyPeriod}</p>
+              <p className="text-sm font-bold text-text-greyscale-grey-400">모집일정</p>
+              <p className="text-sm font-bold text-text-greyscale-grey-400">{item.applyPeriod}</p>
             </div>
           </div>
         </div>

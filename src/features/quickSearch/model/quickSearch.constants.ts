@@ -1,0 +1,89 @@
+import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
+
+export const quickSearchStepCardContentMap = {
+  choosePinPoint: {
+    path: "/quicksearch/choosePinPoint",
+    title: "탐색할 핀포인트를 선택해 주세요",
+    description: "핀포인트는 방을 추천받을 기준이 되는 위치예요",
+    isFillAll: true,
+    boldRange: [0, 0],
+    progress: 15,
+  },
+  chooseDistance: {
+    path: "/quicksearch/chooseDistance",
+    title: "탐색할 거리 범위를 설정해 주세요",
+    description: "대중교통 이용 시 소요시간 기준이예요",
+    isFillAll: true,
+    boldRange: [0, 0],
+    progress: 30,
+  },
+  chooseLivingNumber: {
+    path: "/quicksearch/chooseLivingNumber",
+    title: "거주 인원을 선택해 주세요",
+    description: null,
+    isFillAll: false,
+    boldRange: [0, 0],
+    progress: 45,
+  },
+  chooseRoomSize: {
+    path: "/quicksearch/chooseRoomSize",
+    title: "원하는 방 크기 범위를 입력해 주세요",
+    description: "다음은 선택하신 1인 가구 기준 평수 범위예요",
+    isFillAll: false,
+    boldRange: [9, 14],
+    progress: 60,
+  },
+  chooseBudget: {
+    path: "/quicksearch/chooseBudget",
+    title: "보증금과 월세 예산을 입력해 주세요",
+    description: "서울시 13평 임대주택 평균 보증금 금액이예요",
+    isFillAll: false,
+    boldRange: [0, 7],
+    progress: 70,
+  },
+  chooseEnvironment: {
+    path: "/quicksearch/chooseEnvironment",
+    title: "원하는 주변 환경을 선택해 주세요",
+    description: "최대 5개까지 선택할 수 있어요",
+    isFillAll: false,
+    boldRange: [0, 4],
+    progress: 80,
+  },
+  chooseHomeType: {
+    path: "/quicksearch/chooseHomeType",
+    title: "원하는 집을 선택해 주세요",
+    description: "주택 및 임대 유형을 선택해 주세요 ",
+    isFillAll: false,
+    boldRange: [0, 9],
+    progress: 90,
+  },
+  chooseCondition: {
+    path: "/quicksearch/chooseCondition",
+    title: "나에게 맞는 조건을 선택해보세요",
+    description: null,
+    isFillAll: false,
+    boldRange: [0, 0],
+    progress: 100,
+  },
+} as const;
+
+export const myHomePinPoint: PinPoint[] = [
+  { key: "우리집", value: "우리집", description: "서울시 한강구 노을로 123" },
+  {
+    key: "핀포인트1",
+    value: "핀포인트1",
+    description:
+      "주소가 입력되는 영역입니다. 주소가 만약 이 영역을 넘어갈 경우 이렇게 말줄임 표시입니담ㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㅇㄴㅁㅇ",
+  },
+  { key: "핀포인트2", value: "핀포인트2", description: "서울시 한강구 노을로 123" },
+];
+
+export const quickSearchPinPointMenu: PinPointMap = {
+  myHome: [
+    { key: "핀포인트1", value: "핀포인트1" },
+    { key: "핀포인트2", value: "핀포인트2" },
+  ],
+};
+export const quickSearchPinPoint: PinPointMap = {
+  myHome: myHomePinPoint,
+};
