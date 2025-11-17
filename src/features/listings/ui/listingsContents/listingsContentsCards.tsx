@@ -1,10 +1,5 @@
-import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
 import { useListingState } from "../../model/listingsStore";
-import {
-  ListingContentsCardsProps,
-  ListingItem,
-  ListingListPage,
-} from "@/src/entities/listings/model/type";
+import { ListingContentsCardsProps, ListingItem } from "@/src/entities/listings/model/type";
 import { getListingIcon, getListingsRental } from "../../hooks/listingsHooks";
 import { ListingBgBookMark, ListingBookMark } from "./listingsBookMark";
 
@@ -24,8 +19,6 @@ const HouseRental = (item: ListingItem) => {
 export const ListingContentsCards = ({ data }: ListingContentsCardsProps) => {
   const { status } = useListingState();
 
-  // const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useListingListInfiniteQuery();
-
   return (
     <div className="flex flex-col gap-3">
       {data?.map((item: ListingItem) => (
@@ -35,6 +28,7 @@ export const ListingContentsCards = ({ data }: ListingContentsCardsProps) => {
               <ListingBookMark item={item.housingType} border="border" />
               <p className="text-xs font-bold">{item.supplier}</p>
             </div>
+            H
             <div className="flex items-center justify-center">
               <HouseICons {...item} />
             </div>

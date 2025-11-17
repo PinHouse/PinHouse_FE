@@ -2,23 +2,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowLeftButton } from "@/src/assets/icons/button/arrowLeft";
+import { LeftButton } from "@/src/assets/icons/button";
 
 export const SearchForm = () => {
   const router = useRouter();
 
   return (
     <div>
-      <div className="flex gap-2 border-b pb-2">
-        <ArrowLeftButton
-          onClick={() => router.back()}
-          className="cursor-pointer hover:cursor-pointer"
-        />
-        <input
-          className="font-pretendard flex-1 text-sm outline-none placeholder:text-gray-400"
-          placeholder="공고명을 검색해보세요"
-          autoFocus
-        />
+      <div className="flex gap-2 pb-2">
+        <LeftButton onClick={() => router.back()} className="cursor-pointer hover:cursor-pointer" />
+        <p className="absolute left-1/2 -translate-x-1/2 font-suit font-bold">검색</p>
       </div>
     </div>
   );
