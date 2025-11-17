@@ -1,6 +1,10 @@
 import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
 import { useListingState } from "../../model/listingsStore";
-import { ListingItem } from "@/src/entities/listings/model/type";
+import {
+  ListingContentsCardsProps,
+  ListingItem,
+  ListingListPage,
+} from "@/src/entities/listings/model/type";
 import { getListingIcon, getListingsRental } from "../../hooks/listingsHooks";
 import { ListingBgBookMark, ListingBookMark } from "./listingsBookMark";
 
@@ -17,14 +21,14 @@ const HouseRental = (item: ListingItem) => {
   );
 };
 
-export const ListingContentsCards = () => {
+export const ListingContentsCards = ({ data }: ListingContentsCardsProps) => {
   const { status } = useListingState();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useListingListInfiniteQuery();
+  // const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useListingListInfiniteQuery();
 
   return (
     <div className="flex flex-col gap-3">
-      {data?.pages[0]?.content.map((item: ListingItem) => (
+      {data?.map((item: ListingItem) => (
         <div key={item.id} className="flex h-[112px] min-h-[100px] w-full rounded-xl border">
           <div className="border-r-1 flex w-[35%] flex-col bg-bgColor-mute pl-1 pt-2">
             <div className="flex justify-start gap-1">
