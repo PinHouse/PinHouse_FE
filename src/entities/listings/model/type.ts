@@ -33,6 +33,10 @@ export interface ListingListPage {
   hasNext: boolean;
   page: number;
 }
+export interface ListingContentsCardsProps {
+  data: ListingItem[];
+}
+
 export type ListingInfiniteResponse = InfiniteData<ListingListPage>;
 export interface ListingListApiResponse extends IResponse {
   data: ListingInfiniteResponse;
