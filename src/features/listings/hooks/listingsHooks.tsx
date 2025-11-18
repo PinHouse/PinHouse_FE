@@ -1,4 +1,4 @@
-import { RENT_COLOR_CLASS } from "../model";
+import { FilterTabKey, RENT_COLOR_CLASS } from "../model";
 import { LISTING_ICON_MAP } from "../model/listingsMap";
 
 type RentType = keyof typeof RENT_COLOR_CLASS;
@@ -16,3 +16,29 @@ export const getListingIcon = (type: string, housingType: string, size = 78) => 
 
   return <IconComp width={size} height={size} />;
 };
+
+export function getIndicatorLeft(activeTab: FilterTabKey) {
+  switch (activeTab) {
+    case "region":
+      return 20;
+    case "target":
+      return 20 + 55;
+    case "rental":
+      return 20 + 55 + 80;
+    case "housing":
+      return 20 + 55 + 77 + 84;
+  }
+}
+
+export function getIndicatorWidth(activeTab: FilterTabKey) {
+  switch (activeTab) {
+    case "region":
+      return 32;
+    case "target":
+      return 60;
+    case "rental":
+      return 60;
+    case "housing":
+      return 60;
+  }
+}

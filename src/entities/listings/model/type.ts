@@ -55,7 +55,20 @@ export interface FilterSheetState {
   closeSheet: () => void;
 }
 
+export interface ListingState {
+  status: string;
+  setStatus: (value: string) => void;
+  reset: () => void;
+}
+
 export type ListingInfiniteResponse = InfiniteData<ListingListPage>;
 export interface ListingListApiResponse extends IResponse {
   data: ListingInfiniteResponse;
+}
+
+export interface FilterOption {
+  key: string;
+  label: string;
+  component: string;
+  type?: "select" | "radio" | "checkbox" | "sort" | "panel";
 }

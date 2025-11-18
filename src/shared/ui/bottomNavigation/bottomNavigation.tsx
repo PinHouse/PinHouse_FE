@@ -1,18 +1,27 @@
 "use client";
 import { HomeLine } from "@/src/assets/icons/home/homeLine";
 import { Person, Search } from "@/src/assets/icons/home";
-import { usePathname } from "next/navigation";
-
-interface BottomNavProps {
-  active: "home" | "search" | "my";
-}
+import { usePathname, useSearchParams } from "next/navigation";
 
 const hiddenRoutes = ["/home", "/login", "/onboarding"];
-// { active }: BottomNavProps
+const hiddenExactRoutes = [
+  "/listings?tab=region",
+  "/listings?tab=target",
+  "/listings?tab=rental",
+  "/listings?tab=housing",
+];
 
 export const BottomNavigation = () => {
   const pathname = usePathname();
-  const shouldHide = hiddenRoutes.some(route => pathname.startsWith(route));
+  const searchParams = useSearchParams();
+
+  const queryString = searchParams.toString();
+  const currentPath = queryString ? `${pathname}?${queryString}` : pathname;
+
+  const shouldHide =
+    hiddenRoutes.some(route => pathname.startsWith(route)) ||
+    hiddenExactRoutes.includes(currentPath);
+
   if (shouldHide) return null;
   return (
     <div className="fixed bottom-0 left-1/2 z-50 h-[88px] w-full max-w-[768px] -translate-x-1/2 border-t bg-white p-7">

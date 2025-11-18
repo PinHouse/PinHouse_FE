@@ -1,10 +1,9 @@
 import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
 import { ListingsContentHeader } from "./listingsContentsHeader";
 import { ListingContentsList } from "./listingsContentsList";
-import { time } from "console";
 
 export const ListingsContent = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, error, refetch } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } =
     useListingListInfiniteQuery();
   const totalCount = data?.pages[0]?.totalCount ?? 0;
   return (
