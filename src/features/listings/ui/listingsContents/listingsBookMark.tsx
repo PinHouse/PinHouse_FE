@@ -1,4 +1,3 @@
-import { ListingItem } from "@/src/entities/listings/model/type";
 import { Toggle } from "@/src/shared/lib/headlessUi/bookMark/bookMark";
 
 export const ListingBookMark = ({ item, border }: { item: string; border: string }) => {

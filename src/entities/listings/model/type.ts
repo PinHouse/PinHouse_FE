@@ -37,6 +37,24 @@ export interface ListingContentsCardsProps {
   data: ListingItem[];
 }
 
+export interface ListingContentsListProps {
+  data: InfiniteData<ListingListPage> | undefined;
+  fetchNextPage: () => Promise<unknown>;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  isError: boolean;
+}
+
+export interface ListingsContentHeaderProps {
+  totalCount: number;
+}
+
+export interface FilterSheetState {
+  open: boolean;
+  openSheet: () => void;
+  closeSheet: () => void;
+}
+
 export type ListingInfiniteResponse = InfiniteData<ListingListPage>;
 export interface ListingListApiResponse extends IResponse {
   data: ListingInfiniteResponse;

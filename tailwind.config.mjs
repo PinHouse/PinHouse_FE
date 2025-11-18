@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import plugin from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 export default {
   darkMode: ["class"],
@@ -108,6 +109,7 @@ export default {
           muted: "#BBBAC5",
           text: "#FFFFFF",
           tag: "#EFEFF3",
+          primary: "#111827",
         },
         foreground: "hsl(var(--foreground))",
         card: {
@@ -130,7 +132,10 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        border: "hsl(var(--border))",
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          primary: "#111827",
+        },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         chart: {
@@ -143,6 +148,7 @@ export default {
       },
       fontSize: {
         "xs-10": "0.625rem", //10px
+        "xs-12": "0.700rem", //11px
         "xs-13": "0.8125rem", //13px
         "sm-15": "0.9375rem", //15px
         "base-17": "1.0625rem", //17px
@@ -209,5 +215,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
 };
