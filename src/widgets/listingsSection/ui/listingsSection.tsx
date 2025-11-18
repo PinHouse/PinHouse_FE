@@ -1,9 +1,14 @@
 "use client";
-import { ListingFilterPanel, ListingsContent, ListingsHeaders } from "@/src/features/listings";
+import {
+  ListingFilterPanel,
+  ListingFilterPartialSheet,
+  ListingsContent,
+  ListingsHeaders,
+} from "@/src/features/listings";
 
 export const ListingsSection = () => {
   return (
-    <section className="scrollbar-hide flex h-full w-full flex-col justify-between overflow-y-auto px-5">
+    <section className="flex h-full w-full flex-col justify-between overflow-y-auto px-5 scrollbar-hide">
       <div className="flex flex-col gap-2">
         <ListingsHeaders />
         <div className="-mx-5">
@@ -13,6 +18,7 @@ export const ListingsSection = () => {
           <ListingsContent />
         </div>
       </div>
+      <ListingFilterPartialSheet />
     </section>
   );
 };

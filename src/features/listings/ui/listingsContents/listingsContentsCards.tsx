@@ -36,7 +36,6 @@ export const ListingContentsCards = ({ data }: ListingContentsCardsProps) => {
           <div className="flex w-[65%] flex-col justify-start gap-2 pb-3 pl-4 pr-4 pt-3">
             <div className="flex items-baseline gap-2">
               <HouseRental {...item} />
-              <p className="text-xs font-bold text-text-greyscale-grey-400">방타입 00 개</p>
             </div>
             <div className="max-w-full">
               <p className="truncate text-sm font-bold">{item.name}</p>
