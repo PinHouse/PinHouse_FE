@@ -28,7 +28,7 @@ export const ListingContentsCards = ({ data }: ListingContentsCardsProps) => {
               <ListingBookMark item={item.housingType} border="border" />
               <p className="text-xs font-bold">{item.supplier}</p>
             </div>
-            H
+
             <div className="flex items-center justify-center">
               <HouseICons {...item} />
             </div>

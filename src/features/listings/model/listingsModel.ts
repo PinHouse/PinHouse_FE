@@ -107,3 +107,80 @@ const listingDrop: PinPoint[] = [
 export const listingPoint: PinPointMap<PinPoint[]> = {
   drop: listingDrop,
 };
+
+export const LISTING_PARTIAL_SHEET = {
+  metro: [
+    { cityCode: "seoul", cityName: "서울특별시" },
+    { cityCode: "incheon", cityName: "인천광역시" },
+    { cityCode: "gyeonggi", cityName: "경기도" },
+  ],
+
+  chungcheong: [
+    { cityCode: "sejong", cityName: "세종특별자치도" },
+    { cityCode: "daejeon", cityName: "대전광역시" },
+    { cityCode: "chungbuk", cityName: "충청북도" },
+    { cityCode: "chungnam", cityName: "충청남도" },
+  ],
+
+  honam: [
+    { cityCode: "gwangju", cityName: "광주광역시" },
+    { cityCode: "jeonbuk", cityName: "전북특별자치도" },
+    { cityCode: "jeonnam", cityName: "전라남도" },
+  ],
+
+  yeongnam: [
+    { cityCode: "busan", cityName: "부산광역시" },
+    { cityCode: "daegu", cityName: "대구광역시" },
+    { cityCode: "ulsan", cityName: "울산광역시" },
+    { cityCode: "gyeongbuk", cityName: "경상북도" },
+    { cityCode: "gyeongnam", cityName: "경상남도" },
+  ],
+
+  gangwonJeju: [
+    { cityCode: "whichProvince", cityName: "강원특별자치도" },
+    { cityCode: "jeju", cityName: "제주특별자치도" },
+  ],
+};
+
+export const REGION_SECTION_LABEL = {
+  metro: "수도권",
+  chungcheong: "충청권",
+  honam: "호남권",
+  yeongnam: "영남권",
+  gangwonJeju: "강원·제주권",
+} as const;
+
+export const FILTER_TABS = [
+  { key: "region", label: "지역" },
+  { key: "target", label: "모집대상" },
+  { key: "rental", label: "임대유형" },
+  { key: "housing", label: "주택유형" },
+] as const;
+
+export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
+
+export function getIndicatorLeft(activeTab: FilterTabKey) {
+  switch (activeTab) {
+    case "region":
+      return 20;
+    case "target":
+      return 20 + 55;
+    case "rental":
+      return 20 + 55 + 80;
+    case "housing":
+      return 20 + 55 + 77 + 84;
+  }
+}
+
+export function getIndicatorWidth(activeTab: FilterTabKey) {
+  switch (activeTab) {
+    case "region":
+      return 32;
+    case "target":
+      return 60;
+    case "rental":
+      return 60;
+    case "housing":
+      return 60;
+  }
+}

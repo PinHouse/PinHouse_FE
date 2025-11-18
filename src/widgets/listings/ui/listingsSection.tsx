@@ -3,7 +3,7 @@ import { ListingFilterPanel, ListingsContent, ListingsHeaders } from "@/src/feat
 
 export const ListingsSection = () => {
   return (
-    <section className="flex h-full w-full flex-col justify-between px-5 py-5">
+    <section className="scrollbar-hide flex h-full w-full flex-col justify-between overflow-y-auto px-5">
       <div className="flex flex-col gap-2">
         <ListingsHeaders />
         <div className="-mx-5">

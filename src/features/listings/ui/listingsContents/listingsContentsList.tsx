@@ -3,10 +3,15 @@ import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useLi
 import { ListingContentsCards } from "./listingsContentsCards";
 import { useEffect, useRef } from "react";
 import { Button } from "@/src/shared/ui/button/deafult";
+import { ListingContentsListProps } from "@/src/entities/listings/model/type";
 
-export const ListingContentsList = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, error, refetch } =
-    useListingListInfiniteQuery();
+export const ListingContentsList = ({
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  isError,
+}: ListingContentsListProps) => {
   const items = data?.pages.flatMap(page => page.content) ?? [];
   const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -33,7 +38,7 @@ export const ListingContentsList = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto pb-[90px]">
+    <div className="flex h-full flex-col overflow-y-auto pb-[88px]">
       <ListingContentsCards data={items} />
 
       {!isError && hasNextPage && <div ref={observerRef} className="h-10" />}
@@ -59,7 +64,7 @@ export const ListingContentsList = () => {
       )}
 
       {!hasNextPage && !isError && data && (
-        <div className="py-5 text-center text-sm text-gray-400">더 이상 데이터가 없습니다.</div>
+        <div className="py-3 text-center text-sm text-gray-400">더 이상 데이터가 없습니다.</div>
       )}
     </div>
   );

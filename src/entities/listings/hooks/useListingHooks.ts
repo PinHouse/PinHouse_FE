@@ -16,7 +16,11 @@ export const useListingListInfiniteQuery = () =>
         status: "전체",
         sortType: "최신공고순",
       };
-      const res = await requestListingList({ page: Number(pageParam), offSet: 5 }, body);
+      const res: ListingListPage = await requestListingList(
+        { page: Number(pageParam), offSet: 5 },
+        body
+      );
+
       return res;
     },
     getNextPageParam: lastPage => {
