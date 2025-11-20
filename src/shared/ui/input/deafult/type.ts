@@ -4,4 +4,6 @@ import { inputVariants } from "./input.variants";
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size">,
-    VariantProps<typeof inputVariants> {}
+    VariantProps<typeof inputVariants> {
+  onEnter?: (value: string) => void;
+}

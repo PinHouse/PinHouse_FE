@@ -1,12 +1,14 @@
 import { CloseButton } from "@/src/assets/icons/button";
-import { listingsHistory } from "../../model";
+import { useSearchState } from "@/src/shared/hooks/store";
 
 export const SearchHistory = () => {
+  const { searchQuery } = useSearchState();
+
   return (
     <section className="mt-4">
       <h3 className="mb-2 text-sm font-bold">최근 검색어</h3>
       <div className="flex flex-wrap gap-2">
-        {listingsHistory.map(word => (
+        {searchQuery.map(word => (
           <span
             key={word}
             className="flex items-center justify-between gap-2 rounded-full border bg-gray-100 px-2 py-1 text-xs"

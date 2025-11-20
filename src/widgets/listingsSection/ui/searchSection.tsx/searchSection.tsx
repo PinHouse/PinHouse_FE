@@ -1,9 +1,18 @@
+"use client";
 import { SearchHistory, SearchForm, SearchResults } from "@/src/features/listings";
+import { useSearchState } from "@/src/shared/hooks/store";
 import { PageTransition } from "@/src/shared/ui/animation";
-import { SearchBar } from "@/src/shared/ui/searchBar";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
+import { useEffect, useState } from "react";
 
 export const ListingsSearch = () => {
+  const { setSearchQuery } = useSearchState();
+
+  const handleSearch = (keyword: string) => {
+    if (!keyword) return;
+    setSearchQuery(keyword);
+  };
+
   return (
     <section className="relative h-full overflow-hidden">
       <PageTransition>
@@ -14,6 +23,7 @@ export const ListingsSearch = () => {
               direction="horizontal"
               placeholder="검색어를 입력하세요"
               className="rounded-3xl"
+              onEnter={handleSearch}
             />
           </div>
           <div className="flex-1 overflow-y-auto p-5">
