@@ -15,6 +15,7 @@ export const Input = ({
   onChange,
   onFocus,
   onBlur,
+  onEnter,
   ...props
 }: InputProps) => {
   const [internalValue, setInternalValue] = useState("");
@@ -77,6 +78,11 @@ export const Input = ({
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onKeyDown={e => {
+          if (e.key === "Enter") {
+            onEnter?.(String(currentValue));
+          }
+        }}
       />
       {showClearButton && (
         <button
