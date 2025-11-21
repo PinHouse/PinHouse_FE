@@ -24,6 +24,8 @@ body {
   font-family: var(--font-pretendard), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
 }
 
 a {

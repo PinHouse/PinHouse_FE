@@ -1,21 +1,32 @@
-import { CloseButton } from "@/src/assets/icons/button";
-import { listingsResults } from "../../model";
+"use client";
 
-export const SearchResults = () => {
+import { listingsResults, SearchResultsProps } from "../../model";
+import { cn } from "@/lib/utils";
+import { useSearchState } from "@/src/shared/hooks/store";
+import { TagButton } from "@/src/shared/ui/button/tagButton";
+
+export const SearchResults = ({ center = false, handleSearch }: SearchResultsProps) => {
+  const { setQuery } = useSearchState();
   return (
     <section className="mt-6">
-      <h3 className="mb-2 text-sm font-bold">인기 검색어</h3>
+      <h3 className={`mb-2 flex text-sm font-semibold ${center ? "justify-center" : ""}`}>
+        인기 검색어
+      </h3>
       <div className="flex flex-wrap gap-2">
-        {listingsResults.map(word => (
-          <span
-            key={word}
-            className="flex items-center gap-2 rounded-full bg-gray-200 px-2 py-1 text-xs"
+        {listingsResults.map((word, index) => (
+          <TagButton
+            key={index}
+            size="sm"
+            onClick={() => {
+              setQuery(word);
+              handleSearch(word);
+            }}
+            className={cn(
+              "text-text-greyscale-grey-85 rounded-full border px-3 py-1 font-suit text-sm transition-all"
+            )}
           >
             {word}
-            <span className="h-3.5 w-3.5">
-              <CloseButton className="h-full w-full" />
-            </span>
-          </span>
+          </TagButton>
         ))}
       </div>
     </section>

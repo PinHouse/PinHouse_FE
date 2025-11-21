@@ -35,15 +35,20 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${suit.variable} h-full bg-gray-100`}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} h-full text-gray-900 antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} h-full bg-white pt-5 text-gray-900 antialiased`}
       >
         <QueryProvider>
-          <div className="flex h-full min-h-screen items-stretch justify-center pt-5">
-            <div className="relative flex h-full w-full max-w-[768px] flex-col bg-white shadow-md">
+          <div className="flex h-full min-h-screen items-stretch justify-center">
+            <div
+              className="relative flex h-full w-full max-w-[768px] flex-col bg-white shadow-md"
+              style={{
+                paddingTop: "var(--safe-top)",
+                paddingBottom: "calc(var(--safe-bottom)",
+              }}
+            >
               {/* 헤더자리 */}
               {/* <header className="flex h-[44px] w-full items-center"></header> */}
               {/* <TempHeaders className="h-full w-full" /> */}
-
               <main className="flex-1 overflow-y-auto">{children}</main>
               <BottomNavigation />
             </div>

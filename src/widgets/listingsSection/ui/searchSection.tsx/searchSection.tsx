@@ -9,19 +9,24 @@ import { useSearchState } from "@/src/shared/hooks/store";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 export const ListingsSearch = () => {
-  const { setSearchQuery } = useSearchState();
+  const { setSearchQuery, query, setQuery } = useSearchState();
   const router = useRouter();
   const searchParams = useSearchParams();
   const keyword = searchParams.get("query") ?? "";
   const [isSearched, setIsSearched] = useState([]);
-  console.log(keyword, isSearched);
+
   const handleSearch = (keyword: string) => {
     if (!keyword) return;
     setSearchQuery(keyword);
     router.push(`/listings/search?query=${keyword}`);
+  };
+
+  const onChangeHandle = (e: ChangeEvent<HTMLInputElement>) => {
+    const { target } = e;
+    setQuery(target.value);
   };
 
   return (
@@ -34,18 +39,21 @@ export const ListingsSearch = () => {
               direction="horizontal"
               placeholder="검색어를 입력하세요"
               className="rounded-3xl"
+              value={query}
+              onChange={onChangeHandle}
               onEnter={handleSearch}
             />
           </div>
+
           {keyword && isSearched.length === 0 ? (
-            <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto bg-red-300">
+            <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto">
               <ListingNoSearchResult />
-              <SearchResults />
+              <SearchResults center={true} handleSearch={handleSearch} />
             </div>
           ) : (
             <div className="flex-1 overflow-y-auto p-5">
-              <SearchHistory />
-              <SearchResults />
+              <SearchHistory handleSearch={handleSearch} />
+              <SearchResults handleSearch={handleSearch} />
             </div>
           )}
         </div>
