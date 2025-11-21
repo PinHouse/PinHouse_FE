@@ -38,12 +38,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} h-full text-gray-900 antialiased`}
       >
         <QueryProvider>
-          <div className="flex h-full min-h-screen items-stretch justify-center">
+          <div className="flex h-full min-h-screen items-stretch justify-center pt-5">
             <div className="relative flex h-full w-full max-w-[768px] flex-col bg-white shadow-md">
               {/* 헤더자리 */}
-              <header className="flex h-[44px] w-full items-center">
-                {/* <TempHeaders className="h-full w-full" /> */}
-              </header>
+              {/* <header className="flex h-[44px] w-full items-center"></header> */}
+              {/* <TempHeaders className="h-full w-full" /> */}
+
               <main className="flex-1 overflow-y-auto">{children}</main>
               <BottomNavigation />
             </div>
