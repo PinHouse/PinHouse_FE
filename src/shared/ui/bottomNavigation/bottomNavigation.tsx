@@ -3,7 +3,7 @@ import { HomeLine } from "@/src/assets/icons/home/homeLine";
 import { Person, Search } from "@/src/assets/icons/home";
 import { usePathname, useSearchParams } from "next/navigation";
 
-const hiddenRoutes = ["/home", "/login", "/onboarding"];
+const hiddenRoutes = ["/home", "/login", "/onboarding", "/listings/search"];
 const hiddenExactRoutes = [
   "/listings?tab=region",
   "/listings?tab=target",
@@ -14,7 +14,6 @@ const hiddenExactRoutes = [
 export const BottomNavigation = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
   const queryString = searchParams.toString();
   const currentPath = queryString ? `${pathname}?${queryString}` : pathname;
 
