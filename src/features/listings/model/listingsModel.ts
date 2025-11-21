@@ -254,3 +254,8 @@ export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: Se
 };
 
 export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
+
+export interface SearchResultsProps {
+  center?: boolean;
+  handleSearch: (keyword: string) => void;
+}
