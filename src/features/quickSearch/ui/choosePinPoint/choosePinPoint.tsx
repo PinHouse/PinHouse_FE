@@ -5,7 +5,6 @@ import { Input } from "@/src/shared/ui/input/deafult";
 import { InputLabel } from "@/src/shared/ui/inputLabel";
 import { SearchBar } from "@/src/shared/ui/searchBar";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
-import { Chip } from "@/src/shared/ui/chip/chip";
 
 const ChoosePinPoint = () => {
   return (
