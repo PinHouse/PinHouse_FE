@@ -9,6 +9,8 @@ import QuickSearchStepCard from "@/src/features/quickSearch/ui/common/quickSearc
 import { PageTransition } from "@/src/shared/ui/animation";
 import ChooseRoomSize from "@/src/features/quickSearch/ui/chooseRoomSize/chooseRoomSize";
 import ChooseBudget from "@/src/features/quickSearch/ui/chooseBudget/chooseBudget";
+import ChooseHomeType from "@/src/features/quickSearch/ui/chooseHomeType/chooseHomeType";
+import ChooseEnvironment from "@/src/features/quickSearch/ui/chooseEnvironment/chooseEnvironment";
 import { quickSearchStepCardContentMap } from "@/src/features/quickSearch/model";
 
 // 타입별 컴포넌트 매핑
@@ -18,6 +20,8 @@ const chooseComponents = {
   chooseLivingNumber: ChooseLivingNumber,
   chooseRoomSize: ChooseRoomSize,
   chooseBudget: ChooseBudget,
+  chooseHomeType: ChooseHomeType,
+  chooseEnvironment: ChooseEnvironment,
 } as const;
 
 export const QuickSearchSection = ({

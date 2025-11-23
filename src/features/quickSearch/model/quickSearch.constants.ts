@@ -41,14 +41,6 @@ export const quickSearchStepCardContentMap = {
     boldRange: [0, 7],
     progress: 70,
   },
-  chooseEnvironment: {
-    path: "/quicksearch/chooseEnvironment",
-    title: "원하는 주변 환경을 선택해 주세요",
-    description: "최대 5개까지 선택할 수 있어요",
-    isFillAll: false,
-    boldRange: [0, 4],
-    progress: 80,
-  },
   chooseHomeType: {
     path: "/quicksearch/chooseHomeType",
     title: "원하는 집을 선택해 주세요",
@@ -56,6 +48,14 @@ export const quickSearchStepCardContentMap = {
     isFillAll: false,
     boldRange: [0, 9],
     progress: 90,
+  },
+  chooseEnvironment: {
+    path: "/quicksearch/chooseEnvironment",
+    title: "원하는 주변 환경을 선택해 주세요",
+    description: "최대 5개까지 선택할 수 있어요",
+    isFillAll: false,
+    boldRange: [0, 4],
+    progress: 80,
   },
   chooseCondition: {
     path: "/quicksearch/chooseCondition",
