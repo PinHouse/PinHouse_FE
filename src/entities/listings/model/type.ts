@@ -46,7 +46,7 @@ export interface ListingContentsListProps {
 }
 
 export interface ListingsContentHeaderProps {
-  totalCount: number;
+  totalCount: number | null;
 }
 
 export interface FilterSheetState {
@@ -71,4 +71,26 @@ export interface FilterOption {
   label: string;
   component: string;
   type?: "select" | "radio" | "checkbox" | "sort" | "panel";
+}
+
+export interface ListingsFilterState {
+  regionType: string[];
+  rentalTypes: string[];
+  supplyTypes: string[];
+  houseTypes: string[];
+  status: string;
+  sortType: string;
+
+  toggleRegionType: (item: string) => void;
+  toggleRentalType: (item: string) => void;
+  toggleSupplyType: (item: string) => void;
+  toggleHouseType: (item: string) => void;
+
+  setStatus: (status: string) => void;
+  setSortType: (sort: string) => void;
+
+  resetRegionType: () => void;
+  resetRentalTypes: () => void;
+  resetSupplyTypes: () => void;
+  resetHouseTypes: () => void;
 }

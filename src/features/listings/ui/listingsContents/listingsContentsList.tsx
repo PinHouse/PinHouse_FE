@@ -1,9 +1,9 @@
 "use client";
-import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
 import { ListingContentsCards } from "./listingsContentsCards";
 import { useEffect, useRef } from "react";
 import { Button } from "@/src/shared/ui/button/deafult";
 import { ListingContentsListProps } from "@/src/entities/listings/model/type";
+import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 
 export const ListingContentsList = ({
   data,
@@ -38,7 +38,7 @@ export const ListingContentsList = ({
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto pb-[88px]">
+    <div className="flex h-full flex-col overflow-y-auto pb-[88px] scrollbar-hide">
       <ListingContentsCards data={items} />
 
       {!isError && hasNextPage && <div ref={observerRef} className="h-10" />}
@@ -48,18 +48,21 @@ export const ListingContentsList = ({
       )}
 
       {isError && (
-        <div className="justify-centerpy-5 flex gap-2 py-2 text-center text-sm text-red-500">
-          <p>데이터를 불러오는 중 오류가 발생했습니다.</p>
-          <Button
-            variant={"outline"}
-            onClick={() => fetchNextPage()}
-            size={"sm"}
-            radius={"sm"}
-            text={"sm"}
-            className="h-6 border-0 bg-gray-900 px-3 py-1 text-xs text-text-greyscale-grey-50"
-          >
-            재시도
-          </Button>
+        <div className="flex h-full flex-col items-center justify-center gap-5 pb-[88px]">
+          <div>
+            <ListingNoSearchResult text="정보를 가져오지 못했어요 <br /> 네트워크 상태를 확인하거나 잠시 후 다시 시도해주세요." />
+          </div>
+          <div>
+            <Button
+              variant={"solid"}
+              onClick={() => fetchNextPage()}
+              size={"sm"}
+              radius={"sm"}
+              text={"sm"}
+            >
+              재시도
+            </Button>
+          </div>
         </div>
       )}
 

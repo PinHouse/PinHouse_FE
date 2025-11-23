@@ -21,11 +21,11 @@ export const SearchForm = () => {
   };
 
   return (
-    <div>
-      <div className="flex gap-2 pb-2">
-        <LeftButton onClick={handleRouter} className="cursor-pointer hover:cursor-pointer" />
-        <p className="absolute left-1/2 -translate-x-1/2 font-suit font-bold">검색</p>
-      </div>
+    <div className="items-cente relative flex p-2">
+      <LeftButton onClick={handleRouter} className="h-7 w-7 cursor-pointer" />
+      <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-suit font-bold">
+        검색
+      </p>
     </div>
   );
 };
