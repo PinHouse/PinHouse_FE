@@ -1,10 +1,9 @@
 import { cn } from "@/src/shared/lib/utils";
 import { Dialog, DialogContent, DialogTitle } from "@/src/shared/lib/headlessUi/modal/dialog";
 
-import { Button } from "../../button/deafult";
-import { modalButtonPreset } from "../../button/preset";
 import { discription, modalContainerPreset, modalOverlayPreset } from "../preset";
 import { ModalProps } from "./type";
+import { Button } from "@/src/shared/lib/headlessUi";
 
 export const Modal = ({ children, open = true, type, className, overlayClassName }: ModalProps) => {
   if (!open) return null;
@@ -27,14 +26,10 @@ export const Modal = ({ children, open = true, type, className, overlayClassName
             {modalScript?.btnlabel?.map((item, index) => (
               <Button
                 key={item}
-                {...modalButtonPreset}
-                variant={index === 0 ? "ghost" : "solid"}
-                className={cn(
-                  "min-w-[140px] flex-1 font-bold",
-                  index === 0
-                    ? "border-[#CECED7] bg-white text-[#1F1F25]"
-                    : "bg-[#306FFF] text-white"
-                )}
+                variant={index === 0 ? "outline" : "solid"}
+                theme={index === 0 ? "black" : "mainBlue"}
+                size="sm"
+                className={cn("min-w-[140px] flex-1")}
               >
                 {item}
               </Button>

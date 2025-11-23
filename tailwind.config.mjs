@@ -12,7 +12,6 @@ export default {
     },
     extend: {
       fontFamily: {
-        suit: ["var(--font-pretendard)", ...fontFamily.sans],
         pretendard: ["var(--font-pretendard)", ...fontFamily.sans],
       },
       spacing: {
@@ -32,6 +31,8 @@ export default {
           foreground: "hsl(var(--primary-foreground))",
           blue: {
             25: "#E8EDFF",
+            50: "#D1DCFE",
+            75: "#ACC0FF",
             300: "#306FFF",
             400: "#2751FF",
             500: "#1434E0",
@@ -53,6 +54,7 @@ export default {
         },
         danger: {
           400: "#f95e5e",
+          500: "#F03D3D",
           light: "#f87171",
           dark: "#dc2626",
         },
@@ -65,9 +67,14 @@ export default {
             25: "#F7F7F9",
             50: "#EFEFF3",
             75: "#E7E7ED",
-            500: "#7F7FBF",
+            100: "#DDDDE5",
+            200: "#CECED7",
+            300: "#BBBAC5",
             400: "#9F9FAB",
+            500: "#7F7FBF",
+            600: "#676472",
             700: "#4F4B5C",
+            800: "#2E293D",
             900: "#110C22",
           },
         },
@@ -86,17 +93,6 @@ export default {
           tertiary: "#9CA3AF",
           brand: "#3182F6",
           inverse: "#FFFFFF",
-          greyscale: {
-            grey: {
-              50: "#EFEFF3",
-              75: "#E7E7ED",
-              85: "#676472",
-              400: "#9F9FAB",
-              500: "#7F7FBF",
-              700: "#4F4B5C",
-              900: "#110C22",
-            },
-          },
         },
         log: {
           light: "#306FFF",

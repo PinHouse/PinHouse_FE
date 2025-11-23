@@ -4,5 +4,5 @@ export const defaultButtonPreset = {
   variant: "solid",
   size: "md",
   radius: "md",
-  text: "md",
+  theme: "mainBlue",
 } as const satisfies Partial<ButtonProps>;
