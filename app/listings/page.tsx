@@ -1,4 +1,4 @@
-import { ListingsSection } from "@/src/widgets/listings";
+import { ListingsSection } from "@/src/widgets/listingsSection";
 
 export default function Listings() {
   return (

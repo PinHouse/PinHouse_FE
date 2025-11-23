@@ -24,6 +24,8 @@ body {
   font-family: var(--font-pretendard), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
 }
 
 a {
@@ -96,6 +98,51 @@ a:hover {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* 영구임대 */
+    --rent-permanent-icon: #a593ff;
+    --rent-permanent-tag-bg: #ece7ff;
+    --rent-permanent-tag-text: #6c55f7;
+
+    /* 국민임대 */
+    --rent-nation-icon: #f4c048;
+    --rent-nation-tag-bg: #fff5d9;
+    --rent-nation-tag-text: #d29b00;
+
+    /* 매입임대 */
+    --rent-purchase-icon: #c5a6ff;
+    --rent-purchase-tag-bg: #f3eaff;
+    --rent-purchase-tag-text: #9c6bff;
+
+    /* N년임대 */
+    --rent-nyear-icon: #8fd18f;
+    --rent-nyear-tag-bg: #e5f7e5;
+    --rent-nyear-tag-text: #4bae4b;
+
+    /* 전세임대 */
+    --rent-jeonse-icon: #f2a058;
+    --rent-jeonse-tag-bg: #ffefe2;
+    --rent-jeonse-tag-text: #d36e1c;
+
+    /* 민간임대 */
+    --rent-private-icon: #f48ec2;
+    --rent-private-tag-bg: #ffe5f0;
+    --rent-private-tag-text: #d2508c;
+
+    /* 통합공공임대 */
+    --rent-integrated-icon: #67d3c4;
+    --rent-integrated-tag-bg: #e0f8f5;
+    --rent-integrated-tag-text: #2ab3a3;
+
+    /* 장기전세 */
+    --rent-longterm-icon: #e98571;
+    --rent-longterm-tag-bg: #ffe9e4;
+    --rent-longterm-tag-text: #c2553b;
+
+    /* 행복주택 */
+    --rent-happy-icon: #a4d97a;
+    --rent-happy-tag-bg: #ebf7e3;
+    --rent-happy-tag-text: #6cae47;
   }
   .dark {
     --background: 0 0% 3.9%;

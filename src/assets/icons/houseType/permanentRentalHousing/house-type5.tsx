@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export const PermanentHouseType4 = (props: SVGProps<SVGSVGElement>) => {
+export const PermanentHouseType5 = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="40"

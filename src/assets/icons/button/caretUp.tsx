@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export const CaretDown = (props: SVGProps<SVGSVGElement>) => {
+export const CaretUp = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="12"

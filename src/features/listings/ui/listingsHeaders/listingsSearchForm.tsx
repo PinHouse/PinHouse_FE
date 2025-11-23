@@ -1,25 +1,31 @@
 // app/listings/search/page.tsx
 "use client";
 
-import { useRouter } from "next/navigation";
-import { ArrowLeftButton } from "@/src/assets/icons/button/arrowLeft";
+import { useRouter, useSearchParams } from "next/navigation";
+import { LeftButton } from "@/src/assets/icons/button";
+import { useSearchState } from "@/src/shared/hooks/store";
 
 export const SearchForm = () => {
   const router = useRouter();
+  const { resetQuery } = useSearchState();
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("query") ?? "";
+
+  const handleRouter = () => {
+    if (keyword === "") {
+      router.push(`/listings`);
+    } else {
+      router.push(`/listings/search?query=`);
+    }
+    resetQuery();
+  };
 
   return (
-    <div>
-      <div className="flex gap-2 border-b pb-2">
-        <ArrowLeftButton
-          onClick={() => router.back()}
-          className="cursor-pointer hover:cursor-pointer"
-        />
-        <input
-          className="font-pretendard flex-1 text-sm outline-none placeholder:text-gray-400"
-          placeholder="공고명을 검색해보세요"
-          autoFocus
-        />
-      </div>
+    <div className="items-cente relative flex p-2">
+      <LeftButton onClick={handleRouter} className="h-7 w-7 cursor-pointer" />
+      <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-suit font-bold">
+        검색
+      </p>
     </div>
   );
 };

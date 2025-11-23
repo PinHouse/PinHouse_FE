@@ -6,6 +6,7 @@ import { InputProps } from "./type";
 import { inputVariants } from "./input.variants";
 import { XButton } from "@/src/assets/icons/button";
 import { useRef, useState } from "react";
+import { useSearchState } from "@/src/shared/hooks/store";
 
 export const Input = ({
   className,
@@ -15,10 +16,12 @@ export const Input = ({
   onChange,
   onFocus,
   onBlur,
+  onEnter,
   ...props
 }: InputProps) => {
   const [internalValue, setInternalValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const { resetQuery } = useSearchState();
   const inputRef = useRef<HTMLInputElement>(null);
   const isControlled = value !== undefined;
   const currentValue = isControlled ? value : internalValue;
@@ -37,6 +40,7 @@ export const Input = ({
   const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    resetQuery();
     if (isControlled) {
       const syntheticEvent = {
         target: { value: "" },
@@ -77,6 +81,11 @@ export const Input = ({
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onKeyDown={e => {
+          if (e.key === "Enter") {
+            onEnter?.(String(currentValue));
+          }
+        }}
       />
       {showClearButton && (
         <button

@@ -19,6 +19,7 @@ export const SearchBar = ({
   onSelect,
   value,
   onChange,
+  onEnter,
   ...props
 }: SearchBarProps) => {
   const {
@@ -58,7 +59,7 @@ export const SearchBar = ({
   const dropdownMenu = isOpen && filteredOptions.length > 0 && (
     <ul
       className={cn(
-        "shadow-md-16 group absolute left-0 top-full z-20 mt-2 w-full rounded border border-gray-200 bg-white font-bold text-text-tertiary"
+        "group absolute left-0 top-full z-20 mt-2 w-full rounded border border-gray-200 bg-white font-bold text-text-tertiary shadow-md-16"
       )}
     >
       {filteredOptions.map((item, index) => {
@@ -104,7 +105,7 @@ export const SearchBar = ({
           />
           {showRightSearchIcon && (
             <div className="pointer-events-none flex-shrink-0">
-              {rightIcon || <Search className="text-greyscale-grey-400 h-5 w-5" />}
+              {rightIcon || <Search className="h-5 w-5 text-greyscale-grey-400" />}
             </div>
           )}
           {showFilledXButton && (
@@ -140,6 +141,9 @@ export const SearchBar = ({
         value={searchValue}
         onChange={handleChange}
         onFocus={handleFocus}
+        onEnter={(v: string) => {
+          onEnter?.(v);
+        }}
         className={cn(showLeftIcon && "pl-[3.125rem]", className)}
       />
       {dropdownMenu}
