@@ -9,6 +9,7 @@ import {
   useListingsFilterStore,
   useListingState,
 } from "@/src/features/listings/model";
+import { listingKeys } from "@/src/shared/config/queryKeys";
 
 export const useListingListInfiniteQuery = () => {
   const status = useListingState(state => state.status);
@@ -16,7 +17,7 @@ export const useListingListInfiniteQuery = () => {
   const sortType = useListingsFilterStore(state => state.sortType);
 
   return useInfiniteQuery<ListingListPage>({
-    queryKey: ["listingListInfinite", sortType, status],
+    queryKey: listingKeys.infinite({ sortType, status }),
     enabled: !!status && !open,
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {

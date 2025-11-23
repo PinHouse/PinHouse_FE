@@ -7,6 +7,7 @@ export const NOTICE_ENDPOINT = "/notices";
  * 빠른 검색 API 엔드포인트
  */
 export const SEARCH_FAST_ENDPOINT = "/search/fast";
+export const SEARCH_FAST_HISTORY_ENDPOINT = "/search/fast/history";
 
 /**
  * 유저 API 엔드포인트

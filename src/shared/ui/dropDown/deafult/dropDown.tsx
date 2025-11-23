@@ -15,15 +15,17 @@ export const DropDown = ({
   types,
   children,
   data,
+  onChange,
   ...props
 }: DropDownProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const optionData = types ? data[types] : [];
   const [selected, setSelect] = useState<string>(optionData[0]?.value ?? "");
 
-  const onClose = ({ value }: { value: string }) => {
-    setSelect(value);
+  const onClose = (item: { key: string; value: string }) => {
+    setSelect(item.value);
     setOpen(false);
+    onChange?.(item.key, item.value);
   };
 
   return (
@@ -55,7 +57,7 @@ export const DropDown = ({
         <DropdownMenuPrimitive.Portal>
           <DropdownMenuPrimitive.Content
             className={cn(
-              "shadow-md-16 text-greyscale-grey-400 group z-10 w-[var(--radix-dropdown-menu-trigger-width)] overflow-hidden rounded border-none bg-white font-medium"
+              "group z-10 w-[var(--radix-dropdown-menu-trigger-width)] overflow-hidden rounded border-none bg-white font-medium text-greyscale-grey-400 shadow-md-16"
             )}
             sideOffset={8} // 드롭다운 트리거와 메뉴 간 간격 (8px)
             align="start"
@@ -65,12 +67,12 @@ export const DropDown = ({
               return (
                 <DropdownMenuPrimitive.Item
                   key={item.key}
-                  onClick={() => onClose({ value: item.value })}
+                  onClick={() => onClose({ key: item.key, value: item.value })}
                   className={cn(
                     "flex h-auto cursor-pointer flex-col gap-[0.5rem] px-3 py-[0.625rem] outline-none",
 
                     isSelected
-                      ? "bg-primary-blue-25 group-hover:text-greyscale-grey-400 hover:!bg-primary-blue-25 text-primary-blue-400 hover:!text-primary-blue-400 group-hover:bg-transparent"
+                      ? "bg-primary-blue-25 text-primary-blue-400 hover:!bg-primary-blue-25 hover:!text-primary-blue-400 group-hover:bg-transparent group-hover:text-greyscale-grey-400"
                       : "text-greyscale-grey-400 hover:bg-primary-blue-25 hover:text-primary-blue-400"
                   )}
                 >

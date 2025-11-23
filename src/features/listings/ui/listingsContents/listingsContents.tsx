@@ -8,6 +8,7 @@ import { queryClient } from "@/src/app/providers";
 import { useFilterSheetStore, useListingsFilterStore, useListingState } from "../../model";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { Spinner } from "@/src/shared/ui/spinner/default";
+import { listingKeys } from "@/src/shared/config/queryKeys";
 
 export const ListingsContent = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, isLoading, isSuccess } =
@@ -18,7 +19,7 @@ export const ListingsContent = () => {
   useEffect(() => {
     if (prevOpenRef.current === true && open === false) {
       queryClient.invalidateQueries({
-        queryKey: ["listingListInfinite"],
+        queryKey: listingKeys.infinite(),
       });
     }
     prevOpenRef.current = open;

@@ -9,6 +9,14 @@ const hiddenExactRoutes = [
   "/listings?tab=target",
   "/listings?tab=rental",
   "/listings?tab=housing",
+  "/quicksearch/init",
+  "/quicksearch/choosePinPoint",
+  "/quicksearch/chooseDistance",
+  "/quicksearch/chooseLivingNumber",
+  "/quicksearch/chooseRoomSize",
+  "/quicksearch/chooseBudget",
+  "/quicksearch/chooseEnvironment",
+  "/quicksearch/chooseHomeType",
 ];
 
 export const BottomNavigation = () => {
