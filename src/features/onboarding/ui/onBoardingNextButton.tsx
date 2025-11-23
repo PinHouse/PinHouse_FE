@@ -1,11 +1,12 @@
 "use client";
-import { Button } from "@/src/shared/ui/button/deafult";
+
 import { onboardingContentMap } from "../model/onboardingContentMap";
 import { usePathname, useRouter } from "next/navigation";
 import { useAddressStore } from "@/src/entities/address";
 import { onBoardingButtonPreset } from "@/src/shared/ui/button/preset";
 import { useEnvtagStore } from "@/src/entities/tag/envTag";
 import { useOnboardingFlow } from "@/src/features/onboarding/hooks";
+import { Button } from "@/src/shared/lib/headlessUi";
 
 export const OnboardingNextButton = () => {
   const steps = Object.values(onboardingContentMap);

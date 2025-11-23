@@ -6,8 +6,8 @@ import { LoadingPin, SearchPin } from "@/src/assets/icons/onboarding";
 import { pinPoint } from "@/src/features/onboarding/ui";
 import { quickSearchPinPoint, quickSearchPinPointMenu } from "@/src/features/quickSearch";
 import ChoosePinPoint from "@/src/features/quickSearch/ui/choosePinPoint/choosePinPoint";
-import { Button } from "@/src/shared/ui/button/deafult";
-import { Chip } from "@/src/shared/ui/chip/chip";
+import { Button, buttonVariants } from "@/src/shared/lib/headlessUi";
+
 import { DropDown } from "@/src/shared/ui/dropDown/deafult";
 import { Input } from "@/src/shared/ui/input/deafult";
 import { InputLabel } from "@/src/shared/ui/inputLabel";
@@ -19,26 +19,14 @@ import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 export default function DefaultTest() {
   return (
     <div className="flex flex-col gap-8 px-8">
-      {/* <Button size={"lg"}>다음</Button>
-      <Button variant="outline">아웃라인 버튼</Button>
-      <Button variant="ghost">고스트 버튼</Button>
-      <Button size="lg" variant="solid">
+      <Modal type={"filterSearch"} />
+
+      <Button variant="ghost" size="md" theme="mainBlue">
         다음
       </Button>
-      <LogoIcon />
-      <HomeIcon />
-      <Input variant={"outline"} size={"lg"} />
-      <LoadingPin />
-      <SearchPin />
-      <XButton />
-      <AddButton />
-      <Alram />
-      <OnOffTrue />
-      <OnOffFalse />
-      <Hambarger />
-      <PinCelebration /> */}
-      {/* <Modal type={"filterSearch"} /> */}
-
+      <Button variant="outline" size="md" theme="black">
+        다음
+      </Button>
       <DropDown types="myHome" data={quickSearchPinPoint} size="lg" />
       <DropDown types="myHome" data={quickSearchPinPointMenu} size="md" variant="menu" />
       <Input placeholder="Input Test" />
@@ -80,7 +68,6 @@ export default function DefaultTest() {
           { key: "테스트2", value: "테스트2" },
         ]}
       />
-      <Chip className="w-fit">핀포인트1</Chip>
     </div>
   );
 }

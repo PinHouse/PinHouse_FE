@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/src/shared/ui/button/deafult";
 import { useQuickSearchStore } from "@/src/features/quickSearch/hooks/quickSearchStore";
 import { cn } from "@/lib/utils";
+import { Button } from "@/src/shared/lib/headlessUi";
 
 const LIVING_NUMBER_OPTIONS = ["1명", "2명", "3명", "4명 이상"] as const;
 
@@ -19,7 +19,7 @@ const ChooseLivingNumber = () => {
             variant={"outline"}
             size="lg"
             radius="sm"
-            text="md"
+            theme="grey"
             className={cn(
               "h-[3.625rem] justify-start border-none bg-greyscale-grey-50 py-[1.3125rem] leading-4 tracking-[-0.01em] text-greyscale-grey-700 hover:bg-greyscale-grey-50",
               isSelected &&
