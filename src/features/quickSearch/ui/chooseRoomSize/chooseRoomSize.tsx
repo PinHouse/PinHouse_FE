@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { XButton } from "@/src/assets/icons/button";
 import { Input } from "@/src/shared/ui/input/deafult";
 import { useQuickSearchStore } from "@/src/features/quickSearch/model/quickSearchStore";
+import { formatNumber } from "@/src/shared/lib/numberFormat";
 
 interface ChooseRoomSizeProps {
   className?: string;
@@ -18,11 +19,6 @@ type SizeType = "min" | "max";
 const ChooseRoomSize = ({ className, onMinChange, onMaxChange }: ChooseRoomSizeProps) => {
   const { minSize, maxSize, setMinSize, setMaxSize } = useQuickSearchStore();
   const [focusedInput, setFocusedInput] = useState<SizeType | null>(null);
-
-  const formatNumber = (value: string): string => {
-    if (!value) return "";
-    return Number(value).toLocaleString("ko-KR");
-  };
 
   // store의 숫자 값을 문자열로 변환 (표시용)
   const minValue = useMemo(() => (minSize > 0 ? String(minSize) : ""), [minSize]);
