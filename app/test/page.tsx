@@ -41,6 +41,27 @@ export default function DefaultTest() {
       <Button variant="outline" size="md" theme="black">
         다음
       </Button>
+
+      <Button variant="solid" size="md" theme="mainBlue">
+        다음
+      </Button>
+      <Button variant="outline" size="md" theme="black">
+        다음
+      </Button>
+      <Button variant="ghost" size="md" theme="mainBlue">
+        다음
+      </Button>
+
+      <Button variant="solid" size="md" theme="mainBlue">
+        다음
+      </Button>
+      <Button variant="outline" size="md" theme="black">
+        다음
+      </Button>
+      <Button variant="ghost" size="md" theme="mainBlue">
+        다음
+      </Button>
+
       <DropDown types="myHome" data={quickSearchPinPoint} size="lg" />
       <DropDown types="myHome" data={quickSearchPinPointMenu} size="md" variant="menu" />
       <Input placeholder="Input Test" />
