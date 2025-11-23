@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { dropDownPreset } from "./deafultPreset";
 import { CaretDown } from "@/src/assets/icons/button/caretDown";
 import { CaretUp } from "@/src/assets/icons/button/caretUp";
+import { useListingState } from "@/src/features/listings/model/listingsStore";
 
 export const CaretDropDown = ({
   className,
@@ -15,19 +16,19 @@ export const CaretDropDown = ({
   types,
   children,
   data,
-  setSelect,
-  selected,
   ...props
 }: DropDownProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const optionData = types ? data[types] : [];
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const onChangeButton = () => setOpen(prev => !prev);
+
+  const { status, setStatus } = useListingState();
 
   const onClose = ({ value }: { value: string }) => {
-    setSelect(value);
+    setStatus(value);
     setOpen(false);
   };
+  const onChangeButton = () => setOpen(prev => !prev);
 
   const handleClickOutside = (e: MouseEvent) => {
     if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -36,7 +37,6 @@ export const CaretDropDown = ({
   };
 
   useEffect(() => {
-    setSelect(optionData[0]?.value);
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -50,7 +50,7 @@ export const CaretDropDown = ({
       >
         {children}
         <span className="flex w-full items-center justify-between gap-1 text-xs font-bold">
-          {selected || children}
+          {status || children}
           {open ? <CaretUp /> : <CaretDown />}
         </span>
       </button>
@@ -65,7 +65,7 @@ export const CaretDropDown = ({
             <li
               key={item.key}
               onClick={() => onClose({ value: item.value })}
-              className="flex cursor-pointer flex-col px-3 py-2 hover:bg-hover-dropDown hover:text-text-brand"
+              className="hover:bg-hover-dropDown flex cursor-pointer flex-col px-3 py-2 hover:text-text-brand"
             >
               <span className="text-sm">{item.value}</span>
             </li>

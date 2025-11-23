@@ -8,6 +8,7 @@ import {
 import { useSearchState } from "@/src/shared/hooks/store";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
@@ -33,27 +34,42 @@ export const ListingsSearch = () => {
     <section className="relative h-full overflow-hidden">
       <PageTransition>
         <div className="flex h-screen flex-col">
-          <div className="flex shrink-0 flex-col gap-2 px-5">
+          <div className="flex shrink-0 flex-col gap-2">
             <SearchForm />
-            <SearchBarLabel
-              direction="horizontal"
-              placeholder="검색어를 입력하세요"
-              className="rounded-3xl"
-              value={query}
-              onChange={onChangeHandle}
-              onEnter={handleSearch}
-            />
+            <div className="px-5">
+              <SearchBarLabel
+                direction="horizontal"
+                placeholder="검색어를 입력하세요"
+                className="rounded-3xl"
+                value={query}
+                onChange={onChangeHandle}
+                onEnter={handleSearch}
+              />
+            </div>
           </div>
 
           {keyword && isSearched.length === 0 ? (
-            <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto">
-              <ListingNoSearchResult />
+            <div className="flex flex-1 flex-col items-center justify-center pb-[88px]">
+              <ListingNoSearchResult
+                text={"검색 결과가 없습니다. <br /> 다른 검색어로 검색해보세요."}
+              />
+
               <SearchResults center={true} handleSearch={handleSearch} />
             </div>
           ) : (
-            <div className="flex-1 overflow-y-auto p-5">
-              <SearchHistory handleSearch={handleSearch} />
-              <SearchResults handleSearch={handleSearch} />
+            <div className="flex-1 p-5">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -100, opacity: 0 }}
+                  transition={{ duration: 0.1, ease: "easeInOut" }}
+                  className="flex flex-col"
+                >
+                  <SearchHistory handleSearch={handleSearch} />
+                  <SearchResults handleSearch={handleSearch} />
+                </motion.div>
+              </AnimatePresence>
             </div>
           )}
         </div>

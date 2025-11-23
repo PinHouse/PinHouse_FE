@@ -22,7 +22,7 @@ export const SearchResults = ({ center = false, handleSearch }: SearchResultsPro
               handleSearch(word);
             }}
             className={cn(
-              "text-text-greyscale-grey-85 rounded-full border px-3 py-1 font-suit text-sm transition-all"
+              "rounded-full border px-3 py-1 font-suit text-sm text-text-greyscale-grey-85 transition-all"
             )}
           >
             {word}

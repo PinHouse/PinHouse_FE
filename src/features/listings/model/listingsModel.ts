@@ -1,5 +1,6 @@
 import { FilterOption } from "@/src/entities/listings/model/type";
 import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
+import { SectionLabelMap, SectionMap } from "./filterPanelModel";
 
 export const listingsHistory = ["행복주택", "청년", "등등"];
 export const listingsResults = ["행복주택", "청년", "등등"];
@@ -230,10 +231,6 @@ export const FILTER_TABS = [
   { key: "housing", label: "주택유형" },
 ] as const;
 
-type City = { code: string; name: string };
-type SectionMap = Record<string, ReadonlyArray<City>>;
-type SectionLabelMap = Record<string, string>;
-
 export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: SectionLabelMap }> = {
   region: {
     sections: LISTING_PARTIAL_SHEET,
@@ -254,8 +251,3 @@ export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: Se
 };
 
 export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
-
-export interface SearchResultsProps {
-  center?: boolean;
-  handleSearch: (keyword: string) => void;
-}

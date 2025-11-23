@@ -1,20 +1,36 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFilterSheetStore } from "../../model/listingsStore";
+import { useFilterSheetStore, useListingsFilterStore } from "../../model/listingsStore";
 import { FILTER_TABS, FilterTabKey, TAB_CONFIG } from "../../model";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { CloseButton } from "@/src/assets/icons/button";
-import { useEnvtagStore } from "@/src/entities/tag/envTag";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";
 
 export const ListingFilterPartialSheet = () => {
   const { open, closeSheet } = useFilterSheetStore();
   const router = useRouter();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
+
+  const handleScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 5;
+    setIsAtBottom(atBottom);
+  };
+
+  useEffect(() => {
+    if (open) {
+      handleScroll();
+    }
+  }, [open]);
+
   const onClickCLose = () => {
     closeSheet();
     router.push("/listings", { scroll: false });
   };
+
   return (
     <AnimatePresence>
       {open && (
@@ -44,9 +60,22 @@ export const ListingFilterPartialSheet = () => {
             </div>
             <ListingTab />
 
-            <div className="flex-1 space-y-6 overflow-y-auto px-5 py-5 scrollbar-hide">
-              <UseCheckBox />
-              <ListingSheet />
+            <div className="relative flex-1 overflow-hidden">
+              <div
+                ref={scrollRef}
+                onScroll={handleScroll}
+                className="no-scrollbar h-full overflow-y-auto px-5 py-5"
+              >
+                <div className="space-y-6">
+                  <UseCheckBox />
+                  <ListingSheet />
+                </div>
+              </div>
+              <div
+                className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-white to-transparent transition-all duration-300 ${
+                  isAtBottom ? "h-0 opacity-0" : "h-16 opacity-100"
+                }`}
+              />
             </div>
 
             <div className="p-5">
@@ -66,6 +95,32 @@ const ListingSheet = () => {
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
   const { sections, labels } = TAB_CONFIG[currentTab];
 
+  const {
+    regionType,
+    rentalTypes,
+    supplyTypes,
+    houseTypes,
+    toggleRegionType,
+    toggleRentalType,
+    toggleSupplyType,
+    toggleHouseType,
+  } = useListingsFilterStore();
+
+  const isSelected = (cityName: string) => {
+    if (currentTab === "region") return regionType.includes(cityName);
+    if (currentTab === "target") return rentalTypes.includes(cityName);
+    if (currentTab === "rental") return supplyTypes.includes(cityName);
+    if (currentTab === "housing") return houseTypes.includes(cityName);
+    return false;
+  };
+
+  const onMouseClick = (cityName: string) => {
+    if (currentTab === "region") toggleRegionType(cityName);
+    if (currentTab === "target") toggleRentalType(cityName);
+    if (currentTab === "rental") toggleSupplyType(cityName);
+    if (currentTab === "housing") toggleHouseType(cityName);
+  };
+
   return (
     <>
       {Object.entries(sections).map(([regionKey, cities]) => {
@@ -77,7 +132,12 @@ const ListingSheet = () => {
 
             <div className="flex flex-wrap gap-2">
               {cities.map(city => (
-                <Tag key={city.code}>{city.name}</Tag>
+                <Tag
+                  key={city.code}
+                  label={city.name}
+                  selected={isSelected(city.name)}
+                  onClick={() => onMouseClick(city.name)}
+                />
               ))}
             </div>
           </div>
@@ -87,46 +147,88 @@ const ListingSheet = () => {
   );
 };
 
-const Tag = ({ children }: { children: string }) => {
-  const { envTag, toggleEnvtag, reset } = useEnvtagStore();
-  const isSelected = envTag.includes(children);
-  const onTagClick = () => {
-    toggleEnvtag(children);
-  };
-
-  useEffect(() => {
-    reset();
-  }, []);
+const Tag = ({
+  label,
+  selected,
+  onClick,
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}) => {
   return (
-    <span
-      className={`rounded-full px-4 py-2 text-xs font-bold ${isSelected ? "bg-button-light text-text-inverse" : "bg-gray-100 text-text-secondary"}`}
-      onClick={onTagClick}
-    >
-      {children}
-    </span>
+    <>
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -100, opacity: 0 }}
+          transition={{ duration: 0.1, ease: "easeInOut" }}
+          className="flex flex-col"
+        >
+          <span
+            className={`rounded-full px-4 py-2 text-xs font-bold ${
+              selected ? "bg-button-light text-text-inverse" : "bg-gray-100 text-text-secondary"
+            }`}
+            onClick={onClick}
+          >
+            {label}
+          </span>
+        </motion.div>
+      </AnimatePresence>
+    </>
   );
 };
-
 const UseCheckBox = () => {
-  const { envTag, toggleEnvtag, reset } = useEnvtagStore();
+  const {
+    regionType,
+    rentalTypes,
+    supplyTypes,
+    houseTypes,
+    toggleRegionType,
+    toggleRentalType,
+    toggleSupplyType,
+    toggleHouseType,
+    resetRegionType,
+    resetRentalTypes,
+    resetSupplyTypes,
+    resetHouseTypes,
+  } = useListingsFilterStore();
 
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
   const { sections } = TAB_CONFIG[currentTab];
 
-  const totalCount = Object.values(sections).flat().length;
-  const isAllSelected = envTag.length === totalCount;
+  // 현재 탭에 따라 현재 선택된 값 가져오기
+  const selectedList = {
+    region: regionType,
+    target: rentalTypes,
+    rental: supplyTypes,
+    housing: houseTypes,
+  }[currentTab];
 
-  const onAllTagClick = (e: ChangeEvent<HTMLInputElement>) => {
+  const totalItems = Object.values(sections)
+    .flat()
+    .map(item => item.name);
+  const isAllSelected = selectedList.length === totalItems.length;
+
+  const handleAllSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.currentTarget;
 
-    reset();
-    if (checked) {
-      const allCities = Object.values(sections)
-        .flat()
-        .map(city => city.name);
+    // 먼저 해당 탭의 기존 선택 초기화
+    if (currentTab === "region") resetRegionType();
+    if (currentTab === "target") resetRentalTypes();
+    if (currentTab === "rental") resetSupplyTypes();
+    if (currentTab === "housing") resetHouseTypes();
 
-      allCities.forEach(city => toggleEnvtag(city));
+    // 전체 선택이면 toggleXXX 를 모두 호출
+    if (checked) {
+      totalItems.forEach(item => {
+        if (currentTab === "region") toggleRegionType(item);
+        if (currentTab === "target") toggleRentalType(item);
+        if (currentTab === "rental") toggleSupplyType(item);
+        if (currentTab === "housing") toggleHouseType(item);
+      });
     }
   };
 
@@ -135,8 +237,8 @@ const UseCheckBox = () => {
       <input
         type="checkbox"
         className="relative h-5 w-5 appearance-none rounded-md border border-gray-300 before:absolute before:left-[4px] before:top-[0px] checked:border-primary-blue-500 checked:bg-button-light checked:before:text-[12px] checked:before:text-white checked:before:content-['✔']"
-        onChange={onAllTagClick}
-        checked={!!isAllSelected}
+        onChange={handleAllSelect}
+        checked={isAllSelected}
       />
       <span className="text-sm">전체</span>
     </label>

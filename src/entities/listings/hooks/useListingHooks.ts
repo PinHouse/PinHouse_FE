@@ -1,29 +1,45 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { requestListingList } from "../api/listingsApi";
-import { ListingListPage } from "../model/type";
+import { ListingListFilterBody, ListingListPage, ListingListParams } from "../model/type";
+import { LISTING_LIST_NOTICES } from "@/src/shared/api";
+import { IResponse } from "@/src/shared/types";
+import {
+  useFilterSheetStore,
+  useListingsFilterStore,
+  useListingState,
+} from "@/src/features/listings/model";
 
-export const useListingListInfiniteQuery = () =>
-  useInfiniteQuery<ListingListPage>({
-    queryKey: ["listingListInfinite"],
+export const useListingListInfiniteQuery = () => {
+  const status = useListingState(state => state.status);
+  const open = useFilterSheetStore(state => state.open);
+  const sortType = useListingsFilterStore(state => state.sortType);
+
+  return useInfiniteQuery<ListingListPage>({
+    queryKey: ["listingListInfinite", sortType, status],
+    enabled: !!status && !open,
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
+      const { regionType, rentalTypes, supplyTypes, houseTypes, sortType } =
+        useListingsFilterStore.getState();
       const body = {
-        regionType: ["서울특별시", "경기도"],
-        rentalTypes: ["청년", "신혼부부"],
-        supplyTypes: ["국민임대", "행복주택"],
-        houseTypes: ["아파트", "오피스텔"],
-        status: "전체",
-        sortType: "최신공고순",
+        regionType: regionType,
+        rentalTypes: rentalTypes,
+        supplyTypes: supplyTypes,
+        houseTypes: houseTypes,
+        status: status,
+        sortType: sortType,
       };
-      const res: ListingListPage = await requestListingList(
-        { page: Number(pageParam), offSet: 5 },
-        body
-      );
 
-      return res;
+      return requestListingList<
+        IResponse,
+        ListingListFilterBody,
+        ListingListParams,
+        ListingListPage
+      >(LISTING_LIST_NOTICES, { page: Number(pageParam), offSet: 10 }, body);
     },
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.page + 1 : undefined;
     },
   });
+};
