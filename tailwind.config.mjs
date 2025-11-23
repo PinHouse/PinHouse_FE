@@ -11,7 +11,6 @@ export default {
     },
     extend: {
       fontFamily: {
-        suit: ["var(--font-pretendard)", ...fontFamily.sans],
         pretendard: ["var(--font-pretendard)", ...fontFamily.sans],
       },
       spacing: {
