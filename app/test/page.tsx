@@ -1,4 +1,6 @@
 import { AddButton, DownButton, OnOffFalse, OnOffTrue, XButton } from "@/src/assets/icons/button";
+import { SurveyIcon } from "@/src/assets/icons/button/surveyIcon";
+
 import { PinCelebration } from "@/src/assets/icons/composites";
 import { Alram, Hambarger, HomeIcon } from "@/src/assets/icons/home";
 import { LogoIcon } from "@/src/assets/icons/logo";
@@ -7,6 +9,7 @@ import { pinPoint } from "@/src/features/onboarding/ui";
 import { quickSearchPinPoint, quickSearchPinPointMenu } from "@/src/features/quickSearch";
 import ChoosePinPoint from "@/src/features/quickSearch/ui/choosePinPoint/choosePinPoint";
 import { Button, buttonVariants } from "@/src/shared/lib/headlessUi";
+import { SurveyButton } from "@/src/shared/ui/button/surveyButton/surveyButton";
 
 import { DropDown } from "@/src/shared/ui/dropDown/deafult";
 import { Input } from "@/src/shared/ui/input/deafult";
@@ -19,7 +22,18 @@ import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 export default function DefaultTest() {
   return (
     <div className="flex flex-col gap-8 px-8">
-      <Modal type={"filterSearch"} />
+      {/* <Modal type={"filterSearch"} /> */}
+      <SurveyButton title="보기 텍스트" size="md" />
+      <SurveyButton title="보기 텍스트" size="sm" />
+
+      <SurveyButton title="보기 텍스트" description="설명 텍스트" size="md" />
+      <SurveyButton title="보기 텍스트" description="설명 텍스트" size="sm" />
+
+      <SurveyButton title="보기 텍스트" icon={<SurveyIcon />} size="md" />
+      <SurveyButton title="보기 텍스트" icon={<SurveyIcon />} size="sm" />
+
+      <SurveyButton title="보기 텍스트" description="설명 텍스트" icon={<SurveyIcon />} size="md" />
+      <SurveyButton title="보기 텍스트" description="설명 텍스트" icon={<SurveyIcon />} size="sm" />
 
       <Button variant="ghost" size="md" theme="mainBlue">
         다음
