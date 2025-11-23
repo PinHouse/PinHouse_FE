@@ -25,40 +25,24 @@ export default function DefaultTest() {
       {/* <Modal type={"filterSearch"} /> */}
       <SurveyButton title="보기 텍스트" size="md" />
       <SurveyButton title="보기 텍스트" size="sm" />
-
       <SurveyButton title="보기 텍스트" description="설명 텍스트" size="md" />
-      <SurveyButton title="보기 텍스트" description="설명 텍스트" size="sm" />
-
       <SurveyButton title="보기 텍스트" icon={<SurveyIcon />} size="md" />
-      <SurveyButton title="보기 텍스트" icon={<SurveyIcon />} size="sm" />
-
       <SurveyButton title="보기 텍스트" description="설명 텍스트" icon={<SurveyIcon />} size="md" />
-      <SurveyButton title="보기 텍스트" description="설명 텍스트" icon={<SurveyIcon />} size="sm" />
-
-      <Button variant="ghost" size="md" theme="mainBlue">
-        다음
-      </Button>
-      <Button variant="outline" size="md" theme="black">
-        다음
-      </Button>
 
       <Button variant="solid" size="md" theme="mainBlue">
         다음
       </Button>
-      <Button variant="outline" size="md" theme="black">
+      <Button variant="solid" size="md" theme="mainBlue" disabled>
         다음
       </Button>
-      <Button variant="ghost" size="md" theme="mainBlue">
+      <Button variant="solid" size="md" theme="subBlue">
         다음
       </Button>
 
-      <Button variant="solid" size="md" theme="mainBlue">
-        다음
+      <Button variant="solid" size="md" theme="black">
+        다음2
       </Button>
-      <Button variant="outline" size="md" theme="black">
-        다음
-      </Button>
-      <Button variant="ghost" size="md" theme="mainBlue">
+      <Button variant="solid" size="md" theme="red">
         다음
       </Button>
 
