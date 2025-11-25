@@ -6,3 +6,4 @@ export * from "./ui/listingsContents/listingsContents";
 export * from "./ui/listingsFilter/listingsFilterPanel";
 export * from "./ui/listingsFullSheet/listingsFullSheet";
 export * from "./ui/listingsNoSearchResult/listingNoSearchResult";
+export * from "./ui/listingsCardDetail/listingsCardDetail";

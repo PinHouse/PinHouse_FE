@@ -5,7 +5,7 @@ import { ListingsContentHeader } from "./listingsContentsHeader";
 import { ListingContentsList } from "./listingsContentsList";
 import { useEffect, useRef } from "react";
 import { queryClient } from "@/src/app/providers";
-import { useFilterSheetStore, useListingsFilterStore, useListingState } from "../../model";
+import { useFilterSheetStore } from "../../model";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 

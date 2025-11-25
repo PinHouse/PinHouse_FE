@@ -2,6 +2,7 @@ import { useListingState } from "../../model/listingsStore";
 import { ListingContentsCardsProps, ListingItem } from "@/src/entities/listings/model/type";
 import { getListingIcon, getListingsRental } from "../../hooks/listingsHooks";
 import { ListingBgBookMark, ListingBookMark } from "./listingsBookMark";
+import { formatApplyPeriod } from "@/src/shared/lib/utils";
 
 const HouseICons = (item: ListingItem) => {
   const icon = getListingIcon(item.type, item.housingType);
@@ -26,7 +27,9 @@ export const ListingContentsCards = ({ data }: ListingContentsCardsProps) => {
           <div className="border-r-1 flex w-[35%] flex-col bg-bgColor-mute pl-1 pt-2">
             <div className="flex justify-start gap-1">
               <ListingBookMark item={item.housingType} border="border" />
-              <p className="text-xs font-bold">{item.supplier}</p>
+              <p className="truncate text-xs font-semibold text-greyscale-grey-800">
+                {item.supplier}
+              </p>
             </div>
 
             <div className="flex items-center justify-center">
@@ -38,11 +41,13 @@ export const ListingContentsCards = ({ data }: ListingContentsCardsProps) => {
               <HouseRental {...item} />
             </div>
             <div className="max-w-full">
-              <p className="truncate text-sm font-bold">{item.name}</p>
+              <p className="truncate text-sm font-semibold">{item.name}</p>
             </div>
             <div className="max-w-full">
-              <p className="text-sm font-bold text-text-greyscale-grey-400">모집일정</p>
-              <p className="text-sm font-bold text-text-greyscale-grey-400">{item.applyPeriod}</p>
+              <p className="text-sm text-greyscale-grey-400">모집일정</p>
+              <p className="text-sm text-greyscale-grey-400">
+                {formatApplyPeriod(item.applyPeriod)}
+              </p>
             </div>
           </div>
         </div>
