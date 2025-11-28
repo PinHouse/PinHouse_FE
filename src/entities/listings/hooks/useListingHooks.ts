@@ -23,13 +23,12 @@ export const useListingListInfiniteQuery = () => {
       supplyTypes,
       houseTypes,
       sortType,
-      status,
     }),
-    [regionType, rentalTypes, supplyTypes, houseTypes, sortType, status]
+    [regionType, rentalTypes, supplyTypes, houseTypes, sortType]
   );
 
   return useInfiniteQuery<ListingListPage>({
-    queryKey: ["listingListInfinite", filter],
+    queryKey: ["listingListInfinite", filter, status],
     enabled: !!status,
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {

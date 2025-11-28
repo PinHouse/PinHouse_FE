@@ -22,15 +22,15 @@ export const ListingsContent = () => {
 
   return (
     <>
-      {totalCount === 0 ? (
-        <div className="flex h-full items-center justify-center pb-[88px]">
-          <ListingNoSearchResult
-            text={"조건에 맞는 공고를 찾지 못했어요. <br />탐색 범위를 넓혀서 다시 탐색해 보세요"}
-          />
-        </div>
-      ) : (
-        <div className="flex h-full flex-col">
-          <ListingsContentHeader totalCount={totalCount} />
+      <div className="flex h-full flex-col">
+        <ListingsContentHeader totalCount={totalCount} />
+        {totalCount === 0 ? (
+          <div className="flex h-full flex-col items-center justify-center pb-[88px]">
+            <ListingNoSearchResult
+              text={"조건에 맞는 공고를 찾지 못했어요. <br />탐색 범위를 넓혀서 다시 탐색해 보세요"}
+            />
+          </div>
+        ) : (
           <div className="min-h-0 flex-1">
             <ListingContentsList
               data={data}
@@ -40,8 +40,8 @@ export const ListingsContent = () => {
               isError={isError}
             />
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };
