@@ -26,8 +26,7 @@ export const ListingsSearch = () => {
   };
 
   const onChangeHandle = (e: ChangeEvent<HTMLInputElement>) => {
-    const { target } = e;
-    setQuery(target.value);
+    router.push("/listings/search?query=");
   };
 
   return (
