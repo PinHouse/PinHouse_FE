@@ -9,14 +9,9 @@ export const SearchForm = () => {
   const router = useRouter();
   const { resetQuery } = useSearchState();
   const searchParams = useSearchParams();
-  const keyword = searchParams.get("query") ?? "";
 
   const handleRouter = () => {
-    if (keyword === "") {
-      router.push(`/listings`);
-    } else {
-      router.push(`/listings/search?query=`);
-    }
+    router.push(`/listings`);
     resetQuery();
   };
 

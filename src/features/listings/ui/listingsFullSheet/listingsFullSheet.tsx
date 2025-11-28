@@ -8,8 +8,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";
 
 export const ListingFilterPartialSheet = () => {
-  const { open, closeSheet } = useFilterSheetStore();
+  const open = useFilterSheetStore(s => s.open);
+  const closeSheet = useFilterSheetStore(s => s.closeSheet);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
 
@@ -26,9 +28,16 @@ export const ListingFilterPartialSheet = () => {
     }
   }, [open]);
 
-  const onClickCLose = () => {
+  const resetListingsQuery = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("tab");
+    const query = params.toString();
+    router.replace(query ? `/listings?${query}` : "/listings", { scroll: false });
+  };
+
+  const handleCloseSheet = () => {
     closeSheet();
-    router.push("/listings", { scroll: false });
+    resetListingsQuery();
   };
 
   return (
@@ -37,7 +46,7 @@ export const ListingFilterPartialSheet = () => {
         <>
           <motion.div
             className="fixed inset-0 z-40 bg-black/40"
-            onClick={closeSheet}
+            onClick={handleCloseSheet}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -54,7 +63,7 @@ export const ListingFilterPartialSheet = () => {
 
             <div className="flex items-center justify-between px-5 pb-2">
               <h2 className="text-sm font-bold">공고 필터</h2>
-              <button onClick={onClickCLose} className="text-xl font-bold">
+              <button onClick={handleCloseSheet} className="text-xl font-bold">
                 <CloseButton />
               </button>
             </div>
@@ -79,7 +88,10 @@ export const ListingFilterPartialSheet = () => {
             </div>
 
             <div className="p-5">
-              <button className="w-full rounded-lg bg-button-primary py-3 font-semibold text-white">
+              <button
+                className="w-full rounded-lg bg-button-primary py-3 font-semibold text-white"
+                onClick={handleCloseSheet}
+              >
                 1000+개의 공고가 있어요
               </button>
             </div>
@@ -93,56 +105,54 @@ export const ListingFilterPartialSheet = () => {
 const ListingSheet = () => {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
+
+  const regionType = useListingsFilterStore(s => s.regionType);
+  const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
+  const supplyTypes = useListingsFilterStore(s => s.supplyTypes);
+  const houseTypes = useListingsFilterStore(s => s.houseTypes);
+
+  const toggleRegion = useListingsFilterStore(s => s.toggleRegionType);
+  const toggleRental = useListingsFilterStore(s => s.toggleRentalType);
+  const toggleSupply = useListingsFilterStore(s => s.toggleSupplyType);
+  const toggleHouse = useListingsFilterStore(s => s.toggleHouseType);
+
   const { sections, labels } = TAB_CONFIG[currentTab];
 
-  const {
-    regionType,
-    rentalTypes,
-    supplyTypes,
-    houseTypes,
-    toggleRegionType,
-    toggleRentalType,
-    toggleSupplyType,
-    toggleHouseType,
-  } = useListingsFilterStore();
-
-  const isSelected = (cityName: string) => {
-    if (currentTab === "region") return regionType.includes(cityName);
-    if (currentTab === "target") return rentalTypes.includes(cityName);
-    if (currentTab === "rental") return supplyTypes.includes(cityName);
-    if (currentTab === "housing") return houseTypes.includes(cityName);
+  const isSelected = (name: string) => {
+    if (currentTab === "region") return regionType.includes(name);
+    if (currentTab === "target") return rentalTypes.includes(name);
+    if (currentTab === "rental") return supplyTypes.includes(name);
+    if (currentTab === "housing") return houseTypes.includes(name);
     return false;
   };
 
-  const onMouseClick = (cityName: string) => {
-    if (currentTab === "region") toggleRegionType(cityName);
-    if (currentTab === "target") toggleRentalType(cityName);
-    if (currentTab === "rental") toggleSupplyType(cityName);
-    if (currentTab === "housing") toggleHouseType(cityName);
+  const onClick = (name: string) => {
+    if (currentTab === "region") toggleRegion(name);
+    if (currentTab === "target") toggleRental(name);
+    if (currentTab === "rental") toggleSupply(name);
+    if (currentTab === "housing") toggleHouse(name);
   };
 
   return (
     <>
-      {Object.entries(sections).map(([regionKey, cities]) => {
-        const typedKey = regionKey as keyof typeof labels;
+      {Object.entries(sections).map(([key, cities]) => (
+        <div key={key}>
+          <h3 className="mb-3 text-xs-12 font-bold text-text-secondary">
+            {labels[key as keyof typeof labels]}
+          </h3>
 
-        return (
-          <div key={regionKey}>
-            <h3 className="mb-3 text-xs-12 font-bold text-text-secondary">{labels[typedKey]}</h3>
-
-            <div className="flex flex-wrap gap-2">
-              {cities.map(city => (
-                <Tag
-                  key={city.code}
-                  label={city.name}
-                  selected={isSelected(city.name)}
-                  onClick={() => onMouseClick(city.name)}
-                />
-              ))}
-            </div>
+          <div className="flex flex-wrap gap-2">
+            {cities.map(city => (
+              <Tag
+                key={city.code}
+                label={city.name}
+                selected={isSelected(city.name)}
+                onClick={() => onClick(city.name)}
+              />
+            ))}
           </div>
-        );
-      })}
+        </div>
+      ))}
     </>
   );
 };
@@ -179,26 +189,28 @@ const Tag = ({
     </>
   );
 };
-const UseCheckBox = () => {
-  const {
-    regionType,
-    rentalTypes,
-    supplyTypes,
-    houseTypes,
-    toggleRegionType,
-    toggleRentalType,
-    toggleSupplyType,
-    toggleHouseType,
-    resetRegionType,
-    resetRentalTypes,
-    resetSupplyTypes,
-    resetHouseTypes,
-  } = useListingsFilterStore();
 
+const UseCheckBox = () => {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
-  const { sections } = TAB_CONFIG[currentTab];
+  const regionType = useListingsFilterStore(s => s.regionType);
+  const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
+  const supplyTypes = useListingsFilterStore(s => s.supplyTypes);
+  const houseTypes = useListingsFilterStore(s => s.houseTypes);
 
+  const toggleRegionType = useListingsFilterStore(s => s.toggleRegionType);
+  const toggleRentalType = useListingsFilterStore(s => s.toggleRentalType);
+  const toggleSupplyType = useListingsFilterStore(s => s.toggleSupplyType);
+  const toggleHouseType = useListingsFilterStore(s => s.toggleHouseType);
+  const resetRegionType = useListingsFilterStore(s => s.resetRegionType);
+  const resetRentalTypes = useListingsFilterStore(s => s.resetRentalTypes);
+  const resetSupplyTypes = useListingsFilterStore(s => s.resetSupplyTypes);
+  const resetHouseTypes = useListingsFilterStore(s => s.resetHouseTypes);
+
+  const { sections } = TAB_CONFIG[currentTab];
+  const totalItems = Object.values(sections)
+    .flat()
+    .map(i => i.name);
   // 현재 탭에 따라 현재 선택된 값 가져오기
   const selectedList = {
     region: regionType,
@@ -207,21 +219,18 @@ const UseCheckBox = () => {
     housing: houseTypes,
   }[currentTab];
 
-  const totalItems = Object.values(sections)
-    .flat()
-    .map(item => item.name);
   const isAllSelected = selectedList.length === totalItems.length;
 
   const handleAllSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.currentTarget;
 
-    // 먼저 해당 탭의 기존 선택 초기화
+    // 기존 방식 유지: 기존 값 초기화
     if (currentTab === "region") resetRegionType();
     if (currentTab === "target") resetRentalTypes();
     if (currentTab === "rental") resetSupplyTypes();
     if (currentTab === "housing") resetHouseTypes();
 
-    // 전체 선택이면 toggleXXX 를 모두 호출
+    // 기존 toggleXXX 로직 그대로 유지 (이름 변경 없음)
     if (checked) {
       totalItems.forEach(item => {
         if (currentTab === "region") toggleRegionType(item);
