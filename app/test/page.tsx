@@ -1,3 +1,5 @@
+"use client";
+
 import { AddButton, DownButton, OnOffFalse, OnOffTrue, XButton } from "@/src/assets/icons/button";
 import { SurveyIcon } from "@/src/assets/icons/button/surveyIcon";
 
@@ -18,6 +20,7 @@ import { InputLabel } from "@/src/shared/ui/inputLabel";
 import { Modal } from "@/src/shared/ui/modal/default";
 import { SearchBar } from "@/src/shared/ui/searchBar";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
+import { QuickSearchRecommendedRoomCard } from "@/src/features/quickSearch/ui/common/quickSearchRecommendedRoomCard";
 
 export default function DefaultTest() {
   return (
@@ -87,6 +90,55 @@ export default function DefaultTest() {
           { key: "테스트2", value: "테스트2" },
         ]}
       />
+
+      {/* 추천 방 카드 아이템 */}
+      <div className="flex flex-col gap-4">
+        <h2 className="text-lg font-bold">추천 방 카드 아이템</h2>
+
+        {/* 기본 카드 */}
+        <QuickSearchRecommendedRoomCard
+          id="1"
+          thumbnailUrl="http://localhost:3000/area.png"
+          name="서울시 강남구 아파트"
+          supplier="행복주택"
+          location="서울시 강남구 역삼동"
+          price="보증금 5,000만원 / 월 50만원"
+          tags={["신혼부부", "청년"]}
+          onClick={id => console.log("카드 클릭:", id)}
+        />
+
+        {/* 이미지 있는 카드 */}
+        <QuickSearchRecommendedRoomCard
+          id="2"
+          thumbnailUrl="http://localhost:3000/area.png"
+          name="서울시 송파구 오피스텔"
+          supplier="공공임대"
+          location="서울시 송파구 잠실동"
+          price="보증금 3,000만원 / 월 40만원"
+          tags={["다자녀", "무주택자"]}
+          onClick={id => console.log("카드 클릭:", id)}
+        />
+
+        {/* 최소 정보만 있는 카드 */}
+        <QuickSearchRecommendedRoomCard
+          id="3"
+          name="서울시 마포구 다세대주택"
+          price="보증금 2,000만원 / 월 30만원"
+          onClick={id => console.log("카드 클릭:", id)}
+        />
+
+        {/* 태그가 많은 카드 */}
+        <QuickSearchRecommendedRoomCard
+          id="4"
+          thumbnailUrl="http://localhost:3000/area.png"
+          name="서울시 용산구 연립주택"
+          supplier="민간임대"
+          location="서울시 용산구 이태원동"
+          price="보증금 1,000만원 / 월 20만원"
+          tags={["청년", "대학생", "무주택자", "신혼부부"]}
+          onClick={id => console.log("카드 클릭:", id)}
+        />
+      </div>
     </div>
   );
 }

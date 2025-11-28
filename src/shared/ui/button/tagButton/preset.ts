@@ -19,3 +19,52 @@ export const ENVIRONMENT_TAGS = [
   { key: "disabled", label: "장애인" },
   { key: "vulnerable_group", label: "최상위·취약계층" },
 ] as const;
+
+export const ENVIRONMENT_CATEGORIES = [
+  {
+    title: "생활편의",
+    options: ["대형마트·백화점", "대학세탁소생"],
+  },
+  {
+    title: "안전·의료",
+    options: ["파출소", "병원·약국"],
+  },
+  {
+    title: "자연환경",
+    options: ["자전거길", "산책길", "등산로"],
+  },
+  {
+    title: "특화시설",
+    options: ["아동", "청소년", "노인", "장애인", "최상위·취약계층"],
+  },
+] as const;
+
+export const HOME_TYPE_CATEGORIES = [
+  {
+    title: "주택 유형",
+    options: ["아파트", "오피스텔", "기숙사", "다세대주택", "연립주택", "단독주택"],
+  },
+  {
+    title: "임대 유형",
+    options: ["행복주택", "공공임대", "민간임대", "전세형임대"],
+  },
+] as const;
+
+export const CONDITION_CATEGORIES = [
+  {
+    title: "청년층",
+    options: ["청년", "대학생"],
+  },
+  {
+    title: "가족형",
+    options: ["신혼부부", "다자녀"],
+  },
+  {
+    title: "주거약자",
+    options: ["고령자", "장애인", "한부모", "국가유공자", "저소득층"],
+  },
+  {
+    title: "주택 보유 상태",
+    options: ["무주택자", "유주택자"],
+  },
+] as const;

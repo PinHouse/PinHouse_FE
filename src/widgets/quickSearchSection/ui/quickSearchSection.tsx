@@ -10,8 +10,9 @@ import { PageTransition } from "@/src/shared/ui/animation";
 import ChooseRoomSize from "@/src/features/quickSearch/ui/chooseRoomSize/chooseRoomSize";
 import ChooseBudget from "@/src/features/quickSearch/ui/chooseBudget/chooseBudget";
 import ChooseHomeType from "@/src/features/quickSearch/ui/chooseHomeType/chooseHomeType";
+
+import ChooseCondition from "@/src/features/quickSearch/ui/chooseCondition/chooseCondition";
 import ChooseEnvironment from "@/src/features/quickSearch/ui/chooseEnvironment/chooseEnvironment";
-import { quickSearchStepCardContentMap } from "@/src/features/quickSearch/model";
 
 // 타입별 컴포넌트 매핑
 const chooseComponents = {
@@ -20,8 +21,9 @@ const chooseComponents = {
   chooseLivingNumber: ChooseLivingNumber,
   chooseRoomSize: ChooseRoomSize,
   chooseBudget: ChooseBudget,
-  chooseHomeType: ChooseHomeType,
   chooseEnvironment: ChooseEnvironment,
+  chooseHomeType: ChooseHomeType,
+  chooseCondition: ChooseCondition,
 } as const;
 
 export const QuickSearchSection = ({
@@ -34,7 +36,11 @@ export const QuickSearchSection = ({
 }: QuickSearchSectionProps) => {
   const ChooseComponent =
     type in chooseComponents ? chooseComponents[type as keyof typeof chooseComponents] : null;
-  const needsDivider = type === "chooseBudget";
+  const needsDivider =
+    type === "chooseBudget" ||
+    type === "chooseHomeType" ||
+    type === "chooseEnvironment" ||
+    type === "chooseCondition";
 
   return (
     <section className="flex h-full w-full flex-col">
