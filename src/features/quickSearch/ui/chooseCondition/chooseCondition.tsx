@@ -6,7 +6,7 @@ import { CONDITION_CATEGORIES } from "@/src/shared/ui/button/tagButton/preset";
 import { QuickSearchCategorySection } from "../common/quickSearchCategorySection";
 
 const ChooseCondition = () => {
-  const { supplyTypes, toggleSupplyType, setSupplyTypes } = useQuickSearchStore();
+  const { rentalTypes, toggleRentalType, setRentalTypes } = useQuickSearchStore();
   const [searchWithAllConditions, setSearchWithAllConditions] = useState(false);
 
   // 모든 옵션 목록
@@ -16,15 +16,15 @@ const ChooseCondition = () => {
   const handleCategorySelectAll = (categoryIndex: number, checked: boolean) => {
     const category = CONDITION_CATEGORIES[categoryIndex];
     const categoryOptions = category.options as readonly string[];
-    const currentSelected = supplyTypes.filter(item => categoryOptions.includes(item));
-    const otherSelected = supplyTypes.filter(item => !categoryOptions.includes(item));
+    const currentSelected = rentalTypes.filter(item => categoryOptions.includes(item));
+    const otherSelected = rentalTypes.filter(item => !categoryOptions.includes(item));
 
     if (checked) {
       // 해당 카테고리의 모든 옵션 선택
-      setSupplyTypes([...otherSelected, ...categoryOptions]);
+      setRentalTypes([...otherSelected, ...categoryOptions]);
     } else {
       // 해당 카테고리의 모든 옵션 해제
-      setSupplyTypes(otherSelected);
+      setRentalTypes(otherSelected);
     }
   };
 
@@ -33,10 +33,10 @@ const ChooseCondition = () => {
     setSearchWithAllConditions(checked);
     if (checked) {
       // 전체 조건 선택 시 모든 옵션 선택
-      setSupplyTypes([...allOptions]);
+      setRentalTypes([...allOptions]);
     } else {
       // 해제 시 모든 옵션 해제
-      setSupplyTypes([]);
+      setRentalTypes([]);
     }
   };
 
@@ -49,8 +49,8 @@ const ChooseCondition = () => {
             <QuickSearchCategorySection
               title={category.title}
               options={category.options}
-              selectedItems={supplyTypes}
-              onToggle={toggleSupplyType}
+              selectedItems={rentalTypes}
+              onToggle={toggleRentalType}
             />
           </div>
         );

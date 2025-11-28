@@ -7,25 +7,25 @@ import { QuickSearchCategorySection } from "../common/quickSearchCategorySection
 const MAX_SELECTIONS = 5;
 
 const ChooseEnvironment = () => {
-  const { supplyTypes, toggleSupplyType } = useQuickSearchStore();
+  const { facilities, toggleFacility } = useQuickSearchStore();
 
   // 최대 5개 선택 제한을 포함한 핸들러
   const handleToggle = (item: string) => {
-    const isSelected = supplyTypes.includes(item);
+    const isSelected = facilities.includes(item);
 
     // 이미 선택된 항목을 해제하는 경우는 허용
     if (isSelected) {
-      toggleSupplyType(item);
+      toggleFacility(item);
       return;
     }
 
     // 선택되지 않은 항목을 선택하려는 경우, 최대 개수 확인
-    if (supplyTypes.length >= MAX_SELECTIONS) {
+    if (facilities.length >= MAX_SELECTIONS) {
       return;
     }
 
     // 선택 허용
-    toggleSupplyType(item);
+    toggleFacility(item);
   };
 
   return (
@@ -35,7 +35,7 @@ const ChooseEnvironment = () => {
           key={key}
           title={category.title}
           options={category.options}
-          selectedItems={supplyTypes}
+          selectedItems={facilities}
           onToggle={handleToggle}
         />
       ))}

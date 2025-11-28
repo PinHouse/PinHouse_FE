@@ -1,75 +1,110 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { QuickSearchResultBottomSheet } from "@/src/features/quickSearch/ui/common/quickSearchResultBottomSheet";
 import { QuickSearchResultHeader } from "@/src/features/quickSearch/ui/common/quickSearchResultHeader";
+import { useQuickSearchStore } from "@/src/features/quickSearch/model/quickSearchStore";
+import { useMutation } from "@tanstack/react-query";
+import { postQuickSearchFast } from "@/src/features/quickSearch/api/quickSearchApi";
+import { Spinner } from "@/src/shared/ui/spinner/default";
+import { ListingNoSearchResult } from "@/src/features/listings/ui/listingsNoSearchResult/listingNoSearchResult";
+import { QuickSearchRecommendCardProps } from "@/src/features/quickSearch/ui/common/quickSearchRecommendCard";
+import { transformUnitToCard } from "@/src/features/quickSearch/api/quickSearchApi";
 
 export default function QuickSearchResultPage() {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+  const searchParams = useSearchParams();
+  const historyIdParam = searchParams.get("historyId");
+  const quickSearchData = useQuickSearchStore();
 
-  // 임시 데이터 (나중에 API로 대체)
-  const mockData = [
-    {
-      tag: "대학생",
-      complexName: "단지 이름 최대 한줄 넘어가면 자동으로 잘려서 표시됩니다",
-      distanceHours: 0,
-      distanceMinutes: 30,
-      deposit: 1000,
-      monthlyRent: 50,
-      exclusiveArea: 30,
-      recruitmentUnits: 5,
-      infrastructureTags: ["지하철", "편의점", "카페", "마트"],
-      floorPlanImage: undefined,
-      onGoToAnnouncement: () => console.log("공고 바로가기 클릭"),
+  // 빠른 검색 API mutation
+  const searchMutation = useMutation({
+    mutationFn: (data: Parameters<typeof postQuickSearchFast>[0]) => postQuickSearchFast(data),
+    onError: error => {
+      console.error("빠른 검색 요청 실패:", error);
     },
-    {
-      tag: "직장인",
-      complexName: "강남 아파트",
-      distanceHours: 1,
-      distanceMinutes: 15,
-      deposit: 2000,
-      monthlyRent: 80,
-      exclusiveArea: 40,
-      recruitmentUnits: 3,
-      infrastructureTags: ["지하철", "편의점"],
-      floorPlanImage: undefined,
-      onGoToAnnouncement: () => console.log("공고 바로가기 클릭"),
-    },
-    {
-      tag: "신혼부부",
-      complexName: "서초 오피스텔",
-      distanceHours: 0,
-      distanceMinutes: 45,
-      deposit: 1500,
-      monthlyRent: 60,
-      exclusiveArea: 35,
-      recruitmentUnits: 2,
-      infrastructureTags: ["카페", "마트", "병원"],
-      floorPlanImage: undefined,
-      onGoToAnnouncement: () => console.log("공고 바로가기 클릭"),
-    },
-    {
-      tag: "대학생",
-      complexName: "홍대 원룸",
-      distanceHours: 0,
-      distanceMinutes: 20,
-      deposit: 500,
-      monthlyRent: 40,
-      exclusiveArea: 25,
-      recruitmentUnits: 10,
-      infrastructureTags: ["지하철", "편의점", "카페"],
-      floorPlanImage: undefined,
-      onGoToAnnouncement: () => console.log("공고 바로가기 클릭"),
-    },
-  ];
+  });
 
+  // 컴포넌트 마운트 시 API 호출
+  useEffect(() => {
+    const {
+      historyId: storeHistoryId,
+      pinPointId,
+      transitTime,
+      minSize,
+      maxSize,
+      maxDeposit,
+      maxMonthPay,
+      facilities,
+      rentalTypes,
+      supplyTypes,
+      houseTypes,
+      livingNumber,
+    } = quickSearchData;
+
+    // 쿼리 파라미터의 historyId가 있으면 우선 사용, 없으면 store의 historyId 사용
+    const historyId = historyIdParam || storeHistoryId;
+
+    searchMutation.mutate({
+      historyId,
+      pinPointId,
+      transitTime,
+      minSize,
+      maxSize,
+      maxDeposit,
+      maxMonthPay,
+      facilities,
+      rentalTypes,
+      supplyTypes,
+      houseTypes,
+      livingNumber,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // 최초 마운트 시에만 실행
+
+  // API 응답 데이터를 카드 props로 변환
+  const cards: Omit<QuickSearchRecommendCardProps, "className">[] =
+    searchMutation.data?.units?.map(unit => transformUnitToCard(unit)) || [];
+
+  // 로딩 중
+  if (searchMutation.isPending) {
+    return <Spinner title="검색 중" description="조건에 맞는 방을 찾고 있어요" />;
+  }
+
+  // 에러 발생
+  if (searchMutation.isError) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-white px-5">
+        <ListingNoSearchResult text="정보를 가져오지 못했어요 <br /> 네트워크 상태를 확인하거나 잠시 후 다시 시도해주세요." />
+      </div>
+    );
+  }
+
+  // 결과가 없는 경우
+  if (
+    !searchMutation.data ||
+    !searchMutation.data.units ||
+    searchMutation.data.units.length === 0
+  ) {
+    return (
+      <div className="flex h-screen flex-col bg-white">
+        <QuickSearchResultHeader />
+        <div className="flex flex-1 items-center justify-center px-5">
+          <ListingNoSearchResult text="조건에 맞는 방이 없어요 <br /> 다른 조건으로 다시 검색해보세요." />
+        </div>
+      </div>
+    );
+  }
+
+  // 결과가 있는 경우
   return (
     <div className="relative flex h-screen flex-col bg-white">
       <QuickSearchResultHeader />
       <QuickSearchResultBottomSheet
         open={isBottomSheetOpen}
         onOpenChange={setIsBottomSheetOpen}
-        cards={mockData}
+        cards={cards}
       />
     </div>
   );

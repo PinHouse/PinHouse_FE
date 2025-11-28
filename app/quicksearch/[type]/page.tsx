@@ -33,8 +33,14 @@ export default function QuickSearchPage() {
       setShowModal(false);
       router.push("/quicksearch/choosePinPoint");
     } else {
-      // "결과보기" TODO: 결과 페이지로 이동
+      // "결과보기" - historyId를 쿼리 파라미터로 전달
       setShowModal(false);
+      const historyId = historyData?.id;
+      if (historyId) {
+        router.push(`/quicksearch/result?historyId=${historyId}`);
+      } else {
+        router.push("/quicksearch/result");
+      }
     }
   };
 

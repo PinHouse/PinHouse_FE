@@ -6,44 +6,36 @@ import { QuickSearchCategorySection } from "../common/quickSearchCategorySection
 
 const ChooseHomeType = () => {
   const {
-    houseTypes,
-    rentalTypes,
-    toggleHouseType,
-    toggleRentalType,
-    setHouseTypes,
-    setRentalTypes,
+    supplyTypes,
+    toggleSupplyType,
+    setSupplyTypes,
   } = useQuickSearchStore();
 
-  // 전체 선택 핸들러
-  const handleHouseTypeSelectAll = (checked: boolean) => {
-    const houseTypeCategory = HOME_TYPE_CATEGORIES[0];
-    if (checked) {
-      setHouseTypes([...houseTypeCategory.options]);
-    } else {
-      setHouseTypes([]);
-    }
-  };
+  // 각 카테고리별 전체 선택 핸들러
+  const handleCategorySelectAll = (categoryIndex: number, checked: boolean) => {
+    const category = HOME_TYPE_CATEGORIES[categoryIndex];
+    const categoryOptions = category.options as readonly string[];
+    const currentSelected = supplyTypes.filter(item => categoryOptions.includes(item));
+    const otherSelected = supplyTypes.filter(item => !categoryOptions.includes(item));
 
-  const handleRentalTypeSelectAll = (checked: boolean) => {
-    const rentalTypeCategory = HOME_TYPE_CATEGORIES[1];
     if (checked) {
-      setRentalTypes([...rentalTypeCategory.options]);
+      // 해당 카테고리의 모든 옵션 선택
+      setSupplyTypes([...otherSelected, ...categoryOptions]);
     } else {
-      setRentalTypes([]);
+      // 해당 카테고리의 모든 옵션 해제
+      setSupplyTypes(otherSelected);
     }
   };
 
   return (
     <div className="mt-10 flex w-full flex-col gap-6">
       {HOME_TYPE_CATEGORIES.map((category, index) => {
-        const selectedItems = index === 0 ? houseTypes : rentalTypes;
-        const onToggle = index === 0 ? toggleHouseType : toggleRentalType;
-        const onSelectAll = index === 0 ? handleHouseTypeSelectAll : handleRentalTypeSelectAll;
-        const selectedCount = selectedItems.length;
-        const isAllSelected = selectedCount === category.options.length;
+        const categoryOptions = category.options as readonly string[];
+        const currentSelected = supplyTypes.filter(item => categoryOptions.includes(item));
+        const isAllSelected = currentSelected.length === categoryOptions.length;
 
         const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-          onSelectAll(e.target.checked);
+          handleCategorySelectAll(index, e.target.checked);
         };
 
         return (
@@ -73,8 +65,8 @@ const ChooseHomeType = () => {
             <QuickSearchCategorySection
               title=""
               options={category.options}
-              selectedItems={selectedItems}
-              onToggle={onToggle}
+              selectedItems={supplyTypes}
+              onToggle={toggleSupplyType}
             />
           </div>
         );

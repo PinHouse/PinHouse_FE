@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/src/shared/ui/input/deafult";
 import { formatNumber, formatToKorean } from "@/src/shared/lib/numberFormat";
+import { useQuickSearchStore } from "@/src/features/quickSearch/model/quickSearchStore";
 
 interface ChooseBudgetProps {
   className?: string;
@@ -12,31 +13,55 @@ interface ChooseBudgetProps {
 }
 
 const ChooseBudget = ({ className, onDepositChange, onRentChange }: ChooseBudgetProps) => {
+  const { maxDeposit, maxMonthPay, setMaxDeposit, setMaxMonthPay } = useQuickSearchStore();
   const [depositValue, setDepositValue] = useState<string>("");
   const [rentValue, setRentValue] = useState<string>("");
   const [focusedInput, setFocusedInput] = useState<"deposit" | "rent" | null>(null);
 
+  // 스토어의 초기값을 로컬 state에 반영
+  useEffect(() => {
+    if (maxDeposit > 0) {
+      setDepositValue(String(maxDeposit * 10000)); // 만원 단위를 원 단위로 변환
+    }
+    if (maxMonthPay > 0) {
+      setRentValue(String(maxMonthPay * 10000)); // 만원 단위를 원 단위로 변환
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // 최초 마운트 시에만 실행
+
   const handleDepositChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
     setDepositValue(value);
+    // 원 단위를 만원 단위로 변환하여 스토어에 저장
+    const depositInManwon = value ? Math.floor(Number(value) / 10000) : 0;
+    setMaxDeposit(depositInManwon);
     onDepositChange?.(value);
   };
 
   const handleRentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
     setRentValue(value);
+    // 원 단위를 만원 단위로 변환하여 스토어에 저장
+    const rentInManwon = value ? Math.floor(Number(value) / 10000) : 0;
+    setMaxMonthPay(rentInManwon);
     onRentChange?.(value);
   };
 
   const addToDeposit = (amount: number) => {
     const newValue = String(Number(depositValue || "0") + amount);
     setDepositValue(newValue);
+    // 원 단위를 만원 단위로 변환하여 스토어에 저장
+    const depositInManwon = Math.floor(Number(newValue) / 10000);
+    setMaxDeposit(depositInManwon);
     onDepositChange?.(newValue);
   };
 
   const addToRent = (amount: number) => {
     const newValue = String(Number(rentValue || "0") + amount);
     setRentValue(newValue);
+    // 원 단위를 만원 단위로 변환하여 스토어에 저장
+    const rentInManwon = Math.floor(Number(newValue) / 10000);
+    setMaxMonthPay(rentInManwon);
     onRentChange?.(newValue);
   };
 
