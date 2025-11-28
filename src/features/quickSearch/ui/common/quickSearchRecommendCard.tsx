@@ -96,7 +96,7 @@ export const QuickSearchRecommendCard = ({
     <div className={cn("flex min-w-[200px] flex-col gap-2", className)}>
       {/* 카드 영역*/}
       {/* 평면도 이미지 + 상단 태그/핀 아이콘 오버레이 */}
-      <div className="flex flex-col rounded-lg border border-greyscale-grey-75">
+      <div className="flex flex-1 flex-col rounded-lg border border-greyscale-grey-75">
         <div className="relative h-32 w-full overflow-hidden rounded-t-lg bg-greyscale-grey-50 p-4">
           {floorPlanImage ? (
             <img src={floorPlanImage} alt={floorPlanAlt} className="h-full w-full object-cover" />
@@ -144,11 +144,11 @@ export const QuickSearchRecommendCard = ({
           {/* 정보 섹션 (좌우 패딩 16px) */}
           <div className="flex flex-col gap-1">
             {/* 보증금/월임대료 */}
-            <div className="text-xs font-normal leading-[120%] tracking-[-0.01em] text-greyscale-grey-500">
+            <div className="whitespace-nowrap text-xs font-normal leading-[120%] tracking-[-0.01em] text-greyscale-grey-500">
               보증금 {deposit}만원 | 월임대료 {monthlyRent}만원
             </div>
             {/* 전용면적/모집호수 */}
-            <div className="text-xs font-normal leading-[120%] tracking-[-0.01em] text-greyscale-grey-500">
+            <div className="whitespace-nowrap text-xs font-normal leading-[120%] tracking-[-0.01em] text-greyscale-grey-500">
               전용면적 {exclusiveArea}m² | 모집호수 {recruitmentUnits}호
             </div>
           </div>

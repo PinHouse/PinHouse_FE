@@ -18,6 +18,7 @@ const hiddenExactRoutes = [
   "/quicksearch/chooseEnvironment",
   "/quicksearch/chooseHomeType",
   "/quicksearch/chooseCondition",
+  "/quicksearch/result",
 ];
 
 export const BottomNavigation = () => {
