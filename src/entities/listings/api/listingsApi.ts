@@ -1,21 +1,38 @@
-import { LISTING_LIST_NOTICES } from "@/src/shared/api";
-import { http } from "../../../shared/api/http";
-import { ListingListFilterBody, ListingListPage, ListingListParams } from "../model/type";
 import { IResponse } from "@/src/shared/types";
+import { HTTP_METHODS } from "@/src/shared/api";
+import { HttpMethod } from "../model/type";
 
 export const requestListingList = async <
-  TData extends IResponse,
-  TReqBody extends object,
-  TParams extends object,
-  TReturn,
+  TResponse extends IResponse,
+  TReqBody extends object | undefined = undefined,
+  TParams extends object | undefined = undefined,
+  TReturn = TResponse,
 >(
   url: string,
-  params: TParams,
-  reqBody: TReqBody
+  method: HttpMethod,
+  options?: {
+    params?: TParams;
+    body?: TReqBody;
+  }
 ): Promise<TReturn> => {
-  const res = await http.post<TData, TReqBody>(url, reqBody, {
-    params,
+  const apiCall = HTTP_METHODS[method];
+  const res = await apiCall<TResponse, TReturn>(url, options?.body as any, {
+    params: options?.params,
   });
 
   return res.data as TReturn;
+};
+
+export const PostBasicRequest = async <
+  TResponse extends IResponse,
+  TReqBody extends object,
+  TReturn,
+>(
+  url: string,
+  method: HttpMethod,
+  body?: TReqBody
+): Promise<TReturn> => {
+  const apiCall = HTTP_METHODS[method];
+  const res = await apiCall<TResponse, TReqBody>(url, body);
+  return res as unknown as TReturn;
 };

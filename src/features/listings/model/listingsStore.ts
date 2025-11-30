@@ -3,6 +3,7 @@ import {
   FilterSheetState,
   ListingsFilterState,
   ListingState,
+  SearchState,
 } from "@/src/entities/listings/model/type";
 
 export const useListingState = create<ListingState>(set => ({
@@ -84,4 +85,12 @@ export const useListingsFilterStore = create<ListingsFilterState>(set => ({
     set({
       houseTypes: [],
     }),
+}));
+
+export const useListingsSearchState = create<SearchState>(set => ({
+  sortType: "",
+  status: "",
+  setStatus: value => set({ status: value }),
+  setSortType: value => set({ sortType: value }),
+  reset: () => set({ status: "", sortType: "" }),
 }));

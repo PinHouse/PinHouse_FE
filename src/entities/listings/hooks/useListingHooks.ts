@@ -1,12 +1,31 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useMemo } from "react";
-import { shallow } from "zustand/shallow";
-
-import { requestListingList } from "../api/listingsApi";
-import { ListingListFilterBody, ListingListPage, ListingListParams } from "../model/type";
-import { LISTING_LIST_NOTICES } from "@/src/shared/api";
+import { PostBasicRequest, requestListingList } from "../api/listingsApi";
+import {
+  LikeReturn,
+  ListingListFilterBody,
+  ListingListPage,
+  ListingListParams,
+  ListingSearchParams,
+  PopularKeywordItem,
+  PopularKeywordResponse,
+  ToggleLikeVariables,
+} from "../model/type";
+import {
+  LIKE_ENDPOINT,
+  LISTING_SEARCH_ENDPOINT,
+  NOTICE_ENDPOINT,
+  POPULAR_SEARCH_ENDPOINT,
+} from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { useListingsFilterStore, useListingState } from "@/src/features/listings/model";
+import { useSearchState } from "@/src/shared/hooks/store";
 
 export const useListingListInfiniteQuery = () => {
   const status = useListingState(state => state.status);
@@ -46,7 +65,112 @@ export const useListingListInfiniteQuery = () => {
         ListingListFilterBody,
         ListingListParams,
         ListingListPage
-      >(LISTING_LIST_NOTICES, { page: Number(pageParam), offSet: 10 }, body);
+      >(NOTICE_ENDPOINT, "post", {
+        params: { page: Number(pageParam), offSet: 10 },
+        body,
+      });
+    },
+    getNextPageParam: lastPage => {
+      return lastPage.hasNext ? lastPage.page + 1 : undefined;
+    },
+  });
+};
+
+export const useToogleLike = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    LikeReturn,
+    Error,
+    ToggleLikeVariables,
+    { prevData: InfiniteData<ListingListPage> | undefined }
+  >({
+    retry: 0,
+    mutationFn: variables => {
+      return PostBasicRequest<
+        IResponse,
+        {
+          targetId: number;
+          type: "NOTICE";
+        },
+        LikeReturn
+      >(LIKE_ENDPOINT, variables.method, {
+        targetId: variables.targetId!,
+        type: "NOTICE",
+      });
+    },
+
+    onMutate: async variables => {
+      await queryClient.cancelQueries({ queryKey: ["listingListInfinite"] });
+      const prevData = queryClient.getQueryData<InfiniteData<ListingListPage>>([
+        "listingListInfinite",
+      ]);
+      const targetId = variables.method === "post" ? variables.targetId : variables.targetId;
+      queryClient.setQueryData<InfiniteData<ListingListPage>>(["listingListInfinite"], old => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map(page => ({
+            ...page,
+            data: page.content.map(item =>
+              Number(item.id) === targetId ? { ...item, liked: !item.liked } : item
+            ),
+          })),
+        };
+      });
+      return { prevData };
+    },
+
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.prevData) {
+        queryClient.setQueryData(["listingListInfinite"], ctx.prevData);
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["listingListInfinite"],
+      });
+    },
+  });
+};
+
+export const usePopularSearchQuery = () => {
+  return useQuery<PopularKeywordItem[]>({
+    queryKey: ["popularSearch"],
+    queryFn: () =>
+      requestListingList<
+        PopularKeywordResponse,
+        undefined,
+        { limit: number },
+        PopularKeywordItem[]
+      >(POPULAR_SEARCH_ENDPOINT, "get", { params: { limit: 5 } }),
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useListingSearchInfiniteQuery = () => {
+  const rawQuery = useSearchState(s => s.query);
+  const query = (rawQuery ?? "").trim();
+
+  return useInfiniteQuery<ListingListPage>({
+    queryKey: ["listingSearchInfinite", rawQuery],
+    enabled: query.trim() !== "",
+    initialPageParam: 1,
+    staleTime: 1000 * 60 * 2,
+    queryFn: async ({ pageParam = 1 }) => {
+      return requestListingList<IResponse, undefined, ListingSearchParams, ListingListPage>(
+        LISTING_SEARCH_ENDPOINT,
+        "get",
+        {
+          params: {
+            q: rawQuery,
+            pageRequest: { page: Number(pageParam), size: 10 },
+            sort: "LATEST",
+            filter: "ALL",
+          },
+        }
+      );
     },
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.page + 1 : undefined;

@@ -2,9 +2,6 @@ import { FilterOption } from "@/src/entities/listings/model/type";
 import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
 import { SectionLabelMap, SectionMap } from "./filterPanelModel";
 
-export const listingsHistory = ["행복주택", "청년", "등등"];
-export const listingsResults = ["행복주택", "청년", "등등"];
-
 export const RENT_COLOR_CLASS = {
   영구임대: {
     bg: "bg-[var(--rent-permanent-tag-bg)]",

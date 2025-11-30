@@ -4,7 +4,7 @@ import type { AxiosRequestConfig } from "axios";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { ListingsSection } from "../listingsSection";
-import { LISTING_LIST_NOTICES } from "@/src/shared/api";
+import { NOTICE_ENDPOINT } from "@/src/shared/api";
 import { http } from "@/src/shared/api/http";
 import { ListingItem, ListingListPage } from "@/src/entities/listings/model/type";
 import { IResponse } from "@/src/shared/types";
@@ -90,7 +90,7 @@ const withListingsMock: Decorator = (Story, context) => {
       data?: D,
       options?: AxiosRequestConfig
     ) => {
-      if (url === LISTING_LIST_NOTICES) {
+      if (url === NOTICE_ENDPOINT) {
         if (mode === "error") {
           return Promise.reject(new Error("Mock listings fetch failed"));
         }

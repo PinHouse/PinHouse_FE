@@ -6,4 +6,5 @@ export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size">,
     VariantProps<typeof inputVariants> {
   onEnter?: (value: string) => void;
+  onClear?: () => void;
 }
