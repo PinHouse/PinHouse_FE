@@ -1,10 +1,10 @@
 "use client";
-import { ListingContentsCards } from "./listingsContentsCards";
 import { useEffect, useRef } from "react";
 // import { Button } from "@/src/shared/ui/button/deafult";
 import { ListingContentsListProps } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { Button } from "@/src/shared/lib/headlessUi";
+import { ListingContentsCard } from "./listingsContentCard";
 
 export const ListingContentsList = ({
   data,
@@ -40,7 +40,7 @@ export const ListingContentsList = ({
 
   return (
     <div className="flex h-full flex-col overflow-y-auto pb-[88px] scrollbar-hide">
-      <ListingContentsCards data={items} />
+      <ListingContentsCard data={items} />
 
       {!isError && hasNextPage && <div ref={observerRef} className="h-10" />}
 

@@ -18,4 +18,5 @@ export interface SearchBarProps
   onSelect?: (option: SearchBarOption) => void;
   className?: string;
   onEnter?: (value: string) => void;
+  onClear?: () => void;
 }

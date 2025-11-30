@@ -1,3 +1,13 @@
+import { http } from "./http";
+
+export const HTTP_METHODS = {
+  post: http.post,
+  delete: http.delete,
+  put: http.put,
+  get: http.get,
+  patch: http.patch,
+} as const;
+
 /**
  * 공고 API 엔드포인트
  */
@@ -7,6 +17,12 @@ export const NOTICE_ENDPOINT = "/notices";
  * 빠른 검색 API 엔드포인트
  */
 export const SEARCH_FAST_ENDPOINT = "/search/fast";
+
+/**
+ * 인기 검색어 API 엔드포인트
+ */
+export const POPULAR_SEARCH_ENDPOINT = "/search/popular";
+export const LISTING_SEARCH_ENDPOINT = "/search/notices";
 
 /**
  * 유저 API 엔드포인트
@@ -111,6 +127,6 @@ export const SCHOOL_AVAILABILITY_ENDPOINT = "/school";
 export const SCHOOL_SEARCH_ENDPOINT = "/school/search";
 
 /**
- * 학교 API
+ * 좋아요 API
  */
-export const LISTING_LIST_NOTICES = "/notices";
+export const LIKE_ENDPOINT = "/likes";

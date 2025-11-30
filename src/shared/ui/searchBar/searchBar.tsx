@@ -20,6 +20,7 @@ export const SearchBar = ({
   value,
   onChange,
   onEnter,
+  onClear,
   ...props
 }: SearchBarProps) => {
   const {
@@ -141,6 +142,7 @@ export const SearchBar = ({
         value={searchValue}
         onChange={handleChange}
         onFocus={handleFocus}
+        onClear={onClear}
         onEnter={(v: string) => {
           onEnter?.(v);
         }}
