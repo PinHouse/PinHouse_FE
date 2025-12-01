@@ -15,10 +15,10 @@ import { SearchHistory } from "./listingsSearchHistory";
 import { ListingContentsCard } from "../listingsContents/listingsContentCard";
 import { ListingsContentHeader } from "../listingsContents/listingsContentsHeader";
 
-export const SearchResults = ({ center = false, handleSearch }: SearchResultsProps) => {
+export const SearchResults = ({ handleSearch }: SearchResultsProps) => {
   const { setQuery } = useSearchState();
   const { data } = usePopularSearchQuery();
-  const { data: searchList } = useListingSearchInfiniteQuery();
+  const { data: searchList, isError, isLoading } = useListingSearchInfiniteQuery();
   const pageData = searchList?.pages[0].notices;
   const totalCount = searchList?.pages[0].totalElements;
   const searchParams = useSearchParams();
@@ -54,9 +54,28 @@ export const SearchResults = ({ center = false, handleSearch }: SearchResultsPro
           </section>
         </div>
       ) : keyword !== "" && pageData?.length !== 0 ? (
-        <div className="flex h-full flex-col overflow-y-auto pb-[88px] pl-5 pr-5 scrollbar-hide">
+        <div className="flex h-full flex-col pl-5 pr-5">
           <ListingsContentHeader totalCount={totalCount ?? 0} />
-          <ListingContentsCard data={pageData ?? []} />
+
+          <div className="min-h-0 flex-1 overflow-y-auto scrollbar-hide">
+            <ListingContentsCard data={pageData ?? []} />
+
+            {isLoading && (
+              <div className="py-5 text-center text-sm text-gray-400">불러오는 중...</div>
+            )}
+
+            {isError && (
+              <div className="flex h-full flex-col items-center justify-center gap-5">
+                <ListingNoSearchResult text="정보를 가져오지 못했어요 <br /> 네트워크 상태를 확인하거나 잠시 후 다시 시도해주세요." />
+              </div>
+            )}
+
+            {!isError && !isLoading && (
+              <div className="py-3 text-center text-sm text-gray-400">
+                더 이상 데이터가 없습니다.
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         keyword === "" &&

@@ -66,23 +66,6 @@ export const FILTER_OPTIONS: FilterOption[] = [
     component: "HousingTypeFilter",
     type: "select",
   },
-  {
-    key: "noticeStatus",
-    label: "공고상태",
-    component: "NoticeStatusFilter",
-    type: "radio",
-  },
-  {
-    key: "sortOption",
-    label: "정렬",
-    component: "SortOption",
-    type: "sort",
-  },
-  {
-    key: "noticeCount",
-    label: "공고개수",
-    component: "NoticeCount",
-  },
 ];
 
 const listingDrop: PinPoint[] = [

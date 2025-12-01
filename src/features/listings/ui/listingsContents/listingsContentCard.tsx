@@ -1,3 +1,4 @@
+"use client";
 import { ListingUnion, normalizeListing } from "@/src/entities/listings/model/type";
 import { ListingBookMark } from "./listingsBookMark";
 import { HouseICons, HouseRental } from "../../hooks/listingsHooks";

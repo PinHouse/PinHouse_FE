@@ -166,8 +166,10 @@ export interface PopularKeywordResponse extends IResponse {
   data: PopularKeywordItem[];
 }
 
+export type FilterOptionKey = "region" | "targetGroup" | "leaseType" | "housingType";
+
 export interface FilterOption {
-  key: string;
+  key: FilterOptionKey;
   label: string;
   component: string;
   type?: "select" | "radio" | "checkbox" | "sort" | "panel";
