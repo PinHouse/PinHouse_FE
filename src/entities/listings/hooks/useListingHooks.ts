@@ -24,7 +24,11 @@ import {
   POPULAR_SEARCH_ENDPOINT,
 } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
-import { useListingsFilterStore, useListingState } from "@/src/features/listings/model";
+import {
+  useListingsFilterStore,
+  useListingsSearchState,
+  useListingState,
+} from "@/src/features/listings/model";
 import { useSearchState } from "@/src/shared/hooks/store";
 
 export const useListingListInfiniteQuery = () => {
@@ -76,61 +80,40 @@ export const useListingListInfiniteQuery = () => {
   });
 };
 
+type LikeContext = {
+  prevListingList?: InfiniteData<ListingListPage>;
+  prevListingSearch?: InfiniteData<ListingListPage>;
+};
+
 export const useToogleLike = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<
-    LikeReturn,
-    Error,
-    ToggleLikeVariables,
-    { prevData: InfiniteData<ListingListPage> | undefined }
-  >({
+  return useMutation<LikeReturn, Error, ToggleLikeVariables, LikeContext>({
     retry: 0,
-    mutationFn: variables => {
-      return PostBasicRequest<
-        IResponse,
-        {
-          targetId: number;
-          type: "NOTICE";
-        },
-        LikeReturn
-      >(LIKE_ENDPOINT, variables.method, {
-        targetId: variables.targetId!,
-        type: "NOTICE",
-      });
-    },
 
-    onMutate: async variables => {
-      await queryClient.cancelQueries({ queryKey: ["listingListInfinite"] });
-      const prevData = queryClient.getQueryData<InfiniteData<ListingListPage>>([
-        "listingListInfinite",
-      ]);
-      const targetId = variables.method === "post" ? variables.targetId : variables.targetId;
-      queryClient.setQueryData<InfiniteData<ListingListPage>>(["listingListInfinite"], old => {
-        if (!old) return old;
-        return {
-          ...old,
-          pages: old.pages.map(page => ({
-            ...page,
-            data: page.content.map(item =>
-              Number(item.id) === targetId ? { ...item, liked: !item.liked } : item
-            ),
-          })),
-        };
-      });
-      return { prevData };
+    mutationFn: variables => {
+      return PostBasicRequest<IResponse, { targetId: number; type: "NOTICE" }, LikeReturn>(
+        LIKE_ENDPOINT,
+        variables.method,
+        {
+          targetId: variables.targetId!,
+          type: "NOTICE",
+        }
+      );
     },
 
     onError: (_err, _vars, ctx) => {
-      if (ctx?.prevData) {
-        queryClient.setQueryData(["listingListInfinite"], ctx.prevData);
+      if (ctx?.prevListingList) {
+        queryClient.setQueryData(["listingListInfinite"], ctx.prevListingList);
+      }
+      if (ctx?.prevListingSearch) {
+        queryClient.setQueryData(["listingSearchInfinite"], ctx.prevListingSearch);
       }
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["listingListInfinite"],
-      });
+      queryClient.invalidateQueries({ queryKey: ["listingListInfinite"] });
+      queryClient.invalidateQueries({ queryKey: ["listingSearchInfinite"] });
     },
   });
 };
@@ -151,10 +134,11 @@ export const usePopularSearchQuery = () => {
 
 export const useListingSearchInfiniteQuery = () => {
   const rawQuery = useSearchState(s => s.query);
+  const sortType = useListingsSearchState(s => s.sortType);
+  const status = useListingsSearchState(s => s.status);
   const query = (rawQuery ?? "").trim();
-
   return useInfiniteQuery<ListingListPage>({
-    queryKey: ["listingSearchInfinite", rawQuery],
+    queryKey: ["listingSearchInfinite", rawQuery, sortType, status],
     enabled: query.trim() !== "",
     initialPageParam: 1,
     staleTime: 1000 * 60 * 2,
@@ -166,8 +150,8 @@ export const useListingSearchInfiniteQuery = () => {
           params: {
             q: rawQuery,
             pageRequest: { page: Number(pageParam), size: 10 },
-            sort: "LATEST",
-            filter: "ALL",
+            sort: sortType,
+            filter: status,
           },
         }
       );

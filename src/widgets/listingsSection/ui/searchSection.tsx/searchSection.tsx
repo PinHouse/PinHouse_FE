@@ -1,17 +1,18 @@
 "use client";
 import { SearchForm, SearchResults } from "@/src/features/listings";
+import { useListingsSearchState } from "@/src/features/listings/model";
 import { useSearchState } from "@/src/shared/hooks/store";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
 export const ListingsSearch = () => {
-  const { setSearchQuery, setQuery, resetQuery } = useSearchState();
+  const { setSearchQuery, setQuery } = useSearchState();
+  const searchRest = useListingsSearchState.getState();
+  const resetQuery = useSearchState.getState();
   const router = useRouter();
   const searchParams = useSearchParams();
   const keyword = searchParams.get("query") ?? "";
-  const [isSearched, setIsSearched] = useState([]);
 
   const handleSearch = (keyword: string) => {
     if (!keyword) return;
@@ -21,7 +22,8 @@ export const ListingsSearch = () => {
   };
 
   const onClear = () => {
-    resetQuery();
+    resetQuery.resetQuery();
+    searchRest.reset();
     router.push("/listings/search?query=");
   };
 
@@ -38,7 +40,6 @@ export const ListingsSearch = () => {
                 className="rounded-3xl"
                 value={keyword}
                 onClear={onClear}
-                // onChange={onChangeHandle}
                 onEnter={handleSearch}
               />
             </div>

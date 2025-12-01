@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchResultsProps, useListingsSearchState } from "../../model";
+import { SearchResultsProps } from "../../model";
 import { cn } from "@/lib/utils";
 import {
   useListingSearchInfiniteQuery,
@@ -19,7 +19,6 @@ export const SearchResults = ({ center = false, handleSearch }: SearchResultsPro
   const { setQuery } = useSearchState();
   const { data } = usePopularSearchQuery();
   const { data: searchList } = useListingSearchInfiniteQuery();
-  const { setStatus, setSortType } = useListingsSearchState();
   const pageData = searchList?.pages[0].notices;
   const totalCount = searchList?.pages[0].totalElements;
   const searchParams = useSearchParams();

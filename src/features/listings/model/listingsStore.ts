@@ -88,8 +88,8 @@ export const useListingsFilterStore = create<ListingsFilterState>(set => ({
 }));
 
 export const useListingsSearchState = create<SearchState>(set => ({
-  sortType: "",
-  status: "",
+  sortType: "LATEST",
+  status: "ALL",
   setStatus: value => set({ status: value }),
   setSortType: value => set({ sortType: value }),
   reset: () => set({ status: "", sortType: "" }),
