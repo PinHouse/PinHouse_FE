@@ -44,7 +44,9 @@ export const ListingsSearch = () => {
               />
             </div>
           </div>
-          <SearchResults center={true} handleSearch={handleSearch} />
+          <div className="min-h-0 flex-1">
+            <SearchResults handleSearch={handleSearch} />
+          </div>
         </div>
       </PageTransition>
     </section>

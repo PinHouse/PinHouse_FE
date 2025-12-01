@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FILTER_OPTIONS, getAllFilterIcon } from "../../model";
+import { FILTER_OPTIONS, filterMap, getAllFilterIcon } from "../../model";
 import { useFilterSheetStore, useListingsFilterStore } from "../../model/listingsStore";
 import { ListingTagButton } from "../listingsButton/listingsTagButton";
 
@@ -30,11 +30,15 @@ export const ListingFilterPanel = () => {
 
         <div className="no-scrollbar flex flex-1 overflow-x-auto">
           <div className="flex min-w-max items-center gap-2">
-            {FILTER_OPTIONS.map(item => (
-              <div key={item.key} className="flex-shrink-0">
-                <ListingTagButton label={item.label} />
-              </div>
-            ))}
+            {FILTER_OPTIONS.map(item => {
+              const selectedValues = useListingsFilterStore(state => filterMap[item.key](state));
+              const count = selectedValues.length;
+              return (
+                <div key={item.key} className="flex-shrink-0">
+                  <ListingTagButton label={item.label} count={count} />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
