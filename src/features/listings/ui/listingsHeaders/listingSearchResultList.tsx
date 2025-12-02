@@ -28,7 +28,7 @@ export const SearchResults = ({ handleSearch }: SearchResultsProps) => {
   return (
     <>
       {keyword !== "" && pageData?.length === 0 ? (
-        <div className="flex flex-1 flex-col items-center justify-center pb-[88px]">
+        <div className="flex h-full flex-1 flex-col items-center justify-center pb-[88px]">
           <ListingNoSearchResult
             text={"검색 결과가 없습니다. <br /> 다른 검색어로 검색해보세요."}
           />

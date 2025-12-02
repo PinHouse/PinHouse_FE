@@ -3,8 +3,13 @@ import { ListingUnion, normalizeListing } from "@/src/entities/listings/model/ty
 import { ListingBookMark } from "./listingsBookMark";
 import { HouseICons, HouseRental } from "../../hooks/listingsHooks";
 import { formatApplyPeriod } from "@/src/shared/lib/utils";
+import { useSearchParams } from "next/navigation";
+import { highlight } from "../../model";
 
 export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("query") ?? "";
+
   return (
     <div className="flex flex-col gap-2">
       {data?.map(item => {
@@ -32,7 +37,9 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
                 <HouseRental {...normalized} />
               </div>
               <div className="max-w-full">
-                <p className="truncate text-sm font-semibold">{normalized.name}</p>
+                <p className="truncate text-sm font-semibold">
+                  {highlight(normalized.name, keyword)}
+                </p>
               </div>
               <div className="max-w-full">
                 <p className="text-sm text-greyscale-grey-400">모집일정</p>

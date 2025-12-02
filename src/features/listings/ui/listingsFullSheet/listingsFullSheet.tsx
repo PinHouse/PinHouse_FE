@@ -6,6 +6,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { CloseButton } from "@/src/assets/icons/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";
+import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
 
 export const ListingFilterPartialSheet = () => {
   const open = useFilterSheetStore(s => s.open);
@@ -14,6 +15,14 @@ export const ListingFilterPartialSheet = () => {
   const searchParams = useSearchParams();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const { data } = useListingListInfiniteQuery();
+  const prevTotalRef = useRef<number | null>(null);
+  const newTotal = data?.pages?.[0]?.totalCount;
+  if (newTotal !== undefined && newTotal !== null) {
+    prevTotalRef.current = newTotal;
+  }
+
+  const displayTotal = prevTotalRef.current;
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -92,7 +101,10 @@ export const ListingFilterPartialSheet = () => {
                 className="w-full rounded-lg bg-button-primary py-3 font-semibold text-white"
                 onClick={handleCloseSheet}
               >
-                1000+개의 공고가 있어요
+                <span className="flex justify-center gap-1 transition-none">
+                  <p className="text-center">{displayTotal}</p>
+                  <p>개의 공고가 있어요</p>
+                </span>
               </button>
             </div>
           </motion.div>

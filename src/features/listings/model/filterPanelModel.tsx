@@ -38,3 +38,19 @@ export const filterMap: ListingFilterMap = {
 export interface SearchResultsProps {
   handleSearch: (keyword: string) => void;
 }
+
+export const highlight = (text: string, keyword: string) => {
+  if (!keyword) return text;
+
+  const regex = new RegExp(`(${keyword})`, "gi");
+
+  return text.split(regex).map((part, i) =>
+    regex.test(part) ? (
+      <span key={i} className="bg-primary-blue-50 font-bold text-primary-blue-300">
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+};
