@@ -49,19 +49,19 @@ export const FILTER_OPTIONS: FilterOption[] = [
     type: "select",
   },
   {
-    key: "targetGroup",
+    key: "target",
     label: "모집대상",
     component: "TargetGroupFilter",
     type: "select",
   },
   {
-    key: "leaseType",
+    key: "rental",
     label: "임대유형",
     component: "LeaseTypeFilter",
     type: "select",
   },
   {
-    key: "housingType",
+    key: "housing",
     label: "주택유형",
     component: "HousingTypeFilter",
     type: "select",

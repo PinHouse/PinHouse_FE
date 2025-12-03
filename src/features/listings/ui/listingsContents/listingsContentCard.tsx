@@ -4,7 +4,7 @@ import { ListingBookMark } from "./listingsBookMark";
 import { HouseICons, HouseRental } from "../../hooks/listingsHooks";
 import { formatApplyPeriod } from "@/src/shared/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { highlight } from "../../model";
+import { HighlightCenteredText } from "../../model";
 
 export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
   const searchParams = useSearchParams();
@@ -38,7 +38,7 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
               </div>
               <div className="max-w-full">
                 <p className="truncate text-sm font-semibold">
-                  {highlight(normalized.name, keyword)}
+                  <HighlightCenteredText text={normalized.name} keyword={keyword} />
                 </p>
               </div>
               <div className="max-w-full">

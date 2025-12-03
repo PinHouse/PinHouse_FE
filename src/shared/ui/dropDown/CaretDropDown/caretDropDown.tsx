@@ -71,7 +71,8 @@ export const CaretDropDown = ({
       >
         {children}
         <span className="flex w-full items-center justify-between gap-1 text-xs font-bold">
-          {status || children}
+          {isSearchPage ? (searchState === "ALL" ? "전체" : "모집중") : status}
+          {/* {status || children} */}
           {open ? <CaretUp /> : <CaretDown />}
         </span>
       </button>

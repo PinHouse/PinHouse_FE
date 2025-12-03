@@ -24,15 +24,15 @@ export type SectionMap = Record<string, ReadonlyArray<City>>;
 export type SectionLabelMap = Record<string, string>;
 export type ListingFilterMap = {
   region: (s: ListingsFilterState) => ListingsFilterState["regionType"];
-  targetGroup: (s: ListingsFilterState) => ListingsFilterState["rentalTypes"];
-  leaseType: (s: ListingsFilterState) => ListingsFilterState["supplyTypes"];
-  housingType: (s: ListingsFilterState) => ListingsFilterState["houseTypes"];
+  target: (s: ListingsFilterState) => ListingsFilterState["rentalTypes"];
+  rental: (s: ListingsFilterState) => ListingsFilterState["supplyTypes"];
+  housing: (s: ListingsFilterState) => ListingsFilterState["houseTypes"];
 };
 export const filterMap: ListingFilterMap = {
   region: s => s.regionType,
-  targetGroup: s => s.rentalTypes,
-  leaseType: s => s.supplyTypes,
-  housingType: s => s.houseTypes,
+  target: s => s.rentalTypes,
+  rental: s => s.supplyTypes,
+  housing: s => s.houseTypes,
 };
 
 export interface SearchResultsProps {
@@ -53,4 +53,32 @@ export const highlight = (text: string, keyword: string) => {
       part
     )
   );
+};
+
+export const HighlightCenteredText = ({
+  text,
+  keyword,
+  range = 5,
+}: {
+  text: string;
+  keyword: string;
+  range?: number;
+}) => {
+  const centered = getKeywordCenteredText(text, keyword, range);
+  return <>{highlight(centered, keyword)}</>;
+};
+
+export const getKeywordCenteredText = (text: string, keyword: string, range: number = 20) => {
+  if (!keyword) return text;
+
+  const index = text.toLowerCase().indexOf(keyword.toLowerCase());
+  if (index === -1) return text;
+
+  const start = Math.max(0, index - range);
+  const end = Math.min(text.length, index + keyword.length + range);
+
+  const prefix = start > 0 ? "…" : "";
+  const suffix = end < text.length ? "…" : "";
+
+  return prefix + text.substring(start, end) + suffix;
 };
