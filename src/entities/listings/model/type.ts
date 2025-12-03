@@ -1,5 +1,5 @@
-import { http, HTTP_METHODS } from "@/src/shared/api";
-import { ErrorCode, FieldError, IResponse } from "@/src/shared/types";
+import { HTTP_METHODS } from "@/src/shared/api";
+import { IResponse } from "@/src/shared/types";
 import { InfiniteData } from "@tanstack/react-query";
 
 /**
@@ -166,7 +166,7 @@ export interface PopularKeywordResponse extends IResponse {
   data: PopularKeywordItem[];
 }
 
-export type FilterOptionKey = "region" | "targetGroup" | "leaseType" | "housingType";
+export type FilterOptionKey = "region" | "target" | "rental" | "housing";
 
 export interface FilterOption {
   key: FilterOptionKey;

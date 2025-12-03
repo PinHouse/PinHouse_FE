@@ -1,20 +1,27 @@
 "use client";
 import { DownButton } from "@/src/assets/icons/button";
-import { useEnvtagStore } from "@/src/entities/tag/envTag";
+import { FilterOption } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { useListingsFilterStore } from "../../model";
+import { useFilterSheetStore } from "../../model";
+import { useRouter } from "next/navigation";
 
-export const ListingTagButton = ({ label, count }: { label: string; count: number }) => {
-  const { envTag, toggleEnvtag } = useEnvtagStore();
+export const ListingTagButton = ({ label, count }: { label: FilterOption; count: number }) => {
+  const openSheet = useFilterSheetStore(state => state.openSheet);
+  const router = useRouter();
 
-  const handleClick = () => {
-    toggleEnvtag(label);
+  const handleClick = async () => {
+    await router.push(`/listings?tab=${label.key}`, { scroll: false });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => openSheet(), 200);
+      });
+    });
   };
-
   return (
     <TagButton size="sm" onClick={handleClick} variant={"ghost"}>
       <div className="flex gap-1 text-xs">
-        <p>{label}</p>
+        <p>{label.label}</p>
         <p className="text-text-brand">{count}</p>
       </div>
       <div className="mr-[-5px] flex shrink-0">
