@@ -1,7 +1,12 @@
 import { ReactNode } from "react";
 import { OnOffTrue } from "../../../assets/icons/button/onOffTrue";
 import { OnOffFalse } from "@/src/assets/icons/button";
-import { ListingsFilterState } from "@/src/entities/listings/model/type";
+import {
+  ListingItem,
+  ListingNormalized,
+  ListingSearchItem,
+  ListingsFilterState,
+} from "@/src/entities/listings/model/type";
 
 export interface AllFilterOption {
   key: string;
@@ -81,4 +86,36 @@ export const getKeywordCenteredText = (text: string, keyword: string, range: num
   const suffix = end < text.length ? "…" : "";
 
   return prefix + text.substring(start, end) + suffix;
+};
+
+export interface SearchOptions {
+  enabled?: boolean;
+  keepPreviousData?: boolean;
+  staleTime?: number;
+}
+
+export const normalizeListing = (item: ListingItem | ListingSearchItem): ListingNormalized => {
+  if ("name" in item) {
+    // ListingItem
+    return {
+      id: item.id,
+      name: item.name,
+      supplier: item.supplier,
+      applyPeriod: item.applyPeriod,
+      housingType: item.housingType,
+      type: item.type,
+      liked: item.liked,
+    };
+  }
+
+  // ListingSearchItem
+  return {
+    id: item.id,
+    name: item.title,
+    supplier: item.agency,
+    applyPeriod: `${item.applyStart} ~ ${item.applyEnd}`,
+    housingType: item.housingType,
+    type: item.supplyType,
+    liked: item.liked,
+  };
 };

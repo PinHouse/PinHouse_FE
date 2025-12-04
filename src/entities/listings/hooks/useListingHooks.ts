@@ -25,11 +25,13 @@ import {
 } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import {
+  SearchOptions,
   useListingsFilterStore,
   useListingsSearchState,
   useListingState,
 } from "@/src/features/listings/model";
-import { useSearchState } from "@/src/shared/hooks/store";
+import { useSearchParams } from "next/navigation";
+import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 
 export const useListingListInfiniteQuery = () => {
   const status = useListingState(state => state.status);
@@ -132,23 +134,28 @@ export const usePopularSearchQuery = () => {
   });
 };
 
-export const useListingSearchInfiniteQuery = () => {
-  const rawQuery = useSearchState(s => s.query);
+export const useListingSearchInfiniteQuery = (queryOpt: SearchOptions) => {
+  const { enabled = true, keepPreviousData = true, staleTime = 30000 } = queryOpt;
   const sortType = useListingsSearchState(s => s.sortType);
   const status = useListingsSearchState(s => s.status);
-  const query = (rawQuery ?? "").trim();
+  const searchParams = useSearchParams();
+  const keywordRaw = searchParams.get("query") ?? "";
+  const keyword = keywordRaw.trim();
+  const debouncedKeyword = useDebounce(keyword, 350);
+
   return useInfiniteQuery<ListingListPage>({
-    queryKey: ["listingSearchInfinite", rawQuery, sortType, status],
-    enabled: query.trim() !== "",
+    queryKey: ["listingSearchInfinite", debouncedKeyword, sortType, status],
+    enabled,
+    staleTime,
     initialPageParam: 1,
-    staleTime: 1000 * 60 * 2,
+    placeholderData: keepPreviousData ? oldData => oldData : undefined,
     queryFn: async ({ pageParam = 1 }) => {
       return requestListingList<IResponse, undefined, ListingSearchParams, ListingListPage>(
         LISTING_SEARCH_ENDPOINT,
         "get",
         {
           params: {
-            q: rawQuery,
+            q: keyword,
             pageRequest: { page: Number(pageParam), size: 10 },
             sort: sortType,
             filter: status,

@@ -1,6 +1,5 @@
 "use client";
 
-import { SearchResultsProps } from "../../model";
 import { cn } from "@/lib/utils";
 import {
   useListingSearchInfiniteQuery,
@@ -8,21 +7,44 @@ import {
 } from "@/src/entities/listings/hooks/useListingHooks";
 import { useSearchState } from "@/src/shared/hooks/store";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { AnimatePresence, motion } from "framer-motion";
 import { SearchHistory } from "./listingsSearchHistory";
 import { ListingContentsCard } from "../listingsContents/listingsContentCard";
 import { ListingsContentHeader } from "../listingsContents/listingsContentsHeader";
+import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
+import { useListingsSearchState } from "../../model";
 
-export const SearchResults = ({ handleSearch }: SearchResultsProps) => {
-  const { setQuery } = useSearchState();
+export const SearchResults = () => {
   const { data } = usePopularSearchQuery();
-  const { data: searchList, isError, isLoading } = useListingSearchInfiniteQuery();
-  const pageData = searchList?.pages[0].notices;
-  const totalCount = searchList?.pages[0].totalElements;
+  const sortType = useListingsSearchState.getState().sortType;
+  const status = useListingsSearchState.getState().status;
+
   const searchParams = useSearchParams();
   const keyword = searchParams.get("query") ?? "";
+  const debouncedKeyword = useDebounce(keyword, 350);
+  const { setSearchQuery } = useSearchState();
+  const router = useRouter();
+
+  const {
+    data: searchList,
+    isError,
+    isLoading,
+  } = useListingSearchInfiniteQuery({
+    enabled: !!debouncedKeyword,
+    keepPreviousData: true,
+    staleTime: 30000,
+  });
+
+  const pageData = searchList?.pages[0].notices;
+  const totalCount = searchList?.pages[0].totalElements;
+
+  const handleSearchTag = (keyword: string) => {
+    if (!keyword) return;
+    router.push(`/listings/search?query=${keyword}`);
+    setSearchQuery(keyword);
+  };
 
   if (!data) return;
   return (
@@ -40,8 +62,7 @@ export const SearchResults = ({ handleSearch }: SearchResultsProps) => {
                   key={index}
                   size="sm"
                   onClick={() => {
-                    setQuery(word.keyword);
-                    handleSearch(word.keyword);
+                    handleSearchTag(word.keyword);
                   }}
                   className={cn(
                     "font-suit text-text-greyscale-grey-85 rounded-full border px-3 py-1 text-sm transition-all"
@@ -56,9 +77,19 @@ export const SearchResults = ({ handleSearch }: SearchResultsProps) => {
       ) : keyword !== "" && pageData?.length !== 0 ? (
         <div className="flex h-full flex-col pl-5 pr-5">
           <ListingsContentHeader totalCount={totalCount ?? 0} />
-
-          <div className="min-h-0 flex-1 overflow-y-auto scrollbar-hide">
-            <ListingContentsCard data={pageData ?? []} />
+          <div className="min-h-0 w-full flex-1 overflow-y-auto scrollbar-hide">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={keyword + sortType + status}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -100, opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="flex w-full flex-col"
+              >
+                <ListingContentsCard data={pageData ?? []} />
+              </motion.div>
+            </AnimatePresence>
 
             {isLoading && (
               <div className="py-5 text-center text-sm text-gray-400">불러오는 중...</div>
@@ -76,10 +107,10 @@ export const SearchResults = ({ handleSearch }: SearchResultsProps) => {
               </div>
             )}
           </div>
+          +
         </div>
       ) : (
-        keyword === "" &&
-        !pageData && (
+        keyword === "" && (
           <div className="flex-1 p-5">
             <AnimatePresence mode="wait">
               <motion.div
@@ -89,7 +120,7 @@ export const SearchResults = ({ handleSearch }: SearchResultsProps) => {
                 transition={{ duration: 0.1, ease: "easeInOut" }}
                 className="flex flex-col"
               >
-                <SearchHistory handleSearch={handleSearch} />
+                <SearchHistory handleSearch={handleSearchTag} />
                 <section className="mt-6">
                   <h3 className={`mb-2 flex text-sm font-semibold`}>인기 검색어</h3>
                   <div className="flex flex-wrap gap-2">
@@ -98,8 +129,7 @@ export const SearchResults = ({ handleSearch }: SearchResultsProps) => {
                         key={index}
                         size="sm"
                         onClick={() => {
-                          setQuery(word.keyword);
-                          handleSearch(word.keyword);
+                          handleSearchTag(word.keyword);
                         }}
                         className={cn(
                           "font-suit text-text-greyscale-grey-85 rounded-full border px-3 py-1 text-sm transition-all"

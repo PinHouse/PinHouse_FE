@@ -5,6 +5,7 @@ import { ListingContentsListProps } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { ListingContentsCard } from "./listingsContentCard";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const ListingContentsList = ({
   data,
@@ -39,8 +40,18 @@ export const ListingContentsList = ({
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto pb-[88px] scrollbar-hide">
-      <ListingContentsCard data={items} />
+    <div className="flex h-full w-full flex-col overflow-y-auto pb-[88px] scrollbar-hide">
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -100, opacity: 0 }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
+          className="flex w-full flex-col text-center"
+        >
+          <ListingContentsCard data={items} />
+        </motion.div>
+      </AnimatePresence>
 
       {!isError && hasNextPage && <div ref={observerRef} className="h-10" />}
 
