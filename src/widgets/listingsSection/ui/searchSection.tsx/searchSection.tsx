@@ -5,26 +5,24 @@ import { useSearchState } from "@/src/shared/hooks/store";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, InputEventHandler } from "react";
 
 export const ListingsSearch = () => {
-  const { setSearchQuery, setQuery } = useSearchState();
+  const { setSearchQuery } = useSearchState();
   const searchRest = useListingsSearchState.getState();
-  const resetQuery = useSearchState.getState();
   const router = useRouter();
   const searchParams = useSearchParams();
   const keyword = searchParams.get("query") ?? "";
 
-  const handleSearch = (keyword: string) => {
+  const handleSearch = async (keyword: string) => {
     if (!keyword) return;
+    await router.push(`/listings/search?query=${keyword}`);
     setSearchQuery(keyword);
-    setQuery(keyword);
-    router.push(`/listings/search?query=${keyword}`);
   };
 
   const onClear = () => {
-    resetQuery.resetQuery();
-    searchRest.reset();
     router.push("/listings/search?query=");
+    searchRest.reset();
   };
 
   return (
@@ -45,7 +43,7 @@ export const ListingsSearch = () => {
             </div>
           </div>
           <div className="min-h-0 flex-1">
-            <SearchResults handleSearch={handleSearch} />
+            <SearchResults />
           </div>
         </div>
       </PageTransition>

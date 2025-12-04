@@ -1,10 +1,10 @@
 "use client";
-import { ListingUnion, normalizeListing } from "@/src/entities/listings/model/type";
+import { ListingUnion } from "@/src/entities/listings/model/type";
 import { ListingBookMark } from "./listingsBookMark";
 import { HouseICons, HouseRental } from "../../hooks/listingsHooks";
 import { formatApplyPeriod } from "@/src/shared/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { HighlightCenteredText } from "../../model";
+import { HighlightCenteredText, normalizeListing } from "../../model";
 
 export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
   const searchParams = useSearchParams();

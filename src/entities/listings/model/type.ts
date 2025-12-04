@@ -196,29 +196,3 @@ export interface ListingsFilterState {
   resetSupplyTypes: () => void;
   resetHouseTypes: () => void;
 }
-
-export const normalizeListing = (item: ListingItem | ListingSearchItem): ListingNormalized => {
-  if ("name" in item) {
-    // ListingItem
-    return {
-      id: item.id,
-      name: item.name,
-      supplier: item.supplier,
-      applyPeriod: item.applyPeriod,
-      housingType: item.housingType,
-      type: item.type,
-      liked: item.liked,
-    };
-  }
-
-  // ListingSearchItem
-  return {
-    id: item.id,
-    name: item.title,
-    supplier: item.agency,
-    applyPeriod: `${item.applyStart} ~ ${item.applyEnd}`,
-    housingType: item.housingType,
-    type: item.supplyType,
-    liked: item.liked,
-  };
-};

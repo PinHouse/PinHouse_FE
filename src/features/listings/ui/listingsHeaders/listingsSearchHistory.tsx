@@ -5,7 +5,7 @@ import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { cn } from "@/lib/utils";
 
 export const SearchHistory = ({ handleSearch }: SearchResultsProps) => {
-  const { searchQuery, removeSearchQuery, setQuery } = useSearchState();
+  const { searchQuery, removeSearchQuery } = useSearchState();
   if (searchQuery.length === 0) return;
 
   const handleDelete = (word: string) => {
@@ -21,11 +21,10 @@ export const SearchHistory = ({ handleSearch }: SearchResultsProps) => {
             key={index}
             size="sm"
             onClick={() => {
-              setQuery(word);
               handleSearch(word);
             }}
             className={cn(
-              "transition-al gap-2 rounded-full border px-2 py-1 font-suit text-sm text-text-greyscale-grey-85"
+              "transition-al font-suit text-text-greyscale-grey-85 gap-2 rounded-full border px-2 py-1 text-sm"
             )}
             variant={"ghost"}
           >

@@ -7,12 +7,9 @@ import { useSearchState } from "@/src/shared/hooks/store";
 
 export const SearchForm = () => {
   const router = useRouter();
-  const { resetQuery } = useSearchState();
-  const searchParams = useSearchParams();
 
   const handleRouter = () => {
     router.push(`/listings`);
-    resetQuery();
   };
 
   return (
