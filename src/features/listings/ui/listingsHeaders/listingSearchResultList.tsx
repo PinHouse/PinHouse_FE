@@ -1,5 +1,4 @@
 "use client";
-
 import { cn } from "@/lib/utils";
 import {
   useListingSearchInfiniteQuery,
@@ -107,7 +106,6 @@ export const SearchResults = () => {
               </div>
             )}
           </div>
-          +
         </div>
       ) : (
         keyword === "" && (
