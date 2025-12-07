@@ -3,12 +3,17 @@ import { ListingUnion } from "@/src/entities/listings/model/type";
 import { ListingBookMark } from "./listingsBookMark";
 import { HouseICons, HouseRental } from "../../hooks/listingsHooks";
 import { formatApplyPeriod } from "@/src/shared/lib/utils";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { HighlightCenteredText, normalizeListing } from "../../model";
 
 export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("query") ?? "";
+  const router = useRouter();
+
+  const handleRouter = (id: string) => {
+    router.push(`/listings/${id}`);
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -37,7 +42,10 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
                 <HouseRental {...normalized} />
               </div>
               <div className="max-w-full">
-                <p className="truncate text-sm font-semibold">
+                <p
+                  className="truncate text-sm font-semibold"
+                  onClick={() => handleRouter(normalized.id)}
+                >
                   <HighlightCenteredText text={normalized.name} keyword={keyword} />
                 </p>
               </div>

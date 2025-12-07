@@ -14,7 +14,6 @@ import {
   ListingListParams,
   ListingSearchParams,
   PopularKeywordItem,
-  PopularKeywordResponse,
   ToggleLikeVariables,
 } from "../model/type";
 import {
@@ -67,7 +66,8 @@ export const useListingListInfiniteQuery = () => {
       };
 
       return requestListingList<
-        IResponse,
+        ListingListPage,
+        IResponse<ListingListPage>,
         ListingListFilterBody,
         ListingListParams,
         ListingListPage
@@ -94,14 +94,15 @@ export const useToogleLike = () => {
     retry: 0,
 
     mutationFn: variables => {
-      return PostBasicRequest<IResponse, { targetId: number; type: "NOTICE" }, LikeReturn>(
-        LIKE_ENDPOINT,
-        variables.method,
-        {
-          targetId: variables.targetId!,
-          type: "NOTICE",
-        }
-      );
+      return PostBasicRequest<
+        LikeReturn,
+        IResponse<LikeReturn>,
+        { targetId: number; type: "NOTICE" },
+        LikeReturn
+      >(LIKE_ENDPOINT, variables.method, {
+        targetId: variables.targetId!,
+        type: "NOTICE",
+      });
     },
 
     onError: (_err, _vars, ctx) => {
@@ -125,7 +126,8 @@ export const usePopularSearchQuery = () => {
     queryKey: ["popularSearch"],
     queryFn: () =>
       requestListingList<
-        PopularKeywordResponse,
+        PopularKeywordItem[],
+        IResponse<PopularKeywordItem[]>,
         undefined,
         { limit: number },
         PopularKeywordItem[]
@@ -150,18 +152,20 @@ export const useListingSearchInfiniteQuery = (queryOpt: SearchOptions) => {
     initialPageParam: 1,
     placeholderData: keepPreviousData ? oldData => oldData : undefined,
     queryFn: async ({ pageParam = 1 }) => {
-      return requestListingList<IResponse, undefined, ListingSearchParams, ListingListPage>(
-        LISTING_SEARCH_ENDPOINT,
-        "get",
-        {
-          params: {
-            q: keyword,
-            pageRequest: { page: Number(pageParam), size: 10 },
-            sort: sortType,
-            filter: status,
-          },
-        }
-      );
+      return requestListingList<
+        ListingListPage,
+        IResponse<ListingListPage>,
+        undefined,
+        ListingSearchParams,
+        ListingListPage
+      >(LISTING_SEARCH_ENDPOINT, "get", {
+        params: {
+          q: keyword,
+          pageRequest: { page: Number(pageParam), size: 10 },
+          sort: sortType,
+          filter: status,
+        },
+      });
     },
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.page + 1 : undefined;

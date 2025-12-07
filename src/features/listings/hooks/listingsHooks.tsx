@@ -1,7 +1,7 @@
 import {
-  ListingItem,
   ListingItemMinimal,
   ListingNormalized,
+  RentType,
   ToggleLikeVariables,
 } from "@/src/entities/listings/model/type";
 import { FilterTabKey, RENT_COLOR_CLASS } from "../model";
@@ -10,8 +10,6 @@ import { ListingBgBookMark } from "../ui/listingsContents/listingsBookMark";
 import { useToogleLike } from "@/src/entities/listings/hooks/useListingHooks";
 import { LikeButton } from "@/src/assets/icons/button/likeButton";
 import { LineLikeButton } from "@/src/assets/icons/button/lineLikeButton";
-
-type RentType = keyof typeof RENT_COLOR_CLASS;
 
 export const getListingsRental = (type: string) => {
   if (!(type in RENT_COLOR_CLASS)) return null;

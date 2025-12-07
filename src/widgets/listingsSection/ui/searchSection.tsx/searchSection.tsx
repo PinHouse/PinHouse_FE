@@ -16,7 +16,7 @@ export const ListingsSearch = () => {
 
   const handleSearch = async (keyword: string) => {
     if (!keyword) return;
-    await router.push(`/listings/search?query=${keyword}`);
+    router.push(`/listings/search?query=${keyword}`);
     setSearchQuery(keyword);
   };
 

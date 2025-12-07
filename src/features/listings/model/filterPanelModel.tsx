@@ -16,7 +16,7 @@ export interface AllFilterOption {
   icon?: ReactNode;
 }
 export const getAllFilterIcon = (hasSelectedFilters: boolean) =>
-  hasSelectedFilters ? <OnOffTrue /> : <OnOffFalse />;
+  hasSelectedFilters ? <OnOffTrue className="h-9" /> : <OnOffFalse className="h-9" />;
 export const AllFitler_OPTIONS: AllFilterOption = {
   key: "allFilter",
   label: "전체필터",
@@ -118,4 +118,14 @@ export const normalizeListing = (item: ListingItem | ListingSearchItem): Listing
     type: item.supplyType,
     liked: item.liked,
   };
+};
+
+export const formatMinutes = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+
+  if (hours === 0) return `${mins}분`;
+  if (mins === 0) return `${hours}시간`;
+
+  return `${hours}시간 ${mins}분`;
 };
