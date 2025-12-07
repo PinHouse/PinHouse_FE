@@ -5,7 +5,7 @@ import { http } from "@/src/shared/api/http";
 import { IResponse } from "@/src/shared/types";
 import { USER_JWT_TOKEN_VALIDATE_ENDPOINT } from "@/src/shared/api";
 
-interface IJwtTokenValidateResponse extends IResponse {
+interface IJwtTokenValidateResponse extends IResponse<boolean> {
   data: boolean;
 }
 /**

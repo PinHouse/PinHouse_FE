@@ -4,7 +4,11 @@ import { IResponse } from "@/src/shared/types";
 import { QuickSearchData } from "../model/quickSearch.type";
 
 // 이전 탐색 결과 응답 타입
-export interface QuickSearchHistoryResponse extends IResponse {
+export interface QuickSearchHistoryResponse
+  extends IResponse<{
+    existed: boolean;
+    id: string | null;
+  }> {
   data: {
     existed: boolean;
     id: string | null;
@@ -32,7 +36,12 @@ export interface QuickSearchResultUnit {
 }
 
 // 빠른 검색 응답 타입
-export interface QuickSearchFastResponse extends IResponse {
+export interface QuickSearchFastResponse
+  extends IResponse<{
+    total: number;
+    units: QuickSearchResultUnit[];
+    historyId?: string | null; // 검색 결과 historyId
+  }> {
   data: {
     total: number;
     units: QuickSearchResultUnit[];

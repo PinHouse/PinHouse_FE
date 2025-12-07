@@ -58,7 +58,7 @@ const api: AxiosInstance = axios.create({
  *
  * @param res
  */
-const onResponse = <T extends IResponse>(res: AxiosResponse<T>) => {
+const onResponse = <T extends IResponse<any>>(res: AxiosResponse<T>) => {
   const { success } = res.data;
   //HTTP는 성공이지만 비지니스 로직 성공/실패 유무 고려
   if (success) {
@@ -75,7 +75,7 @@ const onResponse = <T extends IResponse>(res: AxiosResponse<T>) => {
  * (HTTP 자체가 실패한 경우)
  * @param error
  */
-const onError = async <T extends IResponse>(error: AxiosError<T>) => {
+const onError = async <T extends IResponse<any>>(error: AxiosError<T>) => {
   const originalRequest = error.config as AxiosRequestConfig & {
     _retry?: boolean;
   };
@@ -128,7 +128,7 @@ const onError = async <T extends IResponse>(error: AxiosError<T>) => {
   return Promise.reject(error);
 };
 
-const responseToData = <T extends IResponse>(res: AxiosResponse<T>): T => {
+const responseToData = <T extends IResponse<any>>(res: AxiosResponse<T>): T => {
   return res.data;
 };
 
@@ -141,7 +141,7 @@ export const http = {
    * @param params `optional` query parameter
    * @param options `optional` AxiosRequestConfig
    */
-  get: async <T extends IResponse, P = undefined>(
+  get: async <T extends IResponse<any>, P = undefined>(
     url: string,
     params?: P,
     options?: AxiosRequestConfig
@@ -155,7 +155,7 @@ export const http = {
    * @param data `optional` body
    * @param options `optional` AxiosRequestConfig
    */
-  post: async <T extends IResponse, D = undefined>(
+  post: async <T extends IResponse<any>, D = undefined>(
     url: string,
     data?: D,
     options?: AxiosRequestConfig
@@ -169,7 +169,7 @@ export const http = {
    * @param data `optional` body
    * @param options `optional` AxiosRequestConfig
    */
-  put: async <T extends IResponse, D = undefined>(
+  put: async <T extends IResponse<any>, D = undefined>(
     url: string,
     data?: D,
     options?: AxiosRequestConfig
@@ -183,7 +183,7 @@ export const http = {
    * @param data `optional` body
    * @param options `optional` AxiosRequestConfig
    */
-  patch: async <T extends IResponse, D = undefined>(
+  patch: async <T extends IResponse<any>, D = undefined>(
     url: string,
     data?: D,
     options?: AxiosRequestConfig
@@ -197,7 +197,7 @@ export const http = {
    * @param data `optional` body
    * @param options `optional` AxiosRequestConfig
    */
-  delete: async <T extends IResponse, D = undefined>(
+  delete: async <T extends IResponse<any>, D = undefined>(
     url: string,
     data?: D,
     options?: AxiosRequestConfig

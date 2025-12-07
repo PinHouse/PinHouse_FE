@@ -3,7 +3,7 @@ import { PINPOINTS_READ_ENDPOINT } from "@/src/shared/api/endpoints";
 import { IResponse } from "@/src/shared/types";
 import { PinPoint } from "../model/pinpoint.type";
 
-export interface PinPointsResponse extends IResponse {
+export interface PinPointsResponse extends IResponse<PinPoint[]> {
   data: PinPoint[];
 }
 

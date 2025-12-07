@@ -1,7 +1,9 @@
 "use client";
+import { Suspense } from "react";
 import { HomeLine } from "@/src/assets/icons/home/homeLine";
 import { Person, Search } from "@/src/assets/icons/home";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Spinner } from "@/src/shared/ui/spinner/default";
 
 const hiddenRoutes = ["/home", "/login", "/onboarding", "/listings/search"];
 const hiddenExactRoutes = [
@@ -21,7 +23,8 @@ const hiddenExactRoutes = [
   "/quicksearch/result",
 ];
 const detailPageRegex = /^\/listings\/[A-Za-z0-9_-]+$/;
-export const BottomNavigation = () => {
+
+function BottomNavigationContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const queryString = searchParams.toString();
@@ -52,5 +55,13 @@ export const BottomNavigation = () => {
         </button>
       </div>
     </div>
+  );
+}
+
+export const BottomNavigation = () => {
+  return (
+    <Suspense fallback={<Spinner title="로딩 중" description="페이지를 불러오는 중입니다" />}>
+      <BottomNavigationContent />
+    </Suspense>
   );
 };

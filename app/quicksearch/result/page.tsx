@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { QuickSearchResultContent } from "@/src/features/quickSearch/ui/common/quickSearchResultContent";
 import { QuickSearchResultHeader } from "@/src/features/quickSearch/ui/common/quickSearchResultHeader";
@@ -12,7 +12,7 @@ import { ListingNoSearchResult } from "@/src/features/listings/ui/listingsNoSear
 import { QuickSearchRecommendCardProps } from "@/src/features/quickSearch/ui/common/quickSearchRecommendCard";
 import { transformUnitToCard } from "@/src/features/quickSearch/api/quickSearchApi";
 
-export default function QuickSearchResultPage() {
+function QuickSearchResultContentWrapper() {
   const searchParams = useSearchParams();
   const historyIdParam = searchParams.get("historyId");
   const quickSearchData = useQuickSearchStore();
@@ -107,5 +107,13 @@ export default function QuickSearchResultPage() {
       <QuickSearchResultHeader />
       <QuickSearchResultContent cards={cards} />
     </div>
+  );
+}
+
+export default function QuickSearchResultPage() {
+  return (
+    <Suspense fallback={<Spinner title="로딩 중" description="페이지를 불러오는 중입니다" />}>
+      <QuickSearchResultContentWrapper />
+    </Suspense>
   );
 }
