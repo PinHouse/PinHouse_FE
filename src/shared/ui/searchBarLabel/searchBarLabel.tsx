@@ -14,12 +14,22 @@ export const SearchBarLabel = ({
   direction = "vertical",
   className,
   onEnter,
+  onChange,
+  onClear,
   ...props
 }: SearchBarLabelProps) => {
   const isVertical = direction === "vertical";
 
   if (!label) {
-    return <SearchBar className={className} {...props} onEnter={onEnter} />;
+    return (
+      <SearchBar
+        className={className}
+        {...props}
+        onEnter={onEnter}
+        onChange={onChange}
+        onClear={onClear}
+      />
+    );
   }
 
   return (

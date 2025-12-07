@@ -1,29 +1,37 @@
 "use client";
-import { cn } from "@/lib/utils";
-import { useEnvtagStore } from "@/src/entities/tag/envTag";
+import { DownButton } from "@/src/assets/icons/button";
+import { FilterOption } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
+import { useFilterSheetStore } from "../../model";
+import { useRouter } from "next/navigation";
 
-export const ListingTagButton = ({ label }: { label: string }) => {
-  const { envTag, toggleEnvtag } = useEnvtagStore();
-  const isSelected = envTag.includes(label);
+type BaseLabel = {
+  key: string;
+  label: string;
+};
 
-  const handleClick = () => {
-    toggleEnvtag(label);
+export const ListingTagButton = ({ label, count }: { label: BaseLabel; count: number | null }) => {
+  const openSheet = useFilterSheetStore(state => state.openSheet);
+  const router = useRouter();
+
+  const handleClick = async () => {
+    await router.push(`/listings?tab=${label.key}`, { scroll: false });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => openSheet(), 200);
+      });
+    });
   };
-
   return (
-    <TagButton
-      size="sm"
-      onClick={handleClick}
-      variant={"ghost"}
-      // className={cn(
-      //   "rounded-full border px-3 py-1 text-sm font-medium transition-all",
-      //   isSelected
-      //     ? "border-primary bg-button-light text-white"
-      //     : "border-gray-200 bg-gray-100 text-gray-700"
-      // )}
-    >
-      {label}
+    <TagButton size="sm" onClick={handleClick} variant={"ghost"} className="h-9 gap-1 rounded-3xl">
+      <div className="flex gap-1 text-sm font-bold text-gray-500">
+        <p>{label.label}</p>
+        <p className="text-text-brand">{count === 0 ? null : count}</p>
+      </div>
+      <div className="mr-[-5px] flex shrink-0">
+        <DownButton className="h-5 w-4" />
+      </div>
     </TagButton>
   );
 };

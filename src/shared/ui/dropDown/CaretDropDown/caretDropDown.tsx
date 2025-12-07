@@ -7,7 +7,11 @@ import { useEffect, useRef, useState } from "react";
 import { dropDownPreset } from "./deafultPreset";
 import { CaretDown } from "@/src/assets/icons/button/caretDown";
 import { CaretUp } from "@/src/assets/icons/button/caretUp";
-import { useListingState } from "@/src/features/listings/model/listingsStore";
+import {
+  useListingsSearchState,
+  useListingState,
+} from "@/src/features/listings/model/listingsStore";
+import { useSearchParams } from "next/navigation";
 
 export const CaretDropDown = ({
   className,
@@ -21,11 +25,28 @@ export const CaretDropDown = ({
   const [open, setOpen] = useState<boolean>(false);
   const optionData = types ? data[types] : [];
   const wrapperRef = useRef<HTMLDivElement>(null);
-
   const { status, setStatus } = useListingState();
+  const searchParams = useSearchParams();
+  const isSearchPage = searchParams.has("query");
+
+  const setBaseStatus = useListingState(s => s.setStatus);
+  const setSearchStatus = useListingsSearchState(s => s.setStatus);
+  const searchState = useListingsSearchState(s => s.status);
+
+  const statusValue: Record<string, string> = {
+    전체: "ALL",
+    모집중: "OPEN",
+    ALL: "전체",
+    OPEN: "모집중",
+  };
 
   const onClose = ({ value }: { value: string }) => {
-    setStatus(value);
+    if (isSearchPage) {
+      const nextSearchStatus = statusValue[value] ?? value;
+      setSearchStatus(nextSearchStatus);
+    } else {
+      setBaseStatus(value);
+    }
     setOpen(false);
   };
   const onChangeButton = () => setOpen(prev => !prev);
@@ -50,7 +71,8 @@ export const CaretDropDown = ({
       >
         {children}
         <span className="flex w-full items-center justify-between gap-1 text-xs font-bold">
-          {status || children}
+          {isSearchPage ? (searchState === "ALL" ? "전체" : "모집중") : status}
+          {/* {status || children} */}
           {open ? <CaretUp /> : <CaretDown />}
         </span>
       </button>

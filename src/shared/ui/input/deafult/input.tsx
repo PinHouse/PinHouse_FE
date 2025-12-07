@@ -17,11 +17,11 @@ export const Input = ({
   onFocus,
   onBlur,
   onEnter,
+  onClear,
   ...props
 }: InputProps) => {
   const [internalValue, setInternalValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const { resetQuery } = useSearchState();
   const inputRef = useRef<HTMLInputElement>(null);
   const isControlled = value !== undefined;
   const currentValue = isControlled ? value : internalValue;
@@ -40,7 +40,6 @@ export const Input = ({
   const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    resetQuery();
     if (isControlled) {
       const syntheticEvent = {
         target: { value: "" },
@@ -71,6 +70,12 @@ export const Input = ({
     onBlur?.(e);
   };
 
+  /**
+   * x 버튼 클릭시 라우터 이동이 필요하므로 추가함
+   * SearchSection 컴포넌트에서 부터 내려줌
+   */
+  const clear = onClear ? onClear : handleClear;
+
   return (
     <div className="relative w-full">
       <input
@@ -94,7 +99,7 @@ export const Input = ({
             e.preventDefault(); // x 버튼 클릭 시 focus blur 이벤트 방지
             e.stopPropagation();
           }}
-          onClick={handleClear}
+          onClick={clear}
           className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-greyscale-grey-500 hover:text-greyscale-grey-700"
           aria-label="Clear input"
         >

@@ -2,9 +2,6 @@ import { FilterOption } from "@/src/entities/listings/model/type";
 import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
 import { SectionLabelMap, SectionMap } from "./filterPanelModel";
 
-export const listingsHistory = ["행복주택", "청년", "등등"];
-export const listingsResults = ["행복주택", "청년", "등등"];
-
 export const RENT_COLOR_CLASS = {
   영구임대: {
     bg: "bg-[var(--rent-permanent-tag-bg)]",
@@ -47,44 +44,27 @@ export const RENT_COLOR_CLASS = {
 export const FILTER_OPTIONS: FilterOption[] = [
   {
     key: "region",
-    label: "지역선택",
+    label: "지역",
     component: "RegionFilter",
     type: "select",
   },
   {
-    key: "targetGroup",
+    key: "target",
     label: "모집대상",
     component: "TargetGroupFilter",
     type: "select",
   },
   {
-    key: "leaseType",
+    key: "rental",
     label: "임대유형",
     component: "LeaseTypeFilter",
     type: "select",
   },
   {
-    key: "housingType",
+    key: "housing",
     label: "주택유형",
     component: "HousingTypeFilter",
     type: "select",
-  },
-  {
-    key: "noticeStatus",
-    label: "공고상태",
-    component: "NoticeStatusFilter",
-    type: "radio",
-  },
-  {
-    key: "sortOption",
-    label: "정렬",
-    component: "SortOption",
-    type: "sort",
-  },
-  {
-    key: "noticeCount",
-    label: "공고개수",
-    component: "NoticeCount",
   },
 ];
 
@@ -251,3 +231,10 @@ export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: Se
 };
 
 export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
+export const DETAIL_FILTERS = [
+  { key: "distance", label: "거리" },
+  { key: "region", label: "지역" },
+  { key: "cost", label: "비용" },
+  { key: "area", label: "면적" },
+  { key: "around", label: "주변" },
+] as const;

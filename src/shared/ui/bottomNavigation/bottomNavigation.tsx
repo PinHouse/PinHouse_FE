@@ -20,7 +20,7 @@ const hiddenExactRoutes = [
   "/quicksearch/chooseCondition",
   "/quicksearch/result",
 ];
-
+const detailPageRegex = /^\/listings\/[A-Za-z0-9_-]+$/;
 export const BottomNavigation = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -29,7 +29,8 @@ export const BottomNavigation = () => {
 
   const shouldHide =
     hiddenRoutes.some(route => pathname.startsWith(route)) ||
-    hiddenExactRoutes.includes(currentPath);
+    hiddenExactRoutes.includes(currentPath) ||
+    detailPageRegex.test(pathname);
 
   if (shouldHide) return null;
   return (

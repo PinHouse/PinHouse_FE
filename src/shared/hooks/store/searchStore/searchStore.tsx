@@ -6,10 +6,7 @@ export const useSearchState = create<SearchState>()(
   persist(
     (set, get) => ({
       searchQuery: [],
-      query: "",
-      setQuery: (keyword: string) => {
-        set({ query: keyword });
-      },
+
       setSearchQuery: (keyword: string) => {
         if (!keyword) return;
         const list = get().searchQuery;
@@ -21,9 +18,7 @@ export const useSearchState = create<SearchState>()(
         const next = list.filter(k => k !== keyword);
         set({ searchQuery: next });
       },
-      resetQuery: () => {
-        set({ query: "" });
-      },
+
       reset: () => {
         set({ searchQuery: [] });
       },

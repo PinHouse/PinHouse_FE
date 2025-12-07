@@ -31,9 +31,9 @@ export const NyearHouseType1 = (props: SVGProps<SVGSVGElement>) => {
       <path
         d="M4 15L13.5 5L23 15"
         stroke="#A9BF71"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M11 15.5C11 14.1193 12.1193 13 13.5 13C14.8807 13 16 14.1193 16 15.5V18.6471C16 18.842 15.842 19 15.6471 19H11.3529C11.158 19 11 18.842 11 18.6471V15.5Z"
