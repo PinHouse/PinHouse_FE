@@ -9,7 +9,7 @@ export const useListingDetailBasic = (id: string) => {
   const listingDetilBody = {
     sortType: "거리 순",
     pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251",
-    transitTime: 100,
+    transitTime: 1000,
     maxDeposit: 50000000,
     maxMonthPay: 300000,
   };

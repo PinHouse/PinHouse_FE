@@ -2,32 +2,10 @@ import { cn } from "@/lib/utils";
 import { DownButton } from "@/src/assets/icons/button";
 import { ListingsCardTileProps, RoomVariant } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { formatMinutes } from "../../../model";
-
-const containerClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
-  default: "border border-greyscale-grey-100",
-  muted: "border border-greyscale-grey-75 bg-greyscale-grey-50",
-};
-
-const titleClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
-  default: "text-greyscale-grey-900",
-  muted: "text-greyscale-grey-400",
-};
-
-const downButton: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
-  default: "text-gray-400",
-  muted: "text-gray-300",
-};
-
-const roomTypeClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
-  default: "text-primary-blue-300 border px-1 py-[1px]",
-  muted: "text-primary-blue-75 border-none",
-};
-
-const infraClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
-  default: "text-gray-400 font-semibold",
-  muted: "text-gray-400",
-};
+import { containerClass, downButton, infraClass, roomTypeClass, titleClass } from "../../../model";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { ListingsCardTileDetails } from "../infra/listingsCardTtileInfra";
 
 const RoomType = ({ roomType, variant }: { roomType: number; variant: RoomVariant }) => {
   return (
@@ -51,6 +29,12 @@ const InfraCount = ({ infra, variant }: { infra: string[]; variant: RoomVariant 
 };
 
 export const ListingsCardTile = ({ listing, variant = "default" }: ListingsCardTileProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  console.log(listing);
+  const handleToggle = () => {
+    setIsOpen(prev => !prev);
+  };
+
   return (
     <article className={`mb-3 rounded-lg p-3 ${containerClass[variant]} flex flex-col gap-1`}>
       <div className="flex items-center gap-2">
@@ -62,12 +46,33 @@ export const ListingsCardTile = ({ listing, variant = "default" }: ListingsCardT
         <h3 className={`line-clamp-1 text-sm-15 font-semibold ${titleClass[variant]}`}>
           {listing.name}
         </h3>
-        <DownButton className={`ml-auto ${downButton[variant]}`} />
+        <button
+          type="button"
+          onClick={handleToggle}
+          className={`ml-auto transition-transform ${downButton[variant]} ${isOpen ? "rotate-180" : ""}`}
+          aria-expanded={isOpen}
+        >
+          <DownButton className="h-5 w-5" />
+        </button>
       </div>
 
       <p className="text-sm-12 text-sm-15 text-gray-400">
-        {listing.address} · {formatMinutes(100)}
+        {listing.address} · {listing.totalTime}
       </p>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <ListingsCardTileDetails listing={listing} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </article>
   );
 };
