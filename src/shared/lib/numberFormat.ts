@@ -55,24 +55,6 @@ export const formatToKorean = (value: string | number, suffix: string = "원"): 
     remaining = remaining % 100000000;
   }
 
-  // 천만 단위 (10,000,000)
-  if (remaining >= 10000000) {
-    const cheonman = Math.floor(remaining / 10000000);
-    if (cheonman > 0) {
-      result.push(`${cheonman}천만`);
-    }
-    remaining = remaining % 10000000;
-  }
-
-  // 백만 단위 (1,000,000)
-  if (remaining >= 1000000) {
-    const baekman = Math.floor(remaining / 1000000);
-    if (baekman > 0) {
-      result.push(`${baekman}백만`);
-    }
-    remaining = remaining % 1000000;
-  }
-
   // 만 단위 (10,000)
   if (remaining >= 10000) {
     const man = Math.floor(remaining / 10000);
@@ -82,25 +64,7 @@ export const formatToKorean = (value: string | number, suffix: string = "원"): 
     remaining = remaining % 10000;
   }
 
-  // 천 단위 (1,000)
-  if (remaining >= 1000) {
-    const cheon = Math.floor(remaining / 1000);
-    if (cheon > 0) {
-      result.push(`${cheon}천`);
-    }
-    remaining = remaining % 1000;
-  }
-
-  // 백 단위 (100)
-  if (remaining >= 100) {
-    const baek = Math.floor(remaining / 100);
-    if (baek > 0) {
-      result.push(`${baek}백`);
-    }
-    remaining = remaining % 100;
-  }
-
-  // 십 단위와 일 단위는 일반 숫자로 표시
+  // 만 미만 단위 (일반 숫자)
   if (remaining > 0) {
     result.push(String(remaining));
   }

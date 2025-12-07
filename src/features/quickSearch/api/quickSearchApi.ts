@@ -36,6 +36,7 @@ export interface QuickSearchFastResponse extends IResponse {
   data: {
     total: number;
     units: QuickSearchResultUnit[];
+    historyId?: string | null; // 검색 결과 historyId
   };
 }
 

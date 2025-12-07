@@ -23,19 +23,19 @@ export const ENVIRONMENT_TAGS = [
 export const ENVIRONMENT_CATEGORIES = [
   {
     title: "생활편의",
-    options: ["대형마트·백화점", "대학세탁소생"],
+    options: ["대형점포", "빨래방", "전시회", "도서관"],
   },
   {
     title: "안전·의료",
-    options: ["파출소", "병원·약국"],
+    options: ["병원"],
   },
   {
     title: "자연환경",
-    options: ["자전거길", "산책길", "등산로"],
+    options: ["산책로"],
   },
   {
     title: "특화시설",
-    options: ["아동", "청소년", "노인", "장애인", "최상위·취약계층"],
+    options: ["스포츠 시설", "동물 관련시설"],
   },
 ] as const;
 

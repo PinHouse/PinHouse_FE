@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { QuickSearchResultBottomSheet } from "@/src/features/quickSearch/ui/common/quickSearchResultBottomSheet";
+import { QuickSearchResultContent } from "@/src/features/quickSearch/ui/common/quickSearchResultContent";
 import { QuickSearchResultHeader } from "@/src/features/quickSearch/ui/common/quickSearchResultHeader";
 import { useQuickSearchStore } from "@/src/features/quickSearch/model/quickSearchStore";
 import { useMutation } from "@tanstack/react-query";
@@ -13,7 +13,6 @@ import { QuickSearchRecommendCardProps } from "@/src/features/quickSearch/ui/com
 import { transformUnitToCard } from "@/src/features/quickSearch/api/quickSearchApi";
 
 export default function QuickSearchResultPage() {
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
   const searchParams = useSearchParams();
   const historyIdParam = searchParams.get("historyId");
   const quickSearchData = useQuickSearchStore();
@@ -21,6 +20,12 @@ export default function QuickSearchResultPage() {
   // 빠른 검색 API mutation
   const searchMutation = useMutation({
     mutationFn: (data: Parameters<typeof postQuickSearchFast>[0]) => postQuickSearchFast(data),
+    onSuccess: data => {
+      // API 응답에 historyId가 있으면 store에 저장
+      if (data.historyId) {
+        quickSearchData.setHistoryId(data.historyId);
+      }
+    },
     onError: error => {
       console.error("빠른 검색 요청 실패:", error);
     },
@@ -89,9 +94,8 @@ export default function QuickSearchResultPage() {
   ) {
     return (
       <div className="flex h-screen flex-col bg-white">
-        <QuickSearchResultHeader />
         <div className="flex flex-1 items-center justify-center px-5">
-          <ListingNoSearchResult text="조건에 맞는 방이 없어요 <br /> 다른 조건으로 다시 검색해보세요." />
+          <ListingNoSearchResult text="조건에 맞는 방을 찾지 못했어요 <br /> 다른 조건으로 다시 검색해보세요." />
         </div>
       </div>
     );
@@ -101,11 +105,7 @@ export default function QuickSearchResultPage() {
   return (
     <div className="relative flex h-screen flex-col bg-white">
       <QuickSearchResultHeader />
-      <QuickSearchResultBottomSheet
-        open={isBottomSheetOpen}
-        onOpenChange={setIsBottomSheetOpen}
-        cards={cards}
-      />
+      <QuickSearchResultContent cards={cards} />
     </div>
   );
 }
