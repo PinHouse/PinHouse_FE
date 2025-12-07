@@ -32,16 +32,8 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
           <ListingsCardDetailSummary basicInfo={basicInfo} />
           <ListingsCardDetailCompareButton />
           <ListingsCardDetailFilterBar />
-          <ListingsCardDetailComplexSection
-            sectionTitle="단지"
-            countLabel="00"
-            sortingLabel="핀포인트 거리순"
-            listings={filtered}
-          />
-          <ListingsCardDetailOutOfCriteriaSection
-            description="필터 기준을 벗어난 단지예요"
-            listings={nonFiltered}
-          />
+          <ListingsCardDetailComplexSection listings={filtered} />
+          <ListingsCardDetailOutOfCriteriaSection listings={nonFiltered} />
         </main>
       </PageTransition>
     </div>

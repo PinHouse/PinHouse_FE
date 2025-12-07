@@ -216,13 +216,36 @@ export interface ComplexList {
   complexes: Complex[];
 }
 
+export interface ListingRoute {
+  id: string;
+  label: string;
+  minutes?: number;
+  distanceKm?: number;
+  description?: string;
+  stations?: string[];
+}
+
+export interface ListingRoomTypeInfo {
+  id: string;
+  name: string;
+  supplyArea?: string;
+  exclusiveArea?: string;
+  deposit?: string;
+  monthlyRent?: string;
+}
+
+// 공고상세조회
 export interface Complex {
   id: string;
   name: string;
   address: string;
   heating: string;
+  totalTime: string;
   infra: string[];
   unitCount: number;
+  highlights?: string[];
+  mainRoutes?: ListingRoute[];
+  roomTypesDetail?: ListingRoomTypeInfo[];
 }
 
 // 핵심: data 내부 구조
@@ -259,4 +282,41 @@ export interface ListingDetailResponseWithColor extends ListingDetailResponse {
     filtered: ComplexList;
     nonFiltered: ComplexList;
   };
+}
+
+//단지주택 상세정보
+export interface ListingSummary {
+  id: string; // "19401#1"
+  name: string; // "완주삼봉A-1BL"
+  address: string; // "전북특별자치도 완주군"
+  heating: string; // "개별난방"
+  totalHouseholds: number; // 0
+  totalSupplyInNotice: number; // 9
+  infra: string[]; // ["공원", "스포츠 시설"]
+  unitCount: number; // 2
+  unitTypes: string[]; // ["21A", "26B"]
+  distance: DistanceInfo; // 거리 정보
+}
+//단지주택 상세정보
+export interface DistanceInfo {
+  totalTime: string; // "1시간 3분"
+  totalTimeMinutes: number; // 0
+  totalDistance: number; // 196.9
+  routes: DistanceRoute[]; // 경로 리스트
+}
+
+//단지주택 상세정보
+export interface DistanceRoute {
+  type: "TRAIN" | "BUS" | "WALK" | "SUBWAY" | string; // 확장 가능
+  minutesText: string; // "63분"
+  lineText: string; // "SRT"
+  line: RouteLine; // 노선 정보 (코드 + 스타일)
+  bgColorHex: string; // "#E5046C"
+}
+
+//단지주택 상세정보
+export interface RouteLine {
+  code: number; // 8
+  label: string; // "SRT"
+  bgColorHex: string; // "#E5046C"
 }

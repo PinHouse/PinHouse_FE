@@ -1,40 +1,33 @@
 import { ArrowUpArrowDown } from "@/src/assets/icons/button/arrowUpArrowDown";
-import { ListingsCardTile, type ListingsCardTileProps } from "./listingsCardTile";
+import { ListingsCardTile } from "./listingsCardTile";
 import { ComplexList } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../../listingsNoSearchResult/listingNoSearchResult";
-import { Button } from "@/src/shared/lib/headlessUi";
-
-export type ListingsCardDetailListing = ListingsCardTileProps & { id: string };
 
 type ListingsCardDetailComplexSectionProps = {
-  sectionTitle: string;
-  countLabel: string;
-  sortingLabel: string;
   listings: ComplexList;
 };
 
 export const ListingsCardDetailComplexSection = ({
-  sectionTitle,
-  countLabel,
-  sortingLabel,
   listings,
 }: ListingsCardDetailComplexSectionProps) => {
   if (!listings) return;
-  const complexesCount = listings?.totalCount;
+
+  const complexesCount =
+    listings?.totalCount < 10 ? `0${listings?.totalCount}` : listings?.totalCount;
 
   return (
     <section className="border-b-[11px] border-b-greyscale-grey-25 p-5">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="flex gap-1 font-semibold">
-          <p className="text-base-17 text-greyscale-grey-900">{sectionTitle}</p>
+          <p className="text-base-17 text-greyscale-grey-900">단지</p>
           <p className="text-base-17 text-greyscale-grey-600">{complexesCount}</p>
         </h2>
         <div className="flex gap-1">
-          <span className="text-xs font-semibold text-greyscale-grey-900">{sortingLabel}</span>
+          <span className="text-xs font-semibold text-greyscale-grey-900">핀포인트 거리 순</span>
           <ArrowUpArrowDown />
         </div>
       </div>
-      {complexesCount === 0 ? (
+      {complexesCount === "00" ? (
         <div className="flex h-full flex-col items-center justify-center gap-5 pb-[55px]">
           <div>
             <ListingNoSearchResult
@@ -45,7 +38,7 @@ export const ListingsCardDetailComplexSection = ({
       ) : (
         <>
           {listings.complexes.map(complex => (
-            <ListingsCardTile key={complex.id} listing={complex} />
+            <ListingsCardTile key={complex.id} listing={complex} variant="default" />
           ))}
         </>
       )}
