@@ -27,8 +27,8 @@ export const ListingsContentHeader = ({ totalCount }: ListingsContentHeaderProps
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-1 text-xl font-bold">
-        <p className="text-sm text-text-primary">공고</p>
-        <p className="text-sm text-text-tertiary">{totalCount}</p>
+        <p className="text-base-17 text-text-primary">공고</p>
+        <p className="text-base-17 text-text-tertiary">{totalCount}</p>
       </div>
 
       <div className="flex items-center">

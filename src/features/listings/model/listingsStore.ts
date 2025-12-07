@@ -94,3 +94,11 @@ export const useListingsSearchState = create<SearchState>(set => ({
   setSortType: value => set({ sortType: value }),
   reset: () => set({ status: "", sortType: "" }),
 }));
+
+export const useListingDetailStore = create<{
+  houseType: string | null;
+  setHouseType: (value: string) => void;
+}>(set => ({
+  houseType: null,
+  setHouseType: value => set({ houseType: value }),
+}));

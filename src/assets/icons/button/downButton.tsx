@@ -13,7 +13,7 @@ export const DownButton = (props: SVGProps<SVGSVGElement>) => {
       <g clipPath="url(#clip0_9421_1045)">
         <path
           d="M6 9L12 15L18 9"
-          stroke="#676472"
+          stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

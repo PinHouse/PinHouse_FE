@@ -44,7 +44,7 @@ export const RENT_COLOR_CLASS = {
 export const FILTER_OPTIONS: FilterOption[] = [
   {
     key: "region",
-    label: "지역선택",
+    label: "지역",
     component: "RegionFilter",
     type: "select",
   },
@@ -231,3 +231,10 @@ export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: Se
 };
 
 export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
+export const DETAIL_FILTERS = [
+  { key: "distance", label: "거리" },
+  { key: "region", label: "지역" },
+  { key: "cost", label: "비용" },
+  { key: "area", label: "면적" },
+  { key: "around", label: "주변" },
+] as const;

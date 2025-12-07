@@ -3,7 +3,8 @@ import { HTTP_METHODS } from "@/src/shared/api";
 import { HttpMethod } from "../model/type";
 
 export const requestListingList = async <
-  TResponse extends IResponse,
+  TData,
+  TResponse extends IResponse<TData>,
   TReqBody extends object | undefined = undefined,
   TParams extends object | undefined = undefined,
   TReturn = TResponse,
@@ -24,7 +25,8 @@ export const requestListingList = async <
 };
 
 export const PostBasicRequest = async <
-  TResponse extends IResponse,
+  TData,
+  TResponse extends IResponse<TData>,
   TReqBody extends object,
   TReturn,
 >(

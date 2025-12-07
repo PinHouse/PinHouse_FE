@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-// import { Button } from "@/src/shared/ui/button/deafult";
 import { ListingContentsListProps } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { Button } from "@/src/shared/lib/headlessUi";
@@ -47,7 +46,7 @@ export const ListingContentsList = ({
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -100, opacity: 0 }}
           transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="flex w-full flex-col text-center"
+          className="flex w-full flex-col"
         >
           <ListingContentsCard data={items} />
         </motion.div>

@@ -1,5 +1,8 @@
+import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
+import { RENT_COLOR_CLASS } from "@/src/features/listings/model";
 import { HTTP_METHODS } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
+
 import { InfiniteData } from "@tanstack/react-query";
 
 /**
@@ -45,6 +48,18 @@ export interface ListingItem {
   applyPeriod: string;
   liked: boolean;
 }
+
+// data 객체 타입
+export interface ListingListPage {
+  totalCount: number;
+  totalElements: number;
+  content: ListingItem[];
+  notices: ListingSearchItem[];
+  hasNext: boolean;
+  page: number;
+}
+
+export type ListingItemResponse = IResponse<ListingListPage>;
 /**
  * 개별항목 공고검색
  */
@@ -97,15 +112,6 @@ export type ToggleLikeVariables = {
   type: "NOTICE";
 };
 
-// data 객체 타입
-export interface ListingListPage {
-  totalCount: number;
-  totalElements: number;
-  content: ListingItem[];
-  notices: ListingSearchItem[];
-  hasNext: boolean;
-  page: number;
-}
 /**
  * 무한스크롤 공고 LIST
  */
@@ -162,7 +168,7 @@ export interface PopularKeywordItem {
  * 인기검색어 Data
  */
 
-export interface PopularKeywordResponse extends IResponse {
+export interface PopularKeywordResponse extends IResponse<PopularKeywordItem[]> {
   data: PopularKeywordItem[];
 }
 
@@ -182,17 +188,75 @@ export interface ListingsFilterState {
   houseTypes: string[];
   status: string;
   sortType: string;
-
   toggleRegionType: (item: string) => void;
   toggleRentalType: (item: string) => void;
   toggleSupplyType: (item: string) => void;
   toggleHouseType: (item: string) => void;
-
   setStatus: (status: string) => void;
   setSortType: (sort: string) => void;
-
   resetRegionType: () => void;
   resetRentalTypes: () => void;
   resetSupplyTypes: () => void;
   resetHouseTypes: () => void;
+}
+
+/** 공고탐색상세조회 */
+
+export interface BasicInfo {
+  id: string;
+  type: string;
+  housingType: string;
+  supplier: string;
+  name: string;
+  period: string;
+}
+
+export interface ComplexList {
+  totalCount: number;
+  complexes: Complex[];
+}
+
+export interface Complex {
+  id: string;
+  name: string;
+  address: string;
+  heating: string;
+  infra: string[];
+  unitCount: number;
+}
+
+// 핵심: data 내부 구조
+export interface ListingDetailData {
+  basicInfo: BasicInfo;
+  filtered: ComplexList;
+  nonFiltered: ComplexList;
+}
+
+export interface LstingBody {
+  sortType: string;
+  pinPointId: string;
+  transitTime: number;
+  maxDeposit: number;
+  maxMonthPay: number;
+}
+export type RentType = keyof typeof RENT_COLOR_CLASS;
+export type ListingDetailResponse = IResponse<ListingDetailData>;
+export type RoomVariant = "default" | "muted";
+export type ListingsCardTileProps = {
+  listing: Complex;
+  variant: RoomVariant;
+};
+export type RentTypeCss = {
+  bg?: string;
+  text?: string;
+};
+
+export interface ListingDetailResponseWithColor extends ListingDetailResponse {
+  data: {
+    basicInfo: BasicInfo & {
+      rentalColor: ReturnType<typeof getListingsRental>;
+    };
+    filtered: ComplexList;
+    nonFiltered: ComplexList;
+  };
 }
