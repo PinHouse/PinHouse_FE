@@ -9,7 +9,7 @@ import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { AnimatePresence, motion } from "framer-motion";
-import { SearchHistory } from "./listingsSearchHistory";
+import { SearchHistory } from "../listingsHeaders/listingsSearchHistory";
 import { ListingContentsCard } from "../listingsContents/listingsContentCard";
 import { ListingsContentHeader } from "../listingsContents/listingsContentsHeader";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
@@ -36,8 +36,8 @@ export const SearchResults = () => {
     staleTime: 30000,
   });
 
-  const pageData = searchList?.pages[0].notices;
-  const totalCount = searchList?.pages[0].totalElements;
+  const pageData = searchList?.pages[0].content;
+  const totalCount = searchList?.pages[0].totalCount;
 
   const handleSearchTag = (keyword: string) => {
     if (!keyword) return;
