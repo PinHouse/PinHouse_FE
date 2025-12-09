@@ -1,4 +1,8 @@
-import { FilterOption, ListingsCardTileProps } from "@/src/entities/listings/model/type";
+import {
+  FilterOption,
+  ListingsCardTileProps,
+  PopularKeywordItem,
+} from "@/src/entities/listings/model/type";
 import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
 import { SectionLabelMap, SectionMap } from "./filterPanelModel";
 
@@ -263,3 +267,8 @@ export const DETAIL_FILTERS = [
   { key: "area", label: "면적" },
   { key: "around", label: "주변" },
 ] as const;
+
+export type HandleSearchTag = {
+  handleSearchTag: (keyword: string) => void;
+  popular: PopularKeywordItem[];
+};

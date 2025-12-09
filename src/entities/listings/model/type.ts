@@ -126,6 +126,7 @@ export interface ListingContentsListProps {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   isError: boolean;
+  isBottom?: boolean;
 }
 /**
  * 총공고 카운트
