@@ -16,11 +16,10 @@ export interface ListingListParams {
 /**
  * 검색어 list param
  */
-export interface ListingSearchParams {
+export interface ListingSearchParams extends ListingListParams {
   q: string;
-  pageRequest: { page: number; size: number };
-  sort?: string;
-  filter?: string;
+  sortType: string;
+  status?: string;
 }
 
 /**

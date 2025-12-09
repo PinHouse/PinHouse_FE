@@ -161,9 +161,10 @@ export const useListingSearchInfiniteQuery = (queryOpt: SearchOptions) => {
       >(LISTING_SEARCH_ENDPOINT, "get", {
         params: {
           q: keyword,
-          pageRequest: { page: Number(pageParam), size: 10 },
-          sort: sortType,
-          filter: status,
+          page: Number(pageParam),
+          offSet: 10,
+          sortType: sortType,
+          status: status,
         },
       });
     },
