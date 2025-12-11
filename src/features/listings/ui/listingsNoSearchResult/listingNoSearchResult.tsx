@@ -8,11 +8,10 @@ export const ListingNoSearchResult = ({ text }: NoSearchReusltType) => {
     <div className="flex items-center justify-center gap-4">
       <AnimatePresence mode="wait">
         <motion.div
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -100, opacity: 0 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="flex flex-col items-center text-center"
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -100, opacity: 0 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
         >
           <SearchEmpty />
           <div className="flex flex-col gap-2">

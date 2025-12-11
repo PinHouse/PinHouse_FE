@@ -25,7 +25,7 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
     );
   }
   return (
-    <div className="mx-auto min-h-full w-full max-w-md bg-white">
+    <div className="mx-auto min-h-full w-full">
       <PageTransition>
         <ListingsCardDetailHeader />
         <main>

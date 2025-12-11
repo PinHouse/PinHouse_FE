@@ -495,30 +495,62 @@ describe("단지정보상세조회API", () => {
   });
   it("단지정보 API 성공", async () => {
     const mockListingOne: ListingSummary = {
-      id: "19401#1",
-      name: "완주삼봉A-1BL",
-      address: "전북특별자치도 완주군",
-      heating: "개별난방",
+      id: "19390#1",
+      name: "양주회천 A25BL",
+      address: "경기도 양주시",
+      heating: "지역난방",
       totalHouseholds: 0,
-      totalSupplyInNotice: 9,
-      infra: ["공원", "스포츠 시설"],
+      totalSupplyInNotice: 472,
+      infra: ["공원", "동물 관련시설", "산책로", "스포츠 시설"],
       unitCount: 2,
-      unitTypes: ["21A", "26B"],
+      unitTypes: ["26A", "26A1"],
       distance: {
-        totalTime: "1시간 3분",
-        totalTimeMinutes: 63,
-        totalDistance: 196.9,
+        totalTime: "1시간 13분",
+        totalTimeMinutes: 73,
+        totalDistance: 35.7,
         routes: [
           {
-            type: "TRAIN",
-            minutesText: "63분",
-            lineText: "SRT",
+            type: "WALK",
+            minutesText: "2분",
+            lineText: null,
+            line: null,
+            bgColorHex: "#BBBAC5",
+          },
+          {
+            type: "SUBWAY",
+            minutesText: "59분",
+            lineText: "수도권 1호선",
             line: {
-              code: 8,
-              label: "SRT",
-              bgColorHex: "#E5046C",
+              code: 1,
+              label: "수도권 1호선",
+              bgColorHex: "#3356B4",
             },
-            bgColorHex: "#E5046C",
+            bgColorHex: "#3356B4",
+          },
+          {
+            type: "WALK",
+            minutesText: "1분",
+            lineText: null,
+            line: null,
+            bgColorHex: "#BBBAC5",
+          },
+          {
+            type: "BUS",
+            minutesText: "7분",
+            lineText: "73, 28",
+            line: {
+              code: 3,
+              label: "마을버스",
+              bgColorHex: "#86C34B",
+            },
+            bgColorHex: "#86C34B",
+          },
+          {
+            type: "WALK",
+            minutesText: "4분",
+            lineText: null,
+            line: null,
+            bgColorHex: "#BBBAC5",
           },
         ],
       },
@@ -535,11 +567,11 @@ describe("단지정보상세조회API", () => {
       { complexId: string; pinPointId: string },
       ListingSummary
     >(COMPLEXES_ENDPOINT, "get", {
-      params: { complexId: "19401#1", pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
+      params: { complexId: "19390#1", pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
     });
 
     expect(http.get).toHaveBeenCalledWith(COMPLEXES_ENDPOINT, undefined, {
-      params: { complexId: "19401#1", pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
+      params: { complexId: "19390#1", pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
     });
 
     expect(result).toEqual(mockListingOne);
