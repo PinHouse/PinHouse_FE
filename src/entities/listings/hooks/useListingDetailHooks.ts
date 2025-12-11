@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { ListingDetailResponseWithColor, LstingBody } from "../model/type";
-import { PostBasicRequest } from "../api/listingsApi";
-import { NOTICE_ENDPOINT } from "@/src/shared/api";
+import { ListingDetailResponseWithColor, ListingSummary, LstingBody } from "../model/type";
+import { PostBasicRequest, requestListingList } from "../api/listingsApi";
+import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
 
@@ -37,6 +37,24 @@ export const useListingDetailBasic = (id: string) => {
           },
         },
       };
+    },
+  });
+};
+
+export const useListingRentalDetail = (id: string) => {
+  return useQuery<ListingSummary>({
+    queryKey: ["useListingRentalDetail", id],
+    enabled: !!id,
+    queryFn: async () => {
+      return await requestListingList<
+        ListingSummary,
+        IResponse<ListingSummary>,
+        undefined,
+        { complexId: string; pinPointId: string },
+        ListingSummary
+      >(COMPLEXES_ENDPOINT, "get", {
+        params: { complexId: "19390#1", pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
+      });
     },
   });
 };

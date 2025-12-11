@@ -30,7 +30,7 @@ const InfraCount = ({ infra, variant }: { infra: string[]; variant: RoomVariant 
 
 export const ListingsCardTile = ({ listing, variant = "default" }: ListingsCardTileProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(listing);
+
   const handleToggle = () => {
     setIsOpen(prev => !prev);
   };
