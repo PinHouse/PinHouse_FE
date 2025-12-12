@@ -322,3 +322,18 @@ export interface LineInfo {
   label: string;
   bgColorHex: string;
 }
+export type RentalInfoItem = {
+  key: "name" | "address" | "heating";
+  value: string;
+};
+
+export interface ListingRentalDetailVM {
+  distance: ListingSummary["distance"];
+  rentalInfo: RentalInfoItem[];
+  id: string;
+  infra: ListingSummary["infra"];
+  totalHouseholds: number;
+  totalSupplyInNotice: number;
+  unitCount: number;
+  unitTypes: string[];
+}

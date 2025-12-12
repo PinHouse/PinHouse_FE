@@ -1,7 +1,9 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { ReactNode, useMemo } from "react";
-import { formatMinutes } from "../../../model";
+import { ComplexesInfo, ComplexInfo, formatMinutes, majorRoute } from "../../../model";
+import { FireIcon } from "@/src/assets/icons/onboarding/fire";
+import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 
 const DetailSection = ({
   title,
@@ -36,69 +38,52 @@ const EmptyDetail = ({ children }: { children: ReactNode }) => (
   </p>
 );
 
+// export const ComplexesInfoItem = ({ info }: { info: ComplexInfo }) => {
+//   const Icon = info.icon;
+
+//   return (
+//     <div className="flex items-center gap-1">
+//       <Icon stroke="#BBBAC5" /> <span>{info.label}</span>
+//     </div>
+//   );
+// };
+
 export const ListingsCardTileDetails = ({
   listing,
 }: {
   listing: ListingsCardTileProps["listing"];
 }) => {
-  const highlights = useMemo(() => listing.highlights?.filter(Boolean) ?? [], [listing.highlights]);
-  const routes = useMemo(() => listing.mainRoutes ?? [], [listing.mainRoutes]);
   const roomTypes = useMemo(() => listing.roomTypesDetail ?? [], [listing.roomTypesDetail]);
   const infraTags = useMemo(() => listing.infra ?? [], [listing.infra]);
 
+  const { data: infra } = useListingRentalDetail(listing.id);
+
   return (
     <div className="mt-3 space-y-4 border-t border-dashed border-greyscale-grey-100 pt-3">
-      {highlights.length > 0 && (
-        <div className="rounded-lg bg-greyscale-grey-25 p-3">
-          <p className="mb-2 text-xs font-semibold text-primary-blue-300">필터 이유</p>
-          <div className="space-y-1 text-xs text-greyscale-grey-600">
-            {highlights.map((text, index) => (
-              <p key={`${text}-${index}`} className="leading-relaxed">
-                • {text}
-              </p>
-            ))}
-          </div>
+      {/* {highlights.length > 0 && ( */}
+      <div className="rounded-lg bg-greyscale-grey-25 p-3">
+        <div className="space-y-1 text-xs text-greyscale-grey-600">
+          {infra?.rentalInfo.map(info => (
+            <div key={info.key} className="flex items-center gap-1 leading-relaxed">
+              <ComplexesInfo infoKey={info.key} infoValue={info.value} />
+            </div>
+          ))}
         </div>
-      )}
+      </div>
+      {/* )} */}
 
       <DetailSection title="주요 노선" showAction>
-        {routes.length === 0 ? (
-          <EmptyDetail>등록된 노선 정보가 없어요.</EmptyDetail>
-        ) : (
-          <div className="space-y-3">
-            {routes.map(route => (
-              <div
-                key={route.id}
-                className="rounded-lg border border-greyscale-grey-75 p-3 text-sm text-greyscale-grey-700"
-              >
-                <div className="flex items-center justify-between text-sm font-semibold text-greyscale-grey-900">
-                  <p>{route.label}</p>
-                  <span className="text-xs font-medium text-greyscale-grey-500">
-                    {route.distanceKm ? `약 ${route.distanceKm}km · ` : ""}
-                    {route.minutes ? formatMinutes(route.minutes) : "이동시간 정보 없음"}
-                  </span>
-                </div>
-                {route.description && (
-                  <p className="mt-1 text-xs font-medium text-greyscale-grey-500">
-                    {route.description}
-                  </p>
-                )}
-                {route.stations && route.stations.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {route.stations.map(station => (
-                      <span
-                        key={station}
-                        className="rounded-full bg-greyscale-grey-50 px-2 py-0.5 text-[11px] font-semibold text-greyscale-grey-600"
-                      >
-                        {station}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+        <div className="rounded-lg border border-greyscale-grey-75 p-3">
+          <p className="text-xs font-medium text-greyscale-grey-500">
+            핀포인트로부터 {majorRoute.distanceKm}Km · 약 {formatMinutes(majorRoute.totalMinutes)}
+            거리
+          </p>
+          <div className="mt-2 flex items-end gap-2">
+            {/* {majorRoute.legs.map(seg => (
+              <SegmentPill key={seg.id} seg={seg} />
+            ))} */}
           </div>
-        )}
+        </div>
       </DetailSection>
 
       <DetailSection title="주변 환경 정보">

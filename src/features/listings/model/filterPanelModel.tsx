@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { OnOffTrue } from "../../../assets/icons/button/onOffTrue";
 import { OnOffFalse } from "@/src/assets/icons/button";
 import {
@@ -7,6 +7,11 @@ import {
   ListingSearchItem,
   ListingsFilterState,
 } from "@/src/entities/listings/model/type";
+
+import { FireIcon } from "@/src/assets/icons/onboarding/fire";
+import { HomeIcon } from "@/src/assets/icons/home";
+import { SmallMapPin } from "@/src/assets/icons/onboarding/smallMapPin";
+import { SmallHome } from "@/src/assets/icons/home/smallHome";
 
 export interface AllFilterOption {
   key: string;
@@ -129,3 +134,76 @@ export const formatMinutes = (minutes: number) => {
 
   return `${hours}시간 ${mins}분`;
 };
+
+// 공고상세 단지정보 , 상세정보, 난방방식
+export type ComplexKey = "complexInfo" | "detailInfo" | "heatingType";
+// 공고상세 아이콘
+export type ComplexIcon = React.FC<React.SVGProps<SVGSVGElement>>;
+// 공고상세 단지정보1
+export type ComplexInfo = {
+  key: ComplexKey;
+  value: string;
+};
+
+//공고상세 거리 , 버스 , 지하철 ,자동차
+export type SegmentMode = "walk" | "bus" | "subway" | "car";
+//공고상세 거리 , 버스 , 지하철 ,자동차
+export type MajorRouteSegment = { id: string; mode: SegmentMode; minutes: number; label?: string };
+
+export const majorRoute = {
+  distanceKm: 0,
+  totalMinutes: 45,
+  legs: [
+    { id: "walk-1", mode: "walk", minutes: 3 },
+    { id: "bus-1102", mode: "bus", minutes: 12, label: "1102" },
+    { id: "bus-9401", mode: "bus", minutes: 15, label: "9401, G8110" },
+    { id: "subway-1", mode: "subway", minutes: 15, label: "1호선" },
+  ] as MajorRouteSegment[],
+};
+
+const COMPLEX_INFO_META = {
+  name: {
+    icon: SmallHome,
+    label: "단지명",
+  },
+  address: {
+    icon: SmallMapPin,
+    label: "주소",
+  },
+  heating: {
+    icon: FireIcon,
+    label: "난방방식",
+  },
+} as const;
+
+//   key: ComplexKey;
+//   label: string;
+//   icon: ComplexIcon;
+
+export const ComplexesInfo = ({
+  infoKey,
+  infoValue,
+}: {
+  infoKey: keyof typeof COMPLEX_INFO_META;
+  infoValue: string;
+}) => {
+  const meta = COMPLEX_INFO_META[infoKey];
+  const Icon = meta.icon;
+
+  return (
+    <div className="flex items-center gap-1">
+      <Icon stroke="#BBBAC5" />
+      <span>{infoValue}</span>
+    </div>
+  );
+};
+
+// export const COMPLEXES_INFO: {
+//   key: ComplexKey;
+//   label: string;
+//   icon: ComplexIcon;
+// }[] = [
+//   { key: "complexInfo", label: "단지정보", icon: SmallHome },
+//   { key: "detailInfo", label: "상세정보", icon: SmallMapPin },
+//   { key: "heatingType", label: "난방방식", icon: FireIcon },
+// ];

@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { ListingDetailResponseWithColor, ListingSummary, LstingBody } from "../model/type";
+import {
+  ListingDetailResponseWithColor,
+  ListingRentalDetailVM,
+  ListingSummary,
+  LstingBody,
+} from "../model/type";
 import { PostBasicRequest, requestListingList } from "../api/listingsApi";
 import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
@@ -42,19 +47,36 @@ export const useListingDetailBasic = (id: string) => {
 };
 
 export const useListingRentalDetail = (id: string) => {
-  return useQuery<ListingSummary>({
-    queryKey: ["useListingRentalDetail", id],
+  const encodedId = encodeURIComponent(id);
+  return useQuery<ListingSummary, unknown, ListingRentalDetailVM>({
+    queryKey: ["useListingRentalDetail", encodedId],
     enabled: !!id,
     queryFn: async () => {
       return await requestListingList<
         ListingSummary,
         IResponse<ListingSummary>,
         undefined,
-        { complexId: string; pinPointId: string },
+        { pinPointId: string },
         ListingSummary
-      >(COMPLEXES_ENDPOINT, "get", {
-        params: { complexId: "19390#1", pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
+      >(`${COMPLEXES_ENDPOINT}/${encodedId}`, "get", {
+        params: { pinPointId: "03cac89e-9b49-4e17-8daf-029be805f7a8" },
       });
+    },
+    select: (response): ListingRentalDetailVM => {
+      return {
+        distance: response.distance,
+        rentalInfo: [
+          { key: "name", value: response.name },
+          { key: "address", value: response.address },
+          { key: "heating", value: response.heating },
+        ],
+        id: response.id,
+        infra: response.infra,
+        totalHouseholds: response.totalHouseholds,
+        totalSupplyInNotice: response.totalSupplyInNotice,
+        unitCount: response.unitCount,
+        unitTypes: response.unitTypes,
+      };
     },
   });
 };
