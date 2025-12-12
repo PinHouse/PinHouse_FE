@@ -135,16 +135,6 @@ export const formatMinutes = (minutes: number) => {
   return `${hours}시간 ${mins}분`;
 };
 
-// 공고상세 단지정보 , 상세정보, 난방방식
-export type ComplexKey = "complexInfo" | "detailInfo" | "heatingType";
-// 공고상세 아이콘
-export type ComplexIcon = React.FC<React.SVGProps<SVGSVGElement>>;
-// 공고상세 단지정보1
-export type ComplexInfo = {
-  key: ComplexKey;
-  value: string;
-};
-
 //공고상세 거리 , 버스 , 지하철 ,자동차
 export type SegmentMode = "walk" | "bus" | "subway" | "car";
 //공고상세 거리 , 버스 , 지하철 ,자동차
@@ -176,10 +166,6 @@ const COMPLEX_INFO_META = {
   },
 } as const;
 
-//   key: ComplexKey;
-//   label: string;
-//   icon: ComplexIcon;
-
 export const ComplexesInfo = ({
   infoKey,
   infoValue,
@@ -193,17 +179,7 @@ export const ComplexesInfo = ({
   return (
     <div className="flex items-center gap-1">
       <Icon stroke="#BBBAC5" />
-      <span>{infoValue}</span>
+      <span>{infoValue ?? meta.label}</span>
     </div>
   );
 };
-
-// export const COMPLEXES_INFO: {
-//   key: ComplexKey;
-//   label: string;
-//   icon: ComplexIcon;
-// }[] = [
-//   { key: "complexInfo", label: "단지정보", icon: SmallHome },
-//   { key: "detailInfo", label: "상세정보", icon: SmallMapPin },
-//   { key: "heatingType", label: "난방방식", icon: FireIcon },
-// ];

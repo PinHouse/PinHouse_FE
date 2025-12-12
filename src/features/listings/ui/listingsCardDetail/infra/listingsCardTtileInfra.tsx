@@ -1,9 +1,9 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { ReactNode, useMemo } from "react";
-import { ComplexesInfo, ComplexInfo, formatMinutes, majorRoute } from "../../../model";
-import { FireIcon } from "@/src/assets/icons/onboarding/fire";
+import { ComplexesInfo, formatMinutes, majorRoute } from "../../../model";
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
+import { BusIcon } from "@/src/assets/icons/route/busIcon";
 
 const DetailSection = ({
   title,
@@ -38,16 +38,6 @@ const EmptyDetail = ({ children }: { children: ReactNode }) => (
   </p>
 );
 
-// export const ComplexesInfoItem = ({ info }: { info: ComplexInfo }) => {
-//   const Icon = info.icon;
-
-//   return (
-//     <div className="flex items-center gap-1">
-//       <Icon stroke="#BBBAC5" /> <span>{info.label}</span>
-//     </div>
-//   );
-// };
-
 export const ListingsCardTileDetails = ({
   listing,
 }: {
@@ -57,10 +47,11 @@ export const ListingsCardTileDetails = ({
   const infraTags = useMemo(() => listing.infra ?? [], [listing.infra]);
 
   const { data: infra } = useListingRentalDetail(listing.id);
-
+  const route = infra?.distance?.routes;
+  const infraData = infra?.infra;
+  if (!route) return;
   return (
     <div className="mt-3 space-y-4 border-t border-dashed border-greyscale-grey-100 pt-3">
-      {/* {highlights.length > 0 && ( */}
       <div className="rounded-lg bg-greyscale-grey-25 p-3">
         <div className="space-y-1 text-xs text-greyscale-grey-600">
           {infra?.rentalInfo.map(info => (
@@ -70,28 +61,29 @@ export const ListingsCardTileDetails = ({
           ))}
         </div>
       </div>
-      {/* )} */}
 
       <DetailSection title="주요 노선" showAction>
         <div className="rounded-lg border border-greyscale-grey-75 p-3">
-          <p className="text-xs font-medium text-greyscale-grey-500">
-            핀포인트로부터 {majorRoute.distanceKm}Km · 약 {formatMinutes(majorRoute.totalMinutes)}
-            거리
-          </p>
-          <div className="mt-2 flex items-end gap-2">
-            {/* {majorRoute.legs.map(seg => (
-              <SegmentPill key={seg.id} seg={seg} />
-            ))} */}
-          </div>
+          {route?.map((item, index) => (
+            <div key={item.line + item.type + String(index)}>
+              <p className="text-xs font-medium text-greyscale-grey-500">
+                핀포인트로부터 {majorRoute.distanceKm}Km · 약 {item.minutesText}
+                거리
+              </p>
+              <div className="mt-2 flex items-end gap-2">
+                <BusIcon color={item.bgColorHex} minutes={item.minutesText} />
+              </div>
+            </div>
+          ))}
         </div>
       </DetailSection>
 
       <DetailSection title="주변 환경 정보">
-        {infraTags.length === 0 ? (
+        {infraData?.length === 0 ? (
           <EmptyDetail>주변 정보가 제공되지 않았어요.</EmptyDetail>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {infraTags.map(tag => (
+            {infraData?.map(tag => (
               <TagButton
                 key={tag}
                 size="xs"
