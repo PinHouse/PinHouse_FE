@@ -16,7 +16,7 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
   const basicInfo = data?.data.basicInfo;
   const filtered = data?.data.filtered;
   const nonFiltered = data?.data.nonFiltered;
-
+  console.log(data?.data);
   if (isLoading || isFetching || !basicInfo || !filtered || !nonFiltered) {
     return (
       <div className="flex h-full items-center justify-center pb-[88px]">

@@ -261,6 +261,10 @@ export interface LstingBody {
   transitTime: number;
   maxDeposit: number;
   maxMonthPay: number;
+  typeCode?: string[];
+  facilities?: string[];
+  region?: string[];
+  targetType?: string[];
 }
 export type RentType = keyof typeof RENT_COLOR_CLASS;
 export type ListingDetailResponse = IResponse<ListingDetailData>;
@@ -305,7 +309,7 @@ export interface DistanceInfo {
   routes: RouteInfo[];
 }
 
-export type RouteType = "WALK" | "SUBWAY" | "BUS" | "TRAIN" | "TAXI" | "ETC" | string; // API 확장 대비
+export type RouteType = "BUS" | "SUBWAY" | "WALK"; // API 확장 대비
 
 //단지주택 상세정보
 export interface RouteInfo {

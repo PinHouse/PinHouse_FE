@@ -1,9 +1,10 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { ReactNode, useMemo } from "react";
-import { ComplexesInfo, formatMinutes, majorRoute } from "../../../model";
+import { ComplexesInfo, parseMinutes } from "../../../model";
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
-import { BusIcon } from "@/src/assets/icons/route/busIcon";
+import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
+import { TransportIconRenderer } from "./TransportIconRenderer";
 
 const DetailSection = ({
   title,
@@ -44,12 +45,13 @@ export const ListingsCardTileDetails = ({
   listing: ListingsCardTileProps["listing"];
 }) => {
   const roomTypes = useMemo(() => listing.roomTypesDetail ?? [], [listing.roomTypesDetail]);
-  const infraTags = useMemo(() => listing.infra ?? [], [listing.infra]);
-
-  const { data: infra } = useListingRentalDetail(listing.id);
-  const route = infra?.distance?.routes;
+  const { data: infra, isFetching } = useListingRentalDetail(listing.id);
+  const route = infra?.distance;
   const infraData = infra?.infra;
-  if (!route) return;
+
+  if (isFetching || !route) {
+    return <SmallSpinner />;
+  }
   return (
     <div className="mt-3 space-y-4 border-t border-dashed border-greyscale-grey-100 pt-3">
       <div className="rounded-lg bg-greyscale-grey-25 p-3">
@@ -64,17 +66,16 @@ export const ListingsCardTileDetails = ({
 
       <DetailSection title="주요 노선" showAction>
         <div className="rounded-lg border border-greyscale-grey-75 p-3">
-          {route?.map((item, index) => (
-            <div key={item.line + item.type + String(index)}>
-              <p className="text-xs font-medium text-greyscale-grey-500">
-                핀포인트로부터 {majorRoute.distanceKm}Km · 약 {item.minutesText}
-                거리
-              </p>
-              <div className="mt-2 flex items-end gap-2">
-                <BusIcon color={item.bgColorHex} minutes={item.minutesText} />
-              </div>
+          <div>
+            <p className="text-xs font-medium text-greyscale-grey-600">
+              핀포인트로부터 {route?.totalDistance}Km · 약 {route?.totalTime}
+              거리
+            </p>
+
+            <div className="flex w-full items-center justify-start overflow-hidden pt-2">
+              <TransportIconRenderer totalTime={route?.totalTime} routes={route} />
             </div>
-          ))}
+          </div>
         </div>
       </DetailSection>
 
