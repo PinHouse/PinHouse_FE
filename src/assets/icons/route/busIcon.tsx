@@ -1,19 +1,16 @@
+import { getWidthByMinutes } from "@/src/features/listings/model";
 import { SVGProps } from "react";
 
-export const BusIcon = ({
-  color = "black",
-  minutes = "00분",
-  ...props
-}: SVGProps<SVGSVGElement> & { color?: string; minutes: string }) => {
+export const BusIcon = ({ color = "black", minutes = 0 }: { color?: string; minutes: number }) => {
   return (
-    <div className="relative flex items-center justify-center">
+    <div className="relative flex items-center">
       <div
-        className="red flex h-7 w-7 items-center justify-center rounded-3xl"
+        className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
         style={{ backgroundColor: color }}
       >
         <svg
-          width="15"
-          height="15"
+          width="12"
+          height="12"
           viewBox="0 0 11 11"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -24,11 +21,18 @@ export const BusIcon = ({
           />
         </svg>
       </div>
+
       <div
-        className="flex h-4 items-center rounded-r-full px-2"
-        style={{ backgroundColor: color, marginLeft: "-6px" }}
+        className="ml-[-2px] flex h-4 items-center rounded-r-full px-2"
+        style={{
+          backgroundColor: color,
+          width: "100%",
+          marginLeft: "-2.7px",
+        }}
       >
-        <span className="text-xs font-semibold text-white">{minutes}</span>
+        <span className="w-full whitespace-nowrap text-center text-xs font-semibold text-white">
+          {minutes} 분
+        </span>
       </div>
     </div>
   );
