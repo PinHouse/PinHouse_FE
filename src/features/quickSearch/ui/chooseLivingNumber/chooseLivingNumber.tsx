@@ -12,20 +12,24 @@ const ChooseLivingNumber = () => {
   return (
     <div className="flex flex-col gap-2">
       {LIVING_NUMBER_OPTIONS.map(option => {
-        const isSelected = livingNumber === option;
+        const isSelected = livingNumber === Number(option.replace("명 이상", "").replace("명", ""));
         return (
           <Button
             key={option}
-            variant={"outline"}
+            variant="solid"
+            theme="mainBlue"
             size="lg"
             radius="sm"
-            theme="grey"
             className={cn(
-              "h-[3.625rem] justify-start border-none bg-greyscale-grey-50 py-[1.3125rem] leading-4 tracking-[-0.01em] text-greyscale-grey-700 hover:bg-greyscale-grey-50",
+              "h-[3.625rem] justify-start rounded-lg bg-greyscale-grey-50 pl-5 text-greyscale-grey-700 hover:bg-primary-blue-300 hover:text-white",
               isSelected &&
                 "bg-primary-blue-300 text-white hover:bg-primary-blue-300 hover:text-white"
             )}
-            onClick={() => setLivingNumber(isSelected ? null : option)}
+            onClick={() =>
+              setLivingNumber(
+                isSelected ? 0 : Number(option.replace("명 이상", "").replace("명", ""))
+              )
+            }
           >
             {option}
           </Button>

@@ -26,7 +26,10 @@ export interface IOnboardingCompleteRequest {
 /**
  * 온보딩 완료 응답 타입
  */
-export interface IOnboardingCompleteResponse extends IResponse {
+export interface IOnboardingCompleteResponse extends IResponse<{
+  userId: string;
+  onboardingCompleted: boolean;
+}> {
   data?: {
     userId: string;
     onboardingCompleted: boolean;

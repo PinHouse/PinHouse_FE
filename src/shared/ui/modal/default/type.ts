@@ -17,4 +17,5 @@ export interface ModalProps {
   type: ModalType;
   className?: string;
   overlayClassName?: string;
+  onButtonClick?: (buttonIndex: number, buttonLabel: string) => void;
 }

@@ -1,13 +1,3 @@
-import { create } from "zustand";
-
-interface QuickSearchState {
-  livingNumber: string | null;
-  setLivingNumber: (value: string | null) => void;
-  reset: () => void;
-}
-
-export const useQuickSearchStore = create<QuickSearchState>(set => ({
-  livingNumber: null,
-  setLivingNumber: value => set({ livingNumber: value }),
-  reset: () => set({ livingNumber: null }),
-}));
+// 기존 스토어는 model/quickSearchStore.ts로 통합되었습니다
+// 하위 호환성을 위해 re-export
+export { useQuickSearchStore } from "../model/quickSearchStore";
