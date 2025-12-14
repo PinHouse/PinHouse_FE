@@ -22,6 +22,7 @@ export const useListingDetailBasic = (id: string) => {
   return useQuery<ListingDetailResponseWithColor>({
     queryKey: ["useListingDetailBasic", id],
     enabled: !!id,
+    staleTime: 1000 * 60 * 5,
     queryFn: async () => {
       return await PostBasicRequest<
         ListingDetailResponseWithColor,
@@ -52,6 +53,7 @@ export const useListingRentalDetail = (id: string) => {
   return useQuery<ListingSummary, unknown, ListingRentalDetailVM>({
     queryKey: ["useListingRentalDetail", encodedId],
     enabled: !!id,
+    staleTime: 1000 * 60 * 5,
     queryFn: async () => {
       return await requestListingList<
         ListingSummary,
