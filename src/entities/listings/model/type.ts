@@ -309,7 +309,7 @@ export interface DistanceInfo {
   routes: RouteInfo[];
 }
 
-export type RouteType = "BUS" | "SUBWAY" | "WALK"; // API 확장 대비
+export type RouteType = "BUS" | "SUBWAY" | "WALK" | "TRAIN"; // API 확장 대비
 
 //단지주택 상세정보
 export interface RouteInfo {
