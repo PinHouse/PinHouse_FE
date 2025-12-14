@@ -51,12 +51,14 @@ const mockListingItems: ListingItem[] = [
 
 const mockListingPage: ListingListPage = {
   totalCount: mockListingItems.length,
+  totalElements: mockListingItems.length,
   content: mockListingItems,
+  notices: [],
   hasNext: false,
   page: 1,
 };
 
-const mockListingResponse: IResponse = {
+const mockListingResponse: IResponse<ListingListPage> = {
   success: true,
   code: 200,
   message: "Mock listings fetched successfully",
@@ -85,7 +87,7 @@ const withListingsMock: Decorator = (Story, context) => {
     const mode: ListingsMockMode =
       (context.parameters?.listingsMock?.mode as ListingsMockMode) ?? "success";
 
-    const patchedPost: typeof http.post = async <T extends IResponse, D = undefined>(
+    const patchedPost: typeof http.post = async <T extends IResponse<any>, D = undefined>(
       url: string,
       data?: D,
       options?: AxiosRequestConfig
@@ -96,6 +98,7 @@ const withListingsMock: Decorator = (Story, context) => {
         }
         return mockListingResponse as T;
       }
+
       return originalPost<T, D>(url, data, options);
     };
 

@@ -1,6 +1,10 @@
-"use client";
 import { ListingsSearch } from "@/src/widgets/listingsSection";
+import { Suspense } from "react";
 
 export default function properySearch() {
-  return <ListingsSearch />;
+  return (
+    <Suspense fallback={null}>
+      <ListingsSearch />
+    </Suspense>
+  );
 }

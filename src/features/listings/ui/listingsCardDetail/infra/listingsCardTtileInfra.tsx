@@ -1,7 +1,7 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { ReactNode, useMemo } from "react";
-import { ComplexesInfo, parseMinutes } from "../../../model";
+import { ComplexesInfo } from "../../../model";
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { TransportIconRenderer } from "./TransportIconRenderer";
@@ -46,7 +46,7 @@ export const ListingsCardTileDetails = ({
   const { data: infra, isFetching } = useListingRentalDetail(listing.id);
   const route = infra?.distance;
   const infraData = infra?.infra;
-  console.log(infra);
+
   if (isFetching || !route) {
     return <SmallSpinner />;
   }

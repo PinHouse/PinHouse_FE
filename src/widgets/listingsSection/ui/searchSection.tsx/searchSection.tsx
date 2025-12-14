@@ -5,7 +5,6 @@ import { useSearchState } from "@/src/shared/hooks/store";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChangeEvent, InputEventHandler } from "react";
 
 export const ListingsSearch = () => {
   const { setSearchQuery } = useSearchState();

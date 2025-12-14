@@ -10,7 +10,6 @@ import { ListingContentsList } from "../listingsContents/listingsContentsList";
 import { SearchEmptyQueryView } from "./components/searchEmptyQueryView";
 import { SearchNoResultView } from "./components/searchNoResultView";
 import { useSearchState } from "@/src/shared/hooks/store";
-import { Spinner } from "@/src/shared/ui/spinner/default";
 
 export const SearchResults = () => {
   const searchParams = useSearchParams();
