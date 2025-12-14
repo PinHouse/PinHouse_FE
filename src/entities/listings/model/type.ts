@@ -16,11 +16,10 @@ export interface ListingListParams {
 /**
  * 검색어 list param
  */
-export interface ListingSearchParams {
+export interface ListingSearchParams extends ListingListParams {
   q: string;
-  pageRequest: { page: number; size: number };
-  sort?: string;
-  filter?: string;
+  sortType: string;
+  status?: string;
 }
 
 /**
@@ -127,6 +126,7 @@ export interface ListingContentsListProps {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   isError: boolean;
+  isBottom?: boolean;
 }
 /**
  * 총공고 카운트
@@ -216,13 +216,36 @@ export interface ComplexList {
   complexes: Complex[];
 }
 
+export interface ListingRoute {
+  id: string;
+  label: string;
+  minutes?: number;
+  distanceKm?: number;
+  description?: string;
+  stations?: string[];
+}
+
+export interface ListingRoomTypeInfo {
+  id: string;
+  name: string;
+  supplyArea?: string;
+  exclusiveArea?: string;
+  deposit?: string;
+  monthlyRent?: string;
+}
+
+// 공고상세조회
 export interface Complex {
   id: string;
   name: string;
   address: string;
   heating: string;
+  totalTime: string;
   infra: string[];
   unitCount: number;
+  highlights?: string[];
+  mainRoutes?: ListingRoute[];
+  roomTypesDetail?: ListingRoomTypeInfo[];
 }
 
 // 핵심: data 내부 구조
@@ -238,6 +261,10 @@ export interface LstingBody {
   transitTime: number;
   maxDeposit: number;
   maxMonthPay: number;
+  typeCode?: string[];
+  facilities?: string[];
+  region?: string[];
+  targetType?: string[];
 }
 export type RentType = keyof typeof RENT_COLOR_CLASS;
 export type ListingDetailResponse = IResponse<ListingDetailData>;
@@ -259,4 +286,58 @@ export interface ListingDetailResponseWithColor extends ListingDetailResponse {
     filtered: ComplexList;
     nonFiltered: ComplexList;
   };
+}
+
+//단지주택 상세정보
+export interface ListingSummary {
+  id: string;
+  name: string;
+  address: string;
+  heating: string;
+  totalHouseholds: number;
+  totalSupplyInNotice: number;
+  infra: string[];
+  unitCount: number;
+  unitTypes: string[];
+  distance: DistanceInfo;
+}
+//단지주택 상세정보
+export interface DistanceInfo {
+  totalTime: string;
+  totalTimeMinutes: number;
+  totalDistance: number;
+  routes: RouteInfo[];
+}
+
+export type RouteType = "BUS" | "SUBWAY" | "WALK"; // API 확장 대비
+
+//단지주택 상세정보
+export interface RouteInfo {
+  type: RouteType;
+  minutesText: string;
+  lineText: string | null;
+  line: LineInfo | null; // WALK처럼 line이 없는 경우 대비
+  bgColorHex: string;
+}
+
+//단지주택 상세정보
+export interface LineInfo {
+  code: number;
+  label: string;
+  bgColorHex: string;
+}
+export type RentalInfoItem = {
+  key: "name" | "address" | "heating";
+  value: string;
+};
+
+export interface ListingRentalDetailVM {
+  distance: ListingSummary["distance"];
+  rentalInfo: RentalInfoItem[];
+  id: string;
+  infra: ListingSummary["infra"];
+  totalHouseholds: number;
+  totalSupplyInNotice: number;
+  unitCount: number;
+  unitTypes: string[];
 }

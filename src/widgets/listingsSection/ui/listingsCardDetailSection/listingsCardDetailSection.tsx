@@ -25,23 +25,15 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
     );
   }
   return (
-    <div className="mx-auto min-h-full w-full max-w-md bg-white">
+    <div className="mx-auto min-h-full w-full">
       <PageTransition>
         <ListingsCardDetailHeader />
         <main>
           <ListingsCardDetailSummary basicInfo={basicInfo} />
           <ListingsCardDetailCompareButton />
           <ListingsCardDetailFilterBar />
-          <ListingsCardDetailComplexSection
-            sectionTitle="단지"
-            countLabel="00"
-            sortingLabel="핀포인트 거리순"
-            listings={filtered}
-          />
-          <ListingsCardDetailOutOfCriteriaSection
-            description="필터 기준을 벗어난 단지예요"
-            listings={nonFiltered}
-          />
+          <ListingsCardDetailComplexSection listings={filtered} />
+          <ListingsCardDetailOutOfCriteriaSection listings={nonFiltered} />
         </main>
       </PageTransition>
     </div>

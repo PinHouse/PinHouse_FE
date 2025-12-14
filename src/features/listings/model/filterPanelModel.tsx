@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { OnOffTrue } from "../../../assets/icons/button/onOffTrue";
 import { OnOffFalse } from "@/src/assets/icons/button";
 import {
@@ -6,8 +6,24 @@ import {
   ListingNormalized,
   ListingSearchItem,
   ListingsFilterState,
+  RouteType,
 } from "@/src/entities/listings/model/type";
 
+import { FireIcon } from "@/src/assets/icons/onboarding/fire";
+import { SmallMapPin } from "@/src/assets/icons/onboarding/smallMapPin";
+import { SmallHome } from "@/src/assets/icons/home/smallHome";
+import { BusIcon } from "@/src/assets/icons/route/busIcon";
+import { WalkIcon } from "@/src/assets/icons/route/walkl";
+import { TrainIcon } from "@/src/assets/icons/route/subway";
+
+export type City = { code: string; name: string };
+export type SectionMap = Record<string, ReadonlyArray<City>>;
+export type SectionLabelMap = Record<string, string>;
+export type TransportType = "BUS" | "TRAIN" | "WALK";
+export type TransportIconProps = {
+  color?: string;
+  minutes: number;
+};
 export interface AllFilterOption {
   key: string;
   label: string;
@@ -24,9 +40,7 @@ export const AllFitler_OPTIONS: AllFilterOption = {
   type: "panel",
   icon: getAllFilterIcon(false),
 };
-export type City = { code: string; name: string };
-export type SectionMap = Record<string, ReadonlyArray<City>>;
-export type SectionLabelMap = Record<string, string>;
+
 export type ListingFilterMap = {
   region: (s: ListingsFilterState) => ListingsFilterState["regionType"];
   target: (s: ListingsFilterState) => ListingsFilterState["rentalTypes"];
@@ -120,12 +134,70 @@ export const normalizeListing = (item: ListingItem | ListingSearchItem): Listing
   };
 };
 
-export const formatMinutes = (minutes: number) => {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
+//공고상세 거리 , 버스 , 지하철 ,자동차
+export type SegmentMode = "walk" | "bus" | "subway" | "car";
+//공고상세 거리 , 버스 , 지하철 ,자동차
+export type MajorRouteSegment = { id: string; mode: SegmentMode; minutes: number; label?: string };
 
-  if (hours === 0) return `${mins}분`;
-  if (mins === 0) return `${hours}시간`;
+const COMPLEX_INFO_META = {
+  name: {
+    icon: SmallHome,
+    label: "단지명",
+  },
+  address: {
+    icon: SmallMapPin,
+    label: "주소",
+  },
+  heating: {
+    icon: FireIcon,
+    label: "난방방식",
+  },
+} as const;
 
-  return `${hours}시간 ${mins}분`;
+export const ComplexesInfo = ({
+  infoKey,
+  infoValue,
+}: {
+  infoKey: keyof typeof COMPLEX_INFO_META;
+  infoValue: string;
+}) => {
+  const meta = COMPLEX_INFO_META[infoKey];
+  const Icon = meta.icon;
+
+  return (
+    <div className="flex items-center">
+      <Icon height={20} width={20} />
+      <span className="flex items-center justify-center p-1 text-xs-13">
+        {infoValue ?? meta.label}
+      </span>
+    </div>
+  );
+};
+
+export const parseTotalMinutes = (timeText: string): number => {
+  const hourMatch = timeText.match(/(\d+)\s*시간/);
+  const minuteMatch = timeText.match(/(\d+)\s*분/);
+  const hours = hourMatch ? Number(hourMatch[1]) : 0;
+  const minutes = minuteMatch ? Number(minuteMatch[1]) : 0;
+
+  return hours * 60 + minutes;
+};
+
+export const getWidthByMinutes = (minutes: number) => {
+  if (minutes <= 5) return 28;
+  if (minutes <= 15) return 36;
+  if (minutes <= 30) return 50;
+  if (minutes <= 60) return 60;
+  return 68;
+};
+
+export const parseMinutes = (minutesText: string): number => {
+  const match = minutesText.match(/\d+/);
+  return match ? Number(match[0]) : 0;
+};
+
+export const TRANSPORT_ICON_MAP: Record<RouteType, React.ComponentType<TransportIconProps>> = {
+  BUS: BusIcon,
+  SUBWAY: TrainIcon,
+  WALK: WalkIcon,
 };

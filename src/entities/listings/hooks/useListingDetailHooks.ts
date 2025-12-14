@@ -1,7 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { ListingDetailResponseWithColor, LstingBody } from "../model/type";
-import { PostBasicRequest } from "../api/listingsApi";
-import { NOTICE_ENDPOINT } from "@/src/shared/api";
+import {
+  ListingDetailResponseWithColor,
+  ListingRentalDetailVM,
+  ListingSummary,
+  LstingBody,
+} from "../model/type";
+import { PostBasicRequest, requestListingList } from "../api/listingsApi";
+import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
 
@@ -27,6 +32,7 @@ export const useListingDetailBasic = (id: string) => {
     },
     select: (response): ListingDetailResponseWithColor => {
       const basic = response.data?.basicInfo;
+
       return {
         ...response,
         data: {
@@ -36,6 +42,41 @@ export const useListingDetailBasic = (id: string) => {
             rentalColor: getListingsRental(basic.type),
           },
         },
+      };
+    },
+  });
+};
+
+export const useListingRentalDetail = (id: string) => {
+  const encodedId = encodeURIComponent(id);
+  return useQuery<ListingSummary, unknown, ListingRentalDetailVM>({
+    queryKey: ["useListingRentalDetail", encodedId],
+    enabled: !!id,
+    queryFn: async () => {
+      return await requestListingList<
+        ListingSummary,
+        IResponse<ListingSummary>,
+        undefined,
+        { pinPointId: string },
+        ListingSummary
+      >(`${COMPLEXES_ENDPOINT}/${encodedId}`, "get", {
+        params: { pinPointId: "03cac89e-9b49-4e17-8daf-029be805f7a8" },
+      });
+    },
+    select: (response): ListingRentalDetailVM => {
+      return {
+        distance: response.distance,
+        rentalInfo: [
+          { key: "name", value: response.name },
+          { key: "address", value: response.address },
+          { key: "heating", value: response.heating },
+        ],
+        id: response.id,
+        infra: response.infra,
+        totalHouseholds: response.totalHouseholds,
+        totalSupplyInNotice: response.totalSupplyInNotice,
+        unitCount: response.unitCount,
+        unitTypes: response.unitTypes,
       };
     },
   });

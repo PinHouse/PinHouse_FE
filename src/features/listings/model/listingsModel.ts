@@ -1,4 +1,8 @@
-import { FilterOption } from "@/src/entities/listings/model/type";
+import {
+  FilterOption,
+  ListingsCardTileProps,
+  PopularKeywordItem,
+} from "@/src/entities/listings/model/type";
 import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
 import { SectionLabelMap, SectionMap } from "./filterPanelModel";
 
@@ -40,6 +44,31 @@ export const RENT_COLOR_CLASS = {
     text: "text-[var(--rent-happy-tag-text)]",
   },
 } as const;
+
+export const containerClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
+  default: "border border-greyscale-grey-100",
+  muted: "border border-greyscale-grey-75 bg-greyscale-grey-50",
+};
+
+export const titleClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
+  default: "text-greyscale-grey-900",
+  muted: "text-greyscale-grey-400",
+};
+
+export const downButton: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
+  default: "text-gray-400",
+  muted: "text-gray-300",
+};
+
+export const roomTypeClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
+  default: "text-primary-blue-300 border px-1 py-[1px]",
+  muted: "text-primary-blue-75 border-none",
+};
+
+export const infraClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
+  default: "text-gray-400 font-semibold",
+  muted: "text-gray-400",
+};
 
 export const FILTER_OPTIONS: FilterOption[] = [
   {
@@ -238,3 +267,8 @@ export const DETAIL_FILTERS = [
   { key: "area", label: "면적" },
   { key: "around", label: "주변" },
 ] as const;
+
+export type HandleSearchTag = {
+  handleSearchTag: (keyword: string) => void;
+  popular: PopularKeywordItem[];
+};
