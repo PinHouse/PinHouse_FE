@@ -3,7 +3,7 @@
 import { Button } from "@/src/shared/lib/headlessUi";
 import { quickSearchStepCardContentMap } from "../../model/quickSearch.constants";
 import { usePathname, useRouter } from "next/navigation";
-import { useQuickSearchStore } from "@/src/features/quickSearch/hooks/quickSearchStore";
+import { useQuickSearchStore } from "@/src/features/quickSearch/model/quickSearchStore";
 
 export const QuickSearchNextButton = () => {
   const steps = Object.values(quickSearchStepCardContentMap);
@@ -11,15 +11,44 @@ export const QuickSearchNextButton = () => {
   const currentIndex = steps.findIndex(s => s.path === pathname);
   const next = steps[currentIndex + 1];
   const router = useRouter();
-  const { livingNumber } = useQuickSearchStore();
+  const quickSearchData = useQuickSearchStore();
+  const { livingNumber, minSize, maxSize } = quickSearchData;
 
-  // chooseLivingNumber 페이지에서는 선택된 값이 있을 때만 활성화
-  const isDisabled = pathname.includes("chooseLivingNumber") && !livingNumber;
+  // 마지막 단계인지 확인
+  const isLastStep = !next;
 
-  const handleClick = async () => {
-    if (isDisabled) return;
-    next && router.push(next.path);
+  // 각 페이지별 검증 로직
+  const getValidationError = (): string | null => {
+    if (pathname.includes("chooseLivingNumber")) {
+      if (!livingNumber) return "거주 인원을 선택해주세요";
+    }
+    if (pathname.includes("chooseRoomSize")) {
+      if (minSize > 0 && maxSize > 0 && maxSize < minSize) {
+        return "최대 평수는 최소 평수보다 크거나 같아야 합니다";
+      }
+    }
+    return null;
   };
+
+  const validationError = getValidationError();
+  const isDisabled = !!validationError;
+
+  const handleClick = () => {
+    if (isDisabled) {
+      // 에러 메시지 표시 (필요시 toast나 alert 사용)
+      if (validationError) {
+        alert(validationError);
+      }
+      return;
+    }
+    // 마지막 단계인 경우 결과 페이지로 이동 (API 호출은 result 페이지에서 수행)
+    if (isLastStep) {
+      router.push("/quicksearch/result");
+      return;
+    }
+    router.push(next.path);
+  };
+
   return (
     <Button
       variant="capsule"

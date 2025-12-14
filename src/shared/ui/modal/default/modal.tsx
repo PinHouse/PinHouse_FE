@@ -5,7 +5,14 @@ import { discription, modalContainerPreset, modalOverlayPreset } from "../preset
 import { ModalProps } from "./type";
 import { Button } from "@/src/shared/lib/headlessUi";
 
-export const Modal = ({ children, open = true, type, className, overlayClassName }: ModalProps) => {
+export const Modal = ({
+  children,
+  open = true,
+  type,
+  className,
+  overlayClassName,
+  onButtonClick,
+}: ModalProps) => {
   if (!open) return null;
 
   const modalScript = discription[type];
@@ -30,6 +37,7 @@ export const Modal = ({ children, open = true, type, className, overlayClassName
                 theme={index === 0 ? "black" : "mainBlue"}
                 size="sm"
                 className={cn("min-w-[140px] flex-1")}
+                onClick={() => onButtonClick?.(index, item)}
               >
                 {item}
               </Button>

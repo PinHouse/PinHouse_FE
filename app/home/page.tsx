@@ -1,10 +1,15 @@
 "use client";
 
 import { logout } from "@/src/features/login/utils/logout";
+import { useRouter } from "next/navigation";
 
 export default function OnhomePage() {
+  const router = useRouter();
   const onLogout = () => {
     logout();
+  };
+  const onQuickSearch = () => {
+    router.push("/quicksearch/init");
   };
 
   return (
@@ -15,6 +20,12 @@ export default function OnhomePage() {
         className="rounded-lg bg-red-500 px-6 py-3 text-white hover:bg-red-600 active:bg-red-700"
       >
         로그아웃
+      </button>
+      <button
+        onClick={onQuickSearch}
+        className="rounded-lg bg-primary-blue-300 px-6 py-3 text-white hover:bg-red-600 active:bg-red-700"
+      >
+        빠른탐색
       </button>
     </main>
   );

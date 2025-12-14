@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { cn } from "@/src/shared/lib/utils";
 import { dropDownVariants } from "./dropDown.bariants";
 import { DropDownProps } from "./type";
@@ -12,8 +13,9 @@ import {
   useListingState,
 } from "@/src/features/listings/model/listingsStore";
 import { useSearchParams } from "next/navigation";
+import { Spinner } from "@/src/shared/ui/spinner/default";
 
-export const CaretDropDown = ({
+function CaretDropDownContent({
   className,
   variant = dropDownPreset.variant,
   size = dropDownPreset.size,
@@ -21,7 +23,7 @@ export const CaretDropDown = ({
   children,
   data,
   ...props
-}: DropDownProps) => {
+}: DropDownProps) {
   const [open, setOpen] = useState<boolean>(false);
   const optionData = types ? data[types] : [];
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -95,5 +97,13 @@ export const CaretDropDown = ({
         </ul>
       )}
     </div>
+  );
+}
+
+export const CaretDropDown = (props: DropDownProps) => {
+  return (
+    <Suspense fallback={<Spinner title="로딩 중" description="페이지를 불러오는 중입니다" />}>
+      <CaretDropDownContent {...props} />
+    </Suspense>
   );
 };
