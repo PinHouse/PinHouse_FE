@@ -27,8 +27,7 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
   // bar로 보여줄 것 / 나머지 분리
   const barRoutes = parsedRoutes.slice(0, BAR_LIMIT);
   const extraRoutes = parsedRoutes.slice(BAR_LIMIT);
-  console.log(barRoutes);
-  console.log(extraRoutes);
+
   // bar 대상만 비율 계산
   const rawPercents = barRoutes.map(r => (r.minutes / totalMinutes) * 100);
   const curved = rawPercents.map(p => Math.pow(p, 0.2));
