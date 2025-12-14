@@ -32,7 +32,7 @@ export const useListingDetailBasic = (id: string) => {
     },
     select: (response): ListingDetailResponseWithColor => {
       const basic = response.data?.basicInfo;
-      console.log(response);
+
       return {
         ...response,
         data: {
