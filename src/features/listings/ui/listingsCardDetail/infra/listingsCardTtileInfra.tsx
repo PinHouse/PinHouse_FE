@@ -5,6 +5,7 @@ import { ComplexesInfo, parseMinutes } from "../../../model";
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { TransportIconRenderer } from "./TransportIconRenderer";
+import { Button } from "@/src/shared/lib/headlessUi";
 
 const DetailSection = ({
   title,
@@ -20,12 +21,9 @@ const DetailSection = ({
       <div className="mb-2 flex items-center justify-between">
         <p className="text-sm font-bold text-greyscale-grey-800">{title}</p>
         {showAction && (
-          <button
-            type="button"
-            className="text-xs font-semibold text-primary-blue-300 transition-colors hover:text-primary-blue-400"
-          >
+          <Button type="button" theme={"grey"} className="text-sm">
             자세히
-          </button>
+          </Button>
         )}
       </div>
       {children}
@@ -48,7 +46,7 @@ export const ListingsCardTileDetails = ({
   const { data: infra, isFetching } = useListingRentalDetail(listing.id);
   const route = infra?.distance;
   const infraData = infra?.infra;
-
+  console.log(infra);
   if (isFetching || !route) {
     return <SmallSpinner />;
   }
@@ -67,7 +65,7 @@ export const ListingsCardTileDetails = ({
       <DetailSection title="주요 노선" showAction>
         <div className="rounded-lg border border-greyscale-grey-75 p-3">
           <div>
-            <p className="text-xs font-medium text-greyscale-grey-600">
+            <p className="text-sm font-medium text-greyscale-grey-600">
               핀포인트로부터 {route?.totalDistance}Km · 약 {route?.totalTime}
               거리
             </p>

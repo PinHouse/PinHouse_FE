@@ -200,4 +200,5 @@ export const TRANSPORT_ICON_MAP: Record<RouteType, React.ComponentType<Transport
   BUS: BusIcon,
   SUBWAY: TrainIcon,
   WALK: WalkIcon,
+  TRAIN: TrainIcon,
 };

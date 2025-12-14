@@ -36,6 +36,6 @@ export const PostBasicRequest = async <
 ): Promise<TReturn> => {
   const apiCall = HTTP_METHODS[method];
   const res = await apiCall<TResponse, TReqBody>(url, body);
-  console.log(res);
+
   return res as unknown as TReturn;
 };
