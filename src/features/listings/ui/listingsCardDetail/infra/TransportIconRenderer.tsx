@@ -56,19 +56,27 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
               style={{ width: `${finalPercents[index]}%` }}
             >
               <Icon minutes={item.minutes} color={item.bgColorHex} />
+              <div>
+                <p
+                  className="flex h-4 items-center text-xs font-semibold"
+                  style={{ color: item.bgColorHex }}
+                >
+                  {item.type !== "BUS" ? item.lineText?.split(" ")[1] : item.lineText}
+                </p>
+              </div>
             </div>
           );
         })}
       </div>
 
       {/* 기타 시간 */}
-      {extraMinutes > 0 && (
+      {/* {extraMinutes > 0 && (
         <div className="flex items-center">
           <span className="text-xs font-medium text-greyscale-grey-600">
             기타 이동 {extraMinutes}분
           </span>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

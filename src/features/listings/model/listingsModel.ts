@@ -272,3 +272,13 @@ export type HandleSearchTag = {
   handleSearchTag: (keyword: string) => void;
   popular: PopularKeywordItem[];
 };
+export type InfraSheetSection = "route" | "infra" | "room";
+export type InfraSheetProps = {
+  open: boolean;
+  section: InfraSheetSection | null;
+  onClose: () => void;
+};
+
+export type RenderContentProps = {
+  section: InfraSheetSection | null;
+};

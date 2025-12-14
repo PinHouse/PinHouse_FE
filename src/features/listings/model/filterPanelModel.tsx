@@ -15,6 +15,7 @@ import { SmallHome } from "@/src/assets/icons/home/smallHome";
 import { BusIcon } from "@/src/assets/icons/route/busIcon";
 import { WalkIcon } from "@/src/assets/icons/route/walkl";
 import { TrainIcon } from "@/src/assets/icons/route/subway";
+import { InfraSheetSection } from "./listingsModel";
 
 export type City = { code: string; name: string };
 export type SectionMap = Record<string, ReadonlyArray<City>>;
