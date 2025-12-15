@@ -6,6 +6,7 @@ import {
   ListingDetailResponseWithColor,
   ListingRentalDetailVM,
   ListingSummary,
+  ListingUnitType,
   LstingBody,
 } from "../model/type";
 import { PostBasicRequest, requestListingList } from "../api/listingsApi";
@@ -114,5 +115,20 @@ export const useListingInfraDetail = (id: string) => {
         })
         .filter((v): v is InfraConfig => Boolean(v));
     },
+  });
+};
+
+export const useListingRoomTypeDetail = (id: string) => {
+  const encodedId = encodeURIComponent(id);
+
+  return useQuery<ListingUnitType[], Error, ListingUnitType[]>({
+    queryKey: ["useListingInfraDetail", encodedId],
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+    queryFn: () =>
+      PostBasicRequest<ListingUnitType[], IResponse<ListingUnitType[]>, {}, ListingUnitType[]>(
+        `${COMPLEXES_ENDPOINT}/unit/${encodedId}`,
+        "get"
+      ),
   });
 };
