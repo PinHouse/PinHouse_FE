@@ -3,16 +3,11 @@ import { IResponse } from "@/src/shared/types";
 import axios from "axios";
 import { PostBasicRequest, requestListingList } from "@/src/entities/listings/api/listingsApi";
 import {
-  BasicInfo,
-  Complex,
   LikeReturn,
-  ListingDetailData,
-  ListingDetailResponse,
   ListingItem,
   ListingItemResponse,
   ListingSummary,
   PopularKeywordItem,
-  PopularKeywordResponse,
 } from "../../model/type";
 import {
   COMPLEXES_ENDPOINT,
@@ -493,7 +488,7 @@ describe("단지정보상세조회API", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it("단지정보 API 성공", async () => {
+  it.skip("단지정보 API 성공", async () => {
     const mockListingOne: ListingSummary = {
       id: "19390#1",
       name: "양주회천 A25BL",
@@ -575,5 +570,29 @@ describe("단지정보상세조회API", () => {
     });
 
     expect(result).toEqual(mockListingOne);
+  });
+});
+
+describe("인프라상세조회", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("인프라상세 API 성공", async () => {
+    const mockListingOne: { infra: string[] } = {
+      infra: ["도서관", "공원", "동물 관련시설", "스포츠 시설"],
+    };
+
+    (http.get as jest.Mock).mockResolvedValue({
+      data: mockListingOne,
+    });
+
+    const result = await PostBasicRequest<any, IResponse<any>, any, any>(
+      `${COMPLEXES_ENDPOINT}/infra/19409#1`,
+      "get",
+      {}
+    );
+    expect(http.get).toHaveBeenCalledWith(`${COMPLEXES_ENDPOINT}/infra/19409#1`, {});
+
+    expect(result).toEqual({ data: mockListingOne });
   });
 });

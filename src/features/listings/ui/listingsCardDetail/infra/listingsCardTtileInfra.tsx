@@ -1,7 +1,7 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { ReactNode, useState } from "react";
-import { ComplexesInfo, InfraSheetSection } from "../../../model";
+import { ComplexesInfo, InfraSheetSection, SheetState } from "../../../model";
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { TransportIconRenderer } from "./TransportIconRenderer";
@@ -51,12 +51,8 @@ export const ListingsCardTileDetails = ({
   listing: ListingsCardTileProps["listing"];
 }) => {
   const { data: infra, isFetching } = useListingRentalDetail(listing.id);
-  const [sheetState, setSheetState] = useState<{
-    open: boolean;
-    section: InfraSheetSection | null;
-  }>({
+  const [sheetState, setSheetState] = useState<SheetState>({
     open: false,
-    section: null,
   });
   const route = infra?.distance;
   const infraData = infra?.infra;
@@ -80,7 +76,7 @@ export const ListingsCardTileDetails = ({
       <DetailSection
         title="주요 노선"
         showAction
-        onOpen={() => setSheetState({ open: true, section: "route" })}
+        onOpen={() => setSheetState({ open: true, section: "route", listingId: infra.id })}
       >
         <div className="rounded-lg border border-greyscale-grey-75 p-3">
           <div>
@@ -99,7 +95,7 @@ export const ListingsCardTileDetails = ({
       <DetailSection
         title="주변 환경 정보"
         showAction
-        onOpen={() => setSheetState({ open: true, section: "infra" })}
+        onOpen={() => setSheetState({ open: true, section: "infra", listingId: infra.id })}
       >
         {infraData?.length === 0 ? (
           <EmptyDetail>주변 정보가 제공되지 않았어요.</EmptyDetail>
@@ -122,7 +118,7 @@ export const ListingsCardTileDetails = ({
       <DetailSection
         title="방 타입"
         showAction
-        onOpen={() => setSheetState({ open: true, section: "room" })}
+        onOpen={() => setSheetState({ open: true, section: "room", listingId: infra.id })}
       >
         {roomTypes.length === 0 ? (
           <EmptyDetail>방 타입 정보가 제공되지 않았어요.</EmptyDetail>
@@ -142,11 +138,7 @@ export const ListingsCardTileDetails = ({
         )}
       </DetailSection>
 
-      <InfraSheet
-        open={sheetState.open}
-        section={sheetState.section}
-        onClose={() => setSheetState({ open: false, section: null })}
-      />
+      <InfraSheet sheetState={sheetState} onClose={() => setSheetState({ open: false })} />
     </div>
   );
 };

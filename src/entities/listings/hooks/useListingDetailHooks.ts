@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+  Environmnt,
+  InfraConfig,
+  InfraLabel,
   ListingDetailResponseWithColor,
   ListingRentalDetailVM,
   ListingSummary,
@@ -9,6 +12,7 @@ import { PostBasicRequest, requestListingList } from "../api/listingsApi";
 import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
+import { INFRA_ENVIRONMENT_CONFIG, INFRA_LABEL_TO_KEY } from "@/src/features/listings/model";
 
 export const useListingDetailBasic = (id: string) => {
   const listingDetilBody = {
@@ -50,6 +54,7 @@ export const useListingDetailBasic = (id: string) => {
 
 export const useListingRentalDetail = (id: string) => {
   const encodedId = encodeURIComponent(id);
+
   return useQuery<ListingSummary, unknown, ListingRentalDetailVM>({
     queryKey: ["useListingRentalDetail", encodedId],
     enabled: !!id,
@@ -80,6 +85,34 @@ export const useListingRentalDetail = (id: string) => {
         unitCount: response.unitCount,
         unitTypes: response.unitTypes,
       };
+    },
+  });
+};
+
+export const useListingInfraDetail = (id: string) => {
+  const encodedId = encodeURIComponent(id);
+
+  return useQuery<IResponse<Environmnt>, Error, InfraConfig[]>({
+    queryKey: ["useListingInfraDetail", encodedId],
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+    queryFn: () =>
+      PostBasicRequest<Environmnt, IResponse<Environmnt>, {}, IResponse<Environmnt>>(
+        `${COMPLEXES_ENDPOINT}/infra/${encodedId}`,
+        "get"
+      ),
+
+    select: response => {
+      const infraLabels = (response.data?.infra ?? []) as InfraLabel[];
+
+      return infraLabels
+        .map(label => {
+          const key = INFRA_LABEL_TO_KEY[label];
+          if (!key) return null;
+
+          return INFRA_ENVIRONMENT_CONFIG[key];
+        })
+        .filter((v): v is InfraConfig => Boolean(v));
     },
   });
 };

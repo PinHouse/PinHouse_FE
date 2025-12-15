@@ -1,3 +1,5 @@
+// 사용처: 공고 카드 썸네일 아이콘 매핑 (getListingIcon → HouseICons)
+// - src/features/listings/hooks/listingsHooks.tsx
 import { HapplyHouseType } from "@/src/assets/icons/houseType/happyHousing/house-type";
 import { HappyHouseType1 } from "@/src/assets/icons/houseType/happyHousing/house-type1";
 import { HappyHouseType2 } from "@/src/assets/icons/houseType/happyHousing/house-type2";

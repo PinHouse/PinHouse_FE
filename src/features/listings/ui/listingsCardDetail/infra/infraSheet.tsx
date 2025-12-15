@@ -5,13 +5,13 @@ import { RouteDetail } from "./components/routeDetail";
 import { Environment } from "./components/environment";
 import { RoomTypeDetail } from "./components/roomTypeDetail";
 
-const RenderContent = ({ section }: RenderContentProps) => {
+const RenderContent = ({ section, listingId }: RenderContentProps) => {
   switch (section) {
     case "route":
       return <RouteDetail />;
 
     case "infra":
-      return <Environment />;
+      return <Environment listingId={listingId} />;
 
     case "room":
       return <RoomTypeDetail />;
@@ -24,10 +24,10 @@ const RenderContent = ({ section }: RenderContentProps) => {
   }
 };
 
-export const InfraSheet = ({ open, onClose, section }: InfraSheetProps) => {
+export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
   return (
     <AnimatePresence mode="wait">
-      {open && (
+      {sheetState.open && (
         <>
           <motion.div
             key="overlay"
@@ -40,16 +40,30 @@ export const InfraSheet = ({ open, onClose, section }: InfraSheetProps) => {
 
           <motion.div
             key="sheet"
-            className="fixed bottom-0 left-0 right-0 z-50 flex h-[40vh] flex-col rounded-t-2xl bg-white shadow-xl"
+            className="fixed bottom-0 left-0 right-0 z-50 flex flex-col rounded-t-2xl bg-white shadow-xl"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
           >
-            <button onClick={onClose} className="text-xl font-bold">
-              <CloseButton />
-            </button>
-            <RenderContent section={section} />
+            <section className="flex h-full flex-col">
+              <header className="flex items-center justify-between border-b border-greyscale-grey-50 p-5">
+                <div className="w-full">
+                  <div className="flex w-full items-center justify-between">
+                    <p className="text-base font-semibold text-text-primary">주변환경 정보</p>
+                    <button onClick={onClose} className="text-xl font-bold">
+                      <CloseButton />
+                    </button>
+                  </div>
+
+                  <p className="mt-1 text-xs text-text-secondary">
+                    인근 산책로, 자전거길, 생활편의시설까지 한눈에 확인해보세요.
+                  </p>
+                </div>
+              </header>
+            </section>
+
+            <RenderContent section={sheetState.section} listingId={sheetState.listingId} />
           </motion.div>
         </>
       )}
