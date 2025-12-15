@@ -267,7 +267,7 @@ export const INFRA_ENVIRONMENT_MAP = [
   { key: "animal_facility", value: "동물 관련시설", icons: <Animals /> },
   { key: "sports_facility", value: "스포츠 시설", icons: <DumbbellIcons /> },
   { key: "bike_path", value: "자전거길", icons: <BikeInfraIcon /> },
-  { key: "walking_path", value: "산책길", icons: <ShoeInfraIcon /> },
+  { key: "walking_path", value: "산책로", icons: <ShoeInfraIcon /> },
   { key: "hiking_trail", value: "등산로", icons: <HikingInfraIcon /> },
   { key: "child", value: "아동", icons: <KidInfraIcon /> },
   { key: "youth", value: "청소년", icons: <ChildInfraIcon /> },
@@ -289,7 +289,7 @@ export const INFRA_LABEL_TO_KEY = {
   "동물 관련시설": "animal_facility",
   "스포츠 시설": "sports_facility",
   자전거길: "bike_path",
-  산책길: "walking_path",
+  산책로: "walking_path",
   등산로: "hiking_trail",
   아동: "child",
   청소년: "youth",
@@ -312,3 +312,27 @@ export const INFRA_ENVIRONMENT_CONFIG: Record<string, InfraConfig> = INFRA_ENVIR
   },
   {} as Record<string, InfraConfig>
 );
+
+export type RoomTitleDesType = {
+  title: string;
+  des: string;
+};
+export interface RoomTypeTitleDes {
+  route: RoomTitleDesType;
+  infra: RoomTitleDesType;
+  room: RoomTitleDesType;
+}
+export const ROOM_TYPE_TITLE_DES: RoomTypeTitleDes = {
+  route: {
+    title: "노선정보",
+    des: "알수없음",
+  },
+  infra: {
+    title: "주변환경 정보",
+    des: "인근 산책로, 자전거길, 생활편의시설까지 한눈에 확인해보세요.",
+  },
+  room: {
+    title: "방타입",
+    des: "방타입 을 상세히",
+  },
+};
