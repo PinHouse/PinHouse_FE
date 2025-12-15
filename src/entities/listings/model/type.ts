@@ -1,5 +1,10 @@
+// Listings 도메인 전역 타입/응답 정의
+// - 어디서 쓰이나요?
+//   * 리스트/검색 훅: useListingHooks.ts (요청/응답/필터 타입)
+//   * UI 컴포넌트: listingsContentCard.tsx, listingsFullSheet.tsx, listingsCardTile.tsx 등
+//   * 상세 훅/컴포넌트: useListingDetailHooks.ts, TransportIconRenderer.tsx, Environment.tsx
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
-import { RENT_COLOR_CLASS } from "@/src/features/listings/model";
+import { INFRA_LABEL_TO_KEY, RENT_COLOR_CLASS } from "@/src/features/listings/model";
 import { HTTP_METHODS } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 
@@ -8,14 +13,15 @@ import { InfiniteData } from "@tanstack/react-query";
 /**
  * 공고 list param
  */
+// 사용처: 공고 목록/검색 API 페이징 파라미터 (useListingHooks.ts)
 export interface ListingListParams {
   page: number;
   offSet: number;
 }
-
 /**
  * 검색어 list param
  */
+// 사용처: 공고 검색 API 파라미터 (useListingHooks.ts)
 export interface ListingSearchParams extends ListingListParams {
   q: string;
   sortType: string;
@@ -25,6 +31,7 @@ export interface ListingSearchParams extends ListingListParams {
 /**
  * 공고 리스트 필터
  */
+// 사용처: 목록 조회 바디 필터 (지역/대상/임대/주택/정렬) — useListingHooks.ts
 export interface ListingListFilterBody {
   regionType: string[];
   rentalTypes: string[];
@@ -35,6 +42,7 @@ export interface ListingListFilterBody {
 }
 
 // 개별 항목 타입 공고 조회
+// 사용처: 공고 목록 개별 항목 (list 카드)
 export interface ListingItem {
   id: string;
   thumbnailUrl: string | null;
@@ -49,6 +57,7 @@ export interface ListingItem {
 }
 
 // data 객체 타입
+// 사용처: 공고 목록 응답 (페이지네이션)
 export interface ListingListPage {
   totalCount: number;
   totalElements: number;
@@ -62,6 +71,7 @@ export type ListingItemResponse = IResponse<ListingListPage>;
 /**
  * 개별항목 공고검색
  */
+// 사용처: 공고 검색 결과 항목 (키워드 검색)
 export interface ListingSearchItem {
   id: string; // 공고 ID
   title: string; // 공고 제목
@@ -76,6 +86,7 @@ export interface ListingSearchItem {
 
 export type ListingUnion = ListingItem | ListingSearchItem;
 
+// 사용처: UI 표준화된 카드 데이터 (filterPanelModel.tsx의 normalizeListing 반환 타입)
 export interface ListingNormalized {
   id: string;
   name: string; // ListingItem.name OR ListingSearchItem.title
@@ -89,12 +100,14 @@ export interface ListingNormalized {
 /*
  * @ 좋아요! 타입
  */
+// 사용처: 좋아요 토글(간소 타입) — listingsHooks.tsx LikeType
 export type ListingItemMinimal = Pick<ListingItem, "id" | "liked">;
 export type HttpMethod = keyof typeof HTTP_METHODS;
 
 /**
  *@좋아요반환
  */
+// 사용처: 좋아요 API 응답
 export interface LikeReturn {
   success: boolean;
   code: number;
@@ -104,6 +117,7 @@ export interface LikeReturn {
 /**
  *@param 좋아요파라메터
  */
+// 사용처: 좋아요 토글 변수 — useToogleLike 훅
 export type ToggleLikeVariables = {
   method: "post" | "delete";
   targetId: number;
@@ -114,12 +128,14 @@ export type ToggleLikeVariables = {
 /**
  * 무한스크롤 공고 LIST
  */
+// 사용처: 리스트 카드 컴포넌트 프롭스
 export interface ListingContentsCardsProps {
   data: ListingItem[];
 }
 /**
  * 무한스크롤 공고 LIST
  */
+// 사용처: 무한 스크롤 리스트 프롭스 (페이지네이션 상태)
 export interface ListingContentsListProps {
   data: InfiniteData<ListingListPage> | undefined;
   fetchNextPage: () => Promise<unknown>;
@@ -131,22 +147,26 @@ export interface ListingContentsListProps {
 /**
  * 총공고 카운트
  */
+// 사용처: 리스트 헤더 컴포넌트 — 총 공고 수 표시
 export interface ListingsContentHeaderProps {
   totalCount: number | null;
 }
 
+// 사용처: 전체 필터 시트 상태 (Zustand)
 export interface FilterSheetState {
   open: boolean;
   openSheet: () => void;
   closeSheet: () => void;
 }
 
+// 사용처: 리스트 전체/상태 탭 (Zustand)
 export interface ListingState {
   status: string;
   setStatus: (value: string) => void;
   reset: () => void;
 }
 
+// 사용처: 검색 페이지 상태/정렬 (Zustand)
 export interface SearchState {
   sortType: string;
   status: string;
@@ -158,6 +178,7 @@ export interface SearchState {
 /**
  * 인기검색어 Data
  */
+// 사용처: 인기 검색어 항목 — usePopularSearchQuery 훅/검색 화면
 export interface PopularKeywordItem {
   keyword: string;
   count: number;
@@ -168,12 +189,14 @@ export interface PopularKeywordItem {
  * 인기검색어 Data
  */
 
+// 사용처: 인기 검색어 API 응답 타입
 export interface PopularKeywordResponse extends IResponse<PopularKeywordItem[]> {
   data: PopularKeywordItem[];
 }
 
 export type FilterOptionKey = "region" | "target" | "rental" | "housing";
 
+// 사용처: 필터 탭 정의 — listingsModel.ts의 FILTER_OPTIONS
 export interface FilterOption {
   key: FilterOptionKey;
   label: string;
@@ -181,6 +204,7 @@ export interface FilterOption {
   type?: "select" | "radio" | "checkbox" | "sort" | "panel";
 }
 
+// 사용처: 목록 필터 값/토글/리셋 (Zustand) — listingsStore.ts
 export interface ListingsFilterState {
   regionType: string[];
   rentalTypes: string[];
@@ -202,6 +226,7 @@ export interface ListingsFilterState {
 
 /** 공고탐색상세조회 */
 
+// 사용처: 상세 기본 정보 섹션
 export interface BasicInfo {
   id: string;
   type: string;
@@ -211,11 +236,13 @@ export interface BasicInfo {
   period: string;
 }
 
+// 사용처: 상세 — 단지 리스트 묶음 (필터/비필터)
 export interface ComplexList {
   totalCount: number;
   complexes: Complex[];
 }
 
+// 사용처: 상세 — 주요 노선/이동 경로 정보
 export interface ListingRoute {
   id: string;
   label: string;
@@ -225,6 +252,7 @@ export interface ListingRoute {
   stations?: string[];
 }
 
+// 사용처: 상세 — 방 타입/면적/임대료 정보
 export interface ListingRoomTypeInfo {
   id: string;
   name: string;
@@ -235,6 +263,7 @@ export interface ListingRoomTypeInfo {
 }
 
 // 공고상세조회
+// 사용처: 상세 — 단지(Complex) 요약 정보
 export interface Complex {
   id: string;
   name: string;
@@ -249,12 +278,14 @@ export interface Complex {
 }
 
 // 핵심: data 내부 구조
+// 사용처: 상세 응답 데이터 루트
 export interface ListingDetailData {
   basicInfo: BasicInfo;
   filtered: ComplexList;
   nonFiltered: ComplexList;
 }
 
+// 사용처: (요청 바디) 공고 탐색 파라미터
 export interface LstingBody {
   sortType: string;
   pinPointId: string;
@@ -266,6 +297,7 @@ export interface LstingBody {
   region?: string[];
   targetType?: string[];
 }
+// 사용처: 임대 유형 키 타입 — RENT_COLOR_CLASS 기반 (listingsHooks.tsx)
 export type RentType = keyof typeof RENT_COLOR_CLASS;
 export type ListingDetailResponse = IResponse<ListingDetailData>;
 export type RoomVariant = "default" | "muted";
@@ -273,11 +305,8 @@ export type ListingsCardTileProps = {
   listing: Complex;
   variant: RoomVariant;
 };
-export type RentTypeCss = {
-  bg?: string;
-  text?: string;
-};
 
+// 사용처: 상세 기본 정보에 색상 정보 추가 (getListingsRental)
 export interface ListingDetailResponseWithColor extends ListingDetailResponse {
   data: {
     basicInfo: BasicInfo & {
@@ -289,6 +318,7 @@ export interface ListingDetailResponseWithColor extends ListingDetailResponse {
 }
 
 //단지주택 상세정보
+// 사용처: 상세 카드 타일 데이터 (ListingsCardTileDetails 등)
 export interface ListingSummary {
   id: string;
   name: string;
@@ -302,6 +332,7 @@ export interface ListingSummary {
   distance: DistanceInfo;
 }
 //단지주택 상세정보
+// 사용처: 총 소요시간/거리 및 구간 리스트 — TransportIconRenderer.tsx
 export interface DistanceInfo {
   totalTime: string;
   totalTimeMinutes: number;
@@ -309,9 +340,11 @@ export interface DistanceInfo {
   routes: RouteInfo[];
 }
 
+// 사용처: 구간 이동수단 타입 (아이콘 렌더링/색상)
 export type RouteType = "BUS" | "SUBWAY" | "WALK" | "TRAIN"; // API 확장 대비
 
 //단지주택 상세정보
+// 사용처: 구간 상세 정보 (시간/노선/색상)
 export interface RouteInfo {
   type: RouteType;
   minutesText: string;
@@ -321,16 +354,19 @@ export interface RouteInfo {
 }
 
 //단지주택 상세정보
+// 사용처: 라인(지하철/버스 노선) 정보
 export interface LineInfo {
   code: number;
   label: string;
   bgColorHex: string;
 }
+// 사용처: 상세 ‘단지 기본정보’ 키-값 페어 (ComplexesInfo 렌더)
 export type RentalInfoItem = {
   key: "name" | "address" | "heating";
   value: string;
 };
 
+// 사용처: 상세 카드 타일 ViewModel (useListingDetailHooks.ts select 결과)
 export interface ListingRentalDetailVM {
   distance: ListingSummary["distance"];
   rentalInfo: RentalInfoItem[];
@@ -341,3 +377,18 @@ export interface ListingRentalDetailVM {
   unitCount: number;
   unitTypes: string[];
 }
+
+// 사용처: 인프라 상세 API 응답 (useListingInfraDetail)
+export type Environmnt = {
+  infra: string[];
+};
+
+// 사용처: 인프라 아이템 구성 (키/라벨/아이콘) — INFRA_ENVIRONMENT_CONFIG
+export interface InfraConfig {
+  key: string;
+  value: string;
+  icon: React.ReactNode;
+}
+
+// 사용처: API 라벨을 제한된 키로 타입 안전 처리
+export type InfraLabel = keyof typeof INFRA_LABEL_TO_KEY;

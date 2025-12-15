@@ -1,3 +1,5 @@
+import { useListingInfraDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
+import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import type { LucideIcon } from "lucide-react";
 import { Bike, Building2, Footprints, Info, Mountain } from "lucide-react";
 
@@ -50,37 +52,29 @@ const ENVIRONMENT_ITEMS: EnvironmentItem[] = [
   },
 ];
 
-export const Environment = () => {
+export const Environment = ({ listingId }: { listingId: string }) => {
+  const { data, isFetching } = useListingInfraDetail(listingId);
+
+  if (isFetching) {
+    return <SmallSpinner title={"인프라 검색중.."} />;
+  }
+
   return (
     <section className="flex h-full flex-col">
-      <header className="flex items-center justify-between border-b border-greyscale-grey-50 px-5 pb-4 pt-5">
-        <div>
-          <p className="text-base font-semibold text-text-primary">주변환경 정보</p>
-          <p className="mt-1 text-xs text-text-secondary">
-            인근 산책로, 자전거길, 생활편의시설까지 한눈에 확인해보세요.
-          </p>
-        </div>
-      </header>
-
-      <ul className="flex-1 space-y-3 overflow-y-auto px-5 pb-8 pt-4">
-        {ENVIRONMENT_ITEMS.map(item => {
+      <ul className="flex-1 space-y-3 overflow-y-auto p-5">
+        {data?.map(item => {
           const Icon = item.icon;
           return (
-            <li key={item.id} className="rounded-2xlt flex items-center gap-4">
-              <div
-                className={`flex h-12 w-12 items-center justify-center rounded-xl ${item.accentBg}`}
-              >
-                <Icon className={item.accentIcon} size={22} strokeWidth={1.6} />
-              </div>
-
+            <li key={item.key} className="rounded-2xlt flex items-center gap-4">
+              {Icon}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="truncate text-sm font-semibold text-text-primary">{item.label}</p>
-                  <span className="whitespace-nowrap rounded-full bg-greyscale-grey-25 px-2 py-0.5 text-xs text-greyscale-grey-600">
-                    {item.category}
-                  </span>
+                  <p className="truncate text-sm font-semibold text-text-primary">{item.value}</p>
+                  {/* <span className="whitespace-nowrap rounded-full bg-greyscale-grey-25 px-2 py-0.5 text-xs text-greyscale-grey-600">
+                    {item.}
+                  </span> */}
                 </div>
-                <p className="mt-1 text-xs text-text-secondary">{item.distance}</p>
+                {/* <p className="mt-1 text-xs text-text-secondary">{item.distance}</p> */}
               </div>
             </li>
           );

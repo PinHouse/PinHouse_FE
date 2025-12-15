@@ -10,3 +10,8 @@ export * from "./stack";
 export * from "./storefront";
 export * from "./washingMachine";
 export * from "./wheelchair";
+export * from "./library";
+export * from "./park";
+export * from "./animals";
+export * from "./dumbbell";
+export * from "./taxOffice";
