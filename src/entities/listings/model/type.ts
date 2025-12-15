@@ -392,3 +392,44 @@ export interface InfraConfig {
 
 // 사용처: API 라벨을 제한된 키로 타입 안전 처리
 export type InfraLabel = keyof typeof INFRA_LABEL_TO_KEY;
+
+// 금액 단위 타입 (Deposit Breakdown)
+export interface DepositAmount {
+  /** 총 보증금 */
+  total: number;
+  /** 계약금 */
+  contract: number;
+  /** 잔금 */
+  balance: number;
+  /** 월 납부액 */
+  monthPay: number;
+}
+//보증금 구간 타입 (최소 / 일반 / 최대)
+export interface DepositRange {
+  min: DepositAmount;
+  normal: DepositAmount;
+  max: DepositAmount;
+}
+//타입별 주택 정보 (메인 타입)
+export interface ListingUnitType {
+  /** 타입 고유 ID */
+  typeId: string;
+
+  /** 타입 코드 (ex: 34) */
+  typeCode: string;
+
+  /** 썸네일 이미지 URL */
+  thumbnail: string | null;
+
+  /** 공급 세대 수 */
+  quota: number;
+
+  /** 전용면적 (㎡) */
+  exclusiveAreaM2: number;
+
+  /** 보증금 정보 */
+  deposit: DepositRange;
+
+  /** 관심 여부 */
+  liked: boolean;
+}
