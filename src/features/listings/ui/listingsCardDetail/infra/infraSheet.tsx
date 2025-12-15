@@ -1,6 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { CloseButton } from "@/src/assets/icons/button";
-import { InfraSheetProps, RenderContentProps } from "../../../model";
+import {
+  InfraSheetProps,
+  RenderContentProps,
+  ROOM_TYPE_TITLE_DES,
+  RoomTitleDesType,
+} from "../../../model";
 import { RouteDetail } from "./components/routeDetail";
 import { Environment } from "./components/environment";
 import { RoomTypeDetail } from "./components/roomTypeDetail";
@@ -14,7 +19,7 @@ const RenderContent = ({ section, listingId }: RenderContentProps) => {
       return <Environment listingId={listingId} />;
 
     case "room":
-      return <RoomTypeDetail />;
+      return <RoomTypeDetail listingId={listingId} />;
 
     case null:
       return null;
@@ -25,6 +30,9 @@ const RenderContent = ({ section, listingId }: RenderContentProps) => {
 };
 
 export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
+  if (!sheetState.open) return;
+  const roomType: RoomTitleDesType = ROOM_TYPE_TITLE_DES[sheetState.section];
+
   return (
     <AnimatePresence mode="wait">
       {sheetState.open && (
@@ -50,15 +58,13 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
               <header className="flex items-center justify-between border-b border-greyscale-grey-50 p-5">
                 <div className="w-full">
                   <div className="flex w-full items-center justify-between">
-                    <p className="text-base font-semibold text-text-primary">주변환경 정보</p>
+                    <p className="text-base font-semibold text-text-primary">{roomType.title}</p>
                     <button onClick={onClose} className="text-xl font-bold">
                       <CloseButton />
                     </button>
                   </div>
 
-                  <p className="mt-1 text-xs text-text-secondary">
-                    인근 산책로, 자전거길, 생활편의시설까지 한눈에 확인해보세요.
-                  </p>
+                  <p className="mt-1 text-xs text-text-secondary">{roomType.des}</p>
                 </div>
               </header>
             </section>
