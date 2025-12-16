@@ -430,7 +430,7 @@ export interface ListingUnitType {
 
 // 공통 Enum (타입 안정성 ↑)
 export type TransportType = "AIR" | "TRAIN" | "BUS" | "SUBWAY" | "WALK";
-export type StopRole = "START" | "TRANSFER" | "ARRIVAL" | "STOP";
+export type StopRole = "START" | "TRANSFER" | "ARRIVAL";
 //Line 타입
 export interface TransportLine {
   code: number;
