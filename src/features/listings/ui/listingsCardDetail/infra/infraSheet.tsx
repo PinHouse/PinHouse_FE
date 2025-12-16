@@ -6,9 +6,10 @@ import {
   ROOM_TYPE_TITLE_DES,
   RoomTitleDesType,
 } from "../../../model";
-import { RouteDetail } from "./components/routeDetail";
+
 import { Environment } from "./components/environment";
 import { RoomTypeDetail } from "./components/roomTypeDetail";
+import { RouteDetail } from "./components/routeDetail";
 
 const RenderContent = ({ section, listingId }: RenderContentProps) => {
   switch (section) {

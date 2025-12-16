@@ -374,3 +374,12 @@ export const toPyeong = (m2: number) => {
   if (!m2 || Number.isNaN(m2)) return "0";
   return (m2 / 3.305785).toFixed(1);
 };
+
+export type TransitActionKey = "START" | "TRANSFER" | "ARRIVAL";
+export type TransitActionType = Record<TransitActionKey, string>;
+
+export const TransitAction: TransitActionType = {
+  START: "출발",
+  TRANSFER: "환승",
+  ARRIVAL: "도착",
+};

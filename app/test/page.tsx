@@ -24,10 +24,12 @@ import { Modal } from "@/src/shared/ui/modal/default";
 import { SearchBar } from "@/src/shared/ui/searchBar";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 import { QuickSearchRecommendedRoomCard } from "@/src/features/quickSearch/ui/common/quickSearchRecommendedRoomCard";
+import { PinPointAddress } from "@/src/assets/icons/infra/pinAddress";
 
 export default function DefaultTest() {
   return (
     <div className="flex flex-col gap-4 px-4 py-10">
+      <PinPointAddress />
       <QuickSearchRecommendCard
         tag="대학생"
         complexName="단지 이름 최대 한줄 넘어가면 자동으로 잘려서 표시됩니다"

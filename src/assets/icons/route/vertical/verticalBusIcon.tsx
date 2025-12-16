@@ -1,13 +1,24 @@
-export const BusIcon = ({ color = "black", minutes = 0 }: { color?: string; minutes: number }) => {
+interface VerticalTransitIconProps {
+  color: string;
+  minutes?: number;
+  showLine?: boolean;
+}
+
+export const VerticalTransitIcon = ({
+  color,
+  minutes,
+  showLine = true,
+}: VerticalTransitIconProps) => {
   return (
-    <div className="relative flex items-center">
+    <div className="flex flex-col items-center">
+      {/* 아이콘 원 */}
       <div
-        className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+        className="flex h-6 w-6 items-center justify-center rounded-full"
         style={{ backgroundColor: color }}
       >
         <svg
-          width="12"
-          height="12"
+          width="14"
+          height="14"
           viewBox="0 0 11 11"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -19,18 +30,21 @@ export const BusIcon = ({ color = "black", minutes = 0 }: { color?: string; minu
         </svg>
       </div>
 
-      <div
-        className="ml-[-2px] flex h-4 items-center rounded-r-full px-2"
-        style={{
-          backgroundColor: color,
-          width: "100%",
-          marginLeft: "-2.7px",
-        }}
-      >
-        <span className="w-full whitespace-nowrap text-center text-xs font-semibold text-white">
-          {minutes} 분
-        </span>
-      </div>
+      {/* 점선 */}
+      {showLine && (
+        <div className="my-1 flex flex-col items-center">
+          <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
+          <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
+          <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
+        </div>
+      )}
+
+      {/* 분 배지 */}
+      {typeof minutes === "number" && (
+        <div className="rounded-full px-1 py-[1px]" style={{ backgroundColor: color }}>
+          <span className="text-xs font-semibold text-white"></span>
+        </div>
+      )}
     </div>
   );
 };
