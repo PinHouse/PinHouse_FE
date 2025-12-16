@@ -6,10 +6,11 @@ import {
   ListingDetailResponseWithColor,
   ListingRentalDetailVM,
   ListingSummary,
-  ListingUnitType,
   LstingBody,
+  UseListingsHooksType,
+  UseListingsHooksWithParam,
 } from "../model/type";
-import { PostBasicRequest, requestListingList } from "../api/listingsApi";
+import { PostBasicRequest, PostParamsBodyRequest, requestListingList } from "../api/listingsApi";
 import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
@@ -68,7 +69,7 @@ export const useListingRentalDetail = (id: string) => {
         { pinPointId: string },
         ListingSummary
       >(`${COMPLEXES_ENDPOINT}/${encodedId}`, "get", {
-        params: { pinPointId: "03cac89e-9b49-4e17-8daf-029be805f7a8" },
+        params: { pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
       });
     },
     select: (response): ListingRentalDetailVM => {
@@ -118,24 +119,42 @@ export const useListingInfraDetail = (id: string) => {
   });
 };
 
-export const useListingRoomTypeDetail = (id: string) => {
+export const useListingRoomTypeDetail = <T>({ id, queryK, url }: UseListingsHooksType) => {
+  const encodedId = encodeURIComponent(id);
+  return useQuery<IResponse<T[]>, Error, T[]>({
+    queryKey: [queryK, encodedId],
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+    queryFn: () =>
+      PostBasicRequest<T[], IResponse<T[]>, {}, IResponse<T[]>>(
+        `${COMPLEXES_ENDPOINT}/${url}/${encodedId}`,
+        "get"
+      ),
+    select: response => response.data ?? [],
+  });
+};
+
+export const useListingRouteDetail = <T, TParam extends object>({
+  id,
+  queryK,
+  url,
+  params,
+}: UseListingsHooksWithParam<TParam>) => {
   const encodedId = encodeURIComponent(id);
 
-  return useQuery<IResponse<ListingUnitType[]>, Error, ListingUnitType[]>({
-    queryKey: ["useListingRoomTypeDetail", encodedId],
+  return useQuery<IResponse<T[]>, Error, T[]>({
+    queryKey: [queryK, encodedId, params],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
 
     queryFn: () =>
-      PostBasicRequest<
-        ListingUnitType[],
-        IResponse<ListingUnitType[]>,
+      PostParamsBodyRequest<T[], IResponse<T[]>, {}, IResponse<T[]>, TParam>(
+        `${COMPLEXES_ENDPOINT}/${url}/${encodedId}`,
+        "get",
         {},
-        IResponse<ListingUnitType[]>
-      >(`${COMPLEXES_ENDPOINT}/unit/${encodedId}`, "get"),
+        { query: params }
+      ),
 
-    select: response => {
-      return response.data ?? [];
-    },
+    select: response => response.data ?? [],
   });
 };

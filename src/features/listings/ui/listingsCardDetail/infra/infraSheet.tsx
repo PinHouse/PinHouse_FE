@@ -13,7 +13,7 @@ import { RoomTypeDetail } from "./components/roomTypeDetail";
 const RenderContent = ({ section, listingId }: RenderContentProps) => {
   switch (section) {
     case "route":
-      return <RouteDetail />;
+      return <RouteDetail listingId={listingId} />;
 
     case "infra":
       return <Environment listingId={listingId} />;

@@ -6,9 +6,14 @@ import { formatNumber } from "@/src/shared/lib/numberFormat";
 import { toPyeong } from "@/src/features/listings/model";
 import { DepositSection } from "./components/roomType/depositSection";
 import { TypeInfoSection } from "./components/roomType/typeInfoSection";
+import { ListingUnitType } from "@/src/entities/listings/model/type";
 
 export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
-  const { data, isFetching } = useListingRoomTypeDetail(listingId);
+  const { data, isFetching } = useListingRoomTypeDetail<ListingUnitType>({
+    id: listingId,
+    queryK: "useListingRoomTypeDetail",
+    url: "unit",
+  });
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const items = data ?? [];
