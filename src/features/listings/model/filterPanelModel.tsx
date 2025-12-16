@@ -313,15 +313,26 @@ export const INFRA_ENVIRONMENT_CONFIG: Record<string, InfraConfig> = INFRA_ENVIR
   {} as Record<string, InfraConfig>
 );
 
+/**
+ * 방 타입 관련 섹션 헤더에 쓰이는 텍스트 포맷
+ * - title: 섹션 제목
+ * - des: 부가 설명 문구
+ */
 export type RoomTitleDesType = {
   title: string;
   des: string;
 };
+/**
+ * 방 타입 상세 상단 탭별(노선/주변환경/방타입) 헤더 문구 모음
+ */
 export interface RoomTypeTitleDes {
   route: RoomTitleDesType;
   infra: RoomTitleDesType;
   room: RoomTitleDesType;
 }
+/**
+ * 방 타입 상세 화면에서 사용하는 기본 헤더 문구
+ */
 export const ROOM_TYPE_TITLE_DES: RoomTypeTitleDes = {
   route: {
     title: "노선정보",
@@ -335,4 +346,31 @@ export const ROOM_TYPE_TITLE_DES: RoomTypeTitleDes = {
     title: "방타입",
     des: "방타입 을 상세히",
   },
+};
+
+/**
+ * 보증금 상세 탭 키
+ * - min: 최소 납입
+ * - normal: 기본
+ * - max: 최대 납입
+ */
+export type DepositTab = "min" | "normal" | "max";
+
+/**
+ * 보증금 상세에서 사용하는 탭 구성(라벨 포함)
+ */
+export const DEPOSIT_TABS: { key: DepositTab; label: string }[] = [
+  { key: "min", label: "보증금 최소납입" },
+  { key: "normal", label: "보증금 기본" },
+  { key: "max", label: "보증금 최대납입" },
+];
+
+/**
+ * ㎡(제곱미터)를 평 단위 문자열로 변환
+ * - 소수점 한 자리 고정
+ * - 잘못된 입력(m2 = 0/NaN)은 "0" 반환
+ */
+export const toPyeong = (m2: number) => {
+  if (!m2 || Number.isNaN(m2)) return "0";
+  return (m2 / 3.305785).toFixed(1);
 };

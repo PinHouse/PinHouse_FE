@@ -414,22 +414,16 @@ export interface DepositRange {
 export interface ListingUnitType {
   /** 타입 고유 ID */
   typeId: string;
-
   /** 타입 코드 (ex: 34) */
   typeCode: string;
-
   /** 썸네일 이미지 URL */
   thumbnail: string | null;
-
   /** 공급 세대 수 */
   quota: number;
-
   /** 전용면적 (㎡) */
   exclusiveAreaM2: number;
-
   /** 보증금 정보 */
   deposit: DepositRange;
-
   /** 관심 여부 */
   liked: boolean;
 }
