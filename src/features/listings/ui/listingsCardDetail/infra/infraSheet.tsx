@@ -31,8 +31,9 @@ const RenderContent = ({ section, listingId }: RenderContentProps) => {
 };
 
 export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
-  if (!sheetState.open) return;
-  const roomType: RoomTitleDesType = ROOM_TYPE_TITLE_DES[sheetState.section];
+  const roomType: RoomTitleDesType | null = sheetState.open
+    ? ROOM_TYPE_TITLE_DES[sheetState.section]
+    : null;
 
   return (
     <AnimatePresence mode="wait">
@@ -59,13 +60,13 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
               <header className="flex items-center justify-between border-b border-greyscale-grey-50 p-5">
                 <div className="w-full">
                   <div className="flex w-full items-center justify-between">
-                    <p className="text-base font-semibold text-text-primary">{roomType.title}</p>
+                    <p className="text-base font-semibold text-text-primary">{roomType?.title}</p>
                     <button onClick={onClose} className="text-xl font-bold">
                       <CloseButton />
                     </button>
                   </div>
 
-                  <p className="mt-1 text-xs text-text-secondary">{roomType.des}</p>
+                  <p className="mt-1 text-xs text-text-secondary">{roomType?.des}</p>
                 </div>
               </header>
             </section>

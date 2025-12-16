@@ -90,9 +90,8 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
           <div className="mt-3">
             <div className="flex items-center">
               {current!.routes.map((seg, i) => {
-                console.log(seg.minutesText);
-                if (seg.minutesText === "0분") return;
                 const m = parseMinutes(seg.minutesText) || 0;
+                if (m === 0) return;
                 const widthPct = totalMinutes ? Math.max(5, (m / totalMinutes) * 100) : 0;
                 const color = seg.bgColorHex;
                 return (
