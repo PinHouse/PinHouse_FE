@@ -427,3 +427,55 @@ export interface ListingUnitType {
   /** 관심 여부 */
   liked: boolean;
 }
+
+// 공통 Enum (타입 안정성 ↑)
+export type TransportType = "AIR" | "TRAIN" | "BUS" | "SUBWAY" | "WALK";
+export type StopRole = "START" | "TRANSFER" | "ARRIVAL" | "STOP";
+//Line 타입
+export interface TransportLine {
+  code: number;
+  label: string;
+  bgColorHex: string;
+}
+//이동구간
+export interface RouteSegment {
+  type: TransportType;
+  minutesText: string; // "60분"
+  lineText: string | null; // "KTX", "항공"
+  line: TransportLine | null;
+  bgColorHex: string | null;
+}
+
+export interface RouteStop {
+  role: StopRole;
+  type: TransportType;
+  stopName: string;
+  lineText: string | null;
+  line: TransportLine | null;
+  bgColorHex: string | null;
+}
+
+export interface ListingRouteInfo {
+  totalTime: string;
+  totalTimeMinutes: number;
+  totalDistance: number;
+  routes: RouteSegment[];
+  stops: RouteStop[];
+}
+
+export type UseListingsHooksType = {
+  id: string;
+  queryK: string;
+  url: string;
+};
+
+export type UseListingsHooksWithParam<TParam extends object> = {
+  id: string;
+  queryK: string;
+  url: string;
+  params: TParam;
+};
+
+export interface RequestOptions<TQuery extends object = object> {
+  query?: TQuery;
+}
