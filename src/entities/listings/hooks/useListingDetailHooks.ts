@@ -121,14 +121,21 @@ export const useListingInfraDetail = (id: string) => {
 export const useListingRoomTypeDetail = (id: string) => {
   const encodedId = encodeURIComponent(id);
 
-  return useQuery<ListingUnitType[], Error, ListingUnitType[]>({
-    queryKey: ["useListingInfraDetail", encodedId],
+  return useQuery<IResponse<ListingUnitType[]>, Error, ListingUnitType[]>({
+    queryKey: ["useListingRoomTypeDetail", encodedId],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
+
     queryFn: () =>
-      PostBasicRequest<ListingUnitType[], IResponse<ListingUnitType[]>, {}, ListingUnitType[]>(
-        `${COMPLEXES_ENDPOINT}/unit/${encodedId}`,
-        "get"
-      ),
+      PostBasicRequest<
+        ListingUnitType[],
+        IResponse<ListingUnitType[]>,
+        {},
+        IResponse<ListingUnitType[]>
+      >(`${COMPLEXES_ENDPOINT}/unit/${encodedId}`, "get"),
+
+    select: response => {
+      return response.data ?? [];
+    },
   });
 };

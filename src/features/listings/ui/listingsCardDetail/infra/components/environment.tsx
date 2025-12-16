@@ -7,7 +7,7 @@ export const Environment = ({ listingId }: { listingId: string }) => {
   if (isFetching) {
     return <SmallSpinner title={"인프라 검색중.."} />;
   }
-  console.log(data);
+
   return (
     <section className="flex h-full flex-col">
       <ul className="flex-1 space-y-3 overflow-y-auto p-5">
