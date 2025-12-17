@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useListingRouteDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { ListingRouteInfo, TransportType } from "@/src/entities/listings/model/type";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
@@ -23,7 +23,8 @@ const ModeIcon = ({
   if (type === "BUS")
     return <VerticalTransitIcon color={color} minutes={minutes} showLine={false} />;
   if (type === "WALK") return <VerticalWalkIcon color={color} minutes={minutes} />;
-  return <VerticalSubWayIcon color={color} minutes={minutes} showLine={false} />;
+  if (type === "SUBWAY")
+    return <VerticalSubWayIcon color={color} minutes={minutes} showLine={false} />;
 };
 
 export const RouteDetail = ({ listingId }: { listingId: string }) => {
@@ -124,65 +125,79 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
       </div>
 
       {/* 타임라인 */}
-      <ul className="flex-1 space-y-4 overflow-y-auto p-5">
+      <ul
+        className="flex-1 overflow-y-auto p-5"
+        style={
+          {
+            ["--icon-size" as any]: "clamp(20px, 5vw, 28px)",
+            ["--line-w" as any]: "clamp(2px, 0.6vw, 3px)",
+            ["--item-gap" as any]: "clamp(18px, 4.5vw, 28px)",
+            ["--col-gap" as any]: "clamp(8px, 2.5vw, 14px)",
+          } as CSSProperties
+        }
+      >
         {/* 핀포인트 주소 */}
-        <li className="flex items-start gap-3">
-          <div className="relative flex w-6 flex-col items-center">
-            <PinPointAddress />
-            <span className="mt-1 block h-full w-[2px] flex-1 rounded bg-greyscale-grey-100" />
+        <li className="relative flex gap-[var(--col-gap)] pb-[var(--item-gap)]">
+          {/* 왼쪽 */}
+          <div className="relative flex h-full w-[var(--icon-size)] justify-center">
+            <div className="z-[1]">
+              <PinPointAddress />
+            </div>
+
+            {/* 점선 */}
+            <span
+              className="absolute -bottom-[calc(var(--item-gap)+var(--icon-size))] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(to bottom, #D1D5DB 0 6px, transparent 6px 8px)",
+              }}
+            />
           </div>
-          <div className="-mt-0.5 flex-1">
-            <p className="font-medium text-text-primary">핀포인트 주소</p>
+
+          {/* 오른쪽 */}
+          <div className="h-full flex-1">
+            <p className="flex gap-1 text-sm font-medium text-text-primary">핀포인트 주소</p>
             <p className="text-xs text-text-secondary">도보 이동 · 0분, 0m</p>
           </div>
         </li>
 
-        {/* 정류장/역/환승/도착 */}
-        <ul className="space-y-4">
-          {(current?.stops ?? []).map((s, i) => {
-            const color = s.bgColorHex;
-            const minutes = 0;
-            const isLast = i === (current?.stops?.length ?? 0) - 1;
+        {/* 정류장 / 환승 / 도착 */}
+        {(current?.stops ?? []).map((s, i) => {
+          const color = s.bgColorHex;
+          const isLast = i === (current?.stops?.length ?? 0) - 1;
 
-            return (
-              <li key={`${s.stopName}-${i}`} className="relative flex gap-3">
-                {/* 왼쪽: 아이콘 + 세로선 */}
-                <div className="relative flex w-6 justify-center">
-                  {/* 아이콘 (분기 책임은 ModeIcon) */}
-                  <div className="z-[1]">
-                    <ModeIcon type={s.type} color={String(color)} minutes={minutes} />
-                  </div>
+          return (
+            <li
+              key={`${s.line}` + i}
+              className="relative flex gap-[var(--col-gap)] pb-[var(--item-gap)]"
+            >
+              {/* 왼쪽 아이콘 + 세로선 */}
+              <div className="relative z-[1] flex w-[var(--icon-size)] justify-center">
+                {/* 세로선 (왼쪽 컬럼 기준) */}
+                {!isLast && (
+                  <span
+                    className="absolute -bottom-[22] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
+                    style={{ backgroundColor: String(color) }}
+                  />
+                )}
+                {s.role !== "ARRIVAL" ? (
+                  <ModeIcon type={s.type} color={String(color)} minutes={0} />
+                ) : (
+                  <span className="mt-1 flex h-3 w-3 rounded-full bg-primary-blue-400" />
+                )}
+              </div>
 
-                  {!isLast && (
-                    <span className="absolute bottom-0 top-6 w-[2px] rounded bg-greyscale-grey-100" />
-                  )}
-                </div>
-
-                {/* 오른쪽: 콘텐츠 (높이 기준) */}
-                <div className="flex-1 pb-4">
-                  <p className="flex gap-1 text-sm font-medium text-text-primary">
-                    {s.stopName}
-                    <span className="text-text-secondary">{TransitAction[s.role]}</span>
-                  </p>
-
-                  {s.lineText && <p className="mt-0.5 text-xs text-text-secondary">{s.lineText}</p>}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-
-        {/* 도착지점 */}
-        <li className="flex items-start gap-3">
-          <div className="relative flex w-6 flex-col items-center">
-            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-greyscale-grey-300">
-              <span className="h-2 w-2 rounded-full bg-white" />
-            </div>
-          </div>
-          <div className="-mt-0.5 flex-1">
-            <p className="text-sm font-medium text-text-primary">도착지점</p>
-          </div>
-        </li>
+              {/* 오른쪽 콘텐츠 */}
+              <div className="h-full flex-1">
+                <p className="flex gap-1 text-sm font-medium text-text-primary">
+                  {s.stopName}
+                  <span className="text-text-secondary">{TransitAction[s.role]}</span>
+                </p>
+                {s.lineText && <p className="mt-0.5 text-xs text-text-secondary">{s.lineText}</p>}
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

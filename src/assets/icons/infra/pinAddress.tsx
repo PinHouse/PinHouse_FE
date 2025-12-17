@@ -5,7 +5,7 @@ export const PinPointAddress = ({
   ...props
 }: SVGProps<SVGSVGElement> & { color?: string }) => {
   return (
-    <div className={`flex h-7 w-7 items-center justify-center rounded-full bg-primary-blue-300`}>
+    <div className={`flex h-6 w-6 items-center justify-center rounded-full bg-primary-blue-300`}>
       <svg
         width="13"
         height="13"
