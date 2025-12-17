@@ -335,8 +335,8 @@ export interface RoomTypeTitleDes {
  */
 export const ROOM_TYPE_TITLE_DES: RoomTypeTitleDes = {
   route: {
-    title: "노선정보",
-    des: "알수없음",
+    title: "주요 노선",
+    des: "노선정보를 확인해보세요.",
   },
   infra: {
     title: "주변환경 정보",

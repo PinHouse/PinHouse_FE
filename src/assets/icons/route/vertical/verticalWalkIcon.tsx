@@ -6,10 +6,10 @@ interface VerticalTransitIconProps {
 
 export const VerticalWalkIcon = ({ color, minutes, showLine = true }: VerticalTransitIconProps) => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex h-full flex-col items-center">
       {/* 아이콘 원 */}
       <div
-        className="flex h-6 w-6 items-center justify-center rounded-full"
+        className="flex h-[var(--icon-size)] w-[var(--icon-size)] items-center justify-center rounded-full"
         style={{ backgroundColor: color }}
       >
         <svg
@@ -67,11 +67,11 @@ export const VerticalWalkIcon = ({ color, minutes, showLine = true }: VerticalTr
       )}
 
       {/* 분 배지 */}
-      {typeof minutes === "number" && (
-        <div className="rounded-full px-1 py-[1px]" style={{ backgroundColor: color }}>
-          <span className="text-xs font-semibold text-white"></span>
+      {/* {typeof minutes === "number" && (
+        <div className="h-full rounded-full px-1 py-[1px]" style={{ backgroundColor: color }}>
+          <div className="h-full w-[1px] text-white"></div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -56,7 +56,7 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
           >
-            <section className="flex h-full flex-col">
+            <section className="flex flex-col">
               <header className="flex items-center justify-between border-b border-greyscale-grey-50 p-5">
                 <div className="w-full">
                   <div className="flex w-full items-center justify-between">

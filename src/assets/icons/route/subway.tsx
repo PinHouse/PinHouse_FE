@@ -30,7 +30,7 @@ export const TrainIcon = ({
         style={{
           backgroundColor: color,
           width: "100%",
-          marginLeft: "-2.7px",
+          marginLeft: "-5px",
         }}
       >
         <span className="flex text-xs font-semibold text-white">{`${minutes} 분`}</span>
