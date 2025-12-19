@@ -195,12 +195,18 @@ export default {
             opacity: "1",
           },
         },
+        glowBlink: {
+          "0%": { opacity: "0.2" },
+          "50%": { opacity: "0.7" },
+          "100%": { opacity: "0.2" },
+        },
       },
       animation: {
         logoBounce: "logoBounce 1.5s ease-in-out infinite",
         logoPop: "logoPop 0.8s ease-in-out",
         leftMove: "slideOutLeft 0.4s ease-in-out forwards",
         rightMove: "slideInRight 0.4s ease-in-out forwards",
+        glowBlink: "glowBlink 1s ease-in-out infinite",
       },
       borderRadius: {
         lg: "var(--radius)",
