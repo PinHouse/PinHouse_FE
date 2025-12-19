@@ -1,6 +1,5 @@
 import { DETAIL_FILTERS, DetailFilterTabKey } from "@/src/features/listings/model";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { motion, AnimatePresence } from "framer-motion";
 import { getIndicatorLeft, getIndicatorWidth } from "@/src/features/listings/hooks/listingsHooks";
 
