@@ -42,7 +42,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
 
   const totalMinutes = useMemo(() => {
     if (!current) return 0;
-    if (current.totalTimeMinutes && current.totalTimeMinutes > 0) return current.totalTimeMinutes;
+    if (current.totalTimeMinutes > 0) return current.totalTimeMinutes;
     return (current.routes ?? []).reduce((sum, r) => sum + (parseMinutes(r.minutesText) || 0), 0);
   }, [current]);
 
@@ -176,18 +176,22 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
                 {/* 세로선 (왼쪽 컬럼 기준) */}
                 {!isLast && (
                   <span
-                    className="absolute -bottom-[22] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
-                    style={{ backgroundColor: String(color) }}
+                    className="absolute -bottom-[calc(var(--item-gap)+var(--line-extend))] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
+                    style={
+                      {
+                        "--line-extend": "10px",
+                        backgroundColor: String(color),
+                      } as React.CSSProperties
+                    }
                   />
                 )}
                 {s.role !== "ARRIVAL" ? (
                   <ModeIcon type={s.type} color={String(color)} minutes={0} />
                 ) : (
-                  <span className="mt-1 flex h-3 w-3 rounded-full bg-primary-blue-400" />
+                  <span className="relative mt-1.5 flex h-2 w-2 rounded-full bg-primary-blue-400 after:absolute after:inset-[-6px] after:-z-10 after:animate-glowBlink after:rounded-full after:bg-primary-blue-400 after:opacity-20 after:blur-sm after:content-['']" />
                 )}
               </div>
 
-              {/* 오른쪽 콘텐츠 */}
               <div className="h-full flex-1">
                 <p className="flex gap-1 text-sm font-medium text-text-primary">
                   {s.stopName}

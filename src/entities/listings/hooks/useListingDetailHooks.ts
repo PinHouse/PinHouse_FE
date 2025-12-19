@@ -155,6 +155,8 @@ export const useListingRouteDetail = <T, TParam extends object>({
         { query: params }
       ),
 
-    select: response => response.data ?? [],
+    select: response => {
+      return response.data ?? [];
+    },
   });
 };
