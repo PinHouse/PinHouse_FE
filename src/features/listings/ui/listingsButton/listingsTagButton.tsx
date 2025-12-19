@@ -1,6 +1,5 @@
 "use client";
 import { DownButton } from "@/src/assets/icons/button";
-import { FilterOption } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { useFilterSheetStore } from "../../model";
 import { useRouter } from "next/navigation";
@@ -10,12 +9,20 @@ type BaseLabel = {
   label: string;
 };
 
-export const ListingTagButton = ({ label, count }: { label: BaseLabel; count: number | null }) => {
+export const ListingTagButton = ({
+  label,
+  count,
+  param,
+}: {
+  label: BaseLabel;
+  count: number | null;
+  param: string;
+}) => {
   const openSheet = useFilterSheetStore(state => state.openSheet);
   const router = useRouter();
 
   const handleClick = async () => {
-    await router.push(`/listings?tab=${label.key}`, { scroll: false });
+    await router.push(`/listings?${param}=${label.key}`, { scroll: false });
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {

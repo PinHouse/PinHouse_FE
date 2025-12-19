@@ -27,6 +27,12 @@ export const useFilterSheetStore = create<FilterSheetState>(set => ({
   closeSheet: () => set({ open: false }),
 }));
 
+export const useDetailFilterSheetStore = create<FilterSheetState>(set => ({
+  open: false,
+  openSheet: () => set({ open: true }),
+  closeSheet: () => set({ open: false }),
+}));
+
 // 사용처: 필터 바/시트에서 선택한 값 저장 및 토글 (listingsFullSheet.tsx, listingsFilterPanel.tsx, useListingHooks.ts)
 export const useListingsFilterStore = create<ListingsFilterState>(set => ({
   regionType: [],

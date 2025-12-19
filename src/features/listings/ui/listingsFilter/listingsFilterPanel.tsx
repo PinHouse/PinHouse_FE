@@ -35,7 +35,7 @@ export const ListingFilterPanel = () => {
               const count = selectedValues.length;
               return (
                 <div key={item.key} className="flex-shrink-0">
-                  <ListingTagButton label={item} count={count} />
+                  <ListingTagButton label={item} count={count} param={"tab"} />
                 </div>
               );
             })}
