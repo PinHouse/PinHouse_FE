@@ -262,7 +262,10 @@ export const FILTER_TABS = [
   { key: "rental", label: "임대유형" },
   { key: "housing", label: "주택유형" },
 ] as const;
-
+// 사용처: 필터 탭 현재값 타입
+// - listingsFullSheet.tsx: 탭 전환/쿼리 파라미터 처리
+// - listingsHooks.tsx: getIndicatorLeft/Width 인자 타입
+export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
 // 사용처: 탭별 섹션/라벨 구성 (listingsFullSheet.tsx)
 export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: SectionLabelMap }> = {
   region: {
@@ -283,17 +286,23 @@ export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: Se
   },
 };
 
-// 사용처: 필터 탭 현재값 타입
-// - listingsFullSheet.tsx: 탭 전환/쿼리 파라미터 처리
-// - listingsHooks.tsx: getIndicatorLeft/Width 인자 타입
-export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
 export const DETAIL_FILTERS = [
-  { key: "distance", label: "거리" },
-  { key: "region", label: "지역" },
-  { key: "cost", label: "비용" },
-  { key: "area", label: "면적" },
-  { key: "around", label: "주변" },
+  { key: "distance", label: "거리", isDefault: true },
+  { key: "region", label: "지역", isDefault: false },
+  { key: "cost", label: "비용", isDefault: false },
+  { key: "area", label: "면적", isDefault: false },
+  { key: "around", label: "주변", isDefault: false },
 ] as const;
+
+export type DetailFilterTabKey = (typeof DETAIL_FILTERS)[number]["key"];
+export const DEFAULT_DETAIL_SECTION = DETAIL_FILTERS.find(f => f.isDefault)?.key ?? "distance";
+
+export const parseDetailSection = (searchParams: URLSearchParams): DetailFilterTabKey => {
+  const raw = searchParams.get("section");
+  if (!raw) return DEFAULT_DETAIL_SECTION;
+  const isValid = DETAIL_FILTERS.some(f => f.key === raw);
+  return isValid ? (raw as DetailFilterTabKey) : DEFAULT_DETAIL_SECTION;
+};
 
 // 사용처: 검색 결과가 없을 때/빈 검색어 화면에서 추천 태그 클릭 핸들러와 인기 키워드 전달
 // - listingsSearchResult/components/searchNoResultView.tsx

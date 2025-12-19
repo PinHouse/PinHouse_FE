@@ -11,6 +11,7 @@ import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useLi
 export const ListingFilterPartialSheet = () => {
   const open = useFilterSheetStore(s => s.open);
   const closeSheet = useFilterSheetStore(s => s.closeSheet);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -117,6 +118,7 @@ export const ListingFilterPartialSheet = () => {
 const ListingSheet = () => {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
+  const tabConfig = currentTab ? TAB_CONFIG[currentTab] : null;
 
   const regionType = useListingsFilterStore(s => s.regionType);
   const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
@@ -127,7 +129,9 @@ const ListingSheet = () => {
   const toggleRental = useListingsFilterStore(s => s.toggleRentalType);
   const toggleSupply = useListingsFilterStore(s => s.toggleSupplyType);
   const toggleHouse = useListingsFilterStore(s => s.toggleHouseType);
-
+  if (!tabConfig) {
+    return null;
+  }
   const { sections, labels } = TAB_CONFIG[currentTab];
 
   const isSelected = (name: string) => {
@@ -205,6 +209,7 @@ const Tag = ({
 const UseCheckBox = () => {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
+  const tabConfig = currentTab ? TAB_CONFIG[currentTab] : null;
   const regionType = useListingsFilterStore(s => s.regionType);
   const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
   const supplyTypes = useListingsFilterStore(s => s.supplyTypes);
@@ -219,6 +224,9 @@ const UseCheckBox = () => {
   const resetSupplyTypes = useListingsFilterStore(s => s.resetSupplyTypes);
   const resetHouseTypes = useListingsFilterStore(s => s.resetHouseTypes);
 
+  if (!tabConfig) {
+    return null;
+  }
   const { sections } = TAB_CONFIG[currentTab];
   const totalItems = Object.values(sections)
     .flat()

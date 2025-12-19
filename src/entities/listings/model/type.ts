@@ -155,6 +155,7 @@ export interface ListingsContentHeaderProps {
 // 사용처: 전체 필터 시트 상태 (Zustand)
 export interface FilterSheetState {
   open: boolean;
+
   openSheet: () => void;
   closeSheet: () => void;
 }
