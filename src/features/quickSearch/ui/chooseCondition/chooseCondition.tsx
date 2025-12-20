@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuickSearchStore } from "@/src/features/quickSearch/model/quickSearchStore";
 import { CONDITION_CATEGORIES } from "@/src/shared/ui/button/tagButton/preset";
 import { QuickSearchCategorySection } from "../common/quickSearchCategorySection";
+import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 
 const ChooseCondition = () => {
   const { rentalTypes, toggleRentalType, setRentalTypes } = useQuickSearchStore();
@@ -59,11 +60,9 @@ const ChooseCondition = () => {
       {/* 전체 조건으로 탐색하기 */}
       <div className="flex items-center justify-center gap-2">
         <label className="flex cursor-pointer items-center gap-2">
-          <input
-            type="checkbox"
+          <Checkbox
             checked={searchWithAllConditions}
-            onChange={e => handleSearchWithAllConditions(e.target.checked)}
-            className="relative h-5 w-5 appearance-none rounded-md border border-greyscale-grey-300 before:absolute before:left-[4px] before:top-[0px] checked:border-primary-blue-300 checked:bg-primary-blue-300 checked:before:text-[12px] checked:before:text-white checked:before:content-['✔']"
+            onCheckedChange={checked => handleSearchWithAllConditions(checked === true)}
           />
           <span className="text-sm font-medium leading-4 tracking-[-0.01em] text-greyscale-grey-500">
             전체 조건으로 탐색하기

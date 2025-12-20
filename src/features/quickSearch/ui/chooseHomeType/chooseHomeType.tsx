@@ -3,6 +3,7 @@
 import { useQuickSearchStore } from "@/src/features/quickSearch/model/quickSearchStore";
 import { HOME_TYPE_CATEGORIES } from "@/src/shared/ui/button/tagButton/preset";
 import { QuickSearchCategorySection } from "../common/quickSearchCategorySection";
+import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 
 const ChooseHomeType = () => {
   const {
@@ -59,8 +60,8 @@ const ChooseHomeType = () => {
         const currentSelected = selectedItems.filter(item => categoryOptions.includes(item));
         const isAllSelected = currentSelected.length === categoryOptions.length;
 
-        const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-          handleCategorySelectAll(index, e.target.checked);
+        const handleSelectAll = (checked: boolean) => {
+          handleCategorySelectAll(index, checked);
         };
 
         return (
@@ -72,12 +73,9 @@ const ChooseHomeType = () => {
               </h3>
               <div className="flex items-center gap-2">
                 <label className="flex cursor-pointer items-center gap-2">
-                  {/* TODO: 체크 박스 추구 개선 */}
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={isAllSelected}
-                    onChange={handleSelectAll}
-                    className="relative h-5 w-5 appearance-none rounded-md border border-greyscale-grey-300 before:absolute before:left-[4px] before:top-[0px] checked:border-primary-blue-300 checked:bg-primary-blue-300 checked:before:text-[12px] checked:before:text-white checked:before:content-['✔']"
+                    onCheckedChange={(checked) => handleSelectAll(checked === true)}
                   />
                   <span className="text-sm font-medium leading-4 tracking-[-0.01em] text-greyscale-grey-500">
                     전체 선택
