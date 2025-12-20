@@ -16,3 +16,9 @@ export type {
   EligibilityNumberInputListProps,
   EligibilityNumberInputOption,
 } from "./eligibilityNumberInputList";
+
+export { EligibilitySelect } from "./eligibilitySelect";
+export type {
+  EligibilitySelectProps,
+  EligibilitySelectOption,
+} from "./eligibilitySelect";
