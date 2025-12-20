@@ -8,6 +8,9 @@ export type {
 export { EligibilityHelpButton } from "./eligibilityHelpButton";
 export type { EligibilityHelpButtonProps } from "./eligibilityHelpButton";
 
+export { EligibilityInfoButton } from "./eligibilityInfoButton";
+export type { EligibilityInfoButtonProps } from "./eligibilityInfoButton";
+
 export { EligibilityPriceInput } from "./eligibilityPriceInput";
 export type { EligibilityPriceInputProps } from "./eligibilityPriceInput";
 
@@ -18,7 +21,4 @@ export type {
 } from "./eligibilityNumberInputList";
 
 export { EligibilitySelect } from "./eligibilitySelect";
-export type {
-  EligibilitySelectProps,
-  EligibilitySelectOption,
-} from "./eligibilitySelect";
+export type { EligibilitySelectProps, EligibilitySelectOption } from "./eligibilitySelect";
