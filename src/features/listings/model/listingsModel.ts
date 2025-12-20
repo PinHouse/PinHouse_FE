@@ -1,3 +1,8 @@
+// listings 화면 전역 상수/시트 데이터/탭 구성
+// - 어디서 쓰이나요?
+//   * 색상/태그 스타일: listingsCardTile.tsx, listingsHooks.tsx(getListingsRental)
+//   * 필터 탭/시트: listingsFullSheet.tsx, listingsFilterPanel.tsx
+//   * 드롭다운: listingsContentsHeader.tsx (listingPoint)
 import {
   FilterOption,
   ListingsCardTileProps,
@@ -6,6 +11,7 @@ import {
 import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
 import { SectionLabelMap, SectionMap } from "./filterPanelModel";
 
+// 사용처: 공고 유형 뱃지 스타일 (getListingsRental 등)
 export const RENT_COLOR_CLASS = {
   영구임대: {
     bg: "bg-[var(--rent-permanent-tag-bg)]",
@@ -45,31 +51,37 @@ export const RENT_COLOR_CLASS = {
   },
 } as const;
 
+// 사용처: 상세 카드 컨테이너 스타일 (listingsCardTile.tsx)
 export const containerClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
   default: "border border-greyscale-grey-100",
   muted: "border border-greyscale-grey-75 bg-greyscale-grey-50",
 };
 
+// 사용처: 상세 카드 타이틀 색상 (listingsCardTile.tsx)
 export const titleClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
   default: "text-greyscale-grey-900",
   muted: "text-greyscale-grey-400",
 };
 
+// 사용처: 상세 카드 펼치기 버튼 색상 (listingsCardTile.tsx)
 export const downButton: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
   default: "text-gray-400",
   muted: "text-gray-300",
 };
 
+// 사용처: 방 타입 뱃지 스타일 (listingsCardTile.tsx)
 export const roomTypeClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
   default: "text-primary-blue-300 border px-1 py-[1px]",
   muted: "text-primary-blue-75 border-none",
 };
 
+// 사용처: 주변 환경 개수 뱃지 스타일 (listingsCardTile.tsx)
 export const infraClass: Record<NonNullable<ListingsCardTileProps["variant"]>, string> = {
   default: "text-gray-400 font-semibold",
   muted: "text-gray-400",
 };
 
+// 사용처: 필터 패널 상단 탭들 (listingsFilterPanel.tsx)
 export const FILTER_OPTIONS: FilterOption[] = [
   {
     key: "region",
@@ -97,15 +109,18 @@ export const FILTER_OPTIONS: FilterOption[] = [
   },
 ];
 
+// 사용처: 상단 드롭다운 옵션 (listingsContentsHeader.tsx)
 const listingDrop: PinPoint[] = [
   { key: "all", value: "전체" },
   { key: "recruiting", value: "모집중" },
 ];
 
+// 사용처: 상단 드롭다운 데이터 (listingsContentsHeader.tsx)
 export const listingPoint: PinPointMap<PinPoint[]> = {
   drop: listingDrop,
 };
 
+// 사용처: 지역 탭 시트 데이터 (listingsFullSheet.tsx)
 export const LISTING_PARTIAL_SHEET = {
   metro: [
     { code: "seoul", name: "서울특별시" },
@@ -140,6 +155,7 @@ export const LISTING_PARTIAL_SHEET = {
   ],
 };
 
+// 사용처: 지역 탭 섹션 라벨 (listingsFullSheet.tsx)
 export const REGION_SECTION_LABEL = {
   metro: "수도권",
   chungcheong: "충청권",
@@ -148,6 +164,7 @@ export const REGION_SECTION_LABEL = {
   gangwonJeju: "강원·제주권",
 } as const;
 
+// 사용처: 모집대상 탭 시트 데이터 (listingsFullSheet.tsx)
 export const LISTING_ELIGIBILITY_SHEET = {
   youth: [
     { code: "youth", name: "청년" },
@@ -181,6 +198,7 @@ export const LISTING_ELIGIBILITY_SHEET = {
   ],
 } as const;
 
+// 사용처: 모집대상 탭 섹션 라벨 (listingsFullSheet.tsx)
 export const ELIGIBILITY_SECTION_LABEL = {
   youth: "청년층",
   family: "가족형",
@@ -188,6 +206,7 @@ export const ELIGIBILITY_SECTION_LABEL = {
   housingStatus: "주택보유 상태",
 } as const;
 
+// 사용처: 임대형태 탭 시트 데이터 (listingsFullSheet.tsx)
 export const LISTING_RENTAL_SHEET = {
   publicRental: [
     { code: "integratedPublic", name: "통합공공임대" },
@@ -211,12 +230,14 @@ export const LISTING_RENTAL_SHEET = {
   ],
 } as const;
 
+// 사용처: 임대형태 탭 섹션 라벨 (listingsFullSheet.tsx)
 export const RENTAL_SECTION_LABEL = {
   publicRental: "공공 임대",
   privateRental: "민간 임대",
   jeonseRental: "전세형 임대",
 } as const;
 
+// 사용처: 주택유형 탭 시트 데이터 (listingsFullSheet.tsx)
 export const LISTING_HOUSING_SHEET = {
   housingType: [
     { code: "apartment", name: "아파트" },
@@ -229,17 +250,23 @@ export const LISTING_HOUSING_SHEET = {
   ],
 } as const;
 
+// 사용처: 주택유형 탭 섹션 라벨 (listingsFullSheet.tsx)
 export const HOUSING_SECTION_LABEL = {
   housingType: "주택유형",
 } as const;
 
+// 사용처: 필터 탭 라벨/키 (listingsFullSheet.tsx)
 export const FILTER_TABS = [
   { key: "region", label: "지역" },
   { key: "target", label: "모집대상" },
   { key: "rental", label: "임대유형" },
   { key: "housing", label: "주택유형" },
 ] as const;
-
+// 사용처: 필터 탭 현재값 타입
+// - listingsFullSheet.tsx: 탭 전환/쿼리 파라미터 처리
+// - listingsHooks.tsx: getIndicatorLeft/Width 인자 타입
+export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
+// 사용처: 탭별 섹션/라벨 구성 (listingsFullSheet.tsx)
 export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: SectionLabelMap }> = {
   region: {
     sections: LISTING_PARTIAL_SHEET,
@@ -259,16 +286,45 @@ export const TAB_CONFIG: Record<FilterTabKey, { sections: SectionMap; labels: Se
   },
 };
 
-export type FilterTabKey = (typeof FILTER_TABS)[number]["key"];
 export const DETAIL_FILTERS = [
-  { key: "distance", label: "거리" },
-  { key: "region", label: "지역" },
-  { key: "cost", label: "비용" },
-  { key: "area", label: "면적" },
-  { key: "around", label: "주변" },
+  { key: "distance", label: "거리", isDefault: true },
+  { key: "region", label: "지역", isDefault: false },
+  { key: "cost", label: "비용", isDefault: false },
+  { key: "area", label: "면적", isDefault: false },
+  { key: "around", label: "주변", isDefault: false },
 ] as const;
 
+export type DetailFilterTabKey = (typeof DETAIL_FILTERS)[number]["key"];
+export const DEFAULT_DETAIL_SECTION = DETAIL_FILTERS.find(f => f.isDefault)?.key ?? "distance";
+
+export const parseDetailSection = (searchParams: URLSearchParams): DetailFilterTabKey => {
+  const raw = searchParams.get("section");
+  if (!raw) return DEFAULT_DETAIL_SECTION;
+  const isValid = DETAIL_FILTERS.some(f => f.key === raw);
+  return isValid ? (raw as DetailFilterTabKey) : DEFAULT_DETAIL_SECTION;
+};
+
+// 사용처: 검색 결과가 없을 때/빈 검색어 화면에서 추천 태그 클릭 핸들러와 인기 키워드 전달
+// - listingsSearchResult/components/searchNoResultView.tsx
+// - listingsSearchResult/components/searchEmptyQueryView.tsx
 export type HandleSearchTag = {
   handleSearchTag: (keyword: string) => void;
   popular: PopularKeywordItem[];
+};
+// 사용처: 상세 카드 하단 시트 섹션 타입 (노선/인프라/방타입)
+export type InfraSheetSection = "route" | "infra" | "room";
+// 사용처: 상세 카드 하단 시트 상태 (닫힘/열림+섹션+리ListingID)
+export type SheetState =
+  | { open: false }
+  | { open: true; section: InfraSheetSection; listingId: string };
+// 사용처: 상세 카드 하단 시트 컴포넌트 프롭스 (infraSheet.tsx)
+export type InfraSheetProps = {
+  sheetState: SheetState;
+  onClose: () => void;
+};
+
+// 사용처: 시트 내부 콘텐츠 렌더 함수 프롭스 (infraSheet.tsx)
+export type RenderContentProps = {
+  section: InfraSheetSection | null;
+  listingId: string;
 };

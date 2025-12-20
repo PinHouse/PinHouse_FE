@@ -1,21 +1,25 @@
-import { SVGProps } from "react";
+interface VerticalTransitIconProps {
+  color: string;
+  minutes?: number;
+  showLine?: boolean;
+}
 
-export const TrainIcon = ({
-  color = "black",
-  minutes = 0,
-
-  ...props
-}: SVGProps<SVGSVGElement> & { color?: string; minutes: number }) => {
+export const VerticalSubWayIcon = ({
+  color,
+  minutes,
+  showLine = true,
+}: VerticalTransitIconProps) => {
   return (
-    <div className="relative flex items-center justify-center">
+    <div className="flex h-full flex-col items-center">
+      {/* 아이콘 원 */}
       <div
-        className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+        className="flex h-[var(--icon-size)] w-[var(--icon-size)] items-center justify-center rounded-full"
         style={{ backgroundColor: color }}
       >
         <svg
-          width="14"
-          height="14"
-          viewBox="0 0 14 14"
+          width="16"
+          height="16"
+          viewBox="0 0 13 14"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -25,16 +29,25 @@ export const TrainIcon = ({
           />
         </svg>
       </div>
-      <div
-        className="flex h-4 items-center justify-center rounded-r-full"
-        style={{
-          backgroundColor: color,
-          width: "100%",
-          marginLeft: "-5px",
-        }}
-      >
-        <span className="flex text-xs font-semibold text-white">{`${minutes} 분`}</span>
-      </div>
+
+      {/* 점선 */}
+      {showLine && (
+        <div className="my-1 flex flex-col items-center">
+          <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
+          <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
+          <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
+        </div>
+      )}
+
+      {/* 분 배지 */}
+      {/* {typeof minutes === "number" && (
+        <div
+          className="h-full rounded-tl-sm rounded-tr-sm px-1 py-[1px]"
+          style={{ backgroundColor: color }}
+        >
+          <div className="h-full w-[1px] text-white"></div>
+        </div>
+      )} */}
     </div>
   );
 };

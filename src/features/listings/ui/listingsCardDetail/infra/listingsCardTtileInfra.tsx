@@ -1,27 +1,35 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { ReactNode, useMemo } from "react";
-import { ComplexesInfo } from "../../../model";
+import { ReactNode, useState } from "react";
+import { ComplexesInfo, InfraSheetSection, SheetState } from "../../../model";
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { TransportIconRenderer } from "./TransportIconRenderer";
 import { Button } from "@/src/shared/lib/headlessUi";
+import { InfraSheet } from "./infraSheet";
 
-const DetailSection = ({
-  title,
-  children,
-  showAction = false,
-}: {
+interface DetailSectionProps {
   title: string;
-  children: ReactNode;
   showAction?: boolean;
-}) => {
+  children: ReactNode;
+  onOpen: () => void;
+}
+
+const DetailSection = ({ title, children, showAction = false, onOpen }: DetailSectionProps) => {
   return (
     <section>
       <div className="mb-2 flex items-center justify-between">
         <p className="text-sm font-bold text-greyscale-grey-800">{title}</p>
         {showAction && (
-          <Button type="button" theme={"grey"} className="text-sm">
+          <Button
+            type="button"
+            theme={"grey"}
+            variant={"ghost"}
+            className="text-primary-blue-300 hover:text-primary-blue-500"
+            size={"xs"}
+            radius={"sm"}
+            onClick={onOpen}
+          >
             자세히
           </Button>
         )}
@@ -42,12 +50,15 @@ export const ListingsCardTileDetails = ({
 }: {
   listing: ListingsCardTileProps["listing"];
 }) => {
-  const roomTypes = useMemo(() => listing.roomTypesDetail ?? [], [listing.roomTypesDetail]);
   const { data: infra, isFetching } = useListingRentalDetail(listing.id);
+  const [sheetState, setSheetState] = useState<SheetState>({
+    open: false,
+  });
   const route = infra?.distance;
   const infraData = infra?.infra;
+  const roomTypes = infra?.unitTypes;
 
-  if (isFetching || !route) {
+  if (isFetching || !route || !roomTypes) {
     return <SmallSpinner />;
   }
   return (
@@ -62,7 +73,11 @@ export const ListingsCardTileDetails = ({
         </div>
       </div>
 
-      <DetailSection title="주요 노선" showAction>
+      <DetailSection
+        title="주요 노선"
+        showAction
+        onOpen={() => setSheetState({ open: true, section: "route", listingId: infra.id })}
+      >
         <div className="rounded-lg border border-greyscale-grey-75 p-3">
           <div>
             <p className="text-sm font-medium text-greyscale-grey-600">
@@ -77,17 +92,21 @@ export const ListingsCardTileDetails = ({
         </div>
       </DetailSection>
 
-      <DetailSection title="주변 환경 정보">
+      <DetailSection
+        title="주변 환경 정보"
+        showAction
+        onOpen={() => setSheetState({ open: true, section: "infra", listingId: infra.id })}
+      >
         {infraData?.length === 0 ? (
           <EmptyDetail>주변 정보가 제공되지 않았어요.</EmptyDetail>
         ) : (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1">
             {infraData?.map(tag => (
               <TagButton
                 key={tag}
                 size="xs"
                 variant="ghost"
-                className="rounded-2xl border border-greyscale-grey-75 px-3 py-1 text-xs font-semibold text-greyscale-grey-700"
+                className="rounded border border-greyscale-grey-75 px-3 py-1 text-xs font-semibold text-greyscale-grey-700"
               >
                 {tag}
               </TagButton>
@@ -96,37 +115,30 @@ export const ListingsCardTileDetails = ({
         )}
       </DetailSection>
 
-      <DetailSection title="방 타입" showAction>
+      <DetailSection
+        title="방 타입"
+        showAction
+        onOpen={() => setSheetState({ open: true, section: "room", listingId: infra.id })}
+      >
         {roomTypes.length === 0 ? (
           <EmptyDetail>방 타입 정보가 제공되지 않았어요.</EmptyDetail>
         ) : (
-          <div className="space-y-2">
-            {roomTypes.map(room => (
-              <div key={room.id} className="rounded-xl border border-greyscale-grey-75 p-3">
-                <div className="flex items-center justify-between text-sm font-semibold text-greyscale-grey-900">
-                  <p>{room.name}</p>
-                  {(room.deposit || room.monthlyRent) && (
-                    <span className="text-xs font-medium text-greyscale-grey-700">
-                      {room.deposit && <span>보증금 {room.deposit}</span>}
-                      {room.deposit && room.monthlyRent && (
-                        <span className="mx-1 text-greyscale-grey-300">|</span>
-                      )}
-                      {room.monthlyRent && <span>월세 {room.monthlyRent}</span>}
-                    </span>
-                  )}
-                </div>
-                {(room.supplyArea || room.exclusiveArea) && (
-                  <p className="mt-1 text-xs font-medium text-greyscale-grey-500">
-                    {room.supplyArea && <span>공급 {room.supplyArea}</span>}
-                    {room.supplyArea && room.exclusiveArea && <span className="mx-1">·</span>}
-                    {room.exclusiveArea && <span>전용 {room.exclusiveArea}</span>}
-                  </p>
-                )}
-              </div>
+          <div className="flex flex-wrap gap-1">
+            {roomTypes?.map(tag => (
+              <TagButton
+                key={tag}
+                size="xs"
+                variant="ghost"
+                className="rounded border border-greyscale-grey-75 px-3 py-1 text-xs font-semibold text-greyscale-grey-700"
+              >
+                {tag}
+              </TagButton>
             ))}
           </div>
         )}
       </DetailSection>
+
+      <InfraSheet sheetState={sheetState} onClose={() => setSheetState({ open: false })} />
     </div>
   );
 };

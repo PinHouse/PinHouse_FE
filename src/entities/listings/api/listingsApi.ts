@@ -1,6 +1,6 @@
 import { IResponse } from "@/src/shared/types";
 import { HTTP_METHODS } from "@/src/shared/api";
-import { HttpMethod } from "../model/type";
+import { HttpMethod, RequestOptions } from "../model/type";
 
 export const requestListingList = async <
   TData,
@@ -36,6 +36,27 @@ export const PostBasicRequest = async <
 ): Promise<TReturn> => {
   const apiCall = HTTP_METHODS[method];
   const res = await apiCall<TResponse, TReqBody>(url, body);
+
+  return res as unknown as TReturn;
+};
+
+export const PostParamsBodyRequest = async <
+  TData,
+  TResponse extends IResponse<TData>,
+  TReqBody extends object = {},
+  TReturn = TResponse,
+  TQuery extends object = object,
+>(
+  url: string,
+  method: HttpMethod,
+  body?: TReqBody,
+  options?: RequestOptions<TQuery>
+): Promise<TReturn> => {
+  const apiCall = HTTP_METHODS[method];
+
+  const res = await apiCall<TResponse, TReqBody>(url, body, {
+    params: options?.query,
+  });
 
   return res as unknown as TReturn;
 };

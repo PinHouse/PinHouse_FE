@@ -1,14 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+  Environmnt,
+  InfraConfig,
+  InfraLabel,
   ListingDetailResponseWithColor,
   ListingRentalDetailVM,
   ListingSummary,
   LstingBody,
+  UseListingsHooksType,
+  UseListingsHooksWithParam,
 } from "../model/type";
-import { PostBasicRequest, requestListingList } from "../api/listingsApi";
+import { PostBasicRequest, PostParamsBodyRequest, requestListingList } from "../api/listingsApi";
 import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
+import { INFRA_ENVIRONMENT_CONFIG, INFRA_LABEL_TO_KEY } from "@/src/features/listings/model";
 
 export const useListingDetailBasic = (id: string) => {
   const listingDetilBody = {
@@ -22,6 +28,7 @@ export const useListingDetailBasic = (id: string) => {
   return useQuery<ListingDetailResponseWithColor>({
     queryKey: ["useListingDetailBasic", id],
     enabled: !!id,
+    staleTime: 1000 * 60 * 5,
     queryFn: async () => {
       return await PostBasicRequest<
         ListingDetailResponseWithColor,
@@ -49,9 +56,11 @@ export const useListingDetailBasic = (id: string) => {
 
 export const useListingRentalDetail = (id: string) => {
   const encodedId = encodeURIComponent(id);
+
   return useQuery<ListingSummary, unknown, ListingRentalDetailVM>({
     queryKey: ["useListingRentalDetail", encodedId],
     enabled: !!id,
+    staleTime: 1000 * 60 * 5,
     queryFn: async () => {
       return await requestListingList<
         ListingSummary,
@@ -60,7 +69,7 @@ export const useListingRentalDetail = (id: string) => {
         { pinPointId: string },
         ListingSummary
       >(`${COMPLEXES_ENDPOINT}/${encodedId}`, "get", {
-        params: { pinPointId: "03cac89e-9b49-4e17-8daf-029be805f7a8" },
+        params: { pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
       });
     },
     select: (response): ListingRentalDetailVM => {
@@ -78,6 +87,76 @@ export const useListingRentalDetail = (id: string) => {
         unitCount: response.unitCount,
         unitTypes: response.unitTypes,
       };
+    },
+  });
+};
+
+export const useListingInfraDetail = (id: string) => {
+  const encodedId = encodeURIComponent(id);
+
+  return useQuery<IResponse<Environmnt>, Error, InfraConfig[]>({
+    queryKey: ["useListingInfraDetail", encodedId],
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+    queryFn: () =>
+      PostBasicRequest<Environmnt, IResponse<Environmnt>, {}, IResponse<Environmnt>>(
+        `${COMPLEXES_ENDPOINT}/infra/${encodedId}`,
+        "get"
+      ),
+
+    select: response => {
+      const infraLabels = (response.data?.infra ?? []) as InfraLabel[];
+
+      return infraLabels
+        .map(label => {
+          const key = INFRA_LABEL_TO_KEY[label];
+          if (!key) return null;
+
+          return INFRA_ENVIRONMENT_CONFIG[key];
+        })
+        .filter((v): v is InfraConfig => Boolean(v));
+    },
+  });
+};
+
+export const useListingRoomTypeDetail = <T>({ id, queryK, url }: UseListingsHooksType) => {
+  const encodedId = encodeURIComponent(id);
+  return useQuery<IResponse<T[]>, Error, T[]>({
+    queryKey: [queryK, encodedId],
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+    queryFn: () =>
+      PostBasicRequest<T[], IResponse<T[]>, {}, IResponse<T[]>>(
+        `${COMPLEXES_ENDPOINT}/${url}/${encodedId}`,
+        "get"
+      ),
+    select: response => response.data ?? [],
+  });
+};
+
+export const useListingRouteDetail = <T, TParam extends object>({
+  id,
+  queryK,
+  url,
+  params,
+}: UseListingsHooksWithParam<TParam>) => {
+  const encodedId = encodeURIComponent(id);
+
+  return useQuery<IResponse<T[]>, Error, T[]>({
+    queryKey: [queryK, encodedId, params],
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+
+    queryFn: () =>
+      PostParamsBodyRequest<T[], IResponse<T[]>, {}, IResponse<T[]>, TParam>(
+        `${COMPLEXES_ENDPOINT}/${url}/${encodedId}`,
+        "get",
+        {},
+        { query: params }
+      ),
+
+    select: response => {
+      return response.data ?? [];
     },
   });
 };

@@ -5,16 +5,16 @@ type NoSearchReusltType = { text: string };
 export const ListingNoSearchResult = ({ text }: NoSearchReusltType) => {
   const lines = text.split("<br />");
   return (
-    <div className="flex items-center justify-center gap-4">
+    <div className="flex items-center justify-center">
       <AnimatePresence mode="wait">
         <motion.div
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
-          transition={{ duration: 1, ease: "easeInOut" }}
+          transition={{ duration: 0.7, ease: "easeInOut" }}
         >
-          <SearchEmpty />
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col items-center gap-2">
+            <SearchEmpty />
             {lines.map((line, idx) => (
               <p
                 key={idx}

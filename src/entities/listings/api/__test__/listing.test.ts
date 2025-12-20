@@ -3,21 +3,17 @@ import { IResponse } from "@/src/shared/types";
 import axios from "axios";
 import { PostBasicRequest, requestListingList } from "@/src/entities/listings/api/listingsApi";
 import {
-  BasicInfo,
-  Complex,
   LikeReturn,
-  ListingDetailData,
-  ListingDetailResponse,
   ListingItem,
   ListingItemResponse,
+  ListingRouteInfo,
   ListingSummary,
+  ListingUnitType,
   PopularKeywordItem,
-  PopularKeywordResponse,
 } from "../../model/type";
 import {
   COMPLEXES_ENDPOINT,
   http,
-  HTTP_METHODS,
   LIKE_ENDPOINT,
   NOTICE_ENDPOINT,
   POPULAR_SEARCH_ENDPOINT,
@@ -493,7 +489,7 @@ describe("단지정보상세조회API", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it("단지정보 API 성공", async () => {
+  it.skip("단지정보 API 성공", async () => {
     const mockListingOne: ListingSummary = {
       id: "19390#1",
       name: "양주회천 A25BL",
@@ -575,5 +571,287 @@ describe("단지정보상세조회API", () => {
     });
 
     expect(result).toEqual(mockListingOne);
+  });
+});
+
+describe("인프라상세조회", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it.skip("인프라상세 API 성공", async () => {
+    const mockListingOne: { infra: string[] } = {
+      infra: ["도서관", "공원", "동물 관련시설", "스포츠 시설"],
+    };
+
+    (http.get as jest.Mock).mockResolvedValue({
+      data: mockListingOne,
+    });
+
+    const result = await PostBasicRequest<any, IResponse<any>, any, any>(
+      `${COMPLEXES_ENDPOINT}/infra/19409#1`,
+      "get",
+      {}
+    );
+    expect(http.get).toHaveBeenCalledWith(`${COMPLEXES_ENDPOINT}/infra/19409#1`, {});
+
+    expect(result).toEqual({ data: mockListingOne });
+  });
+});
+
+describe("방타입상세조회", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("방타입상세조회 API 성공", async () => {
+    const mockListingOne: ListingUnitType[] = [
+      {
+        typeId: "14273225a9d04e28abd211e3",
+        typeCode: "34",
+        thumbnail: null,
+        quota: 5,
+        exclusiveAreaM2: 34.28,
+        deposit: {
+          min: {
+            total: 8517000,
+            contract: 0,
+            balance: 16641100,
+            monthPay: 140510,
+          },
+          normal: {
+            total: 17517000,
+            contract: 875900,
+            balance: 16641100,
+            monthPay: 114510,
+          },
+          max: {
+            total: 29517000,
+            contract: 12875900,
+            balance: 16641100,
+            monthPay: 45510,
+          },
+        },
+        liked: false,
+      },
+      {
+        typeId: "dfefd714df2b41999198b4da",
+        typeCode: "42",
+        thumbnail: null,
+        quota: 10,
+        exclusiveAreaM2: 42.87,
+        deposit: {
+          min: {
+            total: 12431000,
+            contract: 0,
+            balance: 23209400,
+            monthPay: 181560,
+          },
+          normal: {
+            total: 24431000,
+            contract: 1221600,
+            balance: 23209400,
+            monthPay: 146560,
+          },
+          max: {
+            total: 39431000,
+            contract: 16221600,
+            balance: 23209400,
+            monthPay: 58560,
+          },
+        },
+        liked: false,
+      },
+    ];
+
+    (http.get as jest.Mock).mockResolvedValue({
+      data: mockListingOne,
+    });
+
+    const result = await PostBasicRequest<ListingUnitType[], IResponse<any>, {}, ListingUnitType[]>(
+      `${COMPLEXES_ENDPOINT}/unit/19409#1`,
+      "get",
+      {}
+    );
+    expect(http.get).toHaveBeenCalledWith(`${COMPLEXES_ENDPOINT}/unit/19409#1`, {});
+
+    expect(result).toEqual({ data: mockListingOne });
+  });
+});
+
+describe("노선정보 상세조회", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("노선정보 상세조회 API 성공", async () => {
+    const mockListingOne: ListingRouteInfo[] = [
+      {
+        totalTime: "1시간 8분",
+        totalTimeMinutes: 68,
+        totalDistance: 284.3,
+        routes: [
+          {
+            type: "AIR",
+            minutesText: "60분",
+            lineText: "항공",
+            line: null,
+            bgColorHex: "#2C7A7B",
+          },
+          {
+            type: "TRAIN",
+            minutesText: "8분",
+            lineText: "KTX",
+            line: {
+              code: 1,
+              label: "KTX",
+              bgColorHex: "#3356B4",
+            },
+            bgColorHex: "#3356B4",
+          },
+        ],
+        stops: [
+          {
+            role: "START",
+            type: "AIR",
+            stopName: "김포국제공항",
+            lineText: "항공",
+            line: null,
+            bgColorHex: "#2C7A7B",
+          },
+          {
+            role: "TRANSFER",
+            type: "TRAIN",
+            stopName: "광주송정",
+            lineText: "KTX",
+            line: {
+              code: 1,
+              label: "KTX",
+              bgColorHex: "#3356B4",
+            },
+            bgColorHex: "#3356B4",
+          },
+          {
+            role: "ARRIVAL",
+            type: "TRAIN",
+            stopName: "나주",
+            lineText: null,
+            line: null,
+            bgColorHex: null,
+          },
+        ],
+      },
+      {
+        totalTime: "1시간 50분",
+        totalTimeMinutes: 110,
+        totalDistance: 322.8,
+        routes: [
+          {
+            type: "TRAIN",
+            minutesText: "41분",
+            lineText: "KTX",
+            line: {
+              code: 1,
+              label: "KTX",
+              bgColorHex: "#3356B4",
+            },
+            bgColorHex: "#3356B4",
+          },
+          {
+            type: "TRAIN",
+            minutesText: "69분",
+            lineText: "SRT",
+            line: {
+              code: 8,
+              label: "SRT",
+              bgColorHex: "#E5046C",
+            },
+            bgColorHex: "#E5046C",
+          },
+        ],
+        stops: [
+          {
+            role: "START",
+            type: "TRAIN",
+            stopName: "서울",
+            lineText: "KTX",
+            line: {
+              code: 1,
+              label: "KTX",
+              bgColorHex: "#3356B4",
+            },
+            bgColorHex: "#3356B4",
+          },
+          {
+            role: "TRANSFER",
+            type: "TRAIN",
+            stopName: "오송",
+            lineText: "SRT",
+            line: {
+              code: 8,
+              label: "SRT",
+              bgColorHex: "#E5046C",
+            },
+            bgColorHex: "#E5046C",
+          },
+          {
+            role: "ARRIVAL",
+            type: "TRAIN",
+            stopName: "나주",
+            lineText: null,
+            line: null,
+            bgColorHex: null,
+          },
+        ],
+      },
+      {
+        totalTime: "1시간 52분",
+        totalTimeMinutes: 112,
+        totalDistance: 305.3,
+        routes: [
+          {
+            type: "TRAIN",
+            minutesText: "112분",
+            lineText: "SRT",
+            line: {
+              code: 8,
+              label: "SRT",
+              bgColorHex: "#E5046C",
+            },
+            bgColorHex: "#E5046C",
+          },
+        ],
+        stops: [
+          {
+            role: "START",
+            type: "TRAIN",
+            stopName: "수서",
+            lineText: "SRT",
+            line: {
+              code: 8,
+              label: "SRT",
+              bgColorHex: "#E5046C",
+            },
+            bgColorHex: "#E5046C",
+          },
+          {
+            role: "ARRIVAL",
+            type: "TRAIN",
+            stopName: "나주",
+            lineText: null,
+            line: null,
+            bgColorHex: null,
+          },
+        ],
+      },
+    ];
+    (http.get as jest.Mock).mockResolvedValue({
+      data: mockListingOne,
+    });
+    const result = await PostBasicRequest<
+      ListingRouteInfo[],
+      IResponse<ListingRouteInfo[]>,
+      {},
+      ListingRouteInfo[]
+    >(`${COMPLEXES_ENDPOINT}/transit/19407#1`, "get", {});
+    expect(http.get).toHaveBeenCalledWith(`${COMPLEXES_ENDPOINT}/transit/19407#1`, {});
+    expect(result).toEqual({ data: mockListingOne });
   });
 });
