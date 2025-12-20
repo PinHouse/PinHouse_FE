@@ -4,3 +4,6 @@ export type {
   EligibilityDirection,
   EligibilityOptionSelectorProps,
 } from "./eligibilityOptionSelector";
+
+export { EligibilityHelpButton } from "./eligibilityHelpButton";
+export type { EligibilityHelpButtonProps } from "./eligibilityHelpButton";
