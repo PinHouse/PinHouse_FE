@@ -194,7 +194,9 @@ const UseCheckBox = () => {
 
   const isAllSelected = selectedList.length === totalItems.length;
 
-  const handleAllSelect = (checked: boolean) => {
+  const handleAllSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.currentTarget;
+
     // 기존 방식 유지: 기존 값 초기화
     if (currentTab === "region") resetRegionType();
     if (currentTab === "target") resetRentalTypes();
@@ -214,9 +216,11 @@ const UseCheckBox = () => {
 
   return (
     <label className="flex items-center gap-2">
-      <Checkbox
+      <input
+        type="checkbox"
+        className="relative h-5 w-5 appearance-none rounded-md border border-gray-300 before:absolute before:left-[4px] before:top-[0px] checked:border-primary-blue-500 checked:bg-button-light checked:before:text-[12px] checked:before:text-white checked:before:content-['✔']"
+        onChange={handleAllSelect}
         checked={isAllSelected}
-        onCheckedChange={checked => handleAllSelect(checked === true)}
       />
       <span className="text-sm">전체</span>
     </label>

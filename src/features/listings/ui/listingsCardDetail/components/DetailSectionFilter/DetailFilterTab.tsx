@@ -1,13 +1,13 @@
 import { DETAIL_FILTERS, DetailFilterTabKey } from "@/src/features/listings/model";
 import { useRouter, useSearchParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { getIndicatorLeft, getIndicatorWidth } from "@/src/features/listings/hooks/listingsHooks";
+import { motion } from "framer-motion";
+import { getDetailIndicatorLeft } from "@/src/features/listings/hooks/listingsHooks";
 
 export const DetailFilterTab = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentTab = (searchParams.get("section") as DetailFilterTabKey) || "region";
-
+  const currentTab = (searchParams.get("section") as DetailFilterTabKey) || "distance";
+  console.log(currentTab);
   const changeTab = (tab: DetailFilterTabKey) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("section", tab);
@@ -29,16 +29,16 @@ export const DetailFilterTab = () => {
           </button>
         ))}
       </div>
-      {/* <motion.div
-        layoutId="activeUnderline"
+      <motion.div
+        layoutId="activeUnderline2"
         className="absolute bottom-0 h-[2px] bg-button-primary"
         initial={false}
         animate={{
-          left: `${getIndicatorLeft(currentTab)}px`,
-          width: `${getIndicatorWidth(currentTab)}px`,
+          left: `${getDetailIndicatorLeft(currentTab)}px`,
+          width: `32px`,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      /> */}
+      />
     </div>
   );
 };
