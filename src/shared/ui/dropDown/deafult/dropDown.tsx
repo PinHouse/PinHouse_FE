@@ -46,7 +46,6 @@ export const DropDown = ({
             )}
             {...props}
           >
-            {children}
             <span className="flex w-full items-center justify-between">
               {selected || children}
               {variant !== "menu" && (open ? <UpButton /> : <DownButton />)}
