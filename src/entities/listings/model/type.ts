@@ -5,7 +5,7 @@
 //   * 상세 훅/컴포넌트: useListingDetailHooks.ts, TransportIconRenderer.tsx, Environment.tsx
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
 import { INFRA_LABEL_TO_KEY, RENT_COLOR_CLASS } from "@/src/features/listings/model";
-import { HTTP_METHODS } from "@/src/shared/api";
+import { HTTP_METHODS, PINPOINT_CREATE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 
 import { InfiniteData } from "@tanstack/react-query";
@@ -467,7 +467,12 @@ export interface ListingRouteInfo {
 export type UseListingsHooksType = {
   id: string;
   queryK: string;
-  url: string;
+  url: EndPointKey;
+};
+
+export type UseListingsDetailHooksType = {
+  queryK: string;
+  url: EndPointKey;
 };
 
 export type UseListingsHooksWithParam<TParam extends object> = {
@@ -479,4 +484,18 @@ export type UseListingsHooksWithParam<TParam extends object> = {
 
 export interface RequestOptions<TQuery extends object = object> {
   query?: TQuery;
+}
+
+export const endPoint = {
+  pinpoint: PINPOINT_CREATE_ENDPOINT,
+} as const;
+
+type EndPointKey = keyof typeof endPoint;
+export interface PinPointPlace {
+  id: string;
+  name: string;
+  address: string;
+  longitude: number;
+  latitude: number;
+  isFirst: boolean;
 }

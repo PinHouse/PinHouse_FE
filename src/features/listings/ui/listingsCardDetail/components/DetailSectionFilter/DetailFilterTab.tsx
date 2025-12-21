@@ -7,7 +7,7 @@ export const DetailFilterTab = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("section") as DetailFilterTabKey) || "distance";
-  console.log(currentTab);
+
   const changeTab = (tab: DetailFilterTabKey) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("section", tab);

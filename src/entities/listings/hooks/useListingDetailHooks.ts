@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+  endPoint,
   Environmnt,
   InfraConfig,
   InfraLabel,
@@ -7,11 +8,12 @@ import {
   ListingRentalDetailVM,
   ListingSummary,
   LstingBody,
+  UseListingsDetailHooksType,
   UseListingsHooksType,
   UseListingsHooksWithParam,
 } from "../model/type";
 import { PostBasicRequest, PostParamsBodyRequest, requestListingList } from "../api/listingsApi";
-import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
+import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT, PINPOINT_CREATE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
 import { INFRA_ENVIRONMENT_CONFIG, INFRA_LABEL_TO_KEY } from "@/src/features/listings/model";
@@ -158,5 +160,15 @@ export const useListingRouteDetail = <T, TParam extends object>({
     select: response => {
       return response.data ?? [];
     },
+  });
+};
+
+export const useListingFilterDetail = <T>({ queryK, url }: UseListingsDetailHooksType) => {
+  return useQuery<IResponse<T[]>, Error, T[]>({
+    queryKey: [queryK],
+    enabled: !!queryK,
+    staleTime: 1000 * 60 * 5,
+    queryFn: () => PostBasicRequest<T[], IResponse<T[]>, {}, IResponse<T[]>>(endPoint[url], "get"),
+    select: response => response.data ?? [],
   });
 };

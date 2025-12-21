@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { useDetailFilterSheetStore } from "@/src/features/listings/model";
 import { DetailFilterTab } from "./DetailFilterTab";
 import { parseDetailSection } from "@/src/features/listings/model";
+import { DistanceFilter } from "./DistanceFilter";
+import { CostFilter } from "./CostFilter";
 
 export const DetailFilterSheet = () => {
   const open = useDetailFilterSheetStore(s => s.open);
@@ -17,7 +19,7 @@ export const DetailFilterSheet = () => {
       {open && (
         <>
           <motion.div
-            className="fixed inset-0 z-40 bg-black/40"
+            className="fixed inset-0 bg-black/40"
             onClick={closeSheet}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -25,7 +27,7 @@ export const DetailFilterSheet = () => {
           />
 
           <motion.div
-            className="fixed bottom-0 left-0 right-0 z-50 flex h-[95vh] flex-col rounded-t-2xl bg-white shadow-xl"
+            className="fixed bottom-0 left-0 right-0 flex h-[85vh] flex-col rounded-t-2xl bg-white shadow-xl"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -43,11 +45,21 @@ export const DetailFilterSheet = () => {
 
             {/* section별 콘텐츠 */}
             <div className="flex-1 overflow-y-auto px-5 py-5">
-              {/* {section === "distance" && <DistanceFilter />} */}
-              {/* {section === "region" && <RegionFilter />}
-              {section === "cost" && <CostFilter />}
+              <motion.div
+                key={section}
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -100, opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="h-full"
+              >
+                {section === "distance" && <DistanceFilter />}
+                {section === "cost" && <CostFilter />}
+                {/* {section === "region" && <RegionFilter />}
+         
               {section === "area" && <AreaFilter />}
               {section === "around" && <AroundFilter />} */}
+              </motion.div>
             </div>
           </motion.div>
         </>
