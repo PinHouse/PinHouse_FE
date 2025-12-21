@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/src/shared/lib/headlessUi/button/button";
 import { ChevronRight } from "lucide-react";
-import { InfoButoonImg } from "@/src/assets/images/common/InfoButoonImg";
+import { InfoButoonImg } from "@/src/assets/images/eligibility/InfoButoonImg";
 
 export interface EligibilityInfoButtonProps {
   /** 버튼 텍스트 (길이에 따라 자동으로 2줄로 표시) */
