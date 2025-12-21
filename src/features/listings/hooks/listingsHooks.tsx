@@ -4,7 +4,7 @@ import {
   RentType,
   ToggleLikeVariables,
 } from "@/src/entities/listings/model/type";
-import { FilterTabKey, RENT_COLOR_CLASS } from "../model";
+import { DetailFilterTabKey, FilterTabKey, RENT_COLOR_CLASS } from "../model";
 import { LISTING_ICON_MAP } from "../model/listingsMap";
 import { ListingBgBookMark } from "../ui/listingsContents/listingsBookMark";
 import { useToogleLike } from "@/src/entities/listings/hooks/useListingHooks";
@@ -35,6 +35,21 @@ export function getIndicatorLeft(activeTab: FilterTabKey) {
       return 20 + 55 + 80;
     case "housing":
       return 20 + 55 + 77 + 84;
+  }
+}
+
+export function getDetailIndicatorLeft(activeTab: DetailFilterTabKey) {
+  switch (activeTab) {
+    case "distance":
+      return 20;
+    case "region":
+      return 20 + 57;
+    case "cost":
+      return 20 + 57 + 55;
+    case "around":
+      return 20 + 57 + 55;
+    case "area":
+      return 20 + 57 + 55 + 57;
   }
 }
 

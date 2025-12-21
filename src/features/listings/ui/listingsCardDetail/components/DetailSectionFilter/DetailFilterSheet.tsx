@@ -43,8 +43,8 @@ export const DetailFilterSheet = () => {
 
             {/* section별 콘텐츠 */}
             <div className="flex-1 overflow-y-auto px-5 py-5">
-              {/* {section === "distance" && <DistanceFilter />}
-              {section === "region" && <RegionFilter />}
+              {/* {section === "distance" && <DistanceFilter />} */}
+              {/* {section === "region" && <RegionFilter />}
               {section === "cost" && <CostFilter />}
               {section === "area" && <AreaFilter />}
               {section === "around" && <AroundFilter />} */}
