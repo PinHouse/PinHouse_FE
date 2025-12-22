@@ -467,7 +467,7 @@ export interface ListingRouteInfo {
 export type UseListingsHooksType = {
   id: string;
   queryK: string;
-  url: EndPointKey;
+  url: string;
 };
 
 export type UseListingsDetailHooksType = {
