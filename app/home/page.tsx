@@ -11,6 +11,9 @@ export default function OnhomePage() {
   const onQuickSearch = () => {
     router.push("/quicksearch/init");
   };
+  const onEligibility = () => {
+    router.push("/eligibility/basicInfoStep1");
+  };
 
   return (
     <main className="flex h-screen flex-col items-center justify-center gap-8">
@@ -26,6 +29,12 @@ export default function OnhomePage() {
         className="rounded-lg bg-primary-blue-300 px-6 py-3 text-white hover:bg-red-600 active:bg-red-700"
       >
         빠른탐색
+      </button>
+      <button
+        onClick={onEligibility}
+        className="rounded-lg bg-primary-blue-300 px-6 py-3 text-white hover:bg-red-600 active:bg-red-700"
+      >
+        자격진단
       </button>
     </main>
   );
