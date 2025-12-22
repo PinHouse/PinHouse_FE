@@ -25,3 +25,6 @@ export type { EligibilitySelectProps, EligibilitySelectOption } from "./eligibil
 
 export { EligibilityStatusBanner } from "./eligibilityStatusBanner";
 export type { EligibilityStatusBannerProps } from "./eligibilityStatusBanner";
+
+export { EligibilityStepper } from "./eligibilityStepper";
+export type { EligibilityStepperProps, EligibilityStep } from "./eligibilityStepper";
