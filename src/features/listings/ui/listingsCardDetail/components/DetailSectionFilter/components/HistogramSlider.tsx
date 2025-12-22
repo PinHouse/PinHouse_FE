@@ -1,29 +1,51 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 type Props = {
-  values: number[];
   minLabel?: string;
   maxLabel?: string;
   disabled: boolean;
+  handleDepositChange: (value: string) => void;
+  activeIndex: number;
+  deposit: string;
+  handleLeftPct: number;
+  normalized: number[];
+  maxlength: number;
 };
 
 export const HistogramSlider = ({
-  values,
   minLabel = "500만",
   maxLabel = "1천만",
   disabled,
+  handleDepositChange,
+  activeIndex,
+  deposit,
+  handleLeftPct,
+  normalized,
+  maxlength,
 }: Props) => {
-  const [activeIndex, setActiveIndex] = useState(Math.floor(values.length * 0.45));
-  const maxValue = Math.max(...values);
-  const normalized = useMemo(() => values.map(v => (v / maxValue) * 100), [values, maxValue]);
-  console.log(activeIndex);
   return (
     <div className="w-full">
       {/* 히스토그램 */}
       <div className="relative h-[120px] w-full">
+        {!disabled && (
+          <div
+            className="absolute bottom-[100%] mb-2"
+            style={{
+              left: `${handleLeftPct}%`,
+              transform: "translateX(-50%)",
+            }}
+          >
+            <div className="relative rounded-md bg-black px-2 py-1 text-xs text-white">
+              {deposit}
+
+              {/* 말풍선 꼬리 */}
+              <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-black" />
+            </div>
+          </div>
+        )}
         <div className="absolute inset-x-0 bottom-0 flex h-full items-end gap-[2px]">
           {normalized.map((height, index) => (
             <span
@@ -31,7 +53,7 @@ export const HistogramSlider = ({
               className={cn(
                 "flex-1 rounded-t transition-colors",
                 disabled
-                  ? "bg-gray-200" // ← 직접입력 시 색 (갈색)
+                  ? "bg-gray-200"
                   : index <= activeIndex
                     ? "bg-primary-light"
                     : "bg-greyscale-grey-200"
@@ -43,15 +65,15 @@ export const HistogramSlider = ({
 
         {/* 슬라이더 핸들 */}
         <div
-          className={cn("absolute bottom-[-8px]")}
+          className={cn("absolute bottom-[-7px]")}
           style={{
-            left: `${(activeIndex / (values.length - 1)) * 100}%`,
+            left: `${handleLeftPct}%`,
             transform: "translateX(-50%)",
           }}
         >
           <div
             className={cn(
-              "h-5 w-5 rounded-full border-2 border-blue-500 bg-white",
+              "h-4 w-4 rounded-full border-2 border-blue-500 bg-white",
               disabled ? "border-greyscale-grey-200" : "border-primary-light"
             )}
           />
@@ -69,9 +91,9 @@ export const HistogramSlider = ({
         type="range"
         min={0}
         disabled={disabled}
-        max={values.length - 1}
+        max={maxlength}
         value={activeIndex}
-        onChange={e => setActiveIndex(Number(e.target.value))}
+        onChange={e => handleDepositChange(e.target.value)}
         className="absolute inset-x-0 bottom-0 z-20 h-[32px] w-full cursor-pointer opacity-0"
       />
     </div>
