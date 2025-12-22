@@ -2,7 +2,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useFilterSheetStore, useListingsFilterStore } from "../../model/listingsStore";
 import { FILTER_TABS, FilterTabKey, TAB_CONFIG } from "../../model";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CloseButton } from "@/src/assets/icons/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";

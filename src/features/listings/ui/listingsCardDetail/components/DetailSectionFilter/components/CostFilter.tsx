@@ -5,7 +5,7 @@ import { Slider } from "@/src/shared/ui/slider";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { Input } from "@/src/shared/ui/input/deafult";
 import { cn } from "@/src/shared/lib/utils";
-import { HistogramSlider } from "./components/HistogramSlider";
+import { HistogramSlider } from "./HistogramSlider";
 
 const DEPOSIT_MIN = 500; // 만원
 const DEPOSIT_MAX = 1000; // 만원
