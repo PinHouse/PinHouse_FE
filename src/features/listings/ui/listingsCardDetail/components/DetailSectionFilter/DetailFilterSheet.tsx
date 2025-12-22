@@ -6,7 +6,8 @@ import { useDetailFilterSheetStore } from "@/src/features/listings/model";
 import { DetailFilterTab } from "./DetailFilterTab";
 import { parseDetailSection } from "@/src/features/listings/model";
 import { DistanceFilter } from "./DistanceFilter";
-import { CostFilter } from "./CostFilter";
+import { CostFilter } from "./components/CostFilter";
+import { RegionFilter } from "./components/regionFilter";
 
 export const DetailFilterSheet = () => {
   const open = useDetailFilterSheetStore(s => s.open);
@@ -55,9 +56,9 @@ export const DetailFilterSheet = () => {
               >
                 {section === "distance" && <DistanceFilter />}
                 {section === "cost" && <CostFilter />}
-                {/* {section === "region" && <RegionFilter />}
-         
-              {section === "area" && <AreaFilter />}
+                {section === "region" && <RegionFilter />}
+
+                {/* {section === "area" && <AreaFilter />}
               {section === "around" && <AroundFilter />} */}
               </motion.div>
             </div>

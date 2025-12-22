@@ -11,6 +11,17 @@ import {
 import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
 import { SectionLabelMap, SectionMap } from "./filterPanelModel";
 
+export const REGION_CHECKBOX = [
+  {
+    key: "all",
+    value: "전체",
+  },
+  {
+    key: "pinpoint",
+    value: "핀포인트 거리 내 단지만 보기",
+  },
+] as const;
+
 // 사용처: 공고 유형 뱃지 스타일 (getListingsRental 등)
 export const RENT_COLOR_CLASS = {
   영구임대: {
