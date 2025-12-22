@@ -22,3 +22,6 @@ export type {
 
 export { EligibilitySelect } from "./eligibilitySelect";
 export type { EligibilitySelectProps, EligibilitySelectOption } from "./eligibilitySelect";
+
+export { EligibilityStatusBanner } from "./eligibilityStatusBanner";
+export type { EligibilityStatusBannerProps } from "./eligibilityStatusBanner";

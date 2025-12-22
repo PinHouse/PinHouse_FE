@@ -1,0 +1,210 @@
+import { SVGProps } from "react";
+
+const StatusBannerImg = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      width="122"
+      height="122"
+      viewBox="0 0 122 122"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g filter="url(#filter0_d_9669_57786)">
+        <rect
+          x="24"
+          y="20"
+          width="74"
+          height="74"
+          rx="28"
+          fill="white"
+          shapeRendering="crispEdges"
+        />
+        <path
+          d="M56.6428 80.9199L55.2945 71.4828L62.0205 72.334L58.3639 81.1377C58.0121 81.9839 56.7733 81.8271 56.6434 80.92L56.6428 80.9199Z"
+          fill="url(#paint0_linear_9669_57786)"
+        />
+        <path
+          d="M48.8825 32.3795L77.8384 36.0437C79.9174 36.3068 81.1713 38.4873 80.3577 40.4261L72.4579 59.2545C71.977 60.4004 71.8258 61.6584 72.0205 62.8861L73.452 71.8859C73.6346 73.0341 72.6441 74.0276 71.466 73.8785L45.6295 70.6091C44.4514 70.46 43.7396 69.2511 44.2024 68.1846L47.8306 59.825C48.3256 58.6847 48.492 57.4285 48.3116 56.199L45.351 35.9962C45.0459 33.9159 46.8035 32.1164 48.8825 32.3795Z"
+          fill="url(#paint1_linear_9669_57786)"
+        />
+        <path
+          d="M61.7787 47.0501C60.9817 46.9493 60.4174 46.2215 60.5182 45.4245C60.6191 44.6275 61.3469 44.0632 62.1439 44.1641C62.9408 44.2649 63.5052 44.9927 63.4043 45.7897C63.3035 46.5867 62.5756 47.151 61.7787 47.0501Z"
+          fill="url(#paint2_linear_9669_57786)"
+        />
+        <path
+          d="M57.4525 44.1566C56.6555 44.0557 56.0912 43.3279 56.1921 42.5309C56.2929 41.734 57.0207 41.1697 57.8177 41.2705C58.6147 41.3714 59.179 42.0992 59.0781 42.8962C58.9773 43.6931 58.2495 44.2574 57.4525 44.1566Z"
+          fill="#2E293D"
+        />
+        <path
+          d="M66.9769 45.3617C66.1799 45.2608 65.6156 44.533 65.7165 43.736C65.8173 42.9391 66.5452 42.3747 67.3421 42.4756C68.1391 42.5764 68.7034 43.3043 68.6025 44.1012C68.5017 44.8982 67.7739 45.4625 66.9769 45.3617Z"
+          fill="#2E293D"
+        />
+        <path
+          d="M58.8425 47.6843C58.5809 47.1866 57.9654 46.9953 57.4677 47.2569C56.97 47.5185 56.7786 48.1342 57.0403 48.632C57.8466 50.1656 59.3958 51.2913 61.2692 51.5284C63.1424 51.7654 64.9234 51.0619 66.0866 49.7764C66.4639 49.3595 66.4318 48.7157 66.0149 48.3384C65.5979 47.9611 64.9542 47.9932 64.5769 48.4102C63.8569 49.2058 62.7334 49.6611 61.5248 49.5082C60.3165 49.3552 59.3418 48.634 58.8425 47.6843Z"
+          fill="#2E293D"
+        />
+        <g clipPath="url(#clip0_9669_57786)">
+          <path
+            d="M45.7706 59.3136C45.9504 59.1774 46.0779 58.973 46.1112 58.7318L46.876 53.1902C46.9425 52.7083 46.6058 52.2639 46.1239 52.1974C45.642 52.1309 45.1976 52.4675 45.1311 52.9494L44.3662 58.491C44.2997 58.9729 44.6364 59.4174 45.1183 59.4839C45.3596 59.5172 45.5908 59.4497 45.7706 59.3136Z"
+            fill="url(#paint3_linear_9669_57786)"
+          />
+          <foreignObject x="38.1757" y="38.0106" width="17.4094" height="17.4104">
+            <div
+              style={{
+                backdropFilter: "blur(1.16px)",
+                clipPath: "url(#bgblur_1_9669_57786_clip_path)",
+                height: "100%",
+                width: "100%",
+              }}
+            ></div>
+          </foreignObject>
+          <path
+            opacity="0.8"
+            style={{ backdropFilter: "blur(2.33px)" }}
+            d="M43.0286 41.6295C40.2239 43.754 39.6708 47.7643 41.795 50.5687C42.8568 51.9703 44.3903 52.8086 46.0083 53.0323L46.0081 53.0336C47.6267 53.257 49.3307 52.8642 50.7328 51.8021C53.5371 49.678 54.0905 45.6673 51.9664 42.863C50.9043 41.4608 49.3706 40.6212 47.7519 40.3978C46.1336 40.1748 44.4305 40.5677 43.0286 41.6295Z"
+            fill="white"
+            fillOpacity="0.6"
+          />
+          <path
+            d="M51.2028 52.4212C54.3487 50.0383 54.9695 45.5402 52.5866 42.3942C50.2036 39.2483 45.7052 38.6272 42.5593 41.0101C39.4134 43.393 38.7922 47.8914 41.1754 51.0378C43.5587 54.1841 48.0565 54.8044 51.2028 52.4212ZM43.4978 42.2491C45.9606 40.3836 49.482 40.87 51.3475 43.3328C53.213 45.7956 52.7267 49.317 50.2643 51.1822C47.8019 53.0473 44.2796 52.5616 42.4145 50.0992C40.5493 47.6369 41.035 44.1146 43.4978 42.2491Z"
+            fill="url(#paint4_linear_9669_57786)"
+          />
+        </g>
+        <path
+          d="M48.4713 61.2344C47.8968 59.1443 45.6007 58.0303 43.5345 58.6909C41.4683 59.3515 40.3284 61.5604 40.9895 63.625C41.6506 65.6895 43.8614 66.8284 45.9276 66.1679C47.9938 65.5073 49.1245 63.6122 48.4713 61.2344Z"
+          fill="url(#paint5_linear_9669_57786)"
+        />
+        <path
+          d="M86.1237 51.0743C85.8162 48.9286 83.6781 47.5352 81.5453 47.9312C79.4125 48.3271 78.0044 50.3755 78.401 52.5067C78.7977 54.6379 80.848 56.0453 82.9808 55.6494C85.1136 55.2535 86.4732 53.5153 86.1237 51.0743Z"
+          fill="url(#paint6_linear_9669_57786)"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_9669_57786"
+          x="0"
+          y="0"
+          width="122"
+          height="122"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dy="4" />
+          <feGaussianBlur stdDeviation="12" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.188235 0 0 0 0 0.435294 0 0 0 0 1 0 0 0 0.25 0"
+          />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_9669_57786" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_9669_57786"
+            result="shape"
+          />
+        </filter>
+        <clipPath id="bgblur_1_9669_57786_clip_path" transform="translate(-38.1757 -38.0106)">
+          <path d="M43.0286 41.6295C40.2239 43.754 39.6708 47.7643 41.795 50.5687C42.8568 51.9703 44.3903 52.8086 46.0083 53.0323L46.0081 53.0336C47.6267 53.257 49.3307 52.8642 50.7328 51.8021C53.5371 49.678 54.0905 45.6673 51.9664 42.863C50.9043 41.4608 49.3706 40.6212 47.7519 40.3978C46.1336 40.1748 44.4305 40.5677 43.0286 41.6295Z" />
+        </clipPath>
+        <linearGradient
+          id="paint0_linear_9669_57786"
+          x1="58.6575"
+          y1="71.9084"
+          x2="57.4202"
+          y2="81.6863"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#FFBA18" />
+          <stop offset="1" stopColor="#FFE17F" />
+        </linearGradient>
+        <linearGradient
+          id="paint1_linear_9669_57786"
+          x1="63.3604"
+          y1="34.2116"
+          x2="58.5477"
+          y2="72.2438"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#618EFF" />
+          <stop offset="0.0569536" stopColor="#306FFF" />
+          <stop offset="0.629808" stopColor="#6E97FF" />
+          <stop offset="1" stopColor="#ACC0FF" />
+        </linearGradient>
+        <linearGradient
+          id="paint2_linear_9669_57786"
+          x1="62.1439"
+          y1="44.1641"
+          x2="61.7787"
+          y2="47.0501"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#FFDA6B" />
+          <stop offset="1" stopColor="#FFF4D7" />
+        </linearGradient>
+        <linearGradient
+          id="paint3_linear_9669_57786"
+          x1="44.0681"
+          y1="53.6191"
+          x2="46.6016"
+          y2="58.4494"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#6084FF" />
+          <stop offset="1" stopColor="#ACC0FF" />
+        </linearGradient>
+        <linearGradient
+          id="paint4_linear_9669_57786"
+          x1="47.2441"
+          y1="40.5102"
+          x2="45.9059"
+          y2="53.7806"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#6E97FF" />
+          <stop offset="1" stopColor="#ACC0FF" />
+        </linearGradient>
+        <linearGradient
+          id="paint5_linear_9669_57786"
+          x1="44.729"
+          y1="58.501"
+          x2="44.729"
+          y2="66.3555"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#FFBA18" />
+          <stop offset="1" stopColor="#FFE17F" />
+        </linearGradient>
+        <linearGradient
+          id="paint6_linear_9669_57786"
+          x1="82.7542"
+          y1="47.8927"
+          x2="81.7681"
+          y2="55.6851"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#FFBA18" />
+          <stop offset="1" stopColor="#FFE17F" />
+        </linearGradient>
+        <clipPath id="clip0_9669_57786">
+          <rect
+            width="20.7249"
+            height="20.7249"
+            fill="white"
+            transform="matrix(-0.797135 0.603801 0.603801 0.797135 48.584 33.7568)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
+
+export default StatusBannerImg;
