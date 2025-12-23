@@ -34,6 +34,10 @@ export interface EligibilityData {
   isMultiChildVulnerable: boolean | null; // 다자녀-취약계층 여부
   isSingleParent: boolean | null; // 한부모 여부
   childrenInfo: { under6: number; over7: number } | null; // 자녀 정보 (6세 이하, 7세 이상 미성년)
+  // 배우자 포함 자녀 정보
+  hasSpouseChildren: string | null; // "1" (예) 또는 "2" (아니오) - 나, 또는 배우자의 주민등록상 등록된 자녀/손자녀 여부
+  spouseChildrenInfo: { expectedBirth?: number; under6: number; over7: number } | null; // 배우자 포함 자녀 정보 (출산 예정, 6세 이하, 7세 이상 미성년)
+  spouseFamilyTypes: string[]; // 배우자 포함 가족 유형 (친인척 위탁가정, 대리 양육 가정) - 복수 선택
 }
 
 export interface EligibilityState extends EligibilityData {
@@ -60,6 +64,11 @@ export interface EligibilityState extends EligibilityData {
   setIsMultiChildVulnerable: (value: boolean | null) => void;
   setIsSingleParent: (value: boolean | null) => void;
   setChildrenInfo: (value: { under6: number; over7: number } | null) => void;
+  setHasSpouseChildren: (value: string | null) => void;
+  setSpouseChildrenInfo: (
+    value: { expectedBirth?: number; under6: number; over7: number } | null
+  ) => void;
+  setSpouseFamilyTypes: (value: string[]) => void;
   reset: () => void;
 }
 
@@ -87,6 +96,9 @@ const initialData: EligibilityData = {
   isMultiChildVulnerable: null,
   isSingleParent: null,
   childrenInfo: null,
+  hasSpouseChildren: null,
+  spouseChildrenInfo: null,
+  spouseFamilyTypes: [],
 };
 
 export const useEligibilityStore = create<EligibilityState>()(
@@ -121,6 +133,11 @@ export const useEligibilityStore = create<EligibilityState>()(
       setIsSingleParent: (value: boolean | null) => set({ isSingleParent: value }),
       setChildrenInfo: (value: { under6: number; over7: number } | null) =>
         set({ childrenInfo: value }),
+      setHasSpouseChildren: (value: string | null) => set({ hasSpouseChildren: value }),
+      setSpouseChildrenInfo: (
+        value: { expectedBirth?: number; under6: number; over7: number } | null
+      ) => set({ spouseChildrenInfo: value }),
+      setSpouseFamilyTypes: (value: string[]) => set({ spouseFamilyTypes: value }),
       reset: () => set(initialData),
     }),
     {

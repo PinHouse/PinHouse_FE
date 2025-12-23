@@ -21,6 +21,7 @@ const hiddenExactRoutes = [
   "/quicksearch/chooseHomeType",
   "/quicksearch/chooseCondition",
   "/quicksearch/result",
+  "/test",
 ];
 const detailPageRegex = /^\/listings\/[A-Za-z0-9_-]+$/;
 

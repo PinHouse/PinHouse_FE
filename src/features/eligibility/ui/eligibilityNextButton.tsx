@@ -39,9 +39,9 @@ export const EligibilityNextButton = () => {
       return;
     }
 
-    // 마지막 단계인 경우 결과 페이지로 이동 (나중에 구현)
+    // 마지막 단계인 경우 진단종료 페이지로 이동
     if (isLastStep) {
-      // router.push("/eligibility/result");
+      router.push("/eligibility?step=diagnosisEnd");
       return;
     }
 

@@ -69,10 +69,9 @@ export const calculateAge = (birthDate: Date | null): number | null => {
 
 /**
  * 결정트리 정의
- * TODO: 분기 조건 로직은 나중에 채워넣기
  */
 export const eligibilityDecisionTree: StepConfig[] = [
-  // 1. 국적 확인
+  // basic info 001
   {
     id: "nationality",
     groupId: "personalInfo",
@@ -112,7 +111,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // 2. 성별/생년월일
+  // basic info 002
   {
     id: "genderBirth",
     groupId: "personalInfo",
@@ -154,15 +153,11 @@ export const eligibilityDecisionTree: StepConfig[] = [
     getNextStep: data => {
       const age = calculateAge(data.birthDate);
       if (age === null) return null;
-      // 19세 미만이면 미성년자 자격 확인 단계로 이동
-      if (age < 19) {
-        return "minorEligibility";
-      }
-      return "marriageSt atus";
+      return "incomeInfo";
     },
   },
 
-  // 2-0. 미성년자 자격 확인 (19세 미만)
+  // underage 001
   {
     id: "minorEligibility",
     groupId: "personalInfo",
@@ -201,16 +196,15 @@ export const eligibilityDecisionTree: StepConfig[] = [
       return null;
     },
     getNextStep: data => {
-      // "해당사항이 없어요" 선택 시 종료
-      if (data.minorEligibilityType === "0") {
-        return null;
+      // 미성년자 자격 확인 단계 종료
+      if (data.minorEligibilityType) {
+        return "diagnosisEnd";
       }
-      // 다른 옵션 선택 시 다음 단계로 진행 (추후 결정 필요)
-      return "incomeInfo";
+      return null;
     },
   },
 
-  // 2-1. 결혼 여부
+  // adult 001 + adult 001-2
   {
     id: "marriageStatus",
     groupId: "personalInfo",
@@ -229,6 +223,23 @@ export const eligibilityDecisionTree: StepConfig[] = [
         },
         storeKey: "marriageStatus",
       },
+      {
+        type: "optionSelector",
+        props: {
+          title: "혼인기간이 어떻게되나요?",
+          options: [
+            { id: "0", label: "1년 미만" },
+            { id: "1", label: "1년 이상 3년 미만" },
+            { id: "3", label: "3년 이상 5년 미만" },
+            { id: "5", label: "5년 이상 7년 미만" },
+            { id: "7", label: "7년 이상" },
+          ],
+          required: true,
+          direction: "vertical",
+        },
+        storeKey: "marriagePeriod",
+        showWhen: data => data.marriageStatus === "1",
+      },
     ],
     validation: data => {
       if (!data.marriageStatus) {
@@ -238,10 +249,13 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 결혼 예정이거나 결혼한 경우에만 혼인기간 질문으로 이동
-      if (data.marriageStatus === "1") {
+      if (data.marriageStatus === "2") {
+        return "hasRegisteredChildren";
+      }
+      if (data.marriageStatus === "1" && data.marriagePeriod) {
         return "marriagePeriod";
       }
-      return "incomeInfo";
+      return null;
     },
   },
 
@@ -278,7 +292,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // 2-3. 주민등록상 등록된 자녀/손자녀 여부
+  // adult 002
   {
     id: "hasRegisteredChildren",
     groupId: "personalInfo",
@@ -357,11 +371,123 @@ export const eligibilityDecisionTree: StepConfig[] = [
       return null;
     },
     getNextStep: data => {
-      return "incomeInfo";
+      const age = calculateAge(data.birthDate);
+      if (age === null) return null;
+
+      const isMarried = data.marriageStatus === "1";
+      const isSingle = data.marriageStatus === "2";
+
+      // 1. 미혼+청년 (19~39세, 미혼)
+      if (isSingle && age >= 19 && age < 40) {
+        return "youthInfo";
+      }
+
+      // 2. 미혼+중장년 (40~64세, 미혼)
+      if (isSingle && age >= 40 && age < 65) {
+        return "adultInfo";
+      }
+
+      // 3. 청년+중장년 기혼 (19~64세, 기혼) + 고령자(65세 이상, 미혼+기혼)
+      if (isMarried || age >= 65) {
+        return "specialEligibility";
+      }
+
+      // 기본값
+      return null;
     },
   },
 
-  // 3. 소득 정보 (같은 페이지 내 조건부 질문 포함)
+  // adult 001-3
+  {
+    id: "hasSpouseChildren",
+    groupId: "personalInfo",
+    components: [
+      {
+        type: "optionSelector",
+        props: {
+          title: "나, 또는 배우자의 주민등록상 등록된 자녀/손자녀가있나요?",
+          description: "임도 중, 입양자녀 양육, 대리양육 시에도 '예'를 선택해 주세요",
+          options: [
+            { id: "1", label: "예" },
+            { id: "2", label: "아니오" },
+          ],
+          required: true,
+          direction: "horizontal",
+        },
+        storeKey: "hasSpouseChildren",
+        children: [
+          {
+            type: "numberInputList",
+            props: {
+              title: "자녀 정보를 알려주세요",
+              description: "성인 자녀의 경우 입력하지 않아도 됩니다",
+              required: false,
+              options: [
+                {
+                  id: "expectedBirth",
+                  prefix: "출산 예정",
+                  postfix: "명",
+                  placeholder: "0",
+                },
+                {
+                  id: "under6",
+                  prefix: "6세 이하 자녀 수",
+                  postfix: "명",
+                  placeholder: "0",
+                },
+                {
+                  id: "over7",
+                  prefix: "7세 이상 미성년 자녀 수",
+                  postfix: "명",
+                  placeholder: "0",
+                },
+              ],
+              summary: (values: Record<string, string>) => {
+                const under6 = Number(values.under6 || 0);
+                const over7 = Number(values.over7 || 0);
+                const total = under6 + over7;
+                return `총 ${total} 명의 미성년 자녀가 있어요`;
+              },
+            },
+            storeKey: "spouseChildrenInfo",
+            showWhen: data => {
+              return data.hasSpouseChildren === "1";
+            },
+          },
+          {
+            type: "optionSelector",
+            props: {
+              title: "다음 중 해당되는 사항이 있다면 모두 선택해주세요",
+              description: "복수 선택 가능",
+              options: [
+                { id: "1", label: "친인척 위탁가정" },
+                { id: "2", label: "대리 양육 가정" },
+              ],
+              multiselect: 2,
+            },
+            storeKey: "spouseFamilyTypes",
+            showWhen: data => {
+              return data.hasSpouseChildren === "1";
+            },
+          },
+        ],
+      },
+    ],
+    validation: data => {
+      if (!data.hasSpouseChildren) {
+        return "주민등록상 등록된 자녀/손자녀 여부를 선택해주세요";
+      }
+      return null;
+    },
+    getNextStep: data => {
+      if (data.hasSpouseChildren === "1") {
+        return "hasRegisteredChildren";
+      }
+      return null;
+    },
+  },
+
+  // basic info 003
   {
     id: "incomeInfo",
     groupId: "personalInfo",
@@ -459,29 +585,11 @@ export const eligibilityDecisionTree: StepConfig[] = [
       return null;
     },
     getNextStep: data => {
-      const age = calculateAge(data.birthDate);
-      if (age === null) return "assetInfo";
-
-      // 청년-중장년 기혼 (19세~64세, 기혼) 또는 고령자(65세 이상, 미혼 or 기혼)
-      const isYoungToMiddleAgedMarried = age >= 19 && age < 65 && data.marriageStatus === "1";
-      const isElderly = age >= 65; // 고령자는 미혼/기혼 모두 포함
-
-      if (isYoungToMiddleAgedMarried || isElderly) {
-        return "specialEligibility";
-      }
-
-      // 중장년 미혼 (40세~64세, 미혼)
-      const isMiddleAgedSingle = age >= 40 && age < 65 && data.marriageStatus === "2";
-      if (isMiddleAgedSingle) {
-        return "incomeWorkPeriod";
-      }
-
-      // 그 외의 경우 자산 정보로 이동
       return "assetInfo";
     },
   },
 
-  // 3-1. 소득 업무 종사 기간 (중장년 미혼)
+  // middle age 001
   {
     id: "incomeWorkPeriod",
     groupId: "identityInfo",
@@ -530,7 +638,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // 3-2. 특별 자격 요건 (청년-중장년 기혼, 고령자, 중장년 미혼)
+  // common 001
   {
     id: "specialEligibility",
     groupId: "identityInfo",
@@ -567,10 +675,10 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // 4. 자산 정보 (청약저축 - 같은 페이지 내 조건부 질문 포함)
+  // basic info 004
   {
     id: "assetInfo",
-    groupId: "assetInfo",
+    groupId: "personalInfo",
     components: [
       {
         type: "optionSelector",
@@ -653,13 +761,21 @@ export const eligibilityDecisionTree: StepConfig[] = [
       }
       return null;
     },
-    getNextStep: () => null, // 마지막 단계
+    getNextStep: data => {
+      // 19세 미만이면 미성년자 자격 확인 단계로 이동
+      const age = calculateAge(data.birthDate);
+      if (age === null) return null;
+      if (age < 19) {
+        return "minorEligibility";
+      }
+      return "marriageStatus";
+    },
   },
 
   // 5. 미성년자 정보
   {
     id: "minorInfo",
-    groupId: "identityInfo",
+    groupId: "personalInfo",
     components: [
       {
         type: "statusBanner",
@@ -863,6 +979,23 @@ export const eligibilityDecisionTree: StepConfig[] = [
     ],
     validation: () => null, // TODO: 검증 로직 추가
     getNextStep: () => "incomeInfo",
+  },
+
+  // 11. 진단종료
+  {
+    id: "diagnosisEnd",
+    groupId: "personalInfo",
+    components: [
+      {
+        type: "statusBanner",
+        props: {
+          title: "진단이 종료되었습니다",
+          description: "",
+        },
+      },
+    ],
+    validation: () => "진단종료",
+    getNextStep: () => null,
   },
 ];
 
