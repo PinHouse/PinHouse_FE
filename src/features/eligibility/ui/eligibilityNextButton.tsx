@@ -1,83 +1,40 @@
 "use client";
 
 import { Button } from "@/src/shared/lib/headlessUi";
-import { eligibilityContentMap, ELIGIBILITY_STEP_KEYS } from "../model/eligibilityContentMap";
-import { usePathname, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEligibilityStore } from "../model/eligibilityStore";
+import { findStepById, FIRST_STEP_ID, StepId } from "../model/eligibilityDecisionTree";
 
 export const EligibilityNextButton = () => {
-  const steps = Object.values(eligibilityContentMap) as Array<{ path: string }>;
-  const pathname = usePathname();
-  const currentIndex = steps.findIndex(s => s.path === pathname);
-  const next = steps[currentIndex + 1];
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const {
-    hasKoreanNationality,
-    gender,
-    birthDate,
-    hasIncomeWork,
-    monthlyIncome,
-    hasHousingSubscriptionSavings,
-    housingSubscriptionPeriod,
-    housingSubscriptionPaymentCount,
-    totalPaymentAmount,
-  } = useEligibilityStore();
+  const data = useEligibilityStore();
 
-  // 마지막 단계인지 확인
-  const isLastStep = !next;
+  // 쿼리 파라미터에서 현재 stepId 읽기
+  const currentStepId = (searchParams.get("step") || FIRST_STEP_ID) as StepId;
 
-  // 각 페이지별 검증 로직
-  const getValidationError = (): string | null => {
-    if (pathname.includes(ELIGIBILITY_STEP_KEYS.BASIC_INFO_STEP_1)) {
-      // "예" (id: "1")를 선택했을 때만 활성화
-      if (!hasKoreanNationality || hasKoreanNationality !== "1") {
-        return "대한민국 국적을 선택해주세요";
-      }
-    }
-    if (pathname.includes(ELIGIBILITY_STEP_KEYS.BASIC_INFO_STEP_2)) {
-      // 성별과 생년월일 모두 선택해야 활성화
-      if (!gender) {
-        return "성별을 선택해주세요";
-      }
-      if (!birthDate) {
-        return "생년월일을 선택해주세요";
-      }
-    }
-    if (pathname.includes(ELIGIBILITY_STEP_KEYS.BASIC_INFO_STEP_3)) {
-      // 소득 업무 종사 여부와 월평균 소득 모두 입력해야 활성화
-      if (!hasIncomeWork) {
-        return "소득이 발생하는 업무 종사 여부를 선택해주세요";
-      }
-      if (!monthlyIncome || monthlyIncome === "0") {
-        return "월평균 소득을 입력해주세요";
-      }
-    }
-    if (pathname.includes(ELIGIBILITY_STEP_KEYS.BASIC_INFO_STEP_4)) {
-      // 청약저축 관련 정보 모두 입력해야 활성화
-      if (!hasHousingSubscriptionSavings) {
-        return "청약저축 가입 여부를 선택해주세요";
-      }
-      if (!housingSubscriptionPeriod) {
-        return "청약저축 가입 기간을 선택해주세요";
-      }
-      if (!housingSubscriptionPaymentCount) {
-        return "청약저축 납입횟수를 선택해주세요";
-      }
-      if (!totalPaymentAmount) {
-        return "총 납입 금액을 선택해주세요";
-      }
-    }
+  // 결정트리에서 현재 단계 찾기
+  const currentStep = findStepById(currentStepId);
+
+  if (!currentStep) {
+    console.warn(`Step not found: ${currentStepId}`);
     return null;
-  };
+  }
 
-  const validationError = getValidationError();
+  // 검증 실행
+  const validationError = currentStep.validation ? currentStep.validation(data) : null;
   const isDisabled = !!validationError;
+
+  // 다음 단계 결정
+  const nextStepId = currentStep.getNextStep(data);
+  const isLastStep = nextStepId === null;
 
   const handleClick = () => {
     if (isDisabled) {
       // 에러 메시지 표시 (필요시 toast나 alert 사용)
       if (validationError) {
         console.log(validationError);
+        // TODO: toast나 alert로 표시
       }
       return;
     }
@@ -89,8 +46,8 @@ export const EligibilityNextButton = () => {
     }
 
     // 다음 단계로 이동
-    if (next) {
-      router.push(next.path);
+    if (nextStepId) {
+      router.push(`/eligibility?step=${nextStepId}`);
     }
   };
 

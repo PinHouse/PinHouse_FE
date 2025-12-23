@@ -4,9 +4,8 @@ import { HomeLine } from "@/src/assets/icons/home/homeLine";
 import { Person, Search } from "@/src/assets/icons/home";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Spinner } from "@/src/shared/ui/spinner/default";
-import { eligibilityContentMap } from "@/src/features/eligibility/model/eligibilityContentMap";
 
-const hiddenRoutes = ["/home", "/login", "/onboarding", "/listings/search"];
+const hiddenRoutes = ["/home", "/login", "/onboarding", "/listings/search", "/eligibility"];
 const hiddenExactRoutes = [
   "/listings?tab=region",
   "/listings?tab=target",
@@ -22,8 +21,6 @@ const hiddenExactRoutes = [
   "/quicksearch/chooseHomeType",
   "/quicksearch/chooseCondition",
   "/quicksearch/result",
-  // eligibility 경로는 eligibilityContentMap에서 가져옴
-  ...Object.values(eligibilityContentMap).map(step => step.path),
 ];
 const detailPageRegex = /^\/listings\/[A-Za-z0-9_-]+$/;
 

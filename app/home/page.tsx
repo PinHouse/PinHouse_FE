@@ -12,7 +12,7 @@ export default function OnhomePage() {
     router.push("/quicksearch/init");
   };
   const onEligibility = () => {
-    router.push("/eligibility/basicInfoStep1");
+    router.push("/eligibility");
   };
 
   return (

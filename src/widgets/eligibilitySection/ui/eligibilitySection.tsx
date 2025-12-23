@@ -1,48 +1,34 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { EligibilityNextButton } from "@/src/features/eligibility/ui/eligibilityNextButton";
 import { EligibilityStepper } from "@/src/features/eligibility/ui/common/eligibilityStepper";
+import { ELIGIBILITY_STEPS } from "@/src/features/eligibility/model/eligibilityContentMap";
+import { EligibilityStepRenderer } from "@/src/features/eligibility/ui/steps/eligibilityStepRenderer";
 import {
-  eligibilityContentMap,
-  ELIGIBILITY_STEPS,
-  ELIGIBILITY_STEP_KEYS,
-} from "@/src/features/eligibility/model/eligibilityContentMap";
+  findStepById,
+  FIRST_STEP_ID,
+  StepId,
+} from "@/src/features/eligibility/model/eligibilityDecisionTree";
 import { PageTransition } from "@/src/shared/ui/animation";
 
-export interface EligibilitySectionProps {
-  type: keyof typeof eligibilityContentMap;
-}
+export const EligibilitySection = () => {
+  const searchParams = useSearchParams();
 
-// 타입별 컴포넌트 매핑 (나중에 단계별 폼 컴포넌트 추가)
-import { BasicInfoStep1FormComponent } from "@/src/features/eligibility/ui/steps/BasicInfoStep1FormComponent";
-import { BasicInfoStep2FormComponent } from "@/src/features/eligibility/ui/steps/BasicInfoStep2FormComponent";
-import { BasicInfoStep3FormComponent } from "@/src/features/eligibility/ui/steps/BasicInfoStep3FormComponent";
-import { BasicInfoStep4FormComponent } from "@/src/features/eligibility/ui/steps/BasicInfoStep4FormComponent";
+  // 쿼리 파라미터에서 현재 stepId 읽기
+  const currentStepId = (searchParams.get("step") || FIRST_STEP_ID) as StepId;
 
-const eligibilityFormComponents: Record<string, React.ComponentType> = {
-  [ELIGIBILITY_STEP_KEYS.BASIC_INFO_STEP_1]: BasicInfoStep1FormComponent,
-  [ELIGIBILITY_STEP_KEYS.BASIC_INFO_STEP_2]: BasicInfoStep2FormComponent,
-  [ELIGIBILITY_STEP_KEYS.BASIC_INFO_STEP_3]: BasicInfoStep3FormComponent,
-  [ELIGIBILITY_STEP_KEYS.BASIC_INFO_STEP_4]: BasicInfoStep4FormComponent,
-};
+  // 결정트리에서 현재 단계 찾기
+  const currentStep = findStepById(currentStepId);
 
-export const EligibilitySection = ({ type }: EligibilitySectionProps) => {
-  const content = eligibilityContentMap[type];
-
-  if (!content) {
+  if (!currentStep) {
     return <div>잘못된 접근입니다.</div>;
   }
 
-  const { groupId } = content;
+  const { groupId } = currentStep;
 
   // 현재 그룹 찾기
   const currentGroup = ELIGIBILITY_STEPS.find(step => step.id === groupId);
-
-  // 해당 타입의 폼 컴포넌트 가져오기
-  const FormComponent =
-    type in eligibilityFormComponents
-      ? eligibilityFormComponents[type as keyof typeof eligibilityFormComponents]
-      : null;
 
   return (
     <section className="flex h-full w-full flex-col">
@@ -55,11 +41,7 @@ export const EligibilitySection = ({ type }: EligibilitySectionProps) => {
 
       <PageTransition>
         {/* 단계별 폼 컴포넌트 */}
-        {FormComponent && (
-          <div className="px-5">
-            <FormComponent />
-          </div>
-        )}
+        <EligibilityStepRenderer stepId={currentStepId} />
       </PageTransition>
 
       {/* 다음 버튼 */}

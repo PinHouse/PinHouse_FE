@@ -17,6 +17,12 @@ export interface EligibilityData {
   housingSubscriptionPeriod: string | null; // 청약저축 가입 기간
   housingSubscriptionPaymentCount: string | null; // 청약저축 납입횟수
   totalPaymentAmount: string | null; // "1" (6000만원 이상) 또는 "2" (6000만원 이하)
+  // 분기 조건 필드
+  isNewlyMarried: boolean | null; // 신혼부부 여부
+  marriagePeriod: string | null; // 혼인 기간
+  isMultiChildVulnerable: boolean | null; // 다자녀-취약계층 여부
+  isSingleParent: boolean | null; // 한부모 여부
+  childrenInfo: { under6: number; over7: number } | null; // 자녀 정보 (6세 이하, 7세 이상 미성년)
 }
 
 export interface EligibilityState extends EligibilityData {
@@ -31,6 +37,11 @@ export interface EligibilityState extends EligibilityData {
   setHousingSubscriptionPeriod: (value: string | null) => void;
   setHousingSubscriptionPaymentCount: (value: string | null) => void;
   setTotalPaymentAmount: (value: string | null) => void;
+  setIsNewlyMarried: (value: boolean | null) => void;
+  setMarriagePeriod: (value: string | null) => void;
+  setIsMultiChildVulnerable: (value: boolean | null) => void;
+  setIsSingleParent: (value: boolean | null) => void;
+  setChildrenInfo: (value: { under6: number; over7: number } | null) => void;
   reset: () => void;
 }
 
@@ -46,6 +57,11 @@ const initialData: EligibilityData = {
   housingSubscriptionPeriod: null,
   housingSubscriptionPaymentCount: null,
   totalPaymentAmount: null,
+  isNewlyMarried: null,
+  marriagePeriod: null,
+  isMultiChildVulnerable: null,
+  isSingleParent: null,
+  childrenInfo: null,
 };
 
 export const useEligibilityStore = create<EligibilityState>()(
@@ -66,6 +82,12 @@ export const useEligibilityStore = create<EligibilityState>()(
       setHousingSubscriptionPaymentCount: (value: string | null) =>
         set({ housingSubscriptionPaymentCount: value }),
       setTotalPaymentAmount: (value: string | null) => set({ totalPaymentAmount: value }),
+      setIsNewlyMarried: (value: boolean | null) => set({ isNewlyMarried: value }),
+      setMarriagePeriod: (value: string | null) => set({ marriagePeriod: value }),
+      setIsMultiChildVulnerable: (value: boolean | null) => set({ isMultiChildVulnerable: value }),
+      setIsSingleParent: (value: boolean | null) => set({ isSingleParent: value }),
+      setChildrenInfo: (value: { under6: number; over7: number } | null) =>
+        set({ childrenInfo: value }),
       reset: () => set(initialData),
     }),
     {
