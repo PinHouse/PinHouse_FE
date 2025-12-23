@@ -154,6 +154,209 @@ export const eligibilityDecisionTree: StepConfig[] = [
     getNextStep: data => {
       const age = calculateAge(data.birthDate);
       if (age === null) return null;
+      // 19세 미만이면 미성년자 자격 확인 단계로 이동
+      if (age < 19) {
+        return "minorEligibility";
+      }
+      return "marriageSt atus";
+    },
+  },
+
+  // 2-0. 미성년자 자격 확인 (19세 미만)
+  {
+    id: "minorEligibility",
+    groupId: "personalInfo",
+    components: [
+      {
+        type: "statusBanner",
+        props: {
+          title: "아직 미성년자이시네요!",
+          description: "미성년자는 아래 조건에서만 신청할 수 있어요",
+        },
+      },
+      {
+        type: "optionSelector",
+        props: {
+          title: "다음 중 나에게 해당되는 사항을 선택해주세요",
+          options: [
+            { id: "0", label: "해당사항이 없어요" },
+            { id: "1", label: "자녀가 있는 미성년 세대주" },
+            { id: "2", label: "부모 등 보호자의 부재로 형제자매를 부양하는 미성년 세대주" },
+            { id: "3", label: "외국인 한부모가족의 미성년 세대주(내국인 자녀)" },
+          ],
+          required: true,
+          direction: "vertical",
+        },
+        storeKey: "minorEligibilityType",
+      },
+    ],
+    validation: data => {
+      if (!data.minorEligibilityType) {
+        return "해당되는 사항을 선택해주세요";
+      }
+      // "해당사항이 없어요" 선택 시 종료
+      if (data.minorEligibilityType === "0") {
+        return null; // 검증 통과하지만 다음 단계는 null로 종료
+      }
+      return null;
+    },
+    getNextStep: data => {
+      // "해당사항이 없어요" 선택 시 종료
+      if (data.minorEligibilityType === "0") {
+        return null;
+      }
+      // 다른 옵션 선택 시 다음 단계로 진행 (추후 결정 필요)
+      return "incomeInfo";
+    },
+  },
+
+  // 2-1. 결혼 여부
+  {
+    id: "marriageStatus",
+    groupId: "personalInfo",
+    components: [
+      {
+        type: "optionSelector",
+        props: {
+          title: "결혼 여부를 알려주세요",
+          description: "입주 전까지 결혼 예정이라면 '예'를 선택해 주세요!",
+          options: [
+            { id: "1", label: "예" },
+            { id: "2", label: "아니오" },
+          ],
+          required: true,
+          direction: "horizontal",
+        },
+        storeKey: "marriageStatus",
+      },
+    ],
+    validation: data => {
+      if (!data.marriageStatus) {
+        return "결혼 여부를 선택해주세요";
+      }
+      return null;
+    },
+    getNextStep: data => {
+      // 결혼 예정이거나 결혼한 경우에만 혼인기간 질문으로 이동
+      if (data.marriageStatus === "1") {
+        return "marriagePeriod";
+      }
+      return "incomeInfo";
+    },
+  },
+
+  // 2-2. 혼인기간 (신혼부부 판단)
+  {
+    id: "marriagePeriod",
+    groupId: "personalInfo",
+    components: [
+      {
+        type: "optionSelector",
+        props: {
+          title: "혼인기간이 어떻게되나요?",
+          options: [
+            { id: "0", label: "1년 미만" },
+            { id: "1", label: "1년 이상 3년 미만" },
+            { id: "3", label: "3년 이상 5년 미만" },
+            { id: "5", label: "5년 이상 7년 미만" },
+            { id: "7", label: "7년 이상" },
+          ],
+          required: true,
+          direction: "vertical",
+        },
+        storeKey: "marriagePeriod",
+      },
+    ],
+    validation: data => {
+      if (!data.marriagePeriod) {
+        return "혼인기간을 선택해주세요";
+      }
+      return null;
+    },
+    getNextStep: data => {
+      return "hasRegisteredChildren";
+    },
+  },
+
+  // 2-3. 주민등록상 등록된 자녀/손자녀 여부
+  {
+    id: "hasRegisteredChildren",
+    groupId: "personalInfo",
+    components: [
+      {
+        type: "optionSelector",
+        props: {
+          title: "내 주민등록상 등록된 자녀/손자녀가 있나요?",
+          description: "입양자녀 양육, 대리양육 시에도 '예'를 선택해 주세요",
+          options: [
+            { id: "1", label: "예" },
+            { id: "2", label: "아니오" },
+          ],
+          required: true,
+          direction: "horizontal",
+        },
+        storeKey: "hasRegisteredChildren",
+        children: [
+          {
+            type: "numberInputList",
+            props: {
+              title: "자녀 정보를 알려주세요",
+              description: "성인 자녀의 경우 입력하지 않아도 됩니다",
+              required: false,
+              options: [
+                {
+                  id: "under6",
+                  prefix: "6세 이하 자녀 수",
+                  postfix: "명",
+                  placeholder: "0",
+                },
+                {
+                  id: "over7",
+                  prefix: "7세 이상 미성년 자녀 수",
+                  postfix: "명",
+                  placeholder: "0",
+                },
+              ],
+              summary: (values: Record<string, string>) => {
+                const under6 = Number(values.under6 || 0);
+                const over7 = Number(values.over7 || 0);
+                const total = under6 + over7;
+                return `총 ${total} 명의 미성년 자녀가 있어요`;
+              },
+            },
+            storeKey: "childrenInfo",
+            showWhen: data => {
+              return data.hasRegisteredChildren === "1";
+            },
+          },
+          {
+            type: "optionSelector",
+            props: {
+              title: "다음 중 해당되는 사항이 있다면 모두 선택해 주세요",
+              description: "복수 선택 가능",
+              options: [
+                { id: "1", label: "친인척 위탁가정" },
+                { id: "2", label: "대리 양육 가정" },
+                { id: "3", label: "한부모 가정" },
+                { id: "4", label: "보호 대상 한부모 가정" },
+              ],
+              multiselect: 4,
+            },
+            storeKey: "familyTypes",
+            showWhen: data => {
+              return data.hasRegisteredChildren === "1";
+            },
+          },
+        ],
+      },
+    ],
+    validation: data => {
+      if (!data.hasRegisteredChildren) {
+        return "주민등록상 등록된 자녀/손자녀 여부를 선택해주세요";
+      }
+      return null;
+    },
+    getNextStep: data => {
       return "incomeInfo";
     },
   },
@@ -255,7 +458,113 @@ export const eligibilityDecisionTree: StepConfig[] = [
 
       return null;
     },
-    getNextStep: () => "assetInfo", // 다음 단계: 자산 정보
+    getNextStep: data => {
+      const age = calculateAge(data.birthDate);
+      if (age === null) return "assetInfo";
+
+      // 청년-중장년 기혼 (19세~64세, 기혼) 또는 고령자(65세 이상, 미혼 or 기혼)
+      const isYoungToMiddleAgedMarried = age >= 19 && age < 65 && data.marriageStatus === "1";
+      const isElderly = age >= 65; // 고령자는 미혼/기혼 모두 포함
+
+      if (isYoungToMiddleAgedMarried || isElderly) {
+        return "specialEligibility";
+      }
+
+      // 중장년 미혼 (40세~64세, 미혼)
+      const isMiddleAgedSingle = age >= 40 && age < 65 && data.marriageStatus === "2";
+      if (isMiddleAgedSingle) {
+        return "incomeWorkPeriod";
+      }
+
+      // 그 외의 경우 자산 정보로 이동
+      return "assetInfo";
+    },
+  },
+
+  // 3-1. 소득 업무 종사 기간 (중장년 미혼)
+  {
+    id: "incomeWorkPeriod",
+    groupId: "identityInfo",
+    components: [
+      {
+        type: "optionSelector",
+        props: {
+          title: "소득있는 업무에 종사한 기간이 5년 이내인가요?",
+          options: [
+            { id: "1", label: "예" },
+            { id: "2", label: "아니오" },
+          ],
+          required: true,
+          direction: "horizontal",
+        },
+        storeKey: "hasIncomeWorkWithin5Years",
+        children: [
+          {
+            type: "optionSelector",
+            props: {
+              title: "대학생/취업준비생 여부를 알려주세요",
+              options: [
+                { id: "1", label: "현재 소득이 있는 업무에 종사 중이에요" },
+                { id: "2", label: "퇴직한지 1년 미만으로 구직급여 수급자이 인정됐어요" },
+                { id: "3", label: "한국예술인 복지재단에서 예술 활동 증명을 받았어요" },
+              ],
+              multiselect: 3,
+            },
+            storeKey: "studentJobSeekerTypes",
+            showWhen: data => {
+              return data.hasIncomeWorkWithin5Years === "1";
+            },
+          },
+        ],
+      },
+    ],
+    validation: data => {
+      if (!data.hasIncomeWorkWithin5Years) {
+        return "소득있는 업무에 종사한 기간을 선택해주세요";
+      }
+      return null;
+    },
+    getNextStep: data => {
+      // 특별 자격 요건(취약계층 판단)으로 이동
+      return "specialEligibility";
+    },
+  },
+
+  // 3-2. 특별 자격 요건 (청년-중장년 기혼, 고령자, 중장년 미혼)
+  {
+    id: "specialEligibility",
+    groupId: "identityInfo",
+    components: [
+      {
+        type: "optionSelector",
+        props: {
+          title: "다음 중 해당되는 사항이 있다면 모두 선택해 주세요",
+          description: "복수 선택 가능",
+          options: [
+            { id: "1", label: "국가 유공자 본인/가구" },
+            { id: "2", label: "위안부 피해자 본인/가구" },
+            { id: "3", label: "북한이탈주민 본인" },
+            { id: "4", label: "장애인 등록자/장애인 가구" },
+            { id: "5", label: "교통사고 유자녀 가정" },
+            { id: "6", label: "부도 공공임대 퇴거자" },
+            { id: "7", label: "영구임대 퇴거자" },
+            { id: "8", label: "주거 취약계층/긴급 주거지원 대상자" },
+            { id: "9", label: "산단 근로자" },
+            { id: "10", label: "보증거절자" },
+          ],
+          multiselect: 10,
+        },
+        storeKey: "specialEligibilityTypes",
+      },
+    ],
+    validation: data => {
+      // 선택 필수는 아니므로 항상 통과
+      return null;
+    },
+    getNextStep: data => {
+      // 자산 정보로 이동
+      return "assetInfo";
+    },
   },
 
   // 4. 자산 정보 (청약저축 - 같은 페이지 내 조건부 질문 포함)
