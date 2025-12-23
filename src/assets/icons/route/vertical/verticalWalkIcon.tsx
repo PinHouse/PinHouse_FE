@@ -58,13 +58,13 @@ export const VerticalWalkIcon = ({ color, minutes, showLine = true }: VerticalTr
       </div>
 
       {/* 점선 */}
-      {showLine && (
+      {/* {showLine && (
         <div className="my-1 flex flex-col items-center">
           <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
           <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
           <span className="h-1 w-1 rounded-full bg-greyscale-grey-300" />
         </div>
-      )}
+      )} */}
 
       {/* 분 배지 */}
       {/* {typeof minutes === "number" && (

@@ -684,174 +684,198 @@ describe("노선정보 상세조회", () => {
     jest.clearAllMocks();
   });
   it.skip("노선정보 상세조회 API 성공", async () => {
-    const mockListingOne: ListingRouteInfo[] = [
-      {
-        totalTime: "1시간 8분",
-        totalTimeMinutes: 68,
-        totalDistance: 284.3,
-        routes: [
-          {
-            type: "AIR",
-            minutesText: "60분",
-            lineText: "항공",
-            line: null,
-            bgColorHex: "#2C7A7B",
-          },
-          {
-            type: "TRAIN",
-            minutesText: "8분",
-            lineText: "KTX",
-            line: {
-              code: 1,
-              label: "KTX",
+    const mockListingOne: ListingRouteInfo = {
+      totalCount: 3,
+      routes: [
+        {
+          routeIndex: 0,
+          summary: [
+            {
+              displayText: "1시간 8분",
+              totalMinutes: 68,
+              totalDistanceKm: 284.3,
+              totalFareWon: 0,
+              transferCount: 1,
+            },
+          ],
+          distance: [
+            {
+              type: "AIR",
+              minutesText: "60분",
+              lineText: "항공",
+              line: null,
+              bgColorHex: "#2C7A7B",
+            },
+            {
+              type: "TRAIN",
+              minutesText: "8분",
+              lineText: "KTX",
+              line: {
+                code: 1,
+                label: "KTX",
+                bgColorHex: "#3356B4",
+              },
               bgColorHex: "#3356B4",
             },
-            bgColorHex: "#3356B4",
-          },
-        ],
-        stops: [
-          {
-            role: "START",
-            type: "AIR",
-            stopName: "김포국제공항",
-            lineText: "항공",
-            line: null,
-            bgColorHex: "#2C7A7B",
-          },
-          {
-            role: "TRANSFER",
-            type: "TRAIN",
-            stopName: "광주송정",
-            lineText: "KTX",
-            line: {
-              code: 1,
-              label: "KTX",
+          ],
+          step: [
+            {
+              action: "START",
+              primaryText: "김포국제공항",
+              line: "항공",
+              minutes: "0분",
+              colorHex: "#2C7A7B",
+              stepIndex: 0,
+              stopName: "김포국제공항",
+              type: "AIR",
+            },
+            {
+              action: "TRANSFER",
+              primaryText: "광주송정",
+              line: "KTX",
+              minutes: "60분",
+              colorHex: "#3356B4",
+              stepIndex: 1,
+              stopName: "광주송정",
+              type: "TRAIN",
+            },
+            {
+              action: "ARRIVAL",
+              primaryText: "나주",
+              line: null,
+              minutes: "8분",
+              colorHex: "#3356B4",
+              stepIndex: 2,
+              stopName: "나주",
+              type: "TRAIN",
+            },
+          ],
+        },
+        {
+          routeIndex: 1,
+          summary: [
+            {
+              displayText: "1시간 50분",
+              totalMinutes: 110,
+              totalDistanceKm: 322.8,
+              totalFareWon: 0,
+              transferCount: 1,
+            },
+          ],
+          distance: [
+            {
+              type: "TRAIN",
+              minutesText: "41분",
+              lineText: "KTX",
+              line: {
+                code: 1,
+                label: "KTX",
+                bgColorHex: "#3356B4",
+              },
               bgColorHex: "#3356B4",
             },
-            bgColorHex: "#3356B4",
-          },
-          {
-            role: "ARRIVAL",
-            type: "TRAIN",
-            stopName: "나주",
-            lineText: null,
-            line: null,
-            bgColorHex: null,
-          },
-        ],
-      },
-      {
-        totalTime: "1시간 50분",
-        totalTimeMinutes: 110,
-        totalDistance: 322.8,
-        routes: [
-          {
-            type: "TRAIN",
-            minutesText: "41분",
-            lineText: "KTX",
-            line: {
-              code: 1,
-              label: "KTX",
-              bgColorHex: "#3356B4",
-            },
-            bgColorHex: "#3356B4",
-          },
-          {
-            type: "TRAIN",
-            minutesText: "69분",
-            lineText: "SRT",
-            line: {
-              code: 8,
-              label: "SRT",
+            {
+              type: "TRAIN",
+              minutesText: "69분",
+              lineText: "SRT",
+              line: {
+                code: 8,
+                label: "SRT",
+                bgColorHex: "#E5046C",
+              },
               bgColorHex: "#E5046C",
             },
-            bgColorHex: "#E5046C",
-          },
-        ],
-        stops: [
-          {
-            role: "START",
-            type: "TRAIN",
-            stopName: "서울",
-            lineText: "KTX",
-            line: {
-              code: 1,
-              label: "KTX",
-              bgColorHex: "#3356B4",
+          ],
+          step: [
+            {
+              action: "START",
+              primaryText: "서울",
+              line: "KTX",
+              minutes: "0분",
+              colorHex: "#3356B4",
+              stepIndex: 0,
+              stopName: "서울",
+              type: "TRAIN",
             },
-            bgColorHex: "#3356B4",
-          },
-          {
-            role: "TRANSFER",
-            type: "TRAIN",
-            stopName: "오송",
-            lineText: "SRT",
-            line: {
-              code: 8,
-              label: "SRT",
+            {
+              action: "TRANSFER",
+              primaryText: "오송",
+              line: "SRT",
+              minutes: "41분",
+              colorHex: "#E5046C",
+              stepIndex: 1,
+              stopName: "오송",
+              type: "TRAIN",
+            },
+            {
+              action: "ARRIVAL",
+              primaryText: "나주",
+              line: null,
+              minutes: "69분",
+              colorHex: "#E5046C",
+              stepIndex: 2,
+              stopName: "나주",
+              type: "TRAIN",
+            },
+          ],
+        },
+        {
+          routeIndex: 2,
+          summary: [
+            {
+              displayText: "1시간 52분",
+              totalMinutes: 112,
+              totalDistanceKm: 305.3,
+              totalFareWon: 0,
+              transferCount: 0,
+            },
+          ],
+          distance: [
+            {
+              type: "TRAIN",
+              minutesText: "112분",
+              lineText: "SRT",
+              line: {
+                code: 8,
+                label: "SRT",
+                bgColorHex: "#E5046C",
+              },
               bgColorHex: "#E5046C",
             },
-            bgColorHex: "#E5046C",
-          },
-          {
-            role: "ARRIVAL",
-            type: "TRAIN",
-            stopName: "나주",
-            lineText: null,
-            line: null,
-            bgColorHex: null,
-          },
-        ],
-      },
-      {
-        totalTime: "1시간 52분",
-        totalTimeMinutes: 112,
-        totalDistance: 305.3,
-        routes: [
-          {
-            type: "TRAIN",
-            minutesText: "112분",
-            lineText: "SRT",
-            line: {
-              code: 8,
-              label: "SRT",
-              bgColorHex: "#E5046C",
+          ],
+          step: [
+            {
+              action: "START",
+              primaryText: "수서",
+              line: "SRT",
+              minutes: "0분",
+              colorHex: "#E5046C",
+              stepIndex: 0,
+              stopName: "수서",
+              type: "TRAIN",
             },
-            bgColorHex: "#E5046C",
-          },
-        ],
-        stops: [
-          {
-            role: "START",
-            type: "TRAIN",
-            stopName: "수서",
-            lineText: "SRT",
-            line: {
-              code: 8,
-              label: "SRT",
-              bgColorHex: "#E5046C",
+            {
+              action: "ARRIVAL",
+              primaryText: "나주",
+              line: null,
+              minutes: "112분",
+              colorHex: "#E5046C",
+              stepIndex: 1,
+              stopName: "나주",
+              type: "TRAIN",
             },
-            bgColorHex: "#E5046C",
-          },
-          {
-            role: "ARRIVAL",
-            type: "TRAIN",
-            stopName: "나주",
-            lineText: null,
-            line: null,
-            bgColorHex: null,
-          },
-        ],
-      },
-    ];
+          ],
+        },
+      ],
+    };
     (http.get as jest.Mock).mockResolvedValue({
       data: mockListingOne,
     });
     const result = await PostBasicRequest<
-      ListingRouteInfo[],
-      IResponse<ListingRouteInfo[]>,
+      ListingRouteInfo,
+      IResponse<ListingRouteInfo>,
       {},
-      ListingRouteInfo[]
+      ListingRouteInfo
     >(`${COMPLEXES_ENDPOINT}/transit/19407#1`, "get", {});
     expect(http.get).toHaveBeenCalledWith(`${COMPLEXES_ENDPOINT}/transit/19407#1`, {});
     expect(result).toEqual({ data: mockListingOne });

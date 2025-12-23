@@ -1,15 +1,19 @@
 "use client";
-import { CSSProperties, useCallback, useMemo, useState } from "react";
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from "react";
 import { useListingRouteDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { ListingRouteInfo, TransportType } from "@/src/entities/listings/model/type";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { LeftButton } from "@/src/assets/icons/button";
 import { PinPointAddress } from "@/src/assets/icons/infra/pinAddress";
-import { parseMinutes, TransitAction } from "@/src/features/listings/model";
+
 import { cn } from "@/src/shared/lib/utils";
 import { VerticalTransitIcon } from "@/src/assets/icons/route/vertical/verticalBusIcon";
 import { VerticalSubWayIcon } from "@/src/assets/icons/route/vertical/verticalSubWayIcon";
 import { VerticalWalkIcon } from "@/src/assets/icons/route/vertical/verticalWalkIcon";
+import { parseMinutes } from "@/src/features/listings/hooks/listingsHooks";
+
+type RouteSegmentItem = ListingRouteInfo["routes"][number];
+type RouteStepItem = RouteSegmentItem["steps"][number];
 
 const ModeIcon = ({
   type,
@@ -20,11 +24,34 @@ const ModeIcon = ({
   color: string;
   minutes: number;
 }) => {
-  if (type === "BUS")
+  if (type === "BUS" || type === "AIR")
     return <VerticalTransitIcon color={color} minutes={minutes} showLine={false} />;
   if (type === "WALK") return <VerticalWalkIcon color={color} minutes={minutes} />;
-  if (type === "SUBWAY")
+  if (type === "SUBWAY" || type === "TRAIN")
     return <VerticalSubWayIcon color={color} minutes={minutes} showLine={false} />;
+  return <VerticalTransitIcon color={color} minutes={minutes} showLine={false} />;
+};
+
+const formatMinutesToText = (minutes?: number) => {
+  if (!minutes || Number.isNaN(minutes)) return "";
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  if (hours && mins) return `${hours}시간 ${mins}분`;
+  if (hours) return `${hours}시간`;
+  return `${mins}분`;
+};
+
+const formatFareText = (fare?: number | null) => {
+  if (typeof fare !== "number" || Number.isNaN(fare) || fare <= 0) return "0원";
+  return `${fare.toLocaleString("ko-KR")}원`;
+};
+
+const resolveStepLabel = (step?: RouteStepItem) => {
+  if (!step) return "";
+  if (step.primaryText) return step.primaryText;
+  if (typeof step.stopName === "string") return step.stopName;
+  if (typeof step.stopName === "number") return `${step.stopName}`;
+  return "";
 };
 
 export const RouteDetail = ({ listingId }: { listingId: string }) => {
@@ -36,26 +63,48 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
   });
 
   const [index, setIndex] = useState(0);
-  const items = data ?? [];
+  const routes = data?.routes ?? [];
 
-  const current = useMemo(() => items[index], [items, index]);
+  useEffect(() => {
+    if (index > 0 && index > routes.length - 1) {
+      setIndex(0);
+    }
+  }, [index, routes.length]);
+
+  const current = useMemo(() => routes[index] ?? null, [routes, index]);
+  const summary = useMemo(() => {
+    if (!current) return null;
+    const summaryData = current.summary;
+    if (Array.isArray(summaryData)) return summaryData[0] ?? null;
+    return summaryData ?? null;
+  }, [current]);
 
   const totalMinutes = useMemo(() => {
     if (!current) return 0;
-    if (current.totalTimeMinutes > 0) return current.totalTimeMinutes;
-    return (current.routes ?? []).reduce((sum, r) => sum + (parseMinutes(r.minutesText) || 0), 0);
-  }, [current]);
+    if (summary?.totalMinutes && summary.totalMinutes > 0) return summary.totalMinutes;
+    return (current.distance ?? []).reduce(
+      (sum, segment) => sum + (parseMinutes(segment.minutesText || "") || 0),
+      0
+    );
+  }, [current, summary]);
+
+  const summaryText =
+    summary?.displayText || formatMinutesToText(summary?.totalMinutes ?? totalMinutes) || "-";
+
+  const fareText = formatFareText(summary?.totalFareWon);
+  const distances = current?.distance ?? [];
+  const steps = current?.steps ?? [];
 
   const goPrev = useCallback(() => {
-    setIndex(p => (p - 1 + Math.max(items.length, 1)) % Math.max(items.length, 1));
-  }, [items.length]);
+    setIndex(p => (p - 1 + Math.max(routes.length, 1)) % Math.max(routes.length, 1));
+  }, [routes.length]);
   const goNext = useCallback(() => {
-    setIndex(p => (p + 1) % Math.max(items.length, 1));
-  }, [items.length]);
-  const lastIndex = current?.routes.length - 1;
+    setIndex(p => (p + 1) % Math.max(routes.length, 1));
+  }, [routes.length]);
+  const lastIndex = distances.length - 1;
 
   if (isFetching) return <SmallSpinner title="노선 정보를 불러오는 중.." />;
-  if (!items.length) {
+  if (!routes.length) {
     return (
       <div className="p-6 text-center text-sm text-text-secondary">표시할 노선 정보가 없어요.</div>
     );
@@ -68,16 +117,18 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-base font-semibold text-text-primary">노선 정보</p>
-            <p className="text-xs text-text-secondary">{current?.totalTime ?? "-"} · 0원</p>
+            <p className="text-xs text-text-secondary">
+              {summaryText} · {fareText}
+            </p>
           </div>
 
-          {items.length > 1 && (
+          {routes.length > 1 && (
             <div className="flex items-center gap-2 text-xs text-text-secondary">
               <button aria-label="이전 노선" onClick={goPrev} className="rounded-full p-1">
                 <LeftButton className="size-4" />
               </button>
               <span className="min-w-10 text-center">
-                {index + 1} / {items.length}
+                {index + 1} / {routes.length}
               </span>
               <button aria-label="다음 노선" onClick={goNext} className="rounded-full p-1">
                 <LeftButton className="size-4 rotate-180" />
@@ -87,14 +138,14 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
         </div>
 
         {/* 구간 바 */}
-        {!!(current?.routes?.length ?? 0) && (
+        {!!distances.length && (
           <div className="mt-3">
             <div className="flex items-center">
-              {current!.routes.map((seg, i) => {
-                const m = parseMinutes(seg.minutesText) || 0;
-                if (m === 0) return;
+              {distances.map((seg, i) => {
+                const m = parseMinutes(seg.minutesText || "") || 0;
+                if (m === 0) return null;
                 const widthPct = totalMinutes ? Math.max(5, (m / totalMinutes) * 100) : 0;
-                const color = seg.bgColorHex;
+                const color = seg.colorHex || "#4B5563";
                 return (
                   <div key={i} style={{ width: `${widthPct}%` }}>
                     <div
@@ -107,8 +158,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
                     >
                       <span
                         className={cn(
-                          "text-[10px]",
-                          seg.type === "WALK" ? "text-white" : "text-white",
+                          "text-[10px] text-white",
                           i === 0 && "ml-[2px]",
                           i === lastIndex && "mr-[2px]"
                         )}
@@ -162,19 +212,22 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
         </li>
 
         {/* 정류장 / 환승 / 도착 */}
-        {(current?.stops ?? []).map((s, i) => {
-          const color = s.bgColorHex;
-          const isLast = i === (current?.stops?.length ?? 0) - 1;
+        {steps.map((s, i) => {
+          const color = s.colorHex || "#2563EB";
+          const isLast = i === steps.length - 1;
+          const isArrival = s.action?.toUpperCase() === "ARRIVE";
+          const isWALK = s.action?.toUpperCase() === "WALK";
+          const label = resolveStepLabel(s);
 
           return (
             <li
-              key={`${s.line}` + i}
+              key={`${label}-${i}`}
               className="relative flex gap-[var(--col-gap)] pb-[var(--item-gap)]"
             >
               {/* 왼쪽 아이콘 + 세로선 */}
               <div className="relative z-[1] flex w-[var(--icon-size)] justify-center">
                 {/* 세로선 (왼쪽 컬럼 기준) */}
-                {!isLast && (
+                {!isLast && !isWALK && (
                   <span
                     className="absolute -bottom-[calc(var(--item-gap)+var(--line-extend))] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
                     style={
@@ -185,19 +238,37 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
                     }
                   />
                 )}
-                {s.role !== "ARRIVAL" ? (
-                  <ModeIcon type={s.type} color={String(color)} minutes={0} />
+                {isWALK && (
+                  <span
+                    className="absolute -bottom-[23] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
+                    style={{
+                      backgroundImage:
+                        "repeating-linear-gradient(to bottom, #D1D5DB 0 6px, transparent 6px 8px)",
+                    }}
+                  />
+                )}
+                {!isArrival ? (
+                  <ModeIcon
+                    type={(s.type as TransportType) || undefined}
+                    color={String(color)}
+                    minutes={parseMinutes(s.minutes || "")}
+                  />
                 ) : (
                   <span className="relative mt-1.5 flex h-2 w-2 rounded-full bg-primary-blue-400 after:absolute after:inset-[-6px] after:-z-10 after:animate-glowBlink after:rounded-full after:bg-primary-blue-400 after:opacity-20 after:blur-sm after:content-['']" />
                 )}
               </div>
 
               <div className="h-full flex-1">
-                <p className="flex gap-1 text-sm font-medium text-text-primary">
-                  {s.stopName}
-                  <span className="text-text-secondary">{TransitAction[s.role]}</span>
-                </p>
-                {s.lineText && <p className="mt-0.5 text-xs text-text-secondary">{s.lineText}</p>}
+                <p className="flex gap-1 text-sm font-medium text-text-primary">{label}</p>
+                {s.line && (
+                  <p className="mt-0.5 text-xs text-text-secondary">
+                    {typeof s.line === "object" ? s.line?.line : s.line}
+                  </p>
+                )}
+
+                {s.minutes && (
+                  <p className="mt-0.5 text-xs text-text-secondary">약 {s.minutes} 분</p>
+                )}
               </div>
             </li>
           );

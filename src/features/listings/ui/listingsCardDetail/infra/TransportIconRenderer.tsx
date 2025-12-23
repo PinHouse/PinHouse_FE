@@ -1,5 +1,6 @@
 import { DistanceInfo } from "@/src/entities/listings/model/type";
-import { parseMinutes, parseTotalMinutes, TRANSPORT_ICON_MAP } from "../../../model";
+import { TRANSPORT_ICON_MAP } from "../../../model";
+import { parseMinutes } from "../../../hooks/listingsHooks";
 
 type TransportIconRendererProps = {
   routes: DistanceInfo;
@@ -7,12 +8,12 @@ type TransportIconRendererProps = {
 };
 
 const MIN_PERCENT = 5;
-const BAR_LIMIT = 5; // ✔ 한 줄에 보여줄 최대 bar 수
+const BAR_LIMIT = 5; // 한 줄에 보여줄 최대 bar 수
 
 export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRendererProps) => {
   if (!totalTime) return null;
 
-  const totalMinutes = parseTotalMinutes(totalTime);
+  const totalMinutes = parseMinutes(totalTime);
 
   //  minutes 파싱 + 0분 제거
   const parsedRoutes = routes.routes

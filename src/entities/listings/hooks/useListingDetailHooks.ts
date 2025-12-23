@@ -144,13 +144,13 @@ export const useListingRouteDetail = <T, TParam extends object>({
 }: UseListingsHooksWithParam<TParam>) => {
   const encodedId = encodeURIComponent(id);
 
-  return useQuery<IResponse<T[]>, Error, T[]>({
+  return useQuery<IResponse<T>, Error, T | null>({
     queryKey: [queryK, encodedId, params],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
 
     queryFn: () =>
-      PostParamsBodyRequest<T[], IResponse<T[]>, {}, IResponse<T[]>, TParam>(
+      PostParamsBodyRequest<T, IResponse<T>, {}, IResponse<T>, TParam>(
         `${COMPLEXES_ENDPOINT}/${url}/${encodedId}`,
         "get",
         {},
@@ -158,7 +158,7 @@ export const useListingRouteDetail = <T, TParam extends object>({
       ),
 
     select: response => {
-      return response.data ?? [];
+      return response.data ?? null;
     },
   });
 };

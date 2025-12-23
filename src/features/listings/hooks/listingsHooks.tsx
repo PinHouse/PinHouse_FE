@@ -10,6 +10,9 @@ import { ListingBgBookMark } from "../ui/listingsContents/listingsBookMark";
 import { useToogleLike } from "@/src/entities/listings/hooks/useListingHooks";
 import { LikeButton } from "@/src/assets/icons/button/likeButton";
 import { LineLikeButton } from "@/src/assets/icons/button/lineLikeButton";
+import { SmallHome } from "@/src/assets/icons/home/smallHome";
+import { SmallMapPin } from "@/src/assets/icons/onboarding/smallMapPin";
+import { FireIcon } from "@/src/assets/icons/onboarding/fire";
 
 export const getListingsRental = (type: string) => {
   if (!(type in RENT_COLOR_CLASS)) return null;
@@ -46,10 +49,10 @@ export function getDetailIndicatorLeft(activeTab: DetailFilterTabKey) {
       return 20 + 57;
     case "cost":
       return 20 + 57 + 55;
-    case "around":
-      return 20 + 57 + 55;
     case "area":
       return 20 + 57 + 55 + 57;
+    case "around":
+      return 20 + 57 + 55 + 57 + 56;
   }
 }
 
@@ -65,6 +68,51 @@ export function getIndicatorWidth(activeTab: FilterTabKey) {
       return 60;
   }
 }
+
+export const highlight = (text: string, keyword: string) => {
+  if (!keyword) return text;
+
+  const regex = new RegExp(`(${keyword})`, "gi");
+
+  return text.split(regex).map((part, i) =>
+    regex.test(part) ? (
+      <span key={i} className="bg-primary-blue-50 font-bold text-primary-blue-300">
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+};
+
+// 사용처: 리스트 카드 타이틀에서 키워드 중심의 일부만 하이라이트 표시 (listingsContentCard.tsx)
+export const HighlightCenteredText = ({
+  text,
+  keyword,
+  range = 5,
+}: {
+  text: string;
+  keyword: string;
+  range?: number;
+}) => {
+  const centered = getKeywordCenteredText(text, keyword, range);
+  return <>{highlight(centered, keyword)}</>;
+};
+
+export const getKeywordCenteredText = (text: string, keyword: string, range: number = 20) => {
+  if (!keyword) return text;
+
+  const index = text.toLowerCase().indexOf(keyword.toLowerCase());
+  if (index === -1) return text;
+
+  const start = Math.max(0, index - range);
+  const end = Math.min(text.length, index + keyword.length + range);
+
+  const prefix = start > 0 ? "…" : "";
+  const suffix = end < text.length ? "…" : "";
+
+  return prefix + text.substring(start, end) + suffix;
+};
 
 const LikeType = ({ id, liked }: ListingItemMinimal) => {
   const { mutateAsync } = useToogleLike();
@@ -92,5 +140,55 @@ export const HouseRental = (item: ListingNormalized) => {
       <ListingBgBookMark item={item.type} bg={rantalText.bg} text={rantalText.text} border="none" />
       <LikeType liked={item.liked} id={item.id} />
     </span>
+  );
+};
+
+// 사용처: 구간 소요시간 텍스트("12분") → 분(12) 변환 (TransportIconRenderer.tsx)
+export const parseMinutes = (minutesText: string): number => {
+  if (typeof minutesText !== "string") return 0;
+
+  const hourMatch = minutesText.match(/(\d+)\s*시간/);
+  const minuteMatch = minutesText.match(/(\d+)\s*분/);
+
+  const hours = hourMatch ? Number(hourMatch[1]) : 0;
+  const minutes = minuteMatch ? Number(minuteMatch[1]) : 0;
+
+  return hours * 60 + minutes;
+};
+
+// 사용처: ComplexesInfo 컴포넌트 아이콘/라벨 메타
+const COMPLEX_INFO_META = {
+  name: {
+    icon: SmallHome,
+    label: "단지명",
+  },
+  address: {
+    icon: SmallMapPin,
+    label: "주소",
+  },
+  heating: {
+    icon: FireIcon,
+    label: "난방방식",
+  },
+} as const;
+
+// 사용처: 상세 카드 타일 상단 기본 정보 표시 (listingsCardTtileInfra.tsx)
+export const ComplexesInfo = ({
+  infoKey,
+  infoValue,
+}: {
+  infoKey: keyof typeof COMPLEX_INFO_META;
+  infoValue: string;
+}) => {
+  const meta = COMPLEX_INFO_META[infoKey];
+  const Icon = meta.icon;
+
+  return (
+    <div className="flex items-center">
+      <Icon height={20} width={20} />
+      <span className="flex items-center justify-center p-1 text-xs-13">
+        {infoValue ?? meta.label}
+      </span>
+    </div>
   );
 };
