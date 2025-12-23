@@ -1,12 +1,14 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { ReactNode, useState } from "react";
-import { ComplexesInfo, InfraSheetSection, SheetState } from "../../../model";
+
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { TransportIconRenderer } from "./TransportIconRenderer";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { InfraSheet } from "./infraSheet";
+import { SheetState } from "../../../model";
+import { ComplexesInfo } from "../../../hooks/listingsHooks";
 
 interface DetailSectionProps {
   title: string;

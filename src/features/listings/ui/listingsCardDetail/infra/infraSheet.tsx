@@ -41,7 +41,7 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
         <>
           <motion.div
             key="overlay"
-            className="fixed inset-0 z-40 bg-black/40"
+            className="fixed inset-0 h-[100vh] bg-black/40"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

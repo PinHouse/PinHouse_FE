@@ -431,20 +431,50 @@ export interface ListingUnitType {
 
 // 공통 Enum (타입 안정성 ↑)
 export type TransportType = "AIR" | "TRAIN" | "BUS" | "SUBWAY" | "WALK";
-export type StopRole = "START" | "TRANSFER" | "ARRIVAL";
+export type StopRole = "START" | "TRANSFER" | "ARRIVE";
 //Line 타입
 export interface TransportLine {
   code: number;
   label: string;
   bgColorHex: string;
 }
+
+export interface RouteDistance {
+  colorHex: string;
+  line: string | null;
+  minutes: number;
+  minutesText: string;
+  type: string;
+}
+
+export interface RouteStepLine {
+  line: string;
+}
+
+export interface RouteStep {
+  action?: string | null;
+  colorHex?: string | null;
+  line?: RouteStepLine | null;
+  minutes?: string | null;
+  primaryText?: string | null;
+  stepIndex: number;
+  stopName?: string | number | null;
+  type?: TransportType | string | null;
+}
+
+export interface RouteSummary {
+  displayText?: string;
+  totalDistanceKm?: number;
+  totalFareWon?: number;
+  totalMinutes?: number;
+  transferCount?: number;
+}
 //이동구간
 export interface RouteSegment {
-  type: TransportType;
-  minutesText: string; // "60분"
-  lineText: string | null; // "KTX", "항공"
-  line: TransportLine | null;
-  bgColorHex: string | null;
+  distance: RouteDistance[];
+  routeIndex: number;
+  steps: RouteStep[];
+  summary: RouteSummary[] | RouteSummary;
 }
 
 export interface RouteStop {
@@ -457,11 +487,8 @@ export interface RouteStop {
 }
 
 export interface ListingRouteInfo {
-  totalTime: string;
-  totalTimeMinutes: number;
-  totalDistance: number;
+  totalCount: number;
   routes: RouteSegment[];
-  stops: RouteStop[];
 }
 
 export type UseListingsHooksType = {
