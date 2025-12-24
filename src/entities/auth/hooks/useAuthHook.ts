@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { http } from "@/src/shared/api/http";
 import { IResponse } from "@/src/shared/types";
 import { USER_JWT_TOKEN_VALIDATE_ENDPOINT } from "@/src/shared/api";
+import { useSetDefaultPinpoint } from "@/src/entities/pinpoint";
 
 interface IJwtTokenValidateResponse extends IResponse<boolean> {
   data: boolean;
@@ -28,6 +29,7 @@ const setAuthFailure = () => {
  */
 export const useAuthCheck = () => {
   const router = useRouter();
+  const { setDefaultPinpoint } = useSetDefaultPinpoint();
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -39,6 +41,15 @@ export const useAuthCheck = () => {
 
         if (response.data) {
           setAuthSuccess();
+
+          // 로그인 성공 후 기본 핀포인트 설정
+          try {
+            await setDefaultPinpoint();
+          } catch (error) {
+            console.error("❌ 기본 핀포인트 설정 실패:", error);
+            // 에러가 발생해도 로그인은 계속 진행
+          }
+
           router.push("/home");
         } else {
           setAuthFailure();
@@ -52,5 +63,5 @@ export const useAuthCheck = () => {
     };
 
     checkAuthStatus();
-  }, [router]);
+  }, [router, setDefaultPinpoint]);
 };
