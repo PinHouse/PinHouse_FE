@@ -356,7 +356,10 @@ export const eligibilityDecisionTree: StepConfig[] = [
     getNextStep: data => {
       // 19세 미만이면 미성년자 자격 확인 단계로 이동
       const age = calculateAge(data.birthDate);
-      if (age === null) return null;
+      if (age === null) {
+        console.log("🔍 age:", age);
+        return null;
+      }
       if (age < 19) {
         return "underAge001";
       }
@@ -437,18 +440,15 @@ export const eligibilityDecisionTree: StepConfig[] = [
         storeKey: "marriageStatus",
       },
       {
-        type: "optionSelector",
+        type: "select",
         props: {
           title: "혼인기간이 어떻게되나요?",
           options: [
-            { id: "0", label: "1년 미만" },
-            { id: "1", label: "1년 이상 3년 미만" },
-            { id: "3", label: "3년 이상 5년 미만" },
-            { id: "5", label: "5년 이상 7년 미만" },
-            { id: "7", label: "7년 이상" },
+            { key: "1", value: "현재 혼인기간(재혼 포함) 7년 이내인 신혼부부" },
+            { key: "2", value: "예비 신혼부부" },
+            { key: "3", value: "혼인기간 7년 이상" },
           ],
-          required: true,
-          direction: "vertical",
+          placeholder: "선택 안함",
         },
         storeKey: "marriagePeriod",
         showWhen: data => data.marriageStatus === "1",
@@ -457,6 +457,9 @@ export const eligibilityDecisionTree: StepConfig[] = [
     validation: data => {
       if (!data.marriageStatus) {
         return "결혼 여부를 선택해주세요";
+      }
+      if (data.marriageStatus === "1" && !data.marriagePeriod) {
+        return "혼인기간을 선택해주세요";
       }
       return null;
     },
@@ -476,7 +479,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
   // adult 001-2
   {
     id: "adult001-2",
-    groupId: "personalInfo",
+    groupId: "identityInfo",
     components: [
       {
         type: "optionSelector",
@@ -519,9 +522,10 @@ export const eligibilityDecisionTree: StepConfig[] = [
                 },
               ],
               summary: (values: Record<string, string>) => {
-                const under6 = Number(values.under6 || 0);
-                const over7 = Number(values.over7 || 0);
-                const total = under6 + over7;
+                const expectedBirth = values.expectedBirth ? Number(values.expectedBirth) || 0 : 0;
+                const under6 = values.under6 ? Number(values.under6) || 0 : 0;
+                const over7 = values.over7 ? Number(values.over7) || 0 : 0;
+                const total = under6 + over7 + expectedBirth;
                 return `총 ${total} 명의 미성년 자녀가 있어요`;
               },
             },
@@ -563,7 +567,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
   // adult 002 + adult 002-1
   {
     id: "adult002",
-    groupId: "personalInfo",
+    groupId: "identityInfo",
     components: [
       {
         type: "optionSelector",
@@ -600,8 +604,8 @@ export const eligibilityDecisionTree: StepConfig[] = [
                 },
               ],
               summary: (values: Record<string, string>) => {
-                const under6 = Number(values.under6 || 0);
-                const over7 = Number(values.over7 || 0);
+                const under6 = values.under6 ? Number(values.under6) || 0 : 0;
+                const over7 = values.over7 ? Number(values.over7) || 0 : 0;
                 const total = under6 + over7;
                 return `총 ${total} 명의 미성년 자녀가 있어요`;
               },
@@ -652,16 +656,11 @@ export const eligibilityDecisionTree: StepConfig[] = [
 
       // 2. 미혼+중장년 (40~64세, 미혼)
       if (isSingle && age >= 40 && age < 65) {
-        return "adultSingle001";
+        return "middleAge001";
       }
 
       // 3. 청년+중장년 기혼 (19~64세, 기혼) + 고령자(65세 이상, 미혼+기혼)
-      if (isMarried || age >= 65) {
-        return "specialEligibility";
-      }
-
-      // 기본값
-      return null;
+      return "commonAge001";
     },
   },
 
@@ -696,7 +695,11 @@ export const eligibilityDecisionTree: StepConfig[] = [
             },
             storeKey: "studentJobSeekerTypes",
             showWhen: data => {
-              return data.hasIncomeWorkWithin5Years === "1";
+              // 중장년(만 40~만 64세) + 미혼에서만 표시
+              const age = calculateAge(data.birthDate);
+              const isMiddleAged = age !== null && age >= 40 && age < 65;
+              const isSingle = data.marriageStatus === "2";
+              return data.hasIncomeWorkWithin5Years === "1" && isMiddleAged && isSingle;
             },
           },
         ],
@@ -708,9 +711,8 @@ export const eligibilityDecisionTree: StepConfig[] = [
       }
       return null;
     },
-    getNextStep: data => {
-      // 특별 자격 요건(취약계층 판단)으로 이동
-      return "specialEligibility";
+    getNextStep: () => {
+      return "middleAge002";
     },
   },
 
@@ -783,8 +785,14 @@ export const eligibilityDecisionTree: StepConfig[] = [
       return null;
     },
     getNextStep: data => {
-      // 자산 정보로 이동
-      return "assetInfo";
+      const isMarried = data.marriageStatus === "1";
+      const hasChildren = data.hasRegisteredChildren === "1";
+      // 미혼 + 자녀없음 → adultSingle001
+      if (!isMarried && !hasChildren) {
+        return "adultSingle001";
+      }
+      // 기혼 or 미혼 + 자녀있음 → adultMarried001
+      return "adultMarried001";
     },
   },
 
@@ -1072,9 +1080,9 @@ export const eligibilityDecisionTree: StepConfig[] = [
                 },
               ],
               summary: (values: Record<string, string>) => {
-                const expectedBirth = Number(values.expectedBirth || 0);
-                const under6 = Number(values.under6 || 0);
-                const over7 = Number(values.over7 || 0);
+                const expectedBirth = values.expectedBirth ? Number(values.expectedBirth) || 0 : 0;
+                const under6 = values.under6 ? Number(values.under6) || 0 : 0;
+                const over7 = values.over7 ? Number(values.over7) || 0 : 0;
                 // 본인 + 배우자(기혼이므로) + 자녀들
                 const total = 2 + expectedBirth + under6 + over7;
                 return `우리집은 총 ${total} 인가구에요`;

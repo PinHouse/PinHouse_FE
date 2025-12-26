@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useEligibilityStore } from "../../model/eligibilityStore";
 import { ComponentConfig } from "../../model/eligibilityDecisionTree";
@@ -146,8 +147,18 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
       }
 
       case "priceInput": {
-        const value = config.storeKey ? getStoreValue(config.storeKey) : undefined;
+        let value = config.storeKey ? getStoreValue(config.storeKey) : undefined;
         const setter = config.storeKey ? getStoreSetter(config.storeKey) : undefined;
+
+        // value가 객체나 배열이면 문자열로 변환 (잘못된 형식 보정)
+        // priceInput은 항상 문자열 값이어야 함
+        if (value && typeof value === "object") {
+          // 객체나 배열이면 null로 초기화
+          if (setter) {
+            setter(null);
+          }
+          value = null;
+        }
 
         return (
           <EligibilityPriceInput
@@ -155,7 +166,7 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
             description={config.props.description}
             required={config.props.required}
             error={config.props.error}
-            value={value || undefined}
+            value={value ? String(value) : undefined}
             placeholder={config.props.placeholder}
             disabled={isDisabled}
             onChange={value => {
@@ -172,39 +183,105 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
 
       case "numberInputList": {
         // numberInputList는 여러 필드를 관리하므로 특별 처리 필요
-        const value = config.storeKey ? getStoreValue(config.storeKey) : null;
+        let value = config.storeKey ? getStoreValue(config.storeKey) : null;
         const setter = config.storeKey ? getStoreSetter(config.storeKey) : undefined;
 
+        // value가 문자열이면 객체로 변환 (렌더링 중 setState 호출 방지, 표시용으로만 변환)
+        // 실제 store 보정은 onChange에서 처리
+        // expectedBirth가 있는 경우도 고려
+        const hasExpectedBirth =
+          config.storeKey === "spouseChildrenInfo" ||
+          config.storeKey === "marriedHouseholdChildrenInfo";
+
+        // value가 문자열이면 null로 처리 (표시는 빈 객체로)
+        let actualValue = value;
+        if (value && typeof value === "string") {
+          actualValue = null;
+        }
+
+        // 표시용 값 계산 (summary가 제대로 동작하도록)
+        const displayValue =
+          actualValue && typeof actualValue === "object" && !Array.isArray(actualValue)
+            ? actualValue
+            : hasExpectedBirth
+              ? { expectedBirth: 0, under6: 0, over7: 0 }
+              : { under6: 0, over7: 0 };
+
         // value가 객체인지 문자열인지 확인
-        const isObjectValue = value && typeof value === "object" && !Array.isArray(value);
+        // childrenInfo는 { under6: number; over7: number } 형태
+        // spouseChildrenInfo, marriedHouseholdChildrenInfo는 { expectedBirth?: number; under6: number; over7: number } 형태
+        const isObjectValue =
+          actualValue &&
+          typeof actualValue === "object" &&
+          !Array.isArray(actualValue) &&
+          ("under6" in actualValue || "over7" in actualValue || "expectedBirth" in actualValue);
 
         // options에 value와 onChange 연결
-        const optionsWithStore = config.props.options.map((option: any) => ({
-          ...option,
-          value: isObjectValue
-            ? option.id === "under6"
-              ? String(value.under6)
-              : String(value.over7)
-            : value
-              ? String(value)
-              : undefined,
-          onChange: (id: string, val: string) => {
+        const optionsWithStore = config.props.options.map((option: any) => {
+          // 각 option에 대한 개별 onChange 핸들러 생성 (option.id를 클로저로 캡처)
+          const optionId = option.id;
+          const handleOptionChange = (id: string, val: string) => {
             if (setter) {
-              if (isObjectValue) {
+              // childrenInfo는 항상 객체 형태로 저장
+              if (
+                config.storeKey === "childrenInfo" ||
+                config.storeKey === "spouseChildrenInfo" ||
+                config.storeKey === "marriedHouseholdChildrenInfo" ||
+                isObjectValue
+              ) {
                 // 기존 객체 형태 (childrenInfo 등)
-                const current = value || { under6: 0, over7: 0 };
-                const updated = {
-                  ...current,
-                  [id === "under6" ? "under6" : "over7"]: Number(val) || 0,
-                };
+                // value가 문자열이면 객체로 변환
+                // expectedBirth가 있는 경우도 고려
+                const hasExpectedBirth =
+                  config.storeKey === "spouseChildrenInfo" ||
+                  config.storeKey === "marriedHouseholdChildrenInfo";
+                // actualValue 사용 (value가 문자열이면 null로 처리된 값)
+                const current =
+                  actualValue && typeof actualValue === "object" && !Array.isArray(actualValue)
+                    ? actualValue
+                    : hasExpectedBirth
+                      ? { expectedBirth: 0, under6: 0, over7: 0 }
+                      : { under6: 0, over7: 0 };
+                const updated = { ...current };
+
+                // 해당 id에만 값 업데이트 (expectedBirth, under6, over7 모두 동일하게 처리)
+                if (id === "expectedBirth") {
+                  updated.expectedBirth = Number(val) || 0;
+                } else if (id === "under6") {
+                  updated.under6 = Number(val) || 0;
+                } else if (id === "over7") {
+                  updated.over7 = Number(val) || 0;
+                }
+
                 setter(updated);
               } else {
                 // 단일 숫자 값 (housingDisposalYears 등)
                 setter(val || null);
               }
             }
-          },
-        }));
+          };
+
+          // optionValue 계산 - displayValue 사용 (under6, over7, expectedBirth 모두 동일하게 처리)
+          let optionValue = "";
+          if (isObjectValue) {
+            if (optionId === "expectedBirth") {
+              optionValue =
+                displayValue?.expectedBirth !== undefined ? String(displayValue.expectedBirth) : "";
+            } else if (optionId === "under6") {
+              optionValue = displayValue?.under6 !== undefined ? String(displayValue.under6) : "";
+            } else if (optionId === "over7") {
+              optionValue = displayValue?.over7 !== undefined ? String(displayValue.over7) : "";
+            }
+          } else if (displayValue) {
+            optionValue = String(displayValue);
+          }
+
+          return {
+            ...option,
+            value: optionValue,
+            onChange: handleOptionChange,
+          };
+        });
 
         return (
           <EligibilityNumberInputList

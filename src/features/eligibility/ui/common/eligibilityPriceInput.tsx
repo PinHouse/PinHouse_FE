@@ -54,7 +54,9 @@ export const EligibilityPriceInput = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 숫자만 허용
-    const numericValue = e.target.value.replace(/[^0-9]/g, "");
+    // 포맷팅된 값(예: "1,234")에서 쉼표를 제거하고 숫자만 추출
+    const rawValue = e.target.value.replace(/[^0-9]/g, "");
+    const numericValue = rawValue === "" ? "" : rawValue;
 
     if (isControlled) {
       onChange?.(numericValue);
