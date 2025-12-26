@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { QueryProvider } from "@/src/app/providers/queryProvider";
-import { TempHeaders } from "@/src/assets/images/common/header";
 import { BottomNavigation } from "@/src/shared/ui/bottomNavigation/";
+import { Toast } from "@/src/shared/ui/toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,6 +28,7 @@ export default function RootLayout({
               <BottomNavigation />
             </div>
           </div>
+          <Toast />
         </QueryProvider>
       </body>
     </html>

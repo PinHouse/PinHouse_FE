@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEligibilityStore } from "../../model/eligibilityStore";
 import { ComponentConfig } from "../../model/eligibilityDecisionTree";
 import { EligibilityStatusBanner } from "./eligibilityStatusBanner";
@@ -24,6 +25,7 @@ export interface EligibilityComponentRendererProps {
  * - children 재귀적 렌더링
  */
 export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRendererProps) => {
+  const router = useRouter();
   const store = useEligibilityStore();
   // 최신 store 데이터 직접 사용 (실시간 조건부 렌더링을 위해)
   const data = useEligibilityStore();
@@ -34,6 +36,9 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
   if (!shouldShow) {
     return null;
   }
+
+  // disabledWhen 조건 확인
+  const isDisabled = config.disabledWhen ? config.disabledWhen(data) : false;
 
   // storeKey를 기반으로 store 값과 setter 연결
   const getStoreValue = (key: string): any => {
@@ -48,14 +53,23 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
   // 컴포넌트 타입별 렌더링
   const renderComponent = () => {
     switch (config.type) {
-      case "statusBanner":
+      case "statusBanner": {
+        // title과 description이 함수인 경우 실행 (동적 메시지용)
+        const title =
+          typeof config.props.title === "function" ? config.props.title(data) : config.props.title;
+        const description =
+          typeof config.props.description === "function"
+            ? config.props.description(data)
+            : config.props.description || "";
+
         return (
           <EligibilityStatusBanner
-            title={config.props.title}
-            description={config.props.description || ""}
+            title={title}
+            description={description}
             className={config.props.className}
           />
         );
+      }
 
       case "optionSelector": {
         const value = config.storeKey ? getStoreValue(config.storeKey) : undefined;
@@ -143,6 +157,7 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
             error={config.props.error}
             value={value || undefined}
             placeholder={config.props.placeholder}
+            disabled={isDisabled}
             onChange={value => {
               if (setter) {
                 setter(value || null);
@@ -160,22 +175,33 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
         const value = config.storeKey ? getStoreValue(config.storeKey) : null;
         const setter = config.storeKey ? getStoreSetter(config.storeKey) : undefined;
 
+        // value가 객체인지 문자열인지 확인
+        const isObjectValue = value && typeof value === "object" && !Array.isArray(value);
+
         // options에 value와 onChange 연결
         const optionsWithStore = config.props.options.map((option: any) => ({
           ...option,
-          value: value
+          value: isObjectValue
             ? option.id === "under6"
               ? String(value.under6)
               : String(value.over7)
-            : undefined,
+            : value
+              ? String(value)
+              : undefined,
           onChange: (id: string, val: string) => {
             if (setter) {
-              const current = value || { under6: 0, over7: 0 };
-              const updated = {
-                ...current,
-                [id === "under6" ? "under6" : "over7"]: Number(val) || 0,
-              };
-              setter(updated);
+              if (isObjectValue) {
+                // 기존 객체 형태 (childrenInfo 등)
+                const current = value || { under6: 0, over7: 0 };
+                const updated = {
+                  ...current,
+                  [id === "under6" ? "under6" : "over7"]: Number(val) || 0,
+                };
+                setter(updated);
+              } else {
+                // 단일 숫자 값 (housingDisposalYears 등)
+                setter(val || null);
+              }
             }
           },
         }));
@@ -192,14 +218,23 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
         );
       }
 
-      case "infoButton":
+      case "infoButton": {
+        // action prop이 있으면 동적으로 핸들러 생성
+        let onClick = config.props.onClick;
+        if (config.props.action === "home") {
+          onClick = () => router.push("/home");
+        } else if (config.props.action === "back") {
+          onClick = () => router.back();
+        }
+
         return (
           <EligibilityInfoButton
             text={config.props.text}
-            onClick={config.props.onClick}
+            onClick={onClick}
             className={config.props.className}
           />
         );
+      }
 
       case "datePicker": {
         const value = config.storeKey ? getStoreValue(config.storeKey) : undefined;

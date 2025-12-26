@@ -180,3 +180,10 @@ a:hover {
     @apply bg-background text-foreground;
   }
 }
+
+/* Sonner Toast 아이콘 숨기기 */
+[data-sonner-toast] [data-icon],
+[data-sonner-toast] [data-icon-wrapper],
+[data-sonner-toast] > div:first-child {
+  display: none !important;
+}
