@@ -14,6 +14,12 @@ import { SmallHome } from "@/src/assets/icons/home/smallHome";
 import { SmallMapPin } from "@/src/assets/icons/onboarding/smallMapPin";
 import { FireIcon } from "@/src/assets/icons/onboarding/fire";
 
+export const formatInfoText = (text: string) => {
+  if (!text) return text;
+
+  return text.replace(/\s*\(/, "\n(");
+};
+
 export const getListingsRental = (type: string) => {
   if (!(type in RENT_COLOR_CLASS)) return null;
   const key = type as RentType;
@@ -195,8 +201,8 @@ export const ComplexesInfo = ({
   return (
     <div className="flex items-center">
       <Icon height={20} width={20} />
-      <span className="flex items-center justify-center p-1 text-xs-13">
-        {infoValue ?? meta.label}
+      <span className="block whitespace-pre-line break-keep p-1 text-xs-13 leading-relaxed">
+        {formatInfoText(infoValue ?? meta.label)}
       </span>
     </div>
   );
