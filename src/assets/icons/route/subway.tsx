@@ -9,12 +9,12 @@ export const TrainIcon = ({
   return (
     <div className="relative flex items-center justify-center">
       <div
-        className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
         style={{ backgroundColor: color }}
       >
         <svg
-          width="14"
-          height="14"
+          width="16"
+          height="16"
           viewBox="0 0 14 14"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
