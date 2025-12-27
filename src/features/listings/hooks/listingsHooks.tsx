@@ -21,8 +21,17 @@ export const getListingsRental = (type: string) => {
   return rental;
 };
 
+const normalizeRentType = (rentType: string) => {
+  const v = (rentType ?? "").replace(/\s+/g, "").trim();
+  if (/\d+년임대/.test(v)) return "N년임대";
+  if (v.includes("공공")) return "통합공공임대";
+  return rentType;
+};
+
 export const getListingIcon = (type: string, housingType: string, size = 78) => {
-  const IconComp = LISTING_ICON_MAP[type]?.[housingType];
+  const Nyear = normalizeRentType(type);
+
+  const IconComp = LISTING_ICON_MAP[Nyear]?.[housingType];
   if (!IconComp) return null;
 
   return <IconComp width={size} height={size} />;
