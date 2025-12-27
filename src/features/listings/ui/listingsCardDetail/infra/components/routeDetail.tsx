@@ -102,6 +102,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
     setIndex(p => (p + 1) % Math.max(routes.length, 1));
   }, [routes.length]);
   const lastIndex = distances.length - 1;
+  const SHOULD_STRETCH = steps.length <= 7;
 
   if (isFetching) return <SmallSpinner title="노선 정보를 불러오는 중.." />;
   if (!routes.length) {
@@ -176,18 +177,21 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
 
       {/* 타임라인 */}
       <ul
-        className="flex-1 overflow-y-auto p-5"
+        className={cn(
+          "relative flex flex-1 flex-col overflow-y-auto p-5",
+          SHOULD_STRETCH && "justify-between"
+        )}
         style={
           {
             ["--icon-size" as any]: "clamp(20px, 5vw, 28px)",
             ["--line-w" as any]: "clamp(2px, 0.6vw, 3px)",
-            ["--item-gap" as any]: "clamp(18px, 4.5vw, 28px)",
+            ["--item-gap" as any]: "clamp(20px, 4.5vw, 28px)",
             ["--col-gap" as any]: "clamp(8px, 2.5vw, 14px)",
           } as CSSProperties
         }
       >
         {/* 핀포인트 주소 */}
-        <li className="relative flex gap-[var(--col-gap)] pb-[var(--item-gap)]">
+        <li className="relative flex gap-[var(--col-gap)]">
           {/* 왼쪽 */}
           <div className="relative flex h-full w-[var(--icon-size)] justify-center">
             <div className="z-[1]">
@@ -196,7 +200,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
 
             {/* 점선 */}
             <span
-              className="absolute -bottom-[calc(var(--item-gap)+var(--icon-size))] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
+              className="absolute bottom-0 left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
               style={{
                 backgroundImage:
                   "repeating-linear-gradient(to bottom, #D1D5DB 0 6px, transparent 6px 8px)",
@@ -205,7 +209,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
           </div>
 
           {/* 오른쪽 */}
-          <div className="h-full flex-1">
+          <div className={cn("flex h-[60px] flex-1 flex-col")}>
             <p className="flex gap-1 text-sm font-medium text-text-primary">핀포인트 주소</p>
             <p className="text-xs text-text-secondary">도보 이동 · 0분, 0m</p>
           </div>
@@ -222,14 +226,17 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
           return (
             <li
               key={`${label}-${i}`}
-              className="relative flex gap-[var(--col-gap)] pb-[var(--item-gap)]"
+              className={cn(
+                "relative flex gap-[var(--col-gap)]",
+                SHOULD_STRETCH ? !isLast && "flex-1" : "min-h-[50px]"
+              )}
             >
               {/* 왼쪽 아이콘 + 세로선 */}
               <div className="relative z-[1] flex w-[var(--icon-size)] justify-center">
                 {/* 세로선 (왼쪽 컬럼 기준) */}
                 {!isLast && !isWALK && (
                   <span
-                    className="absolute -bottom-[calc(var(--item-gap)+var(--line-extend))] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
+                    className="absolute bottom-0 left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
                     style={
                       {
                         "--line-extend": "10px",
@@ -240,7 +247,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
                 )}
                 {isWALK && (
                   <span
-                    className="absolute -bottom-[23] left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
+                    className="absolute bottom-0 left-1/2 top-[var(--icon-size)] w-[var(--line-w)] -translate-x-1/2"
                     style={{
                       backgroundImage:
                         "repeating-linear-gradient(to bottom, #D1D5DB 0 6px, transparent 6px 8px)",
@@ -258,8 +265,9 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
                 )}
               </div>
 
-              <div className="h-full flex-1">
-                <p className="flex gap-1 text-sm font-medium text-text-primary">{label}</p>
+              <div className={cn("flex flex-col", !isLast && SHOULD_STRETCH && "flex-1")}>
+                <p className="text-sm font-medium text-text-primary">{label}</p>
+
                 {s.line && (
                   <p className="mt-0.5 text-xs text-text-secondary">
                     {typeof s.line === "object" ? s.line?.line : s.line}

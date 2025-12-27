@@ -41,7 +41,7 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
         <>
           <motion.div
             key="overlay"
-            className="fixed inset-0 h-[100vh] bg-black/40"
+            className="fixed inset-0 bg-black/40"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -50,7 +50,7 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
 
           <motion.div
             key="sheet"
-            className="fixed bottom-0 left-0 right-0 z-50 flex flex-col rounded-t-2xl bg-white shadow-xl"
+            className="fixed bottom-0 left-0 right-0 z-50 flex h-[80vh] flex-col rounded-t-2xl bg-white shadow-xl"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -70,8 +70,9 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
                 </div>
               </header>
             </section>
-
-            <RenderContent section={sheetState.section} listingId={sheetState.listingId} />
+            <div className="flex-1 overflow-hidden">
+              <RenderContent section={sheetState.section} listingId={sheetState.listingId} />
+            </div>
           </motion.div>
         </>
       )}
