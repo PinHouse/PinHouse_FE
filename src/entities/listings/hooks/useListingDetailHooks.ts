@@ -13,15 +13,17 @@ import {
   UseListingsHooksWithParam,
 } from "../model/type";
 import { PostBasicRequest, PostParamsBodyRequest, requestListingList } from "../api/listingsApi";
-import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT, PINPOINT_CREATE_ENDPOINT } from "@/src/shared/api";
+import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
 import { INFRA_ENVIRONMENT_CONFIG, INFRA_LABEL_TO_KEY } from "@/src/features/listings/model";
+import { useOAuthStore } from "@/src/features/login/model";
 
 export const useListingDetailBasic = (id: string) => {
+  const pinPointId = useOAuthStore.getState().pinPointId;
   const listingDetilBody = {
     sortType: "거리 순",
-    pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251",
+    pinPointId: pinPointId,
     transitTime: 100,
     maxDeposit: 50000000,
     maxMonthPay: 300000,
