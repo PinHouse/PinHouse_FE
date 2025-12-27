@@ -25,7 +25,7 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
             key={normalized.id}
             className="flex h-[112px] min-h-[100px] w-full rounded-xl border"
           >
-            <div className="border-r-1 flex w-[35%] flex-col bg-bgColor-mute pl-1 pt-2">
+            <div className="border-r-1 flex w-[35%] flex-col rounded-l-xl rounded-bl-xl bg-bgColor-mute pl-1 pt-2">
               <div className="flex justify-start gap-1">
                 <ListingBookMark item={normalized.type} border="border" />
                 <p className="truncate text-xs font-semibold text-greyscale-grey-800">
