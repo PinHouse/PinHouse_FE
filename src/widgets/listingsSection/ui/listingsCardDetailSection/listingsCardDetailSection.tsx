@@ -10,6 +10,7 @@ import {
 } from "@/src/features/listings";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { Spinner } from "@/src/shared/ui/spinner/default";
+import { useState } from "react";
 
 export const ListingsCardDetailSection = ({ id }: { id: string }) => {
   const { data, isLoading, isFetching } = useListingDetailBasic(id);
@@ -24,6 +25,7 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
       </div>
     );
   }
+
   return (
     <div className="mx-auto min-h-full w-full">
       <PageTransition>
@@ -32,7 +34,10 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
           <ListingsCardDetailSummary basicInfo={basicInfo} />
           <ListingsCardDetailCompareButton />
           <ListingsCardDetailFilterBar />
-          <ListingsCardDetailComplexSection listings={filtered} />
+          <ListingsCardDetailComplexSection
+            listings={filtered}
+            onFilteredCount={nonFiltered?.totalCount}
+          />
           <ListingsCardDetailOutOfCriteriaSection listings={nonFiltered} />
         </main>
       </PageTransition>

@@ -192,3 +192,7 @@ export const ComplexesInfo = ({
     </div>
   );
 };
+
+export const sortTypeChange = (sort: boolean) => {
+  return sort ? "주변환경 매칭순" : " 핀포인트 거리순";
+};

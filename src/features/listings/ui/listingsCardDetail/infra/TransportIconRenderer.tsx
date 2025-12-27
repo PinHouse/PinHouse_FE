@@ -39,9 +39,6 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
   const finalSum = protectedPercents.reduce((a, b) => a + b, 0);
   const finalPercents = protectedPercents.map(p => (p / finalSum) * 100);
 
-  // 기타 구간 분 합산
-  const extraMinutes = extraRoutes.reduce((sum, r) => sum + r.minutes, 0);
-
   return (
     <div className="relative flex w-full flex-col gap-1">
       {/* 노선도 */}
@@ -69,15 +66,6 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
           );
         })}
       </div>
-
-      {/* 기타 시간 */}
-      {/* {extraMinutes > 0 && (
-        <div className="flex items-center">
-          <span className="text-xs font-medium text-greyscale-grey-600">
-            기타 이동 {extraMinutes}분
-          </span>
-        </div>
-      )} */}
     </div>
   );
 };

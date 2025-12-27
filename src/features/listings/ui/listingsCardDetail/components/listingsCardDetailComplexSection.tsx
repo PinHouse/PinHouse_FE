@@ -2,13 +2,16 @@ import { ArrowUpArrowDown } from "@/src/assets/icons/button/arrowUpArrowDown";
 import { ListingsCardTile } from "./listingsCardTile";
 import { ComplexList } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../../listingsNoSearchResult/listingNoSearchResult";
+import { cn } from "@/lib/utils";
 
 type ListingsCardDetailComplexSectionProps = {
   listings: ComplexList;
+  onFilteredCount?: Number;
 };
 
 export const ListingsCardDetailComplexSection = ({
   listings,
+  onFilteredCount,
 }: ListingsCardDetailComplexSectionProps) => {
   if (!listings) return;
 
@@ -16,7 +19,9 @@ export const ListingsCardDetailComplexSection = ({
     listings?.totalCount < 10 ? `0${listings?.totalCount}` : listings?.totalCount;
 
   return (
-    <section className="border-b-[11px] border-b-greyscale-grey-25 p-5">
+    <section
+      className={cn("p-5", onFilteredCount !== 0 && "border-b-[11px] border-b-greyscale-grey-25")}
+    >
       <div className="mb-3 flex items-center justify-between">
         <h2 className="flex gap-1 font-semibold">
           <p className="text-base-17 text-greyscale-grey-900">단지</p>
