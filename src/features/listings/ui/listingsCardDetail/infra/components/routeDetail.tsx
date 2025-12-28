@@ -25,6 +25,7 @@ const ModeIcon = ({
   color: string;
   minutes: number;
 }) => {
+  console.log(type);
   if (type === "BUS" || type === "AIR")
     return <VerticalTransitIcon color={color} minutes={minutes} showLine={false} />;
   if (type === "WALK") return <VerticalWalkIcon color={color} minutes={minutes} />;
@@ -101,6 +102,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
   const goNext = useCallback(() => {
     setIndex(p => (p + 1) % Math.max(routes.length, 1));
   }, [routes.length]);
+
   const lastIndex = distances.length - 1;
   const SHOULD_STRETCH = steps.length <= 7;
 
@@ -185,7 +187,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
         )}
         style={
           {
-            ["--icon-size" as any]: "clamp(20px, 5vw, 28px)",
+            ["--icon-size" as any]: "clamp(25px, 5vw, 28px)",
             ["--line-w" as any]: "clamp(2px, 0.6vw, 3px)",
             ["--item-gap" as any]: "clamp(20px, 4.5vw, 28px)",
             ["--col-gap" as any]: "clamp(8px, 2.5vw, 14px)",
@@ -221,10 +223,12 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
         {steps.map((s, i) => {
           const color = s.colorHex || "#2563EB";
           const isLast = i === steps.length - 1;
+          const prevLastStep = steps[steps.length - 2];
+          const prevLastColor = prevLastStep?.colorHex;
           const isArrival = s.action?.toUpperCase() === "ARRIVE";
           const isWALK = s.action?.toUpperCase() === "WALK";
           const label = resolveStepLabel(s);
-
+          console.log(s);
           return (
             <li
               key={`${label}-${i}`}
@@ -263,12 +267,27 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
                     minutes={parseMinutes(s.minutes || "")}
                   />
                 ) : (
-                  <span className="relative mt-1.5 flex h-2 w-2 rounded-full bg-primary-blue-400 after:absolute after:inset-[-6px] after:-z-10 after:animate-glowBlink after:rounded-full after:bg-primary-blue-400 after:opacity-20 after:blur-sm after:content-['']" />
+                  <div className="relative flex h-[var(--icon-size)] w-[var(--icon-size)] items-center justify-center">
+                    <span
+                      className="absolute left-1/2 top-0 w-[var(--line-w)] -translate-x-1/2"
+                      style={{
+                        height: "calc(var(--icon-size) / 2)",
+                        backgroundColor: String(prevLastColor),
+                      }}
+                    />
+                    <span className="relative flex h-2.5 w-2.5 rounded-full bg-primary-blue-400 after:absolute after:inset-[-6px] after:-z-10 after:animate-glowBlink after:rounded-full after:bg-primary-blue-400 after:opacity-20 after:blur-sm after:content-['']" />
+                  </div>
                 )}
               </div>
 
-              <div className={cn("flex flex-col", !isLast && SHOULD_STRETCH && "flex-1")}>
-                <p className="text-sm font-medium text-text-primary">{label}</p>
+              <div
+                className={cn(
+                  "flex flex-col",
+                  !isLast && SHOULD_STRETCH && "flex-1",
+                  isArrival && "justify-normal pt-1"
+                )}
+              >
+                <p className="flex text-sm font-medium text-text-primary">{label}</p>
 
                 {s.line && (
                   <p className="mt-0.5 text-xs text-text-secondary">
@@ -277,7 +296,9 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
                 )}
 
                 {s.minutes && (
-                  <p className="mt-0.5 text-xs text-text-secondary">약 {s.minutes} 분</p>
+                  <p className="mt-0.5 text-xs text-text-secondary">
+                    {s.secondaryText} 약 {s.minutes} 분
+                  </p>
                 )}
               </div>
             </li>

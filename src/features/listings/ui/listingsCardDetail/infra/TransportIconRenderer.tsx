@@ -8,7 +8,7 @@ type TransportIconRendererProps = {
 };
 
 const MIN_PERCENT = 5;
-const BAR_LIMIT = 5; // 한 줄에 보여줄 최대 bar 수
+const BAR_LIMIT = 5;
 
 export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRendererProps) => {
   if (!totalTime) return null;
@@ -16,10 +16,10 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
   const totalMinutes = parseMinutes(totalTime);
 
   //  minutes 파싱 + 0분 제거
-  const parsedRoutes = routes.routes
+  const parsedRoutes = routes.segments
     .map(r => ({
       ...r,
-      minutes: parseMinutes(r.minutes),
+      minutes: r.minutes,
     }))
     .filter(r => r.minutes > 0);
 

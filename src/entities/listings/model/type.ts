@@ -338,7 +338,7 @@ export interface DistanceInfo {
   totalTime: string;
   totalTimeMinutes: number;
   totalDistance: number;
-  routes: RouteInfo[];
+  segments: RouteInfo[];
 }
 
 // 사용처: 구간 이동수단 타입 (아이콘 렌더링/색상)
@@ -461,6 +461,7 @@ export interface RouteStep {
   stepIndex: number;
   stopName?: string | number | null;
   type?: TransportType | string | null;
+  secondaryText: string;
 }
 
 export interface RouteSummary {
