@@ -233,7 +233,7 @@ export const ROOM_TYPE_TITLE_DES: RoomTypeTitleDes = {
   },
   room: {
     title: "방타입",
-    des: "방타입 을 상세히",
+    des: "방타입 을 상세히 확인해보세요.",
   },
 };
 

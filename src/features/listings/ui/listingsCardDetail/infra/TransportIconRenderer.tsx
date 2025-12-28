@@ -19,7 +19,7 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
   const parsedRoutes = routes.routes
     .map(r => ({
       ...r,
-      minutes: parseMinutes(r.minutesText),
+      minutes: parseMinutes(r.minutes),
     }))
     .filter(r => r.minutes > 0);
 
@@ -53,13 +53,13 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
               className="flex-shrink-0"
               style={{ width: `${finalPercents[index]}%` }}
             >
-              <Icon minutes={item.minutes} color={item.bgColorHex} />
+              <Icon minutes={item.minutes} color={item.colorHex} />
               <div>
                 <p
                   className="flex h-4 items-center text-xs font-semibold"
-                  style={{ color: item.bgColorHex }}
+                  style={{ color: item.colorHex }}
                 >
-                  {item.type !== "BUS" ? item.lineText?.split(" ")[1] : item.lineText}
+                  {item.type !== "BUS" ? item.labelText?.split(" ")[1] : item.labelText}
                 </p>
               </div>
             </div>

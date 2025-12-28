@@ -159,7 +159,7 @@ export const HouseRental = (item: ListingNormalized) => {
 };
 
 // 사용처: 구간 소요시간 텍스트("12분") → 분(12) 변환 (TransportIconRenderer.tsx)
-export const parseMinutes = (minutesText: string): number => {
+export const parseMinutes = (minutesText: string | number): number => {
   if (typeof minutesText !== "string") return 0;
 
   const hourMatch = minutesText.match(/(\d+)\s*시간/);

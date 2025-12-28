@@ -348,10 +348,10 @@ export type RouteType = "BUS" | "SUBWAY" | "WALK" | "TRAIN"; // API 확장 대�
 // 사용처: 구간 상세 정보 (시간/노선/색상)
 export interface RouteInfo {
   type: RouteType;
-  minutesText: string;
-  lineText: string | null;
+  minutes: number;
+  labelText: string | null;
   line: LineInfo | null; // WALK처럼 line이 없는 경우 대비
-  bgColorHex: string;
+  colorHex: string;
 }
 
 //단지주택 상세정보
@@ -427,6 +427,7 @@ export interface ListingUnitType {
   deposit: DepositRange;
   /** 관심 여부 */
   liked: boolean;
+  group: [string];
 }
 
 // 공통 Enum (타입 안정성 ↑)
@@ -443,7 +444,7 @@ export interface RouteDistance {
   colorHex: string;
   line: string | null;
   minutes: number;
-  minutesText: string;
+  labelText: string;
   type: string;
 }
 

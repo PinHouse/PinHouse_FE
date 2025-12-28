@@ -11,6 +11,7 @@ import { VerticalTransitIcon } from "@/src/assets/icons/route/vertical/verticalB
 import { VerticalSubWayIcon } from "@/src/assets/icons/route/vertical/verticalSubWayIcon";
 import { VerticalWalkIcon } from "@/src/assets/icons/route/vertical/verticalWalkIcon";
 import { parseMinutes } from "@/src/features/listings/hooks/listingsHooks";
+import { useOAuthStore } from "@/src/features/login/model";
 
 type RouteSegmentItem = ListingRouteInfo["routes"][number];
 type RouteStepItem = RouteSegmentItem["steps"][number];
@@ -55,11 +56,12 @@ const resolveStepLabel = (step?: RouteStepItem) => {
 };
 
 export const RouteDetail = ({ listingId }: { listingId: string }) => {
+  const pinPointId = useOAuthStore.getState().pinPointId;
   const { data, isFetching } = useListingRouteDetail<ListingRouteInfo, { pinPointId: string }>({
     id: listingId,
     queryK: "useListingRouteDetail",
     url: "transit",
-    params: { pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
+    params: { pinPointId: pinPointId },
   });
 
   const [index, setIndex] = useState(0);
@@ -71,22 +73,20 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
     }
   }, [index, routes.length]);
 
-  const current = useMemo(() => routes[index] ?? null, [routes, index]);
-  const summary = useMemo(() => {
+  const current = routes[index] ?? null;
+
+  const summary = (() => {
     if (!current) return null;
     const summaryData = current.summary;
-    if (Array.isArray(summaryData)) return summaryData[0] ?? null;
-    return summaryData ?? null;
-  }, [current]);
+    return Array.isArray(summaryData) ? (summaryData[0] ?? null) : (summaryData ?? null);
+  })();
 
-  const totalMinutes = useMemo(() => {
-    if (!current) return 0;
-    if (summary?.totalMinutes && summary.totalMinutes > 0) return summary.totalMinutes;
-    return (current.distance ?? []).reduce(
-      (sum, segment) => sum + (parseMinutes(segment.minutesText || "") || 0),
-      0
-    );
-  }, [current, summary]);
+  const totalMinutes = summary?.totalMinutes
+    ? summary.totalMinutes
+    : (current?.distance ?? []).reduce(
+        (sum, seg) => sum + (parseMinutes(seg.minutes || "") || 0),
+        0
+      );
 
   const summaryText =
     summary?.displayText || formatMinutesToText(summary?.totalMinutes ?? totalMinutes) || "-";
@@ -128,9 +128,9 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
               <button aria-label="이전 노선" onClick={goPrev} className="rounded-full p-1">
                 <LeftButton className="size-4" />
               </button>
-              <span className="min-w-10 text-center">
-                {index + 1} / {routes.length}
-              </span>
+              <span className="font-semibold text-text-primary">{index + 1}</span>
+              {" / "}
+              <span>{routes.length}</span>
               <button aria-label="다음 노선" onClick={goNext} className="rounded-full p-1">
                 <LeftButton className="size-4 rotate-180" />
               </button>
@@ -143,10 +143,12 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
           <div className="mt-3">
             <div className="flex items-center">
               {distances.map((seg, i) => {
-                const m = parseMinutes(seg.minutesText || "") || 0;
+                const m = seg.minutes || 0;
                 if (m === 0) return null;
                 const widthPct = totalMinutes ? Math.max(5, (m / totalMinutes) * 100) : 0;
+
                 const color = seg.colorHex || "#4B5563";
+
                 return (
                   <div key={i} style={{ width: `${widthPct}%` }}>
                     <div
@@ -164,7 +166,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
                           i === lastIndex && "mr-[2px]"
                         )}
                       >
-                        {seg.minutesText}
+                        {seg.minutes}분
                       </span>
                     </div>
                   </div>
