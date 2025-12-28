@@ -126,13 +126,13 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
           {routes.length > 1 && (
             <div className="flex items-center gap-2 text-xs text-text-secondary">
               <button aria-label="이전 노선" onClick={goPrev} className="rounded-full p-1">
-                <LeftButton className="size-4" />
+                <LeftButton className="size-4 text-greyscale-grey-200" />
               </button>
               <span className="font-semibold text-text-primary">{index + 1}</span>
               {" / "}
               <span>{routes.length}</span>
               <button aria-label="다음 노선" onClick={goNext} className="rounded-full p-1">
-                <LeftButton className="size-4 rotate-180" />
+                <LeftButton className="size-4 rotate-180 text-greyscale-grey-200" />
               </button>
             </div>
           )}
