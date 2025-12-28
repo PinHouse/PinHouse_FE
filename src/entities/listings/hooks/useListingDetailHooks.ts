@@ -60,6 +60,7 @@ export const useListingDetailBasic = (id: string) => {
 
 export const useListingRentalDetail = (id: string) => {
   const encodedId = encodeURIComponent(id);
+  const pinPointId = useOAuthStore.getState().pinPointId;
 
   return useQuery<ListingSummary, unknown, ListingRentalDetailVM>({
     queryKey: ["useListingRentalDetail", encodedId],
@@ -73,7 +74,7 @@ export const useListingRentalDetail = (id: string) => {
         { pinPointId: string },
         ListingSummary
       >(`${COMPLEXES_ENDPOINT}/${encodedId}`, "get", {
-        params: { pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
+        params: { pinPointId: pinPointId },
       });
     },
     select: (response): ListingRentalDetailVM => {
