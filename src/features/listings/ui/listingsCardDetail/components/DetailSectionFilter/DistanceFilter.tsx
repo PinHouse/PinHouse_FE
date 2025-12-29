@@ -72,7 +72,7 @@ export const DistanceFilter = () => {
         <Slider
           min={SLIDER_MIN}
           max={SLIDER_MAX}
-          step={1}
+          step={10}
           value={sliderValue}
           onValueChange={handleDistanceChange}
           labelSuffix="분"

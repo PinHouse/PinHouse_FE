@@ -1,20 +1,20 @@
 "use client";
 
-import { useMemo, useState, type ChangeEvent } from "react";
-import { Slider } from "@/src/shared/ui/slider";
+import { useLayoutEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { Input } from "@/src/shared/ui/input/deafult";
-import { cn } from "@/src/shared/lib/utils";
 import { HistogramSlider } from "./HistogramSlider";
 
-const DEPOSIT_MIN = 500; // 만원
-const DEPOSIT_MAX = 1000; // 만원
+const DEPOSIT_MIN = 500;
+const DEPOSIT_MAX = 1000;
 const DEPOSIT_DEFAULT = 750;
 const DEPOSIT_STEP = 10;
-const WON_UNIT = 10000;
+const WON_UNIT = 1;
+const GAP = 2; // px
+const INITIAL_OFFSET = 4;
 
 export const HISTOGRAM_VALUES = [
-  30, 50, 80, 90, 100, 90, 100, 90, 80, 90, 100, 110, 100, 110, 90, 80, 60, 50, 40, 30, 20,
+  10, 13, 15, 16, 17, 15, 14, 13, 14, 15, 16, 17, 18, 15, 12, 10, 14, 13, 12, 11, 10,
 ];
 
 const formatNumber = (value: number) => value.toLocaleString("ko-KR");
@@ -28,21 +28,34 @@ export const CostFilter = () => {
   const [manualDepositInput, setManualDepositInput] = useState(
     formatNumber(toKRW(DEPOSIT_DEFAULT))
   );
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
 
   const maxValue = Math.max(...HISTOGRAM_VALUES);
-  const normalized = useMemo(
-    () => HISTOGRAM_VALUES.map(v => (v / maxValue) * 100),
-    [HISTOGRAM_VALUES, maxValue]
-  );
-  const handleLeftPct = (activeIndex / (HISTOGRAM_VALUES.length - 1)) * 100;
+
+  const normalized = HISTOGRAM_VALUES.map(v => (v / maxValue) * 100);
+  const barCount = normalized.length;
+
+  useLayoutEffect(() => {
+    if (!sliderRef.current) return;
+    const observer = new ResizeObserver(entries => {
+      setContainerWidth(entries[0].contentRect.width);
+    });
+    observer.observe(sliderRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const totalGap = GAP * (barCount - 1);
+  const barWidth = barCount ? Math.max(0, (containerWidth - totalGap) / barCount) : 0;
+  const handleLeftPx = barWidth * activeIndex + GAP * activeIndex + barWidth / 2;
+  const handleLeftPct = containerWidth ? (handleLeftPx / containerWidth) * 100 : 0;
   const maxlength = HISTOGRAM_VALUES.length - 1;
 
   const handleDepositChange = (values: string) => {
     const nextValue = Number(values);
     setActiveIndex(nextValue);
-
     setDeposit(formatNumber(toKRW(nextValue * 50)));
-    setManualDepositInput(formatNumber(toKRW(nextValue * 50)));
+    // setManualDepositInput(formatNumber(toKRW(nextValue * 50)));
   };
 
   const handleManualDepositChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -54,9 +67,9 @@ export const CostFilter = () => {
   const handleManualToggle = (checked: boolean | "indeterminate") => {
     const nextValue = checked === true;
     setIsManualDeposit(nextValue);
-    if (!nextValue) {
-      setManualDepositInput(deposit);
-    }
+    // if (!nextValue) {
+    //   setManualDepositInput(deposit);
+    // }
   };
 
   return (
@@ -72,7 +85,7 @@ export const CostFilter = () => {
           </p>
         </div>
 
-        <div className="rounded-2xl px-4 pb-6 pt-5">
+        <div className="rounded-2xl px-4 pb-6 pl-10 pr-10 pt-5">
           <div className="relative h-[120px] w-full">
             <HistogramSlider
               minLabel={DEPOSIT_MIN + "만"}
@@ -84,6 +97,7 @@ export const CostFilter = () => {
               normalized={normalized}
               handleLeftPct={handleLeftPct}
               maxlength={maxlength}
+              histogramRef={sliderRef}
             />
           </div>
         </div>
@@ -94,22 +108,6 @@ export const CostFilter = () => {
             직접입력
           </span>
         </label>
-
-        {isManualDeposit && (
-          <div className="flex flex-col gap-2">
-            <Input
-              size="default"
-              variant="default"
-              value={manualDepositInput}
-              inputMode="numeric"
-              onChange={handleManualDepositChange}
-              className="text-lg font-semibold leading-[140%] tracking-[-0.01em]"
-            />
-            <p className="text-xs font-medium leading-[140%] tracking-[-0.01em] text-greyscale-grey-400">
-              {manualDepositInput}
-            </p>
-          </div>
-        )}
       </section>
 
       <div className="mt-6 border-t border-greyscale-grey-50" />
@@ -123,12 +121,15 @@ export const CostFilter = () => {
             <Input
               size="default"
               variant="default"
-              value={deposit}
-              inputMode="numeric"
+              onChange={handleManualDepositChange}
+              value={manualDepositInput}
+              disabled={!isManualDeposit}
+              // inputMode="numeric"
+              // type="number"
               className="text-lg font-semibold leading-[140%] tracking-[-0.01em]"
             />
             <p className="text-xs font-medium leading-[140%] tracking-[-0.01em] text-greyscale-grey-400">
-              {deposit} 만원
+              {manualDepositInput} 만원
             </p>
           </div>
         </div>
