@@ -45,7 +45,7 @@ export const DetailFilterSheet = () => {
             <DetailFilterTab />
 
             {/* section별 콘텐츠 */}
-            <div className="flex-1 overflow-y-auto px-5 py-5">
+            <div className="flex-1 overflow-y-auto p-5">
               <motion.div
                 key={section}
                 initial={{ x: 20, opacity: 0 }}

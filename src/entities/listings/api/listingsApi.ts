@@ -1,6 +1,6 @@
 import { IResponse } from "@/src/shared/types";
-import { HTTP_METHODS } from "@/src/shared/api";
-import { HttpMethod, RequestOptions } from "../model/type";
+import { http, HTTP_METHODS } from "@/src/shared/api";
+import { DistrictResponse, HttpMethod, RequestOptions } from "../model/type";
 
 export const requestListingList = async <
   TData,
@@ -59,4 +59,14 @@ export const PostParamsBodyRequest = async <
   });
 
   return res as unknown as TReturn;
+};
+
+export const getNoticeSheetFilter = async <
+  TResponse extends IResponse<TData>,
+  TData = DistrictResponse,
+>(
+  url: string
+): Promise<TData> => {
+  const res = await http.get<TResponse>(url);
+  return res as unknown as TData;
 };
