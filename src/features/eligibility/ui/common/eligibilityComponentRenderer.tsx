@@ -306,7 +306,7 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
 
         return (
           <EligibilityInfoButton
-            text={config.props.text}
+            text={config.props.title}
             onClick={onClick}
             className={config.props.className}
           />
