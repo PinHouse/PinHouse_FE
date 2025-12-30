@@ -511,6 +511,11 @@ export type UseListingsHooksWithParam<TParam extends object> = {
   params: TParam;
 };
 
+export type UseListingsHooksWithSheet = {
+  id: string;
+  url: string;
+};
+
 export interface RequestOptions<TQuery extends object = object> {
   query?: TQuery;
 }
@@ -527,4 +532,13 @@ export interface PinPointPlace {
   longitude: number;
   latitude: number;
   isFirst: boolean;
+}
+
+export interface DistrictGroup {
+  city: string;
+  districts: string[];
+}
+
+export interface DistrictResponse {
+  districts: DistrictGroup[];
 }
