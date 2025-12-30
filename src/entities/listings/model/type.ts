@@ -67,6 +67,7 @@ export interface ListingListPage {
   page: number;
 }
 
+// 사용처: 공고 목록 API 응답 타입 (requestListingList 반환)
 export type ListingItemResponse = IResponse<ListingListPage>;
 /**
  * 개별항목 공고검색
@@ -84,6 +85,7 @@ export interface ListingSearchItem {
   liked: boolean; // 좋아요 여부
 }
 
+// 사용처: 공고 리스트 카드 제네릭 데이터 (ListingContentsCard 등)
 export type ListingUnion = ListingItem | ListingSearchItem;
 
 // 사용처: UI 표준화된 카드 데이터 (filterPanelModel.tsx의 normalizeListing 반환 타입)
@@ -102,6 +104,7 @@ export interface ListingNormalized {
  */
 // 사용처: 좋아요 토글(간소 타입) — listingsHooks.tsx LikeType
 export type ListingItemMinimal = Pick<ListingItem, "id" | "liked">;
+// 사용처: listingsApi 전역 HTTP 메서드 제한 (get/post/default)
 export type HttpMethod = keyof typeof HTTP_METHODS;
 
 /**
@@ -195,6 +198,7 @@ export interface PopularKeywordResponse extends IResponse<PopularKeywordItem[]> 
   data: PopularKeywordItem[];
 }
 
+// 사용처: 필터 탭 key enum (FILTER_OPTIONS)
 export type FilterOptionKey = "region" | "target" | "rental" | "housing";
 
 // 사용처: 필터 탭 정의 — listingsModel.ts의 FILTER_OPTIONS
@@ -300,8 +304,11 @@ export interface LstingBody {
 }
 // 사용처: 임대 유형 키 타입 — RENT_COLOR_CLASS 기반 (listingsHooks.tsx)
 export type RentType = keyof typeof RENT_COLOR_CLASS;
+// 사용처: 공고 상세 API 응답 타입 (useListingDetailHooks)
 export type ListingDetailResponse = IResponse<ListingDetailData>;
+// 사용처: 상세 카드/Infra 카드 테마 구분값 (listingsCardTile.tsx)
 export type RoomVariant = "default" | "muted";
+// 사용처: listingsCardTile 컴포넌트 프롭스 및 스타일 매핑
 export type ListingsCardTileProps = {
   listing: Complex;
   variant: RoomVariant;
@@ -431,15 +438,19 @@ export interface ListingUnitType {
 }
 
 // 공통 Enum (타입 안정성 ↑)
+// 사용처: 이동 경로 상세(TransportIconRenderer, routeDetail) 아이콘 타입
 export type TransportType = "AIR" | "TRAIN" | "BUS" | "SUBWAY" | "WALK";
+// 사용처: 경로 스텝 role (출발/환승/도착) — routeDetail.tsx
 export type StopRole = "START" | "TRANSFER" | "ARRIVE";
 //Line 타입
+// 사용처: 지하철/버스 등 노선 색상/코드 정보 (routeDetail)
 export interface TransportLine {
   code: number;
   label: string;
   bgColorHex: string;
 }
 
+// 사용처: 경로 그래프 거리 정보 (routeDetail distance bar)
 export interface RouteDistance {
   colorHex: string;
   line: string | null;
@@ -448,10 +459,12 @@ export interface RouteDistance {
   type: string;
 }
 
+// 사용처: 각 스텝의 라인 표시 타입 (routeDetail)
 export interface RouteStepLine {
   line: string;
 }
 
+// 사용처: 경로 상세 Step 데이터 (routeDetail item)
 export interface RouteStep {
   action?: string | null;
   colorHex?: string | null;
@@ -464,6 +477,7 @@ export interface RouteStep {
   secondaryText: string;
 }
 
+// 사용처: 경로 요약 정보 (총 시간/거리) — routeDetail header
 export interface RouteSummary {
   displayText?: string;
   totalDistanceKm?: number;
@@ -472,6 +486,7 @@ export interface RouteSummary {
   transferCount?: number;
 }
 //이동구간
+// 사용처: routeDetail 구간 단위 데이터 묶음
 export interface RouteSegment {
   distance: RouteDistance[];
   routeIndex: number;
@@ -479,31 +494,26 @@ export interface RouteSegment {
   summary: RouteSummary[] | RouteSummary;
 }
 
-export interface RouteStop {
-  role: StopRole;
-  type: TransportType;
-  stopName: string;
-  lineText: string | null;
-  line: TransportLine | null;
-  bgColorHex: string | null;
-}
-
+// 사용처: 공고 상세 노선 데이터 응답 (useListingInfraDetail)
 export interface ListingRouteInfo {
   totalCount: number;
   routes: RouteSegment[];
 }
 
+// 사용처: 공고 상세 탭별 API (useListingDetailHooks.ts 공통 파라미터)
 export type UseListingsHooksType = {
   id: string;
   queryK: string;
   url: string;
 };
 
+// 사용처: 상세 필터/노선 등 notice 별 정적 데이터 (useListingDetailHooks.ts)
 export type UseListingsDetailHooksType = {
   queryK: string;
   url: EndPointKey;
 };
 
+// 사용처: 공고 상세 개별 API + 추가 params 필요 시 (useListingDetailHooks.ts)
 export type UseListingsHooksWithParam<TParam extends object> = {
   id: string;
   queryK: string;
@@ -511,20 +521,25 @@ export type UseListingsHooksWithParam<TParam extends object> = {
   params: TParam;
 };
 
+// 사용처: 상세 필터 시트 전용 훅 (useListingDetailNoticeSheet)
 export type UseListingsHooksWithSheet = {
   id: string;
   url: string;
 };
 
+// 사용처: 공통 request wrapper 옵션 (listingsApi.ts)
 export interface RequestOptions<TQuery extends object = object> {
   query?: TQuery;
 }
 
+// 사용처: 상세 훅 endpoint key 관리 (useListingDetailHooks.ts)
 export const endPoint = {
   pinpoint: PINPOINT_CREATE_ENDPOINT,
 } as const;
 
 type EndPointKey = keyof typeof endPoint;
+
+// 사용처: 핀포인트 목록/상세 데이터 타입 (pinpoint 관련 API)
 export interface PinPointPlace {
   id: string;
   name: string;
@@ -534,11 +549,18 @@ export interface PinPointPlace {
   isFirst: boolean;
 }
 
+// 사용처: 공고 단지 지역 응답에서 시 단위 그룹 (regionFilter/areaFilter)
 export interface DistrictGroup {
   city: string;
   districts: string[];
 }
 
+// 사용처: 상세 필터 시트 지역 API 응답 타입 (regionFilter/areaFilter)
 export interface DistrictResponse {
   districts: DistrictGroup[];
+}
+
+// 사용처: 단지 필터 시트 면적 코드 목록 (areaFilter.tsx)
+export interface AreaTypeResponse {
+  typeCodes: string[];
 }

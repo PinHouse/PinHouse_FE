@@ -8,6 +8,7 @@ import {
   requestListingList,
 } from "@/src/entities/listings/api/listingsApi";
 import {
+  AreaTypeResponse,
   DistrictResponse,
   LikeReturn,
   ListingItem,
@@ -917,29 +918,20 @@ describe("핀포인트 목록 조회", () => {
   });
 });
 
-describe("핀포인트 공고단지 지역 조회", () => {
+describe("핀포인트 공고단지 필터 시트 조회", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it.skip("핀포인트 공고단지 지역 조회", async () => {
+  it("핀포인트 공고단지 필터 시트 조회", async () => {
     const mockResponse = {
-      districts: [
-        {
-          city: "경북",
-          districts: ["구미시", "김천시"],
-        },
-        {
-          city: "대구",
-          districts: ["군위군"],
-        },
-      ],
+      typeCodes: ["26", "33", "36", "39", "46", "51", "59"],
     };
 
     (http.get as jest.Mock).mockResolvedValue(mockResponse);
-    const url = `${NOTICE_ENDPOINT}/19347/filter/districts`;
-    const result = await getNoticeSheetFilter<IResponse<DistrictResponse>, DistrictResponse>(url);
+    const url = `${NOTICE_ENDPOINT}/19347/filter/area`;
+    const result = await getNoticeSheetFilter<IResponse<AreaTypeResponse>, AreaTypeResponse>(url);
 
-    expect(result?.districts).toHaveLength(2);
-    expect(result?.districts[0].city).toBe("경북");
+    expect(result?.typeCodes).toHaveLength(7);
+    expect(result?.typeCodes[0]).toBe("26");
   });
 });
