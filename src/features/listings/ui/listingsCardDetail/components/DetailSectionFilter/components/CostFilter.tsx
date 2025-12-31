@@ -13,7 +13,7 @@ const DEPOSIT_MAX = 1000;
 const DEPOSIT_DEFAULT = 750;
 const DEPOSIT_STEP = 10;
 const WON_UNIT = 1;
-const GAP = 2; // px
+const GAP = 2; //px
 const INITIAL_OFFSET = 4;
 
 export const HISTOGRAM_VALUES = [
@@ -113,9 +113,24 @@ export const CostFilter = () => {
         <label className="flex items-center gap-2">
           <Checkbox checked={isManualDeposit} onCheckedChange={handleManualToggle} />
           <span className="text-sm font-medium leading-[140%] tracking-[-0.01em] text-greyscale-grey-900">
-            직접입력
+            보증금 직접입력
           </span>
         </label>
+
+        <div className="flex flex-col gap-2">
+          <Input
+            size="default"
+            variant="default"
+            value={deposit}
+            disabled={!isManualDeposit}
+            inputMode="numeric"
+            onChange={handleManualDepositChange}
+            className="text-lg font-semibold leading-[140%] tracking-[-0.01em]"
+          />
+          <p className="text-xs font-medium leading-[140%] tracking-[-0.01em] text-greyscale-grey-400">
+            {deposit}만원
+          </p>
+        </div>
       </section>
 
       <div className="mt-6 border-t border-greyscale-grey-50" />
@@ -131,7 +146,7 @@ export const CostFilter = () => {
               variant="default"
               onChange={handleManualDepositChange}
               value={manualDepositInput}
-              disabled={!isManualDeposit}
+              // disabled={!isManualDeposit}
               // inputMode="numeric"
               // type="number"
               className="text-lg font-semibold leading-[140%] tracking-[-0.01em]"

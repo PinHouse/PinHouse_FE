@@ -6,7 +6,7 @@ import { useDetailFilterSheetStore } from "@/src/features/listings/model";
 import { DetailFilterTab } from "./DetailFilterTab";
 import { parseDetailSection } from "@/src/features/listings/model";
 import { DistanceFilter } from "./DistanceFilter";
-import { CostFilter } from "./components/costFilter";
+import { CostFilter } from "./components/CostFilter";
 import { RegionFilter } from "./components/regionFilter";
 import { AreaFilter } from "./components/areaFilter";
 
