@@ -40,10 +40,23 @@ export const HistogramSlider = ({
               transform: "translateX(-50%)",
             }}
           >
-            <div className="relative rounded-md bg-black px-2 py-1 text-xs text-white">
+            <div
+              className={`relative rounded-md bg-black px-2 py-1 text-xs text-white ${
+                activeIndex === 20 ? "-translate-x-1/4" : ""
+              }`}
+            >
               {deposit}
-              {/* 말풍선 꼬리 */}
-              <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-black" />
+              {activeIndex === 20 ? (
+                <span
+                  className="absolute top-full border-4 border-transparent border-t-black"
+                  style={{
+                    left: `${handleLeftPct}%`,
+                    transform: "translateX(-150%)",
+                  }}
+                />
+              ) : (
+                <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-black" />
+              )}
             </div>
           </div>
         )}

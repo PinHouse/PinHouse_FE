@@ -93,7 +93,7 @@ export const CostFilter = () => {
           </p>
         </div>
 
-        <div className="rounded-2xl px-4 pb-6 pl-10 pr-10 pt-5">
+        <div className="rounded-2xl px-2 pb-6 pt-5">
           <div className="relative h-[120px] w-full">
             <HistogramSlider
               minLabel={DEPOSIT_MIN + "만"}
