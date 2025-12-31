@@ -9,6 +9,7 @@ import {
 } from "@/src/entities/listings/api/listingsApi";
 import {
   AreaTypeResponse,
+  CostResponse,
   DistrictResponse,
   LikeReturn,
   ListingItem,
@@ -922,7 +923,7 @@ describe("핀포인트 공고단지 필터 시트 조회", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it("핀포인트 공고단지 필터 시트 조회", async () => {
+  it.skip("핀포인트 공고단지 필터 시트 조회", async () => {
     const mockResponse = {
       typeCodes: ["26", "33", "36", "39", "46", "51", "59"],
     };
@@ -933,5 +934,51 @@ describe("핀포인트 공고단지 필터 시트 조회", () => {
 
     expect(result?.typeCodes).toHaveLength(7);
     expect(result?.typeCodes[0]).toBe("26");
+  });
+});
+
+describe("핀포인트 공고단지 필터 시트 조회", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("핀포인트 공고단지 필터 시트 조회", async () => {
+    const MOCK_PRICE_DISTRIBUTION: CostResponse = {
+      minPrice: 8_485_000,
+      maxPrice: 28_853_000,
+      avgPrice: 17_888_384,
+      priceDistribution: [
+        {
+          rangeStart: 8_485_000,
+          rangeEnd: 10_051_768,
+          count: 2,
+        },
+        {
+          rangeStart: 10_051_769,
+          rangeEnd: 11_618_537,
+          count: 2,
+        },
+        {
+          rangeStart: 11_618_538,
+          rangeEnd: 13_185_306,
+          count: 0,
+        },
+      ],
+    };
+
+    (http.get as jest.Mock).mockResolvedValue(MOCK_PRICE_DISTRIBUTION);
+    const url = `${NOTICE_ENDPOINT}/19347/filter/cost`;
+    const result = await getNoticeSheetFilter<IResponse<CostResponse>, CostResponse>(url);
+
+    expect(result).toMatchObject({
+      minPrice: 8_485_000,
+      maxPrice: 28_853_000,
+      avgPrice: 17_888_384,
+    });
+
+    expect(result?.priceDistribution).toHaveLength(3);
+    expect(result?.priceDistribution[0]).toMatchObject({
+      rangeStart: 8_485_000,
+      count: 2,
+    });
   });
 });

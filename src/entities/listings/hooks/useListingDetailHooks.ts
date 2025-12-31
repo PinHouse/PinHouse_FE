@@ -21,16 +21,17 @@ import { useOAuthStore } from "@/src/features/login/model";
 
 export const useListingDetailBasic = (id: string) => {
   const pinPointId = useOAuthStore.getState().pinPointId;
+
   const listingDetilBody = {
     sortType: "거리 순",
     pinPointId: pinPointId,
-    transitTime: 100,
-    maxDeposit: 50000000,
-    maxMonthPay: 300000,
+    transitTime: null,
+    maxDeposit: null,
+    maxMonthPay: null,
   };
 
   return useQuery<ListingDetailResponseWithColor>({
-    queryKey: ["useListingDetailBasic", id],
+    queryKey: ["useListingDetailBasic", id, listingDetilBody],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {

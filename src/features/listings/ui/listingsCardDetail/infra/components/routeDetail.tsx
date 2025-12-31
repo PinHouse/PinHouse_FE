@@ -25,7 +25,6 @@ const ModeIcon = ({
   color: string;
   minutes: number;
 }) => {
-  console.log(type);
   if (type === "BUS" || type === "AIR")
     return <VerticalTransitIcon color={color} minutes={minutes} showLine={false} />;
   if (type === "WALK") return <VerticalWalkIcon color={color} minutes={minutes} />;
