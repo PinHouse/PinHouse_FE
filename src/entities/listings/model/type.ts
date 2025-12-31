@@ -294,9 +294,9 @@ export interface ListingDetailData {
 export interface LstingBody {
   sortType: string;
   pinPointId: string;
-  transitTime: number;
-  maxDeposit: number;
-  maxMonthPay: number;
+  transitTime: number | null;
+  maxDeposit: number | null;
+  maxMonthPay: number | null;
   typeCode?: string[];
   facilities?: string[];
   region?: string[];
@@ -555,12 +555,26 @@ export interface DistrictGroup {
   districts: string[];
 }
 
-// 사용처: 상세 필터 시트 지역 API 응답 타입 (regionFilter/areaFilter)
+// 사용처: 상세 필터 시트 지역 API 응답 목록 (regionFilter/areaFilter)
 export interface DistrictResponse {
   districts: DistrictGroup[];
 }
 
-// 사용처: 단지 필터 시트 면적 코드 목록 (areaFilter.tsx)
+// 사용처: 단지 필터 시트 면적 API 응답 목록(areaFilter.tsx)
 export interface AreaTypeResponse {
   typeCodes: string[];
+}
+
+// 사용처: 단지 필터 시트 API 응답 목록 (areaFilter.tsx)
+export interface CostResponse {
+  minPrice: number;
+  maxPrice: number;
+  avgPrice: number;
+  priceDistribution: CostRange[];
+}
+
+export interface CostRange {
+  rangeStart: number;
+  rangeEnd: number;
+  count: number;
 }

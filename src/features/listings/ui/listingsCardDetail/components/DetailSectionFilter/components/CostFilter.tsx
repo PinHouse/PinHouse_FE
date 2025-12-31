@@ -4,6 +4,9 @@ import { useLayoutEffect, useMemo, useRef, useState, type ChangeEvent } from "re
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { Input } from "@/src/shared/ui/input/deafult";
 import { HistogramSlider } from "./HistogramSlider";
+import { useParams } from "next/navigation";
+import { useListingDetailNoticeSheet } from "@/src/entities/listings/hooks/useListingDetailSheetHooks";
+import { CostResponse } from "@/src/entities/listings/model/type";
 
 const DEPOSIT_MIN = 500;
 const DEPOSIT_MAX = 1000;
@@ -23,6 +26,11 @@ const toKRW = (valueInMan: number) => valueInMan * WON_UNIT;
 export const CostFilter = () => {
   const [deposit, setDeposit] = useState(formatNumber(toKRW(DEPOSIT_DEFAULT)));
   const [activeIndex, setActiveIndex] = useState(DEPOSIT_STEP);
+  const { id } = useParams() as { id: string };
+  const { data } = useListingDetailNoticeSheet<CostResponse>({
+    id: id,
+    url: "cost",
+  });
 
   const [isManualDeposit, setIsManualDeposit] = useState(false);
   const [manualDepositInput, setManualDepositInput] = useState(

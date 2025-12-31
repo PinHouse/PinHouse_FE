@@ -27,7 +27,7 @@ export const RegionFilter = () => {
 
   if (!districts) return <Spinner title="지역 탐색중..." description="잠시만 기다려주세요" />;
   return (
-    <div className="flex h-full flex-col gap-5">
+    <div className="flex h-full flex-col gap-5 overflow-hidden">
       <div className="-mx-5 border-b pb-3">
         <div className="flex w-full gap-4 px-5">
           {REGION_CHECKBOX.map(item => (
@@ -55,6 +55,14 @@ export const RegionFilter = () => {
             ))}
           </div>
         ))}
+      </div>
+      <div className="mt-auto pt-8">
+        <button
+          type="button"
+          className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
+        >
+          00개의 단지가 있어요
+        </button>
       </div>
     </div>
   );

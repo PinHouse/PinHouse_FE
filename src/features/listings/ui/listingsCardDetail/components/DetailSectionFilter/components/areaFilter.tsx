@@ -1,11 +1,10 @@
 import { cn } from "@/lib/utils";
 import { useListingDetailNoticeSheet } from "@/src/entities/listings/hooks/useListingDetailSheetHooks";
-import { AreaTypeResponse, DistrictResponse } from "@/src/entities/listings/model/type";
+import { AreaTypeResponse } from "@/src/entities/listings/model/type";
 import { REGION_CHECKBOX } from "@/src/features/listings/model";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { Spinner } from "@/src/shared/ui/spinner/default";
-import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
@@ -27,18 +26,18 @@ export const AreaFilter = () => {
 
   if (!typeCodes) return <Spinner title="지역 탐색중..." description="잠시만 기다려주세요" />;
   return (
-    <div className="flex h-full flex-col gap-5">
+    <div className="flex h-full flex-col gap-5 overflow-hidden bg-white">
       <div className="-mx-5 border-b pb-3">
         <div className="flex w-full gap-4 px-5">
           {REGION_CHECKBOX.map(item => (
-            <>
+            <div key={item.key}>
               {item.key !== "pinpoint" && (
                 <label key={item.key} className="flex cursor-pointer items-center gap-2">
                   <Checkbox />
                   <span className="text-sm">{item.value}</span>
                 </label>
               )}
-            </>
+            </div>
           ))}
         </div>
       </div>
@@ -46,16 +45,22 @@ export const AreaFilter = () => {
         {typeCodes.map((typeCode, index) => (
           <div key={typeCode + String(index)}>
             <div>
-              <div>
-                <Tag
-                  onClick={() => onTagValueChange(typeCode)}
-                  label={typeCode}
-                  selected={selectedRegions.includes(typeCode)}
-                />
-              </div>
+              <Tag
+                onClick={() => onTagValueChange(typeCode)}
+                label={typeCode}
+                selected={selectedRegions.includes(typeCode)}
+              />
             </div>
           </div>
         ))}
+      </div>
+      <div className="mt-auto pt-8">
+        <button
+          type="button"
+          className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
+        >
+          00개의 단지가 있어요
+        </button>
       </div>
     </div>
   );
