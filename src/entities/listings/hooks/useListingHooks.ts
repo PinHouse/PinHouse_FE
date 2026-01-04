@@ -87,36 +87,45 @@ type LikeContext = {
   prevListingSearch?: InfiniteData<ListingListPage>;
 };
 
-export const useToogleLike = () => {
+export const useToogleLike = (resetQuery: string[]) => {
   const queryClient = useQueryClient();
 
-  return useMutation<LikeReturn, Error, ToggleLikeVariables, LikeContext>({
+  return useMutation<
+    LikeReturn,
+    Error,
+    ToggleLikeVariables,
+    {
+      prevQueries: Map<string, unknown>;
+    }
+  >({
     retry: 0,
 
     mutationFn: variables => {
       return PostBasicRequest<
         LikeReturn,
         IResponse<LikeReturn>,
-        { targetId: number; type: "NOTICE" },
+        { targetId: string; type: string },
         LikeReturn
       >(LIKE_ENDPOINT, variables.method, {
         targetId: variables.targetId!,
-        type: "NOTICE",
+        type: variables.type,
       });
     },
 
     onError: (_err, _vars, ctx) => {
-      if (ctx?.prevListingList) {
-        queryClient.setQueryData(["listingListInfinite"], ctx.prevListingList);
-      }
-      if (ctx?.prevListingSearch) {
-        queryClient.setQueryData(["listingSearchInfinite"], ctx.prevListingSearch);
-      }
+      if (!ctx) return;
+
+      ctx.prevQueries.forEach((data, key) => {
+        queryClient.setQueryData([key], data);
+      });
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["listingListInfinite"] });
-      queryClient.invalidateQueries({ queryKey: ["listingSearchInfinite"] });
+      resetQuery.forEach(key => {
+        queryClient.invalidateQueries({
+          queryKey: [key],
+        });
+      });
     },
   });
 };

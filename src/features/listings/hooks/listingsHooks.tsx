@@ -13,6 +13,7 @@ import { LineLikeButton } from "@/src/assets/icons/button/lineLikeButton";
 import { SmallHome } from "@/src/assets/icons/home/smallHome";
 import { SmallMapPin } from "@/src/assets/icons/onboarding/smallMapPin";
 import { FireIcon } from "@/src/assets/icons/onboarding/fire";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const formatInfoText = (text: string) => {
   if (!text) return text;
@@ -129,14 +130,15 @@ export const getKeywordCenteredText = (text: string, keyword: string, range: num
   return prefix + text.substring(start, end) + suffix;
 };
 
-const LikeType = ({ id, liked }: ListingItemMinimal) => {
-  const { mutateAsync } = useToogleLike();
+export const LikeType = ({ id, liked, type, resetQuery }: ListingItemMinimal) => {
+  const queryClient = useQueryClient();
+  const { mutate } = useToogleLike(resetQuery);
   const toggleLike = async () => {
     const body: ToggleLikeVariables = liked
-      ? { method: "delete", targetId: Number(id), type: "NOTICE" }
-      : { method: "post", targetId: Number(id), liked: liked, type: "NOTICE" };
+      ? { method: "delete", targetId: id, type: type }
+      : { method: "post", targetId: id, liked: liked, type: type };
 
-    await mutateAsync(body);
+    mutate(body);
   };
 
   return <div onClick={toggleLike}>{liked ? <LikeButton /> : <LineLikeButton />}</div>;
@@ -153,7 +155,12 @@ export const HouseRental = (item: ListingNormalized) => {
   return (
     <span className="flex w-full justify-between">
       <ListingBgBookMark item={item.type} bg={rantalText.bg} text={rantalText.text} border="none" />
-      <LikeType liked={item.liked} id={item.id} />
+      <LikeType
+        liked={item.liked}
+        id={item.id}
+        type={"NOTICE"}
+        resetQuery={["listingListInfinite", "listingSearchInfinite"]}
+      />
     </span>
   );
 };

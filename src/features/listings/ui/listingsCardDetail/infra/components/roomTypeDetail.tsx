@@ -1,34 +1,14 @@
 "use cilent";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useListingRoomTypeDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { formatNumber } from "@/src/shared/lib/numberFormat";
 import { toPyeong } from "@/src/features/listings/model";
 import { DepositSection } from "./components/roomType/depositSection";
 import { TypeInfoSection } from "./components/roomType/typeInfoSection";
-import { ListingItemMinimal, ListingUnitType } from "@/src/entities/listings/model/type";
+import { ListingUnitType } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { LikeButton } from "@/src/assets/icons/button/likeButton";
-import { LineLikeButton } from "@/src/assets/icons/button/lineLikeButton";
-import { UnLikeButton } from "@/src/assets/icons/button/unLikeButton";
-
-const LikeType = ({ id, liked }: ListingItemMinimal) => {
-  // const { mutateAsync } = useToogleLike();
-  // const toggleLike = async () => {
-  //   const body: ToggleLikeVariables = liked
-  //     ? { method: "delete", targetId: Number(id), type: "NOTICE" }
-  //     : { method: "post", targetId: Number(id), liked: liked, type: "NOTICE" };
-
-  //   await mutateAsync(body);
-  // };
-
-  // return <div onClick={toggleLike}>{liked ? <LikeButton /> : <LineLikeButton />}</div>;
-  return (
-    <div>
-      {liked ? <LikeButton width={23} height={23} /> : <UnLikeButton width={23} height={23} />}
-    </div>
-  );
-};
+import { LikeType } from "@/src/features/listings/hooks/listingsHooks";
 
 export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
   const { data, isFetching } = useListingRoomTypeDetail<ListingUnitType>({
@@ -37,20 +17,18 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
     url: "unit",
   });
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const items = data ?? [];
+  const current = items[currentIndex];
+  const typeId = current?.typeId;
+  const liked = current?.liked;
 
-  const current = useMemo(() => {
-    return items[currentIndex];
-  }, [items, currentIndex]);
-
-  const goPrev = useCallback(() => {
+  const goPrev = () => {
     setCurrentIndex(p => (p - 1 + items.length) % Math.max(items.length, 1));
-  }, [items.length]);
+  };
 
-  const goNext = useCallback(() => {
+  const goNext = () => {
     setCurrentIndex(p => (p + 1) % Math.max(items.length, 1));
-  }, [items.length]);
+  };
 
   const isLast = currentIndex + 1 < items.length;
 
@@ -58,7 +36,9 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
     setCurrentIndex(0);
   }, [listingId]);
 
-  if (isFetching) return <SmallSpinner title="방 타입 불러오는 중.." />;
+  if (isFetching && !items.length) {
+    return <SmallSpinner title="방 타입 불러오는 중.." />;
+  }
   if (!items.length) {
     return (
       <div className="p-6 text-center text-sm text-text-secondary">
@@ -84,7 +64,12 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
             ))}
           </span>
           <span className="flex items-center justify-center">
-            <LikeType id={"1"} liked={false} />
+            <LikeType
+              id={typeId}
+              liked={liked}
+              type="ROOM"
+              resetQuery={["useListingRoomTypeDetail"]}
+            />
           </span>
         </div>
         <div className="relative flex h-60 w-full items-center justify-center">
@@ -95,7 +80,14 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
               className="h-full w-full object-contain"
             />
           </div>
-          {items.length > 1 && <TypeInfoSection onPrev={goPrev} onNext={goNext} isLast={isLast} />}
+          {items.length > 1 && (
+            <TypeInfoSection
+              onPrev={goPrev}
+              onNext={goNext}
+              isLast={isLast}
+              currentIndex={currentIndex}
+            />
+          )}
 
           <div className="pointer-events-none absolute bottom-2 px-2 py-0.5 text-sm-15">
             <span className="text-greyscale-grey-700">{currentIndex + 1}</span>

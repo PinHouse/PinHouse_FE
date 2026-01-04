@@ -103,7 +103,13 @@ export interface ListingNormalized {
  * @ 좋아요! 타입
  */
 // 사용처: 좋아요 토글(간소 타입) — listingsHooks.tsx LikeType
-export type ListingItemMinimal = Pick<ListingItem, "id" | "liked">;
+export type ListingItemMinimal = {
+  id: string;
+  liked: boolean;
+  type: string;
+  resetQuery: string[];
+};
+
 // 사용처: listingsApi 전역 HTTP 메서드 제한 (get/post/default)
 export type HttpMethod = keyof typeof HTTP_METHODS;
 
@@ -123,9 +129,9 @@ export interface LikeReturn {
 // 사용처: 좋아요 토글 변수 — useToogleLike 훅
 export type ToggleLikeVariables = {
   method: "post" | "delete";
-  targetId: number;
+  targetId: string;
   liked?: boolean;
-  type: "NOTICE";
+  type: string;
 };
 
 /**
