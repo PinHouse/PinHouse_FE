@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import {
   endPoint,
   Environmnt,
@@ -19,18 +19,26 @@ import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
 import {
   INFRA_ENVIRONMENT_CONFIG,
   INFRA_LABEL_TO_KEY,
+  useListingDetailCountStore,
+  useListingDetailFilter,
   useListingsDetailTypeStore,
 } from "@/src/features/listings/model";
 import { useOAuthStore } from "@/src/features/login/model";
+import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 
 export const useListingDetailBasic = (id: string) => {
   const pinPointId = useOAuthStore(state => state.pinPointId);
   const sortType = useListingsDetailTypeStore(state => state.sortType);
+  const distance = useListingDetailFilter(state => state.distance);
+  const debouncedDistance = useDebounce(distance, 500);
+  const region = useListingDetailFilter(state => state.region);
 
   return useQuery<ListingDetailResponseWithColor>({
-    queryKey: ["listingDetailBasic", id, pinPointId, sortType],
+    queryKey: ["listingDetailBasic", id, pinPointId, sortType, debouncedDistance, region],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
+    retry: false,
+
     queryFn: async () => {
       return PostBasicRequest<
         ListingDetailResponseWithColor,
@@ -40,9 +48,13 @@ export const useListingDetailBasic = (id: string) => {
       >(`${NOTICE_ENDPOINT}/${id}`, "post", {
         sortType,
         pinPointId,
-        transitTime: null,
+        transitTime: debouncedDistance,
         maxDeposit: null,
         maxMonthPay: null,
+        region: region,
+        typeCode: [],
+        facilities: [],
+        targetType: [],
       });
     },
     select: response => {
@@ -61,47 +73,6 @@ export const useListingDetailBasic = (id: string) => {
     },
   });
 };
-
-// export const useListingDetailBasic = (id: string) => {
-//   const { pinPointId } = useOAuthStore();
-//   const { sortType } = useListingsDetailTypeStore();
-
-//   const listingDetilBody = {
-//     sortType: sortType,
-//     pinPointId: pinPointId,
-//     transitTime: null,
-//     maxDeposit: null,
-//     maxMonthPay: null,
-//   };
-
-//   return useQuery<ListingDetailResponseWithColor>({
-//     queryKey: ["useListingDetailBasic", id, listingDetilBody],
-//     enabled: !!id,
-//     staleTime: 1000 * 60 * 5,
-//     queryFn: async () => {
-//       return await PostBasicRequest<
-//         ListingDetailResponseWithColor,
-//         IResponse<ListingDetailResponseWithColor>,
-//         LstingBody,
-//         ListingDetailResponseWithColor
-//       >(`${NOTICE_ENDPOINT}/${id}`, "post", listingDetilBody);
-//     },
-//     select: (response): ListingDetailResponseWithColor => {
-//       const basic = response.data?.basicInfo;
-
-//       return {
-//         ...response,
-//         data: {
-//           ...response.data,
-//           basicInfo: {
-//             ...response.data?.basicInfo,
-//             rentalColor: getListingsRental(basic.type),
-//           },
-//         },
-//       };
-//     },
-//   });
-// };
 
 export const useListingRentalDetail = (id: string) => {
   const encodedId = encodeURIComponent(id);
