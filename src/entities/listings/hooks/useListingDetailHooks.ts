@@ -16,33 +16,36 @@ import { PostBasicRequest, PostParamsBodyRequest, requestListingList } from "../
 import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
-import { INFRA_ENVIRONMENT_CONFIG, INFRA_LABEL_TO_KEY } from "@/src/features/listings/model";
+import {
+  INFRA_ENVIRONMENT_CONFIG,
+  INFRA_LABEL_TO_KEY,
+  useListingsDetailTypeStore,
+} from "@/src/features/listings/model";
 import { useOAuthStore } from "@/src/features/login/model";
 
 export const useListingDetailBasic = (id: string) => {
-  const pinPointId = useOAuthStore.getState().pinPointId;
-
-  const listingDetilBody = {
-    sortType: "거리 순",
-    pinPointId: pinPointId,
-    transitTime: null,
-    maxDeposit: null,
-    maxMonthPay: null,
-  };
+  const pinPointId = useOAuthStore(state => state.pinPointId);
+  const sortType = useListingsDetailTypeStore(state => state.sortType);
 
   return useQuery<ListingDetailResponseWithColor>({
-    queryKey: ["useListingDetailBasic", id, listingDetilBody],
+    queryKey: ["listingDetailBasic", id, pinPointId, sortType],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
-      return await PostBasicRequest<
+      return PostBasicRequest<
         ListingDetailResponseWithColor,
         IResponse<ListingDetailResponseWithColor>,
         LstingBody,
         ListingDetailResponseWithColor
-      >(`${NOTICE_ENDPOINT}/${id}`, "post", listingDetilBody);
+      >(`${NOTICE_ENDPOINT}/${id}`, "post", {
+        sortType,
+        pinPointId,
+        transitTime: null,
+        maxDeposit: null,
+        maxMonthPay: null,
+      });
     },
-    select: (response): ListingDetailResponseWithColor => {
+    select: response => {
       const basic = response.data?.basicInfo;
 
       return {
@@ -50,7 +53,7 @@ export const useListingDetailBasic = (id: string) => {
         data: {
           ...response.data,
           basicInfo: {
-            ...response.data?.basicInfo,
+            ...basic,
             rentalColor: getListingsRental(basic.type),
           },
         },
@@ -58,6 +61,47 @@ export const useListingDetailBasic = (id: string) => {
     },
   });
 };
+
+// export const useListingDetailBasic = (id: string) => {
+//   const { pinPointId } = useOAuthStore();
+//   const { sortType } = useListingsDetailTypeStore();
+
+//   const listingDetilBody = {
+//     sortType: sortType,
+//     pinPointId: pinPointId,
+//     transitTime: null,
+//     maxDeposit: null,
+//     maxMonthPay: null,
+//   };
+
+//   return useQuery<ListingDetailResponseWithColor>({
+//     queryKey: ["useListingDetailBasic", id, listingDetilBody],
+//     enabled: !!id,
+//     staleTime: 1000 * 60 * 5,
+//     queryFn: async () => {
+//       return await PostBasicRequest<
+//         ListingDetailResponseWithColor,
+//         IResponse<ListingDetailResponseWithColor>,
+//         LstingBody,
+//         ListingDetailResponseWithColor
+//       >(`${NOTICE_ENDPOINT}/${id}`, "post", listingDetilBody);
+//     },
+//     select: (response): ListingDetailResponseWithColor => {
+//       const basic = response.data?.basicInfo;
+
+//       return {
+//         ...response,
+//         data: {
+//           ...response.data,
+//           basicInfo: {
+//             ...response.data?.basicInfo,
+//             rentalColor: getListingsRental(basic.type),
+//           },
+//         },
+//       };
+//     },
+//   });
+// };
 
 export const useListingRentalDetail = (id: string) => {
   const encodedId = encodeURIComponent(id);

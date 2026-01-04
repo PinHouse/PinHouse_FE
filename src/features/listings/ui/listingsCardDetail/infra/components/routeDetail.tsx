@@ -227,7 +227,7 @@ export const RouteDetail = ({ listingId }: { listingId: string }) => {
           const isArrival = s.action?.toUpperCase() === "ARRIVE";
           const isWALK = s.action?.toUpperCase() === "WALK";
           const label = resolveStepLabel(s);
-          console.log(s);
+
           return (
             <li
               key={`${label}-${i}`}

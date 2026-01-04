@@ -10,7 +10,6 @@ import {
 } from "@/src/features/listings";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { Spinner } from "@/src/shared/ui/spinner/default";
-import { useState } from "react";
 
 export const ListingsCardDetailSection = ({ id }: { id: string }) => {
   const { data, isLoading, isFetching } = useListingDetailBasic(id);

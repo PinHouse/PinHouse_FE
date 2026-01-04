@@ -179,6 +179,11 @@ export interface SearchState {
   reset: () => void;
 }
 
+export interface ListingSearchState {
+  sortType: string;
+  setSortType: (value: string) => void;
+}
+
 /**
  * 인기검색어 Data
  */
