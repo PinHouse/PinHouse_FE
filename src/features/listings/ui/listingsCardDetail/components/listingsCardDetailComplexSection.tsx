@@ -4,10 +4,10 @@ import { ComplexList } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../../listingsNoSearchResult/listingNoSearchResult";
 import { cn } from "@/lib/utils";
 import { MouseEventHandler } from "react";
-import { useListingsDetailTypeStore } from "../../../model";
+import { useListingDetailCountStore, useListingsDetailTypeStore } from "../../../model";
 
 type ListingsCardDetailComplexSectionProps = {
-  listings: ComplexList;
+  listings?: ComplexList;
   onFilteredCount?: Number;
 };
 

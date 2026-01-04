@@ -190,6 +190,18 @@ export interface ListingSearchState {
   setSortType: (value: string) => void;
 }
 
+export interface ListingDetailFilterState {
+  distance: number;
+  region: string[];
+  toggleRegionType: (item: string) => void;
+  setDistance: (value: number) => void;
+}
+
+export interface ListingDetailCountState {
+  filteredCount: number;
+  setCounts: (value: number) => void;
+}
+
 /**
  * 인기검색어 Data
  */

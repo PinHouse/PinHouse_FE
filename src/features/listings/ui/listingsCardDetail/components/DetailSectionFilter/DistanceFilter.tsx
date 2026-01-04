@@ -3,6 +3,8 @@ import { useListingFilterDetail } from "@/src/entities/listings/hooks/useListing
 import { PinPointPlace } from "@/src/entities/listings/model/type";
 import { DropDown } from "@/src/shared/ui/dropDown/deafult";
 import { Slider } from "@/src/shared/ui/slider";
+import { useOAuthStore } from "@/src/features/login/model";
+import { useListingDetailCountStore, useListingDetailFilter } from "@/src/features/listings/model";
 
 const SLIDER_MIN = 0;
 const SLIDER_MAX = 120;
@@ -13,7 +15,10 @@ export const DistanceFilter = () => {
     queryK: "usePinPointList",
     url: "pinpoint",
   });
-  const [distance, setDistance] = useState<number>(DEFAULT_DISTANCE);
+
+  const { setPinPointId } = useOAuthStore();
+  const { distance, setDistance } = useListingDetailFilter();
+  const { filteredCount } = useListingDetailCountStore();
 
   const pinPointList = {
     myPinPoint:
@@ -25,8 +30,9 @@ export const DistanceFilter = () => {
   };
 
   const onChageValue = (selectedKey: string) => {
-    console.log(selectedKey);
+    setPinPointId(selectedKey);
   };
+
   const handleDistanceChange = (values: number[]) => {
     const [nextValue] = values;
     if (typeof nextValue === "number") {
@@ -34,11 +40,12 @@ export const DistanceFilter = () => {
     }
   };
 
-  const sliderValue = useMemo(() => [distance], [distance]);
+  const sliderValue = [distance];
   const formatMinutes = (value: number) => value.toString().padStart(2, "0");
   const formattedDistance = formatMinutes(distance);
   const hasPinPoints = pinPointList.myPinPoint.length > 0;
-  const defaultPinPointName = pinPointList.myPinPoint[0]?.value;
+  const pinPoint = pinPointList.myPinPoint[0];
+  const defaultPinPointName = pinPoint?.value || pinPoint?.description;
   const dropDownTriggerLabel = hasPinPoints ? defaultPinPointName : "핀포인트를 추가해 주세요";
 
   return (
@@ -84,7 +91,7 @@ export const DistanceFilter = () => {
           type="button"
           className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
         >
-          00개의 단지가 있어요
+          {filteredCount}개의 단지가 있어요
         </button>
       </div>
     </div>

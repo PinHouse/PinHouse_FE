@@ -8,6 +8,7 @@
 import { create } from "zustand";
 import {
   FilterSheetState,
+  ListingDetailFilterState,
   ListingsFilterState,
   ListingState,
   SearchState,

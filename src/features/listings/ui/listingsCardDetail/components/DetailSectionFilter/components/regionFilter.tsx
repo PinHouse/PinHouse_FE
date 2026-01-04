@@ -1,28 +1,29 @@
 import { cn } from "@/lib/utils";
 import { useListingDetailNoticeSheet } from "@/src/entities/listings/hooks/useListingDetailSheetHooks";
 import { DistrictResponse } from "@/src/entities/listings/model/type";
-import { REGION_CHECKBOX } from "@/src/features/listings/model";
+import {
+  REGION_CHECKBOX,
+  useListingDetailCountStore,
+  useListingDetailFilter,
+} from "@/src/features/listings/model";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { Spinner } from "@/src/shared/ui/spinner/default";
-import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export const RegionFilter = () => {
   const { id } = useParams() as { id: string };
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
-
+  const regionType = useListingDetailFilter(state => state.region);
+  const setRegion = useListingDetailFilter(state => state.toggleRegionType);
+  const { filteredCount } = useListingDetailCountStore();
   const { data } = useListingDetailNoticeSheet<DistrictResponse>({
     id: id,
     url: "districts",
   });
   const districts = data?.districts;
-
   const onTagValueChange = (region: string) => {
-    setSelectedRegions(prev =>
-      prev.includes(region) ? prev.filter(r => r !== region) : [...prev, region]
-    );
+    setRegion(region);
   };
 
   if (!districts) return <Spinner title="지역 탐색중..." description="잠시만 기다려주세요" />;
@@ -48,7 +49,7 @@ export const RegionFilter = () => {
                   <Tag
                     onClick={() => onTagValueChange(region)}
                     label={region}
-                    selected={selectedRegions.includes(region)}
+                    selected={regionType.includes(region)}
                   />
                 </div>
               </div>
@@ -61,7 +62,7 @@ export const RegionFilter = () => {
           type="button"
           className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
         >
-          00개의 단지가 있어요
+          {filteredCount}개의 단지가 있어요
         </button>
       </div>
     </div>
