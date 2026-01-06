@@ -3,8 +3,7 @@ import { ListingsCardTile } from "./listingsCardTile";
 import { ComplexList } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../../listingsNoSearchResult/listingNoSearchResult";
 import { cn } from "@/lib/utils";
-import { MouseEventHandler } from "react";
-import { useListingDetailCountStore, useListingsDetailTypeStore } from "../../../model";
+import { useListingsDetailTypeStore } from "../../../model";
 
 type ListingsCardDetailComplexSectionProps = {
   listings?: ComplexList;
@@ -23,7 +22,7 @@ export const ListingsCardDetailComplexSection = ({
     listings?.totalCount < 10 ? `0${listings?.totalCount}` : listings?.totalCount;
 
   const onDangiSortType = () => {
-    setSortType(sortType === "거리 순" ? "생활태그 매칭순" : "거리 순");
+    setSortType(sortType === "거리 순" ? "주변환경 매칭순" : "거리 순");
   };
   return (
     <section

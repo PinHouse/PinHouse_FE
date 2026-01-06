@@ -1,17 +1,21 @@
 import { cn } from "@/lib/utils";
 import { useListingDetailNoticeSheet } from "@/src/entities/listings/hooks/useListingDetailSheetHooks";
 import { AreaTypeResponse } from "@/src/entities/listings/model/type";
-import { REGION_CHECKBOX } from "@/src/features/listings/model";
+import {
+  REGION_CHECKBOX,
+  useListingDetailCountStore,
+  useListingDetailFilter,
+} from "@/src/features/listings/model";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 import { useParams } from "next/navigation";
-import { useState } from "react";
 
 export const AreaFilter = () => {
   const { id } = useParams() as { id: string };
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
-
+  const { typeCode } = useListingDetailFilter();
+  const { toggleTypeCode } = useListingDetailFilter();
+  const { filteredCount } = useListingDetailCountStore();
   const { data } = useListingDetailNoticeSheet<AreaTypeResponse>({
     id: id,
     url: "area",
@@ -19,9 +23,7 @@ export const AreaFilter = () => {
   const typeCodes = data?.typeCodes;
 
   const onTagValueChange = (region: string) => {
-    setSelectedRegions(prev =>
-      prev.includes(region) ? prev.filter(r => r !== region) : [...prev, region]
-    );
+    toggleTypeCode(region);
   };
 
   if (!typeCodes) return <Spinner title="지역 탐색중..." description="잠시만 기다려주세요" />;
@@ -42,13 +44,13 @@ export const AreaFilter = () => {
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
-        {typeCodes.map((typeCode, index) => (
-          <div key={typeCode + String(index)}>
+        {typeCodes.map((type, index) => (
+          <div key={type + String(index)}>
             <div>
               <Tag
-                onClick={() => onTagValueChange(typeCode)}
-                label={typeCode}
-                selected={selectedRegions.includes(typeCode)}
+                onClick={() => onTagValueChange(type)}
+                label={type}
+                selected={typeCode.includes(type)}
               />
             </div>
           </div>
@@ -59,7 +61,7 @@ export const AreaFilter = () => {
           type="button"
           className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
         >
-          00개의 단지가 있어요
+          {filteredCount}개의 단지가 있어요
         </button>
       </div>
     </div>

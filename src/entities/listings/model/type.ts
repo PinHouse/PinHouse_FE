@@ -193,7 +193,9 @@ export interface ListingSearchState {
 export interface ListingDetailFilterState {
   distance: number;
   region: string[];
+  typeCode: string[];
   toggleRegionType: (item: string) => void;
+  toggleTypeCode: (typeCode: string) => void;
   setDistance: (value: number) => void;
 }
 
