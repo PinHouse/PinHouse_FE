@@ -15,6 +15,9 @@ export const useListingDetailFilter = create<ListingDetailFilterState>(set => ({
   distance: 0,
   region: [],
   typeCode: [],
+  maxDeposit: "0",
+  maxMonthPay: "0",
+  setDistance: value => set({ distance: value }),
   toggleRegionType: region =>
     set(state => {
       const exists = state.region.includes(region);
@@ -31,7 +34,8 @@ export const useListingDetailFilter = create<ListingDetailFilterState>(set => ({
           : [...state.typeCode, typeCode],
       };
     }),
-  setDistance: value => set({ distance: value }),
+  setMaxDeposit: value => set({ maxDeposit: value }),
+  setMaxMonthPay: value => set({ maxMonthPay: value }),
 }));
 
 export const useListingDetailCountStore = create<ListingDetailCountState>(set => ({

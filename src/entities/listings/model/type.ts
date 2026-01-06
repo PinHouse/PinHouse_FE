@@ -194,9 +194,13 @@ export interface ListingDetailFilterState {
   distance: number;
   region: string[];
   typeCode: string[];
+  maxDeposit: string;
+  maxMonthPay: string;
   toggleRegionType: (item: string) => void;
   toggleTypeCode: (typeCode: string) => void;
   setDistance: (value: number) => void;
+  setMaxDeposit: (prev: string) => void;
+  setMaxMonthPay: (value: string) => void;
 }
 
 export interface ListingDetailCountState {

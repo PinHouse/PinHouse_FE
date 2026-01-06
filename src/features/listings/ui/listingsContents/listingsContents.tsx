@@ -5,7 +5,6 @@ import { ListingsContentHeader } from "./listingsContentsHeader";
 import { ListingContentsList } from "./listingsContentsList";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { Spinner } from "@/src/shared/ui/spinner/default";
-import { listingKeys } from "@/src/shared/config/queryKeys";
 
 export const ListingsContent = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, isLoading, isSuccess } =
