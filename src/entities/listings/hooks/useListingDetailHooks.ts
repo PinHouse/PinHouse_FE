@@ -36,7 +36,8 @@ export const useListingDetailBasic = (id: string) => {
   const debouncedDistance = useDebounce(distance, 500);
   const debouncedMaxDeposit = useDebounce(maxDeposit, 500);
   const debouncedMaxMonthPay = useDebounce(maxMonthPay, 500);
-  console.log(debouncedMaxDeposit, debouncedMaxMonthPay);
+  const parseMoney = (value: string) => (value ? Number(value.replace(/[^0-9]/g, "")) : 0);
+
   return useQuery<ListingDetailResponseWithColor>({
     queryKey: [
       "listingDetailBasic",
@@ -63,8 +64,8 @@ export const useListingDetailBasic = (id: string) => {
         sortType,
         pinPointId,
         transitTime: debouncedDistance,
-        maxDeposit: Number(debouncedMaxDeposit),
-        maxMonthPay: Number(debouncedMaxMonthPay),
+        maxDeposit: parseMoney(debouncedMaxDeposit),
+        maxMonthPay: parseMoney(debouncedMaxMonthPay),
         region: region,
         typeCode: typeCode,
         facilities: [],
