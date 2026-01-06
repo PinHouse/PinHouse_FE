@@ -7,6 +7,7 @@ import { HistogramSlider } from "./HistogramSlider";
 import { useParams } from "next/navigation";
 import { useListingDetailNoticeSheet } from "@/src/entities/listings/hooks/useListingDetailSheetHooks";
 import { CostResponse } from "@/src/entities/listings/model/type";
+import { useListingDetailCountStore, useListingDetailFilter } from "@/src/features/listings/model";
 
 const DEPOSIT_STEP = 10;
 const WON_UNIT = 1;
@@ -35,7 +36,10 @@ export const CostFilter = () => {
   const DEPOSIT_MAX = data?.maxPrice ?? 0;
   const AVG_COST = data?.avgPrice ?? 0;
   const [isManualDeposit, setIsManualDeposit] = useState(false);
-  const [manualDepositInput, setManualDepositInput] = useState("0");
+  const { setMaxDeposit, maxDeposit, maxMonthPay, setMaxMonthPay } = useListingDetailFilter();
+  const [handleDepositInput, setHandleDepositInput] = useState("0");
+  const [deposit, setDeposit] = useState("0");
+  const { filteredCount } = useListingDetailCountStore();
 
   // 슬라이더 인덱스를 가격 범위에 맞춰 실제 보증금 값으로 변환
   const getDepositByIndex = (index: number) => {
@@ -75,8 +79,6 @@ export const CostFilter = () => {
   const handleLeftPct = containerWidth ? (handleLeftPx / containerWidth) * 100 : 0;
   const maxlength = HISTOGRAM_VALUES.length - 1;
 
-  const [deposit, setDeposit] = useState("0");
-
   // API 데이터가 도착하면 평균값을 기준으로 슬라이더·입력 초기화
   useEffect(() => {
     if (!data) return;
@@ -85,6 +87,14 @@ export const CostFilter = () => {
     setDeposit(formatted);
     setActiveIndex(getIndexByDepositValue(baseDeposit));
   }, [AVG_COST, DEPOSIT_MIN, DEPOSIT_MAX, data]);
+
+  useEffect(() => {
+    if (!isManualDeposit) {
+      setMaxDeposit(deposit);
+    } else {
+      setMaxDeposit(handleDepositInput);
+    }
+  }, [deposit, handleDepositInput]);
 
   // 슬라이더 인덱스를 실 보증금으로 변환
   const handleDepositChange = (value: string) => {
@@ -99,13 +109,13 @@ export const CostFilter = () => {
   const handleDepositChangeText = (event: ChangeEvent<HTMLInputElement>) => {
     const values = event.target.value;
     const numericValue = Number(values.replace(/[^0-9]/g, ""));
-    setDeposit(formatNumber(toKRW(numericValue)));
+    setHandleDepositInput(formatNumber(toKRW(numericValue)));
   };
 
   const handleManualDepositChange = (event: ChangeEvent<HTMLInputElement>) => {
     const rawValue = event.target.value;
     const numericValue = Number(rawValue.replace(/[^0-9]/g, ""));
-    setManualDepositInput(rawValue === "" ? "" : formatNumber(numericValue));
+    setMaxMonthPay(rawValue === "" ? "" : formatNumber(numericValue));
   };
 
   const handleManualToggle = (checked: boolean | "indeterminate") => {
@@ -157,14 +167,14 @@ export const CostFilter = () => {
           <Input
             size="default"
             variant="default"
-            value={deposit}
+            value={maxDeposit}
             disabled={!isManualDeposit}
             inputMode="numeric"
             onChange={handleDepositChangeText}
             className="text-lg font-semibold leading-[140%] tracking-[-0.01em]"
           />
           <p className="text-xs font-medium leading-[140%] tracking-[-0.01em] text-greyscale-grey-400">
-            {deposit}만원
+            {maxDeposit}만원
           </p>
         </div>
       </section>
@@ -181,23 +191,23 @@ export const CostFilter = () => {
               size="default"
               variant="default"
               onChange={handleManualDepositChange}
-              value={manualDepositInput}
+              value={maxMonthPay}
               inputMode="numeric"
               className="text-lg font-semibold leading-[140%] tracking-[-0.01em]"
             />
             <p className="text-xs font-medium leading-[140%] tracking-[-0.01em] text-greyscale-grey-400">
-              {manualDepositInput} 만원
+              {maxMonthPay} 만원
             </p>
           </div>
         </div>
       </section>
 
-      <div className="mt-auto pt-8">
+      <div className="mt-auto">
         <button
           type="button"
           className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
         >
-          00개의 단지가 있어요
+          {filteredCount}개의 단지가 있어요
         </button>
       </div>
     </div>

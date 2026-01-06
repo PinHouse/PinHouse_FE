@@ -30,11 +30,25 @@ export const useListingDetailBasic = (id: string) => {
   const sortType = useListingsDetailTypeStore(state => state.sortType);
   const distance = useListingDetailFilter(state => state.distance);
   const typeCode = useListingDetailFilter(state => state.typeCode);
-  const debouncedDistance = useDebounce(distance, 500);
+  const maxDeposit = useListingDetailFilter(state => state.maxDeposit);
+  const maxMonthPay = useListingDetailFilter(state => state.maxMonthPay);
   const region = useListingDetailFilter(state => state.region);
-
+  const debouncedDistance = useDebounce(distance, 500);
+  const debouncedMaxDeposit = useDebounce(maxDeposit, 500);
+  const debouncedMaxMonthPay = useDebounce(maxMonthPay, 500);
+  console.log(debouncedMaxDeposit, debouncedMaxMonthPay);
   return useQuery<ListingDetailResponseWithColor>({
-    queryKey: ["listingDetailBasic", id, pinPointId, sortType, debouncedDistance, region, typeCode],
+    queryKey: [
+      "listingDetailBasic",
+      id,
+      pinPointId,
+      sortType,
+      debouncedDistance,
+      region,
+      typeCode,
+      debouncedMaxDeposit,
+      debouncedMaxMonthPay,
+    ],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
     retry: false,
@@ -49,8 +63,8 @@ export const useListingDetailBasic = (id: string) => {
         sortType,
         pinPointId,
         transitTime: debouncedDistance,
-        maxDeposit: null,
-        maxMonthPay: null,
+        maxDeposit: Number(debouncedMaxDeposit),
+        maxMonthPay: Number(debouncedMaxMonthPay),
         region: region,
         typeCode: typeCode,
         facilities: [],
