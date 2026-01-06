@@ -19,7 +19,6 @@ import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
 import {
   INFRA_ENVIRONMENT_CONFIG,
   INFRA_LABEL_TO_KEY,
-  useListingDetailCountStore,
   useListingDetailFilter,
   useListingsDetailTypeStore,
 } from "@/src/features/listings/model";
@@ -30,11 +29,12 @@ export const useListingDetailBasic = (id: string) => {
   const pinPointId = useOAuthStore(state => state.pinPointId);
   const sortType = useListingsDetailTypeStore(state => state.sortType);
   const distance = useListingDetailFilter(state => state.distance);
+  const typeCode = useListingDetailFilter(state => state.typeCode);
   const debouncedDistance = useDebounce(distance, 500);
   const region = useListingDetailFilter(state => state.region);
 
   return useQuery<ListingDetailResponseWithColor>({
-    queryKey: ["listingDetailBasic", id, pinPointId, sortType, debouncedDistance, region],
+    queryKey: ["listingDetailBasic", id, pinPointId, sortType, debouncedDistance, region, typeCode],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
     retry: false,
@@ -52,7 +52,7 @@ export const useListingDetailBasic = (id: string) => {
         maxDeposit: null,
         maxMonthPay: null,
         region: region,
-        typeCode: [],
+        typeCode: typeCode,
         facilities: [],
         targetType: [],
       });
