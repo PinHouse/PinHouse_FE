@@ -9,6 +9,11 @@ export const HTTP_METHODS = {
 } as const;
 
 /**
+ * HOME API 엔드포인드
+ */
+export const HOME_NOTICE_ENDPOINT = "/home/notice";
+
+/**
  * 공고 API 엔드포인트
  */
 export const NOTICE_ENDPOINT = "/notices";
