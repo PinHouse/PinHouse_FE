@@ -12,7 +12,7 @@ export const useListingsDetailTypeStore = create<ListingSearchState>(set => ({
 }));
 
 export const useListingDetailFilter = create<ListingDetailFilterState>(set => ({
-  distance: 0,
+  distance: 120,
   region: [],
   typeCode: [],
   maxDeposit: "0",
