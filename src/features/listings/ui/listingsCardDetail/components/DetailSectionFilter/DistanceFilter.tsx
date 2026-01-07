@@ -8,7 +8,6 @@ import { useListingDetailCountStore, useListingDetailFilter } from "@/src/featur
 
 const SLIDER_MIN = 0;
 const SLIDER_MAX = 120;
-const DEFAULT_DISTANCE = 30;
 
 export const DistanceFilter = () => {
   const { data, isFetching } = useListingFilterDetail<PinPointPlace>({
@@ -41,13 +40,13 @@ export const DistanceFilter = () => {
   };
 
   const sliderValue = [distance];
-  const formatMinutes = (value: number) => value.toString().padStart(2, "0");
+  const formatMinutes = (value: number) => value.toString().padStart(1, "0");
   const formattedDistance = formatMinutes(distance);
   const hasPinPoints = pinPointList.myPinPoint.length > 0;
   const pinPoint = pinPointList.myPinPoint[0];
   const defaultPinPointName = pinPoint?.value || pinPoint?.description;
   const dropDownTriggerLabel = hasPinPoints ? defaultPinPointName : "핀포인트를 추가해 주세요";
-
+  console.log(sliderValue);
   return (
     <div className="flex h-full flex-col">
       <section className="flex flex-col gap-3">
