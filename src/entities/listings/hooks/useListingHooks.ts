@@ -82,11 +82,6 @@ export const useListingListInfiniteQuery = () => {
   });
 };
 
-type LikeContext = {
-  prevListingList?: InfiniteData<ListingListPage>;
-  prevListingSearch?: InfiniteData<ListingListPage>;
-};
-
 export const useToogleLike = (resetQuery: string[]) => {
   const queryClient = useQueryClient();
 

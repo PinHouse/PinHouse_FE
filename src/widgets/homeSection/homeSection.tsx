@@ -1,126 +1,32 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Alram, Hambarger, Search } from "@/src/assets/icons/home";
+import { Search } from "@/src/assets/icons/home";
 import { PinhouseLogo } from "@/src/assets/icons/logo/pinHouseLogo";
-import {
-  QuickSearchRecommendCardProps,
-  QuickSearchResultBottomSheet,
-} from "@/src/features/quickSearch";
-import { cn } from "@/lib/utils";
-
-const QUICK_STATS = [
-  {
-    id: "pinpoint",
-    label: "핀포인트",
-    value: "핀포인트 한남",
-  },
-  {
-    id: "wish-time",
-    label: "최대시간",
-    value: "00시간 00분",
-  },
-] as const;
-
-const ACTION_CARDS = [
-  {
-    id: "pinpoint-base",
-    title: "핀포인트별 기준",
-    subtitle: "핀포인트 기준 공고를 확인해보세요",
-    badge: "임포인트별 기준",
-    highlight: "00건",
-    tag: "업데이트 중",
-    theme: "primary" as const,
-  },
-  {
-    id: "qualification-base",
-    title: "자격조건 기준",
-    subtitle: "내 자격조건에 맞는 공고를 모아봤어요",
-    badge: "자격조건 기준",
-    highlight: "00건",
-    tag: "예상 경쟁률",
-    theme: "warning" as const,
-  },
-] as const;
+import { HomeScreenHomeIcon } from "@/src/assets/icons/home/home";
+import { HomeScreenTask } from "@/src/assets/icons/home/homeScreenTask";
+import { LeftButton } from "@/src/assets/icons/button";
+import { useNoticeInfinite } from "@/src/entities/home/hooks/homeHooks";
+import { HomeScreenLogo } from "@/src/assets/icons/home/homeScreenLogo";
 
 const PERSONAL_SHORTCUTS = [
   {
     id: "tour",
     title: "나에게 맞는 방 둘러보기",
-    description: "내 조건에 맞는 공고를 알려드릴게요",
+    description: "예산·거리·주변 환경을 기반으로\n나의 조건에 맞는 방을 탐색해 보세요",
+    icon: <HomeScreenHomeIcon />,
+    button: <LeftButton width={25} />,
   },
   {
     id: "save-condition",
-    title: "나의 조건 저장하기",
-    description: "지원했던 조건을 저장해두고 비교해보세요",
+    title: "자격진단 하러가기",
+    description: "나이·소득·자산·결혼 여부에 따른 조건을\n자격진단으로 맞는 공고를 확인해 보세요",
+    icon: <HomeScreenTask />,
+    button: <LeftButton width={25} />,
   },
 ] as const;
-
-const URGENT_NOTICES = [
-  {
-    id: "notice-1",
-    complexName: "대한방 나비타운",
-    region: "대전광역시 서구",
-    dueText: "D-3",
-    status: "공고 모집 중",
-  },
-  {
-    id: "notice-2",
-    complexName: "공공임대 고덕자이",
-    region: "서울시 강동구",
-    dueText: "D-1",
-    status: "26평, 48세대",
-  },
-  {
-    id: "notice-3",
-    complexName: "행복주택 별빛채",
-    region: "수원시 팔달구",
-    dueText: "D-5",
-    status: "경쟁률 4:1",
-  },
-] as const;
-
-const RECOMMENDATION_CARDS: QuickSearchRecommendCardProps[] = [
-  {
-    tag: "대학생",
-    complexName: "행복주택 별빛채 5단지",
-    distanceHours: 0,
-    distanceMinutes: 18,
-    deposit: 1200,
-    monthlyRent: 35,
-    exclusiveArea: 59,
-    recruitmentUnits: 50,
-    infrastructureTags: ["편의점 2분", "지하철 도보 8분"],
-  },
-  {
-    tag: "사회초년생",
-    complexName: "공공임대 고덕자이",
-    distanceHours: 0,
-    distanceMinutes: 25,
-    deposit: 1500,
-    monthlyRent: 42,
-    exclusiveArea: 74,
-    recruitmentUnits: 72,
-    infrastructureTags: ["초등학교", "대형마트"],
-  },
-  {
-    tag: "신혼부부",
-    complexName: "위례 행복주택 2블럭",
-    distanceHours: 0,
-    distanceMinutes: 31,
-    deposit: 2200,
-    monthlyRent: 55,
-    exclusiveArea: 84,
-    recruitmentUnits: 20,
-    infrastructureTags: ["공원", "카페거리"],
-  },
-];
 
 export const HomeSection = () => {
-  const [isBottomSheetOpen, setBottomSheetOpen] = useState(true);
-  const recommendCards = useMemo(() => RECOMMENDATION_CARDS, []);
-
   return (
     <section className="relative min-h-screen w-full bg-greyscale-grey-25 pb-[140px] text-greyscale-grey-900">
       <div className="flex flex-col pb-6 pt-8">
@@ -128,12 +34,16 @@ export const HomeSection = () => {
           <HomeHeader />
           <HomeHero userName="홍길동" />
         </div>
-        <div className="flex flex-col gap-3 border-b-8 border-greyscale-grey-75 px-4">
+        <div className="flex flex-col gap-3 border-b-8 border-greyscale-grey-50 px-4">
           <QuickStatsList />
           <ActionCardList />
         </div>
-        {/* <PersonalShortcutList />
-        <UrgentNoticeList /> */}
+        <div className="border-b-8 border-greyscale-grey-50 p-4">
+          <PersonalShortcutList />
+        </div>
+        <div className="p-5">
+          <UrgentNoticeList />
+        </div>
       </div>
 
       {/* <div className="fixed bottom-0 left-1/2 z-40 w-full max-w-[768px] -translate-x-1/2 px-5 pb-6">
@@ -160,10 +70,9 @@ export const HomeSection = () => {
 const HomeHeader = () => {
   return (
     <header className="flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <PinhouseLogo className="h-7 w-auto" />
+      <div className="flex items-center gap-1">
+        <HomeScreenLogo /> <PinhouseLogo className="h-7 w-auto" />
       </div>
-
       <div className="flex items-center gap-3">
         <button aria-label="검색">
           <Search />
@@ -236,23 +145,34 @@ const QuickStatsList = () => {
 
 const ActionCardList = () => {
   return (
-    <div className="mb-4 flex gap-3">
-      <div className="flex flex-1 flex-col gap-3 rounded-lg bg-primary-blue-300 p-4">
+    <div className="mb-4 flex gap-4">
+      <div className="flex min-h-[88px] flex-1 flex-col justify-between rounded-lg bg-primary-blue-300 px-4 py-3">
         <div className="flex items-center justify-between text-white">
-          <p>핀포인트 기준</p>
-          <p>아이콘</p>
+          <p className="text-sm font-bold leading-tight opacity-[0.7]">핀포인트 기준</p>
+          <div className="flex items-center justify-center">아이콘</div>
         </div>
-        <div className="flex text-xl font-bold text-white">
-          <p>00건</p>
-        </div>
+
+        <p className="text-xl font-bold leading-tight text-white">00건</p>
       </div>
-      <div className="flex flex-1 flex-col gap-3 rounded-lg bg-orange-300 p-4">
+
+      <div
+        className="flex min-h-[88px] flex-1 flex-col justify-between rounded-lg px-4 py-3"
+        style={{ background: "#FFBA18" }}
+      >
         <div className="flex items-center justify-between text-white">
-          <p>자격진단 기준</p>
-          <p>아이콘</p>
+          <p className="text-sm font-bold leading-tight opacity-[0.7]">자격진단 기준</p>
+
+          <div className="flex items-center justify-center">아이콘</div>
         </div>
-        <div className="flex text-xl font-bold text-white">
-          <p>00건</p>
+
+        <div className="flex gap-2 text-xl leading-tight">
+          <p className="font-bold text-white">00건</p>
+          <span
+            className="flex items-center rounded-xl bg-greyscale-grey-25 p-1 text-xs font-bold"
+            style={{ color: "#FFBA18" }}
+          >
+            <p>0% 완료</p>
+          </span>
         </div>
       </div>
     </div>
@@ -261,21 +181,25 @@ const ActionCardList = () => {
 
 const PersonalShortcutList = () => {
   return (
-    <section className="flex flex-col gap-3 rounded-3xl bg-white p-5">
-      <p className="text-sm font-semibold text-greyscale-grey-900">
-        나에게 딱 맞는 지원준비 가이드
-      </p>
+    <section className="flex flex-col gap-3 rounded-3xl">
       {PERSONAL_SHORTCUTS.map(item => (
         <button
           key={item.id}
-          className="flex items-center justify-between rounded-2xl border border-greyscale-grey-50 px-4 py-3 text-left"
+          className="flex items-center gap-2 rounded-2xl border border-greyscale-grey-50 bg-white p-4 text-left"
           type="button"
         >
-          <div>
+          <div>{item.icon}</div>
+
+          <div className="flex flex-col gap-1">
             <p className="text-sm font-semibold text-greyscale-grey-900">{item.title}</p>
-            <p className="text-xs text-greyscale-grey-500">{item.description}</p>
+            <p className="whitespace-pre-line text-xs text-greyscale-grey-500">
+              {item.description}
+            </p>
           </div>
-          <span className="text-lg text-greyscale-grey-400">›</span>
+
+          <span className="flex flex-1 justify-end text-lg text-greyscale-grey-400">
+            <div className="rotate-180">{item.button}</div>
+          </span>
         </button>
       ))}
     </section>
@@ -283,19 +207,22 @@ const PersonalShortcutList = () => {
 };
 
 const UrgentNoticeList = () => {
+  const { data } = useNoticeInfinite();
+  const contents = data?.pages?.flatMap(page => page.content) ?? [];
+
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold text-greyscale-grey-900">마감임박 공고</p>
-          <p className="text-xs text-greyscale-grey-500">따끈한 공고를 놓치지 마세요</p>
+          <p className="text-lg font-bold text-greyscale-grey-900">마감임박 공고</p>
+          {/* <p className="text-xs text-greyscale-grey-500">따끈한 공고를 놓치지 마세요</p> */}
         </div>
         <Link href="/listings" className="text-xs font-semibold text-primary-blue-300">
           전체보기
         </Link>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+      {/* <div className="flex flex-col gap-3 overflow-x-auto pb-2 scrollbar-hide">
         {URGENT_NOTICES.map(item => (
           <div key={item.id} className="min-w-[220px] rounded-3xl bg-white p-4 shadow-md-16">
             <div className="flex items-center justify-between">
@@ -312,7 +239,7 @@ const UrgentNoticeList = () => {
             </button>
           </div>
         ))}
-      </div>
+      </div> */}
     </section>
   );
 };
