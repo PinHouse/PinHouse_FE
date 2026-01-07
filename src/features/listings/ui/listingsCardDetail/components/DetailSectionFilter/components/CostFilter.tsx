@@ -34,6 +34,8 @@ export const CostFilter = () => {
   });
   const DEPOSIT_MIN = data?.minPrice ?? 0;
   const DEPOSIT_MAX = data?.maxPrice ?? 0;
+  const HISTOGRAM_MIN = formatNumber(toKRW(DEPOSIT_MIN));
+  const HISTOGRAM_MAX = formatNumber(toKRW(DEPOSIT_MAX));
   const AVG_COST = data?.avgPrice ?? 0;
   const [isManualDeposit, setIsManualDeposit] = useState(false);
   const { setMaxDeposit, maxDeposit, maxMonthPay, setMaxMonthPay } = useListingDetailFilter();
@@ -142,8 +144,8 @@ export const CostFilter = () => {
         <div className="rounded-2xl px-2 pb-6 pt-5">
           <div className="relative h-[120px] w-full">
             <HistogramSlider
-              minLabel={DEPOSIT_MIN + "만"}
-              maxLabel={DEPOSIT_MAX + "만"}
+              minLabel={HISTOGRAM_MIN + " 만"}
+              maxLabel={HISTOGRAM_MAX + " 만"}
               disabled={isManualDeposit}
               handleDepositChange={handleDepositChange}
               activeIndex={activeIndex}
