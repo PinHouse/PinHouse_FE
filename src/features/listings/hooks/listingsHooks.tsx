@@ -1,6 +1,7 @@
 import {
   ListingItemMinimal,
   ListingNormalized,
+  ListingUnion,
   RentType,
   ToggleLikeVariables,
 } from "@/src/entities/listings/model/type";
@@ -147,18 +148,18 @@ export const HouseICons = (item: ListingNormalized) => {
   return <div>{icon}</div>;
 };
 
-export const HouseRental = (item: ListingNormalized) => {
+type HouseRentalProps = ListingNormalized & {
+  query: "listingListInfinite" | "listingSearchInfinite" | "notice";
+};
+//  ListingNormalized
+
+export const HouseRental = ({ query, ...item }: HouseRentalProps) => {
   const rantalText = getListingsRental(item.type);
   if (!rantalText) return null;
   return (
     <span className="flex w-full justify-between">
       <ListingBgBookMark item={item.type} bg={rantalText.bg} text={rantalText.text} border="none" />
-      <LikeType
-        liked={item.liked}
-        id={item.id}
-        type={"NOTICE"}
-        resetQuery={["listingListInfinite", "listingSearchInfinite"]}
-      />
+      <LikeType liked={item.liked} id={item.id} type={"NOTICE"} resetQuery={[query]} />
     </span>
   );
 };

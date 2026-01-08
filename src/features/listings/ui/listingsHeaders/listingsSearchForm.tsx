@@ -1,15 +1,16 @@
 // app/listings/search/page.tsx
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LeftButton } from "@/src/assets/icons/button";
-import { useSearchState } from "@/src/shared/hooks/store";
+import { useRouteStore } from "@/src/features/home/model/homeStore";
 
 export const SearchForm = () => {
   const router = useRouter();
-
+  const { prevPath, reset } = useRouteStore();
   const handleRouter = () => {
-    router.push(`/listings`);
+    router.push(prevPath ? prevPath : `/listings`);
+    reset();
   };
 
   return (
