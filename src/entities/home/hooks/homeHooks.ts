@@ -15,10 +15,11 @@ export const useNoticeInfinite = () => {
   >({
     queryKey: ["notice", "pinpoint", pinpointId],
     initialPageParam: 1,
+    enabled: !!pinpointId,
     queryFn: ({ pageParam }) =>
       getNoticeByPinPoint({
         params: {
-          pinpointId: "83ec36ce-8fc1-4f62-8983-397c2729fc22",
+          pinpointId: pinpointId,
           page: Number(pageParam),
           offSet: 10,
         },

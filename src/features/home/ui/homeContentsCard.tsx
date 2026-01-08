@@ -1,16 +1,13 @@
 "use client";
 import { ListingUnion } from "@/src/entities/listings/model/type";
-import { ListingBookMark } from "./listingsBookMark";
-import { HighlightCenteredText, HouseICons, HouseRental } from "../../hooks/listingsHooks";
 import { formatApplyPeriod } from "@/src/shared/lib/utils";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { normalizeListing } from "../../model";
+import { useRouter } from "next/navigation";
+import { normalizeListing } from "../../listings/model";
+import { ListingBookMark } from "../../listings/ui/listingsContents/listingsBookMark";
+import { HouseICons, HouseRental } from "../../listings/hooks/listingsHooks";
 
-export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get("query") ?? "";
+export const HomeContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
   const router = useRouter();
-  const path = usePathname().includes("/search");
 
   const handleRouter = (id: string) => {
     router.push(`/listings/${id}`);
@@ -38,19 +35,16 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
               </div>
             </div>
 
-            <div className="flex w-[65%] flex-col justify-start gap-2 pb-3 pl-4 pr-4 pt-2">
+            <div className="flex w-[65%] flex-col justify-start gap-2 rounded-br-xl rounded-tr-xl bg-white pb-3 pl-4 pr-4 pt-2">
               <div className="flex items-baseline gap-2">
-                <HouseRental
-                  {...normalized}
-                  query={path ? "listingSearchInfinite" : "listingListInfinite"}
-                />
+                <HouseRental {...normalized} query="notice" />
               </div>
               <div className="max-w-full">
                 <p
                   className="truncate text-sm font-semibold"
                   onClick={() => handleRouter(normalized.id)}
                 >
-                  <HighlightCenteredText text={normalized.name} keyword={keyword} />
+                  {normalized.name}
                 </p>
               </div>
               <div className="max-w-full">
