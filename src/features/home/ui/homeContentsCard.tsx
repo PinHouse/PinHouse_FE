@@ -5,11 +5,14 @@ import { useRouter } from "next/navigation";
 import { normalizeListing } from "../../listings/model";
 import { ListingBookMark } from "../../listings/ui/listingsContents/listingsBookMark";
 import { HouseICons, HouseRental } from "../../listings/hooks/listingsHooks";
+import { useRouteStore } from "../model/homeStore";
 
 export const HomeContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
   const router = useRouter();
+  const { setPrevPath } = useRouteStore();
 
   const handleRouter = (id: string) => {
+    setPrevPath("/home");
     router.push(`/listings/${id}`);
   };
 

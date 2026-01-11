@@ -9,8 +9,9 @@ export const SearchForm = () => {
   const router = useRouter();
   const { prevPath, reset } = useRouteStore();
   const handleRouter = () => {
-    router.push(prevPath ? prevPath : `/listings`);
+    const nextPath = prevPath ?? "/listings";
     reset();
+    router.push(nextPath);
   };
 
   return (

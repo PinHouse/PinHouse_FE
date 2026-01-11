@@ -9,6 +9,7 @@ export interface NoticeByPinPointQuery {
 }
 
 export interface SliceResponse<T> {
+  region: string;
   content: T[];
   hasNext: boolean;
   pages: number;

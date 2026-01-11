@@ -1,13 +1,16 @@
 import { cn } from "@/lib/utils";
+import { LeftButton } from "@/src/assets/icons/button";
 import { useNoticeInfinite } from "@/src/entities/home/hooks/homeHooks";
 import { HomeContentsCard } from "@/src/features/home";
 import { ListingNoSearchResult } from "@/src/features/listings";
 import { Button } from "@/src/shared/lib/headlessUi";
+import { AlignRight, ArrowRight, MoveRightIcon } from "lucide-react";
 import Link from "next/link";
 
 export const UrgentNoticeList = () => {
   const { data, isFetchingNextPage, isError, hasNextPage, fetchNextPage } = useNoticeInfinite();
   const contents = data?.pages?.flatMap(page => page.content) ?? [];
+  const region = data?.pages?.flatMap(page => page.region) ?? [];
 
   return (
     <section className={cn("flex flex-col", contents.length >= 2 ? "pb-[55px]" : "")}>
@@ -15,9 +18,12 @@ export const UrgentNoticeList = () => {
         <div>
           <p className="mb-3 text-lg font-bold text-greyscale-grey-900">마감임박 공고</p>
         </div>
-        <Link href="/listings" className="text-xs font-semibold text-primary-blue-300">
-          전체보기
-        </Link>
+        <div className="min-w-auto text-xs font-semibold">
+          <Link href="/listings" className="flex items-center text-greyscale-grey-400">
+            <span>{region}</span>
+            <LeftButton width={20} height={20} className="rotate-180" />
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-col">
@@ -46,10 +52,6 @@ export const UrgentNoticeList = () => {
           </div>
         </div>
       )}
-
-      {/* {!hasNextPage && !isError && data && (
-        <div className="mt-1 text-center text-sm text-gray-400">더 이상 데이터가 없습니다.</div>
-      )} */}
     </section>
   );
 };
