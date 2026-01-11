@@ -16,7 +16,7 @@ const ChoosePinPoint = () => {
     if (!pinPointsData) return { myHome: [] };
 
     return {
-      myHome: pinPointsData.map(pinPoint => ({
+      myHome: pinPointsData.pinPoints.map(pinPoint => ({
         key: pinPoint.id,
         value: pinPoint.name,
         description: pinPoint.address,
@@ -26,8 +26,8 @@ const ChoosePinPoint = () => {
 
   // 초기값 설정: 데이터가 로드되고 store에 값이 없으면 첫 번째 항목을 저장
   useEffect(() => {
-    if (pinPointsData && pinPointsData.length > 0 && !pinPointId) {
-      setPinPointId(pinPointsData[0].id);
+    if (pinPointsData && pinPointsData.pinPoints.length > 0 && !pinPointId) {
+      setPinPointId(pinPointsData.pinPoints[0].id);
     }
   }, [pinPointsData, pinPointId, setPinPointId]);
 
