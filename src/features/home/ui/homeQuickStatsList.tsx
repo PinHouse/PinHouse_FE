@@ -9,48 +9,53 @@ import { useListingFilterDetail } from "@/src/entities/listings/hooks/useListing
 import { PinPointPlace } from "@/src/entities/listings/model/type";
 import { getDefaultPinPointLabel, mapPinPointToOptions } from "../../listings/hooks/listingsHooks";
 import { useOAuthStore } from "../../login/model";
+import { DropDown, DropDownProps } from "@/src/shared/ui/dropDown/deafult";
 
 export const QuickStatsList = () => {
   const { data, isFetching } = useListingFilterDetail<PinPointPlace>();
   const { setPinPointId } = useOAuthStore();
+  const [open, setOpen] = useState<boolean>(false);
 
   const pinPointOptions = useMemo(() => mapPinPointToOptions(data?.pinPoints), [data?.pinPoints]);
   const pinPointData = pinPointOptions.myPinPoint;
+  const dropDownTriggerLabel = getDefaultPinPointLabel(pinPointOptions);
+
   const hasPinPoints = pinPointData.length > 0;
 
   return (
-    <div className="relative flex items-center rounded-2xl bg-white px-4 py-4">
-      {/* 핀포인트 */}
-      <div className="flex flex-1 flex-col gap-1">
-        <div className="flex items-center gap-1 text-xs text-greyscale-grey-500">
-          <HomePushPin width={17} height={17} />
-          <span>핀포인트</span>
-        </div>
-        <button className="text-md flex items-center gap-1 font-semibold">
-          경기 성남시 분당
-          <span className="pl-1 text-greyscale-grey-400">
-            <CaretDown />
-          </span>
-        </button>
+    <div className="relative grid grid-cols-2 grid-rows-[auto,1fr] rounded-2xl bg-white p-4">
+      <div className="flex items-center gap-1 text-xs text-greyscale-grey-500">
+        <HomePushPin width={17} height={17} />
+        <span>핀포인트</span>
       </div>
 
-      {/* Divider */}
-      <span className="pointer-events-none absolute bottom-3 left-1/2 top-3 w-px -translate-x-1/2 bg-greyscale-grey-200" />
+      <div className="flex items-center gap-1 pl-6 text-xs text-greyscale-grey-500">
+        <HomeFiveoclock width={15} height={15} />
+        <span>최대시간</span>
+      </div>
 
-      {/* 최대시간 */}
-      <div className="flex flex-1 flex-col items-start gap-1 pl-8">
-        <div className="flex items-center gap-1 text-xs text-greyscale-grey-500">
-          <HomeFiveoclock width={15} height={15} />
-          <span>최대시간</span>
-        </div>
+      <div className="flex items-center">
+        <DropDown
+          types="myPinPoint"
+          data={pinPointOptions}
+          icon={<CaretDown />}
+          disabled={isFetching || !hasPinPoints}
+          className="border-none pl-0 text-left text-sm"
+        >
+          {dropDownTriggerLabel}
+        </DropDown>
+      </div>
 
-        <button className="flex items-center gap-1 text-lg font-semibold">
+      <div className="flex items-center pl-6">
+        <button className="flex items-center gap-1 text-lg font-semibold leading-none">
           00시간 00분
           <span className="pl-1 text-greyscale-grey-400">
             <CaretDown />
           </span>
         </button>
       </div>
+
+      <span className="pointer-events-none absolute bottom-3 left-1/2 top-3 w-px -translate-x-1/2 bg-greyscale-grey-200" />
     </div>
   );
 };

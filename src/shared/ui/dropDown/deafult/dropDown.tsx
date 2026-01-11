@@ -15,6 +15,7 @@ export const DropDown = ({
   types,
   children,
   data,
+  icon,
   onChange,
   ...props
 }: DropDownProps) => {
@@ -48,7 +49,9 @@ export const DropDown = ({
           >
             <span className="flex w-full items-center justify-between">
               {selected || children}
-              {variant !== "menu" && (open ? <UpButton /> : <DownButton />)}
+              {icon && <span className="shrink-0">{icon}</span>}
+              {/* {variant !== "menu" && (open ? <UpButton /> : <DownButton />)} */}
+              {variant !== "menu" && !icon && (open ? <UpButton /> : <DownButton />)}
             </span>
           </button>
         </DropdownMenuPrimitive.Trigger>
