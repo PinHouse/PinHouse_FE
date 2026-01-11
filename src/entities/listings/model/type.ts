@@ -568,14 +568,18 @@ export const endPoint = {
 
 type EndPointKey = keyof typeof endPoint;
 
-// 사용처: 핀포인트 목록/상세 데이터 타입 (pinpoint 관련 API)
-export interface PinPointPlace {
+type PionPointData = {
   id: string;
   name: string;
   address: string;
   longitude: number;
   latitude: number;
   isFirst: boolean;
+};
+// 사용처: 핀포인트 목록/상세 데이터 타입 (pinpoint 관련 API)
+export interface PinPointPlace {
+  userName: string;
+  pinPoints: PionPointData[];
 }
 
 // 사용처: 공고 단지 지역 응답에서 시 단위 그룹 (regionFilter/areaFilter)

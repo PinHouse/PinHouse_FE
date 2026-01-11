@@ -42,10 +42,8 @@ export const DetailFilterSheet = () => {
               <button onClick={closeSheet}>✕</button>
             </div>
 
-            {/* 전체 필터 탭 (항상 표시) */}
             <DetailFilterTab />
 
-            {/* section별 콘텐츠 */}
             <div className="flex-1 overflow-y-auto p-5">
               <motion.div
                 key={section}

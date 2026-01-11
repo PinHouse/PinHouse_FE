@@ -2,6 +2,7 @@ import {
   ListingItemMinimal,
   ListingNormalized,
   ListingUnion,
+  PinPointPlace,
   RentType,
   ToggleLikeVariables,
 } from "@/src/entities/listings/model/type";
@@ -216,4 +217,37 @@ export const ComplexesInfo = ({
 
 export const sortTypeChange = (sort: boolean) => {
   return sort ? "주변환경 매칭순" : " 핀포인트 거리순";
+};
+
+export type PinpointOptionValue = {
+  key: string;
+  value: string;
+  description?: string;
+};
+
+export type PinPointOption = {
+  myPinPoint: PinpointOptionValue[];
+};
+
+export const mapPinPointToOptions = (data?: PinPointPlace["pinPoints"]): PinPointOption => {
+  const pinPointList = {
+    myPinPoint:
+      data?.map(item => ({
+        key: item.id,
+        value: item.name,
+        description: item.address,
+      })) ?? [],
+  };
+
+  return pinPointList;
+};
+
+export const getDefaultPinPointLabel = (
+  options: PinPointOption,
+  fallback = "핀포인트를 추가해 주세요"
+) => {
+  const opt = options.myPinPoint;
+  if (opt.length === 0) return fallback;
+  const first = opt[0];
+  return first.value || first.description || fallback;
 };
