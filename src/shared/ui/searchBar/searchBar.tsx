@@ -2,15 +2,15 @@
 
 import { cn } from "@/src/shared/lib/utils";
 
-import { Search } from "@/src/assets/icons/home";
 import { XButton } from "@/src/assets/icons/button";
 import { Input } from "../input/deafult";
 import { SearchBarProps } from "./type";
 import { searchBarVariants } from "./searchBar.variants";
 import { useSearchBar } from "./useSearchBar";
+import { SearchLine } from "@/src/assets/icons/home";
 
 export const SearchBar = ({
-  leftIcon = <Search className="h-5 w-5" />,
+  leftIcon = <SearchLine className="h-5 w-5" />,
   rightIcon,
   variant = "default",
   state,
@@ -55,7 +55,7 @@ export const SearchBar = ({
   const showFilledXButton = isCapsule && currentState === "filled";
   const showInputXButton = isCapsule && hasValue && isFocused;
 
-  const defaultLeftIcon = leftIcon ?? <Search className="h-5 w-5" />;
+  const defaultLeftIcon = leftIcon ?? <SearchLine className="h-5 w-5" />;
 
   const dropdownMenu = isOpen && filteredOptions.length > 0 && (
     <ul
@@ -106,7 +106,7 @@ export const SearchBar = ({
           />
           {showRightSearchIcon && (
             <div className="pointer-events-none flex-shrink-0">
-              {rightIcon || <Search className="h-5 w-5 text-greyscale-grey-400" />}
+              {rightIcon || <SearchLine className="h-5 w-5 text-greyscale-grey-400" />}
             </div>
           )}
           {showFilledXButton && (
