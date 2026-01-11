@@ -17,7 +17,7 @@ export const HomeSection = () => {
         <div className="flex flex-col pb-6">
           <div className="px-4">
             <HomeHeader />
-            <HomeHero userName="홍길동" />
+            <HomeHero />
           </div>
           <div className="flex flex-col gap-3 border-b-8 border-greyscale-grey-50 px-4">
             <QuickStatsList />

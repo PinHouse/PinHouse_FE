@@ -1,32 +1,26 @@
-import { useMemo, useState } from "react";
 import { useListingFilterDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { PinPointPlace } from "@/src/entities/listings/model/type";
 import { DropDown } from "@/src/shared/ui/dropDown/deafult";
 import { Slider } from "@/src/shared/ui/slider";
 import { useOAuthStore } from "@/src/features/login/model";
 import { useListingDetailCountStore, useListingDetailFilter } from "@/src/features/listings/model";
+import {
+  getDefaultPinPointLabel,
+  mapPinPointToOptions,
+} from "@/src/features/listings/hooks/listingsHooks";
 
 const SLIDER_MIN = 0;
 const SLIDER_MAX = 120;
 
 export const DistanceFilter = () => {
-  const { data, isFetching } = useListingFilterDetail<PinPointPlace>({
-    queryK: "usePinPointList",
-    url: "pinpoint",
-  });
-
+  const { data, isFetching } = useListingFilterDetail<PinPointPlace>();
+  const pinPointData = data?.pinPoints;
+  const pinPointList = mapPinPointToOptions(pinPointData);
+  const dropDownTriggerLabel = getDefaultPinPointLabel(pinPointList);
+  const hasPinPoints = pinPointList.myPinPoint.length > 0;
   const { setPinPointId } = useOAuthStore();
   const { distance, setDistance } = useListingDetailFilter();
   const { filteredCount } = useListingDetailCountStore();
-
-  const pinPointList = {
-    myPinPoint:
-      data?.map(item => ({
-        key: item.id,
-        value: item.name,
-        description: item.address,
-      })) ?? [],
-  };
 
   const onChageValue = (selectedKey: string) => {
     setPinPointId(selectedKey);
@@ -42,11 +36,7 @@ export const DistanceFilter = () => {
   const sliderValue = [distance];
   const formatMinutes = (value: number) => value.toString().padStart(1, "0");
   const formattedDistance = formatMinutes(distance);
-  const hasPinPoints = pinPointList.myPinPoint.length > 0;
-  const pinPoint = pinPointList.myPinPoint[0];
-  const defaultPinPointName = pinPoint?.value || pinPoint?.description;
-  const dropDownTriggerLabel = hasPinPoints ? defaultPinPointName : "핀포인트를 추가해 주세요";
-  console.log(sliderValue);
+
   return (
     <div className="flex h-full flex-col">
       <section className="flex flex-col gap-3">

@@ -197,12 +197,16 @@ export const useListingRouteDetail = <T, TParam extends object>({
   });
 };
 
-export const useListingFilterDetail = <T>({ queryK, url }: UseListingsDetailHooksType) => {
-  return useQuery<IResponse<T[]>, Error, T[]>({
-    queryKey: [queryK],
-    enabled: !!queryK,
+export const useListingFilterDetail = <T>() => {
+  return useQuery<IResponse<T>, Error, T>({
+    queryKey: ["pinpoint"],
     staleTime: 1000 * 60 * 5,
-    queryFn: () => PostBasicRequest<T[], IResponse<T[]>, {}, IResponse<T[]>>(endPoint[url], "get"),
-    select: response => response.data ?? [],
+    queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
+    select: response => {
+      if (response.data === undefined) {
+        throw new Error("Response data is undefined");
+      }
+      return response.data;
+    },
   });
 };
