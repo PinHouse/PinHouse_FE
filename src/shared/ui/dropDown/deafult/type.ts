@@ -1,5 +1,5 @@
 import { VariantProps } from "class-variance-authority";
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import { dropDownVariants } from "./dropDown.variants";
 
 export type PinPoint = {
@@ -18,4 +18,5 @@ export interface DropDownProps<T = PinPoint[]>
   types?: string;
   data: PinPointMap<T>;
   onChange?: (selectedKey: string, selectedValue: string) => void;
+  icon?: ReactNode;
 }

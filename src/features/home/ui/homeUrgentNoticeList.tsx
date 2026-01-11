@@ -47,9 +47,9 @@ export const UrgentNoticeList = () => {
         </div>
       )}
 
-      {!hasNextPage && !isError && data && (
+      {/* {!hasNextPage && !isError && data && (
         <div className="mt-1 text-center text-sm text-gray-400">더 이상 데이터가 없습니다.</div>
-      )}
+      )} */}
     </section>
   );
 };
