@@ -1,12 +1,14 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { ReactNode, useState } from "react";
-import { ComplexesInfo, InfraSheetSection, SheetState } from "../../../model";
+
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { TransportIconRenderer } from "./TransportIconRenderer";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { InfraSheet } from "./infraSheet";
+import { SheetState } from "../../../model";
+import { ComplexesInfo } from "../../../hooks/listingsHooks";
 
 interface DetailSectionProps {
   title: string;
@@ -62,9 +64,10 @@ export const ListingsCardTileDetails = ({
     return <SmallSpinner />;
   }
   return (
-    <div className="mt-3 space-y-4 border-t border-dashed border-greyscale-grey-100 pt-3">
-      <div className="rounded-lg bg-greyscale-grey-25 p-3">
-        <div className="space-y-1 text-xs text-greyscale-grey-600">
+    <div className="border-t border-greyscale-grey-100 bg-bgColor-mute">
+      {/* 기본 정보 */}
+      <div className="border-b border-greyscale-grey-100 bg-greyscale-grey-25">
+        <div className="space-y-1 p-3 text-xs text-greyscale-grey-600">
           {infra?.rentalInfo.map(info => (
             <div key={info.key} className="flex items-center gap-1 leading-relaxed">
               <ComplexesInfo infoKey={info.key} infoValue={info.value} />
@@ -73,70 +76,74 @@ export const ListingsCardTileDetails = ({
         </div>
       </div>
 
-      <DetailSection
-        title="주요 노선"
-        showAction
-        onOpen={() => setSheetState({ open: true, section: "route", listingId: infra.id })}
-      >
-        <div className="rounded-lg border border-greyscale-grey-75 p-3">
-          <div>
-            <p className="text-sm font-medium text-greyscale-grey-600">
-              핀포인트로부터 {route?.totalDistance}Km · 약 {route?.totalTime}
-              거리
-            </p>
+      {/* 주요 노선 */}
+      <div className="border-b border-greyscale-grey-100 p-3">
+        <DetailSection
+          title="주요 노선"
+          showAction
+          onOpen={() => setSheetState({ open: true, section: "route", listingId: infra.id })}
+        >
+          <p className="text-sm font-medium text-greyscale-grey-600">
+            핀포인트로부터 {route?.totalDistance}Km · 약 {route?.totalTime} 거리
+          </p>
 
-            <div className="flex w-full items-center justify-start overflow-hidden pt-2">
-              <TransportIconRenderer totalTime={route?.totalTime} routes={route} />
+          <div className="flex w-full items-center justify-start overflow-hidden pt-2">
+            <TransportIconRenderer totalTime={route?.totalTime} routes={route} />
+          </div>
+        </DetailSection>
+      </div>
+
+      {/* 주변 환경 정보 */}
+      <div className="border-b border-greyscale-grey-100 p-3">
+        <DetailSection
+          title="주변 환경 정보"
+          showAction
+          onOpen={() => setSheetState({ open: true, section: "infra", listingId: infra.id })}
+        >
+          {infraData?.length === 0 ? (
+            <EmptyDetail>주변 정보가 제공되지 않았어요.</EmptyDetail>
+          ) : (
+            <div className="flex flex-wrap gap-1">
+              {infraData?.map(tag => (
+                <TagButton
+                  key={tag}
+                  size="xs"
+                  variant="ghost"
+                  className="rounded border border-greyscale-grey-75 bg-greyscale-grey-75 px-3 py-1 text-xs text-greyscale-grey-700"
+                >
+                  {tag}
+                </TagButton>
+              ))}
             </div>
-          </div>
-        </div>
-      </DetailSection>
+          )}
+        </DetailSection>
+      </div>
 
-      <DetailSection
-        title="주변 환경 정보"
-        showAction
-        onOpen={() => setSheetState({ open: true, section: "infra", listingId: infra.id })}
-      >
-        {infraData?.length === 0 ? (
-          <EmptyDetail>주변 정보가 제공되지 않았어요.</EmptyDetail>
-        ) : (
-          <div className="flex flex-wrap gap-1">
-            {infraData?.map(tag => (
-              <TagButton
-                key={tag}
-                size="xs"
-                variant="ghost"
-                className="rounded border border-greyscale-grey-75 px-3 py-1 text-xs font-semibold text-greyscale-grey-700"
-              >
-                {tag}
-              </TagButton>
-            ))}
-          </div>
-        )}
-      </DetailSection>
-
-      <DetailSection
-        title="방 타입"
-        showAction
-        onOpen={() => setSheetState({ open: true, section: "room", listingId: infra.id })}
-      >
-        {roomTypes.length === 0 ? (
-          <EmptyDetail>방 타입 정보가 제공되지 않았어요.</EmptyDetail>
-        ) : (
-          <div className="flex flex-wrap gap-1">
-            {roomTypes?.map(tag => (
-              <TagButton
-                key={tag}
-                size="xs"
-                variant="ghost"
-                className="rounded border border-greyscale-grey-75 px-3 py-1 text-xs font-semibold text-greyscale-grey-700"
-              >
-                {tag}
-              </TagButton>
-            ))}
-          </div>
-        )}
-      </DetailSection>
+      {/* 방 타입 */}
+      <div className="border-b border-greyscale-grey-100 p-3">
+        <DetailSection
+          title="방 타입"
+          showAction
+          onOpen={() => setSheetState({ open: true, section: "room", listingId: infra.id })}
+        >
+          {roomTypes.length === 0 ? (
+            <EmptyDetail>방 타입 정보가 제공되지 않았어요.</EmptyDetail>
+          ) : (
+            <div className="flex flex-wrap gap-1">
+              {roomTypes.map(tag => (
+                <TagButton
+                  key={tag}
+                  size="xs"
+                  variant="ghost"
+                  className="rounded border border-greyscale-grey-100 bg-white px-3 py-1 text-xs font-bold text-greyscale-grey-400"
+                >
+                  {tag}
+                </TagButton>
+              ))}
+            </div>
+          )}
+        </DetailSection>
+      </div>
 
       <InfraSheet sheetState={sheetState} onClose={() => setSheetState({ open: false })} />
     </div>

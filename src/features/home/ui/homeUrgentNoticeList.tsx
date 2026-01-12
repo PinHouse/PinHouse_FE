@@ -1,0 +1,57 @@
+import { cn } from "@/lib/utils";
+import { LeftButton } from "@/src/assets/icons/button";
+import { useNoticeInfinite } from "@/src/entities/home/hooks/homeHooks";
+import { HomeContentsCard } from "@/src/features/home";
+import { ListingNoSearchResult } from "@/src/features/listings";
+import { Button } from "@/src/shared/lib/headlessUi";
+import { AlignRight, ArrowRight, MoveRightIcon } from "lucide-react";
+import Link from "next/link";
+
+export const UrgentNoticeList = () => {
+  const { data, isFetchingNextPage, isError, hasNextPage, fetchNextPage } = useNoticeInfinite();
+  const contents = data?.pages?.flatMap(page => page.content) ?? [];
+  const region = data?.pages?.flatMap(page => page.region) ?? [];
+
+  return (
+    <section className={cn("flex flex-col", contents.length >= 2 ? "pb-[55px]" : "")}>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="mb-3 text-lg font-bold text-greyscale-grey-900">마감임박 공고</p>
+        </div>
+        <div className="min-w-auto text-xs font-semibold">
+          <Link href="/listings" className="flex items-center text-greyscale-grey-400">
+            <span>{region}</span>
+            <LeftButton width={20} height={20} className="rotate-180" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="flex flex-col">
+        <HomeContentsCard data={contents} />
+      </div>
+
+      {isFetchingNextPage && (
+        <div className="text-center text-sm text-gray-400">불러오는 중...</div>
+      )}
+
+      {isError && (
+        <div className="flex h-full flex-col items-center justify-center gap-5">
+          <div>
+            <ListingNoSearchResult text="정보를 가져오지 못했어요 <br /> 네트워크 상태를 확인하거나 잠시 후 다시 시도해주세요." />
+          </div>
+          <div className="flex items-center justify-center">
+            <Button
+              variant="solid"
+              size="sm"
+              theme="mainBlue"
+              onClick={() => fetchNextPage()}
+              className="px-5"
+            >
+              재시도
+            </Button>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+};

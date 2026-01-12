@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export const Person = (props: SVGProps<SVGSVGElement>) => {
+export const PersonLine = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="21"

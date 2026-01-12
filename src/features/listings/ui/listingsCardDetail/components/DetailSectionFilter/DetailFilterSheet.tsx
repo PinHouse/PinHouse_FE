@@ -8,6 +8,7 @@ import { parseDetailSection } from "@/src/features/listings/model";
 import { DistanceFilter } from "./DistanceFilter";
 import { CostFilter } from "./components/CostFilter";
 import { RegionFilter } from "./components/regionFilter";
+import { AreaFilter } from "./components/areaFilter";
 
 export const DetailFilterSheet = () => {
   const open = useDetailFilterSheetStore(s => s.open);
@@ -41,25 +42,22 @@ export const DetailFilterSheet = () => {
               <button onClick={closeSheet}>✕</button>
             </div>
 
-            {/* 전체 필터 탭 (항상 표시) */}
             <DetailFilterTab />
 
-            {/* section별 콘텐츠 */}
-            <div className="flex-1 overflow-y-auto px-5 py-5">
+            <div className="flex-1 overflow-y-auto p-5">
               <motion.div
                 key={section}
                 initial={{ x: 20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -100, opacity: 0 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="h-full"
               >
                 {section === "distance" && <DistanceFilter />}
                 {section === "cost" && <CostFilter />}
                 {section === "region" && <RegionFilter />}
-
-                {/* {section === "area" && <AreaFilter />}
-              {section === "around" && <AroundFilter />} */}
+                {section === "area" && <AreaFilter />}
+                {/* {section === "around" && <AroundFilter />} */}
               </motion.div>
             </div>
           </motion.div>

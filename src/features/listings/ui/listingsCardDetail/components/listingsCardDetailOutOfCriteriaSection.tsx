@@ -8,6 +8,7 @@ type ListingsCardDetailOutOfCriteriaSectionProps = {
 export const ListingsCardDetailOutOfCriteriaSection = ({
   listings,
 }: ListingsCardDetailOutOfCriteriaSectionProps) => {
+  if (listings.complexes.length === 0) return;
   return (
     <div className="p-5">
       <p className="mb-2 text-base-17 font-bold text-gray-700">필터 기준을 벗어난 단지예요</p>

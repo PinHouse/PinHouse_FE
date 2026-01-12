@@ -1,11 +1,12 @@
 "use client";
 import { Suspense } from "react";
 import { HomeLine } from "@/src/assets/icons/home/homeLine";
-import { Person, Search } from "@/src/assets/icons/home";
-import { usePathname, useSearchParams } from "next/navigation";
+import { HomeIcon, PersonLine, SearchLine } from "@/src/assets/icons/home";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Spinner } from "@/src/shared/ui/spinner/default";
+import { Search } from "@/src/assets/icons/home/search";
 
-const hiddenRoutes = ["/home", "/login", "/onboarding", "/listings/search", "/eligibility"];
+const hiddenRoutes = ["/login", "/onboarding", "/listings/search"];
 const hiddenExactRoutes = [
   "/listings?tab=region",
   "/listings?tab=target",
@@ -30,7 +31,7 @@ function BottomNavigationContent() {
   const searchParams = useSearchParams();
   const queryString = searchParams.toString();
   const currentPath = queryString ? `${pathname}?${queryString}` : pathname;
-
+  const router = useRouter();
   const shouldHide =
     hiddenRoutes.some(route => pathname.startsWith(route)) ||
     hiddenExactRoutes.includes(currentPath) ||
@@ -41,17 +42,24 @@ function BottomNavigationContent() {
     <div className="fixed bottom-0 left-1/2 z-50 h-[88px] w-full max-w-[768px] -translate-x-1/2 border-t bg-white p-7">
       <div className="flex h-full items-center justify-around">
         <button className="flex flex-col items-center gap-1 text-xs">
-          <HomeLine />
+          {pathname === "/home" ? (
+            <HomeIcon width={25} height={25} onClick={() => router.push("/home")} />
+          ) : (
+            <HomeLine width={25} height={25} onClick={() => router.push("/home")} />
+          )}
           <span>홈</span>
         </button>
 
         <button className="flex flex-col items-center gap-1 text-xs">
-          <Search />
+          {pathname === "/listings" ? (
+            <Search width={25} height={25} onClick={() => router.push("/listings")} />
+          ) : (
+            <SearchLine width={25} height={25} onClick={() => router.push("/listings")} />
+          )}
           <span>공고 탐색</span>
         </button>
-
         <button className="flex flex-col items-center gap-1 text-xs">
-          <Person />
+          <PersonLine width={25} height={25} fill={pathname === "/myhome" ? "black" : "none"} />
           <span>마이</span>
         </button>
       </div>

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import {
   endPoint,
   Environmnt,
@@ -13,33 +13,66 @@ import {
   UseListingsHooksWithParam,
 } from "../model/type";
 import { PostBasicRequest, PostParamsBodyRequest, requestListingList } from "../api/listingsApi";
-import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT, PINPOINT_CREATE_ENDPOINT } from "@/src/shared/api";
+import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
-import { INFRA_ENVIRONMENT_CONFIG, INFRA_LABEL_TO_KEY } from "@/src/features/listings/model";
+import {
+  INFRA_ENVIRONMENT_CONFIG,
+  INFRA_LABEL_TO_KEY,
+  useListingDetailFilter,
+  useListingsDetailTypeStore,
+} from "@/src/features/listings/model";
+import { useOAuthStore } from "@/src/features/login/model";
+import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 
 export const useListingDetailBasic = (id: string) => {
-  const listingDetilBody = {
-    sortType: "거리 순",
-    pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251",
-    transitTime: 100,
-    maxDeposit: 50000000,
-    maxMonthPay: 300000,
-  };
+  const pinPointId = useOAuthStore(state => state.pinPointId);
+  const sortType = useListingsDetailTypeStore(state => state.sortType);
+  const distance = useListingDetailFilter(state => state.distance);
+  const typeCode = useListingDetailFilter(state => state.typeCode);
+  const maxDeposit = useListingDetailFilter(state => state.maxDeposit);
+  const maxMonthPay = useListingDetailFilter(state => state.maxMonthPay);
+  const region = useListingDetailFilter(state => state.region);
+  const debouncedDistance = useDebounce(distance, 500);
+  const debouncedMaxDeposit = useDebounce(maxDeposit, 500);
+  const debouncedMaxMonthPay = useDebounce(maxMonthPay, 500);
+  const parseMoney = (value: string) => (value ? Number(value.replace(/[^0-9]/g, "")) : 0);
 
   return useQuery<ListingDetailResponseWithColor>({
-    queryKey: ["useListingDetailBasic", id],
+    queryKey: [
+      "listingDetailBasic",
+      id,
+      pinPointId,
+      sortType,
+      debouncedDistance,
+      region,
+      typeCode,
+      debouncedMaxDeposit,
+      debouncedMaxMonthPay,
+    ],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
+    retry: false,
+
     queryFn: async () => {
-      return await PostBasicRequest<
+      return PostBasicRequest<
         ListingDetailResponseWithColor,
         IResponse<ListingDetailResponseWithColor>,
         LstingBody,
         ListingDetailResponseWithColor
-      >(`${NOTICE_ENDPOINT}/${id}`, "post", listingDetilBody);
+      >(`${NOTICE_ENDPOINT}/${id}`, "post", {
+        sortType,
+        pinPointId,
+        transitTime: debouncedDistance,
+        maxDeposit: parseMoney(debouncedMaxDeposit),
+        maxMonthPay: parseMoney(debouncedMaxMonthPay),
+        region: region,
+        typeCode: typeCode,
+        facilities: [],
+        targetType: [],
+      });
     },
-    select: (response): ListingDetailResponseWithColor => {
+    select: response => {
       const basic = response.data?.basicInfo;
 
       return {
@@ -47,7 +80,7 @@ export const useListingDetailBasic = (id: string) => {
         data: {
           ...response.data,
           basicInfo: {
-            ...response.data?.basicInfo,
+            ...basic,
             rentalColor: getListingsRental(basic.type),
           },
         },
@@ -58,6 +91,7 @@ export const useListingDetailBasic = (id: string) => {
 
 export const useListingRentalDetail = (id: string) => {
   const encodedId = encodeURIComponent(id);
+  const pinPointId = useOAuthStore.getState().pinPointId;
 
   return useQuery<ListingSummary, unknown, ListingRentalDetailVM>({
     queryKey: ["useListingRentalDetail", encodedId],
@@ -71,7 +105,7 @@ export const useListingRentalDetail = (id: string) => {
         { pinPointId: string },
         ListingSummary
       >(`${COMPLEXES_ENDPOINT}/${encodedId}`, "get", {
-        params: { pinPointId: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251" },
+        params: { pinPointId: pinPointId },
       });
     },
     select: (response): ListingRentalDetailVM => {
@@ -144,13 +178,13 @@ export const useListingRouteDetail = <T, TParam extends object>({
 }: UseListingsHooksWithParam<TParam>) => {
   const encodedId = encodeURIComponent(id);
 
-  return useQuery<IResponse<T[]>, Error, T[]>({
+  return useQuery<IResponse<T>, Error, T | null>({
     queryKey: [queryK, encodedId, params],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
 
     queryFn: () =>
-      PostParamsBodyRequest<T[], IResponse<T[]>, {}, IResponse<T[]>, TParam>(
+      PostParamsBodyRequest<T, IResponse<T>, {}, IResponse<T>, TParam>(
         `${COMPLEXES_ENDPOINT}/${url}/${encodedId}`,
         "get",
         {},
@@ -158,17 +192,21 @@ export const useListingRouteDetail = <T, TParam extends object>({
       ),
 
     select: response => {
-      return response.data ?? [];
+      return response.data ?? null;
     },
   });
 };
 
-export const useListingFilterDetail = <T>({ queryK, url }: UseListingsDetailHooksType) => {
-  return useQuery<IResponse<T[]>, Error, T[]>({
-    queryKey: [queryK],
-    enabled: !!queryK,
+export const useListingFilterDetail = <T>() => {
+  return useQuery<IResponse<T>, Error, T>({
+    queryKey: ["pinpoint"],
     staleTime: 1000 * 60 * 5,
-    queryFn: () => PostBasicRequest<T[], IResponse<T[]>, {}, IResponse<T[]>>(endPoint[url], "get"),
-    select: response => response.data ?? [],
+    queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
+    select: response => {
+      if (response.data === undefined) {
+        throw new Error("Response data is undefined");
+      }
+      return response.data;
+    },
   });
 };

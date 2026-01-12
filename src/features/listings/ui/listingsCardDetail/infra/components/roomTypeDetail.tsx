@@ -1,5 +1,5 @@
 "use cilent";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useListingRoomTypeDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { formatNumber } from "@/src/shared/lib/numberFormat";
@@ -7,6 +7,8 @@ import { toPyeong } from "@/src/features/listings/model";
 import { DepositSection } from "./components/roomType/depositSection";
 import { TypeInfoSection } from "./components/roomType/typeInfoSection";
 import { ListingUnitType } from "@/src/entities/listings/model/type";
+import { TagButton } from "@/src/shared/ui/button/tagButton";
+import { LikeType } from "@/src/features/listings/hooks/listingsHooks";
 
 export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
   const { data, isFetching } = useListingRoomTypeDetail<ListingUnitType>({
@@ -15,26 +17,28 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
     url: "unit",
   });
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const items = data ?? [];
+  const current = items[currentIndex];
+  const typeId = current?.typeId;
+  const liked = current?.liked;
 
-  const current = useMemo(() => {
-    return items[currentIndex];
-  }, [items, currentIndex]);
-
-  const goPrev = useCallback(() => {
+  const goPrev = () => {
     setCurrentIndex(p => (p - 1 + items.length) % Math.max(items.length, 1));
-  }, [items.length]);
+  };
 
-  const goNext = useCallback(() => {
+  const goNext = () => {
     setCurrentIndex(p => (p + 1) % Math.max(items.length, 1));
-  }, [items.length]);
+  };
+
+  const isLast = currentIndex + 1 < items.length;
 
   useEffect(() => {
     setCurrentIndex(0);
   }, [listingId]);
 
-  if (isFetching) return <SmallSpinner title="방 타입 불러오는 중.." />;
+  if (isFetching && !items.length) {
+    return <SmallSpinner title="방 타입 불러오는 중.." />;
+  }
   if (!items.length) {
     return (
       <div className="p-6 text-center text-sm text-text-secondary">
@@ -45,17 +49,50 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
 
   return (
     <section className="flex h-full flex-col">
-      <div className="relative flex items-center justify-center bg-greyscale-grey-25">
+      <div className="relative flex flex-col justify-center bg-greyscale-grey-25">
+        <div className="flex justify-between pl-3 pr-3 pt-3">
+          <span>
+            {current.group.map(tag => (
+              <TagButton
+                key={tag}
+                size="xs"
+                variant="ghost"
+                className="rounded-md border border-greyscale-grey-100 bg-white px-2 py-1 text-xs font-bold text-greyscale-grey-400"
+              >
+                {tag}
+              </TagButton>
+            ))}
+          </span>
+          <span className="flex items-center justify-center">
+            <LikeType
+              id={typeId}
+              liked={liked}
+              type="ROOM"
+              resetQuery={["useListingRoomTypeDetail"]}
+            />
+          </span>
+        </div>
         <div className="relative flex h-60 w-full items-center justify-center">
-          <img
-            src={current?.thumbnail ?? "/area.png"}
-            alt={current?.typeCode ?? "room-type"}
-            className="max-h-full object-contain"
-          />
-          {items.length > 1 && <TypeInfoSection onPrev={goPrev} onNext={goNext} />}
+          <div className="flex-[1] items-center justify-center p-10">
+            <img
+              src={current?.thumbnail ?? "/area.png"}
+              alt={current?.typeCode ?? "room-type"}
+              className="h-full w-full object-contain"
+            />
+          </div>
+          {items.length > 1 && (
+            <TypeInfoSection
+              onPrev={goPrev}
+              onNext={goNext}
+              isLast={isLast}
+              currentIndex={currentIndex}
+            />
+          )}
 
-          <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-2 py-0.5 text-[11px] text-white">
-            {currentIndex + 1} / {items.length}
+          <div className="pointer-events-none absolute bottom-2 px-2 py-0.5 text-sm-15">
+            <span className="text-greyscale-grey-700">{currentIndex + 1}</span>
+            <span className="text-greyscale-grey-400"> {"/"} </span>
+            <span className="text-greyscale-grey-400">{items.length}</span>
           </div>
         </div>
       </div>

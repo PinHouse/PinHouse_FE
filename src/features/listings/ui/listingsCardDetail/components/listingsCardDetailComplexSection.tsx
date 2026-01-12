@@ -2,28 +2,41 @@ import { ArrowUpArrowDown } from "@/src/assets/icons/button/arrowUpArrowDown";
 import { ListingsCardTile } from "./listingsCardTile";
 import { ComplexList } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../../listingsNoSearchResult/listingNoSearchResult";
+import { cn } from "@/lib/utils";
+import { useListingsDetailTypeStore } from "../../../model";
 
 type ListingsCardDetailComplexSectionProps = {
-  listings: ComplexList;
+  listings?: ComplexList;
+  onFilteredCount?: Number;
 };
 
 export const ListingsCardDetailComplexSection = ({
   listings,
+  onFilteredCount,
 }: ListingsCardDetailComplexSectionProps) => {
+  const { sortType, setSortType } = useListingsDetailTypeStore();
+
   if (!listings) return;
 
   const complexesCount =
     listings?.totalCount < 10 ? `0${listings?.totalCount}` : listings?.totalCount;
 
+  const onDangiSortType = () => {
+    setSortType(sortType === "거리 순" ? "주변환경 매칭순" : "거리 순");
+  };
   return (
-    <section className="border-b-[11px] border-b-greyscale-grey-25 p-5">
+    <section
+      className={cn("p-5", onFilteredCount !== 0 && "border-b-[11px] border-b-greyscale-grey-25")}
+    >
       <div className="mb-3 flex items-center justify-between">
         <h2 className="flex gap-1 font-semibold">
           <p className="text-base-17 text-greyscale-grey-900">단지</p>
           <p className="text-base-17 text-greyscale-grey-600">{complexesCount}</p>
         </h2>
-        <div className="flex gap-1">
-          <span className="text-xs font-semibold text-greyscale-grey-900">핀포인트 거리 순</span>
+        <div className="flex gap-1" onClick={onDangiSortType}>
+          <span className="text-xs font-semibold text-greyscale-grey-900">
+            {sortType === "거리 순" ? "핀포인트 거리순" : "주변환경 매칭순"}
+          </span>
           <ArrowUpArrowDown />
         </div>
       </div>

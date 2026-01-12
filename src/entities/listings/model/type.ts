@@ -67,6 +67,7 @@ export interface ListingListPage {
   page: number;
 }
 
+// 사용처: 공고 목록 API 응답 타입 (requestListingList 반환)
 export type ListingItemResponse = IResponse<ListingListPage>;
 /**
  * 개별항목 공고검색
@@ -84,6 +85,7 @@ export interface ListingSearchItem {
   liked: boolean; // 좋아요 여부
 }
 
+// 사용처: 공고 리스트 카드 제네릭 데이터 (ListingContentsCard 등)
 export type ListingUnion = ListingItem | ListingSearchItem;
 
 // 사용처: UI 표준화된 카드 데이터 (filterPanelModel.tsx의 normalizeListing 반환 타입)
@@ -101,7 +103,14 @@ export interface ListingNormalized {
  * @ 좋아요! 타입
  */
 // 사용처: 좋아요 토글(간소 타입) — listingsHooks.tsx LikeType
-export type ListingItemMinimal = Pick<ListingItem, "id" | "liked">;
+export type ListingItemMinimal = {
+  id: string;
+  liked: boolean;
+  type: string;
+  resetQuery: string[];
+};
+
+// 사용처: listingsApi 전역 HTTP 메서드 제한 (get/post/default)
 export type HttpMethod = keyof typeof HTTP_METHODS;
 
 /**
@@ -120,9 +129,9 @@ export interface LikeReturn {
 // 사용처: 좋아요 토글 변수 — useToogleLike 훅
 export type ToggleLikeVariables = {
   method: "post" | "delete";
-  targetId: number;
+  targetId: string;
   liked?: boolean;
-  type: "NOTICE";
+  type: string;
 };
 
 /**
@@ -176,6 +185,29 @@ export interface SearchState {
   reset: () => void;
 }
 
+export interface ListingSearchState {
+  sortType: string;
+  setSortType: (value: string) => void;
+}
+
+export interface ListingDetailFilterState {
+  distance: number;
+  region: string[];
+  typeCode: string[];
+  maxDeposit: string;
+  maxMonthPay: string;
+  toggleRegionType: (item: string) => void;
+  toggleTypeCode: (typeCode: string) => void;
+  setDistance: (value: number) => void;
+  setMaxDeposit: (prev: string) => void;
+  setMaxMonthPay: (value: string) => void;
+}
+
+export interface ListingDetailCountState {
+  filteredCount: number;
+  setCounts: (value: number) => void;
+}
+
 /**
  * 인기검색어 Data
  */
@@ -195,6 +227,7 @@ export interface PopularKeywordResponse extends IResponse<PopularKeywordItem[]> 
   data: PopularKeywordItem[];
 }
 
+// 사용처: 필터 탭 key enum (FILTER_OPTIONS)
 export type FilterOptionKey = "region" | "target" | "rental" | "housing";
 
 // 사용처: 필터 탭 정의 — listingsModel.ts의 FILTER_OPTIONS
@@ -290,9 +323,9 @@ export interface ListingDetailData {
 export interface LstingBody {
   sortType: string;
   pinPointId: string;
-  transitTime: number;
-  maxDeposit: number;
-  maxMonthPay: number;
+  transitTime: number | null;
+  maxDeposit: number | null;
+  maxMonthPay: number | null;
   typeCode?: string[];
   facilities?: string[];
   region?: string[];
@@ -300,8 +333,11 @@ export interface LstingBody {
 }
 // 사용처: 임대 유형 키 타입 — RENT_COLOR_CLASS 기반 (listingsHooks.tsx)
 export type RentType = keyof typeof RENT_COLOR_CLASS;
+// 사용처: 공고 상세 API 응답 타입 (useListingDetailHooks)
 export type ListingDetailResponse = IResponse<ListingDetailData>;
+// 사용처: 상세 카드/Infra 카드 테마 구분값 (listingsCardTile.tsx)
 export type RoomVariant = "default" | "muted";
+// 사용처: listingsCardTile 컴포넌트 프롭스 및 스타일 매핑
 export type ListingsCardTileProps = {
   listing: Complex;
   variant: RoomVariant;
@@ -338,7 +374,7 @@ export interface DistanceInfo {
   totalTime: string;
   totalTimeMinutes: number;
   totalDistance: number;
-  routes: RouteInfo[];
+  segments: RouteInfo[];
 }
 
 // 사용처: 구간 이동수단 타입 (아이콘 렌더링/색상)
@@ -348,10 +384,10 @@ export type RouteType = "BUS" | "SUBWAY" | "WALK" | "TRAIN"; // API 확장 대�
 // 사용처: 구간 상세 정보 (시간/노선/색상)
 export interface RouteInfo {
   type: RouteType;
-  minutesText: string;
-  lineText: string | null;
+  minutes: number;
+  labelText: string | null;
   line: LineInfo | null; // WALK처럼 line이 없는 경우 대비
-  bgColorHex: string;
+  colorHex: string;
 }
 
 //단지주택 상세정보
@@ -427,54 +463,86 @@ export interface ListingUnitType {
   deposit: DepositRange;
   /** 관심 여부 */
   liked: boolean;
+  group: [string];
 }
 
 // 공통 Enum (타입 안정성 ↑)
+// 사용처: 이동 경로 상세(TransportIconRenderer, routeDetail) 아이콘 타입
 export type TransportType = "AIR" | "TRAIN" | "BUS" | "SUBWAY" | "WALK";
-export type StopRole = "START" | "TRANSFER" | "ARRIVAL";
+// 사용처: 경로 스텝 role (출발/환승/도착) — routeDetail.tsx
+export type StopRole = "START" | "TRANSFER" | "ARRIVE";
 //Line 타입
+// 사용처: 지하철/버스 등 노선 색상/코드 정보 (routeDetail)
 export interface TransportLine {
   code: number;
   label: string;
   bgColorHex: string;
 }
+
+// 사용처: 경로 그래프 거리 정보 (routeDetail distance bar)
+export interface RouteDistance {
+  colorHex: string;
+  line: string | null;
+  minutes: number;
+  labelText: string;
+  type: string;
+}
+
+// 사용처: 각 스텝의 라인 표시 타입 (routeDetail)
+export interface RouteStepLine {
+  line: string;
+}
+
+// 사용처: 경로 상세 Step 데이터 (routeDetail item)
+export interface RouteStep {
+  action?: string | null;
+  colorHex?: string | null;
+  line?: RouteStepLine | null;
+  minutes?: string | null;
+  primaryText?: string | null;
+  stepIndex: number;
+  stopName?: string | number | null;
+  type?: TransportType | string | null;
+  secondaryText: string;
+}
+
+// 사용처: 경로 요약 정보 (총 시간/거리) — routeDetail header
+export interface RouteSummary {
+  displayText?: string;
+  totalDistanceKm?: number;
+  totalFareWon?: number;
+  totalMinutes?: number;
+  transferCount?: number;
+}
 //이동구간
+// 사용처: routeDetail 구간 단위 데이터 묶음
 export interface RouteSegment {
-  type: TransportType;
-  minutesText: string; // "60분"
-  lineText: string | null; // "KTX", "항공"
-  line: TransportLine | null;
-  bgColorHex: string | null;
+  distance: RouteDistance[];
+  routeIndex: number;
+  steps: RouteStep[];
+  summary: RouteSummary[] | RouteSummary;
 }
 
-export interface RouteStop {
-  role: StopRole;
-  type: TransportType;
-  stopName: string;
-  lineText: string | null;
-  line: TransportLine | null;
-  bgColorHex: string | null;
-}
-
+// 사용처: 공고 상세 노선 데이터 응답 (useListingInfraDetail)
 export interface ListingRouteInfo {
-  totalTime: string;
-  totalTimeMinutes: number;
-  totalDistance: number;
+  totalCount: number;
   routes: RouteSegment[];
-  stops: RouteStop[];
 }
 
+// 사용처: 공고 상세 탭별 API (useListingDetailHooks.ts 공통 파라미터)
 export type UseListingsHooksType = {
   id: string;
   queryK: string;
   url: string;
 };
 
+// 사용처: 상세 필터/노선 등 notice 별 정적 데이터 (useListingDetailHooks.ts)
 export type UseListingsDetailHooksType = {
   queryK: string;
   url: EndPointKey;
 };
 
+// 사용처: 공고 상세 개별 API + 추가 params 필요 시 (useListingDetailHooks.ts)
 export type UseListingsHooksWithParam<TParam extends object> = {
   id: string;
   queryK: string;
@@ -482,20 +550,64 @@ export type UseListingsHooksWithParam<TParam extends object> = {
   params: TParam;
 };
 
+// 사용처: 상세 필터 시트 전용 훅 (useListingDetailNoticeSheet)
+export type UseListingsHooksWithSheet = {
+  id: string;
+  url: string;
+};
+
+// 사용처: 공통 request wrapper 옵션 (listingsApi.ts)
 export interface RequestOptions<TQuery extends object = object> {
   query?: TQuery;
 }
 
+// 사용처: 상세 훅 endpoint key 관리 (useListingDetailHooks.ts)
 export const endPoint = {
   pinpoint: PINPOINT_CREATE_ENDPOINT,
 } as const;
 
 type EndPointKey = keyof typeof endPoint;
-export interface PinPointPlace {
+
+type PionPointData = {
   id: string;
   name: string;
   address: string;
   longitude: number;
   latitude: number;
   isFirst: boolean;
+};
+// 사용처: 핀포인트 목록/상세 데이터 타입 (pinpoint 관련 API)
+export interface PinPointPlace {
+  userName: string;
+  pinPoints: PionPointData[];
+}
+
+// 사용처: 공고 단지 지역 응답에서 시 단위 그룹 (regionFilter/areaFilter)
+export interface DistrictGroup {
+  city: string;
+  districts: string[];
+}
+
+// 사용처: 상세 필터 시트 지역 API 응답 목록 (regionFilter/areaFilter)
+export interface DistrictResponse {
+  districts: DistrictGroup[];
+}
+
+// 사용처: 단지 필터 시트 면적 API 응답 목록(areaFilter.tsx)
+export interface AreaTypeResponse {
+  typeCodes: string[];
+}
+
+// 사용처: 단지 필터 시트 API 응답 목록 (areaFilter.tsx)
+export interface CostResponse {
+  minPrice: number;
+  maxPrice: number;
+  avgPrice: number;
+  priceDistribution: CostRange[];
+}
+
+export interface CostRange {
+  rangeStart: number;
+  rangeEnd: number;
+  count: number;
 }

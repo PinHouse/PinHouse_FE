@@ -1,15 +1,16 @@
 "use client";
 import { ListingUnion } from "@/src/entities/listings/model/type";
 import { ListingBookMark } from "./listingsBookMark";
-import { HouseICons, HouseRental } from "../../hooks/listingsHooks";
+import { HighlightCenteredText, HouseICons, HouseRental } from "../../hooks/listingsHooks";
 import { formatApplyPeriod } from "@/src/shared/lib/utils";
-import { useRouter, useSearchParams } from "next/navigation";
-import { HighlightCenteredText, normalizeListing } from "../../model";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { normalizeListing } from "../../model";
 
 export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("query") ?? "";
   const router = useRouter();
+  const path = usePathname().includes("/search");
 
   const handleRouter = (id: string) => {
     router.push(`/listings/${id}`);
@@ -25,7 +26,7 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
             key={normalized.id}
             className="flex h-[112px] min-h-[100px] w-full rounded-xl border"
           >
-            <div className="border-r-1 flex w-[35%] flex-col bg-bgColor-mute pl-1 pt-2">
+            <div className="border-r-1 flex w-[35%] flex-col rounded-l-xl rounded-bl-xl bg-bgColor-mute pl-1 pt-2">
               <div className="flex justify-start gap-1">
                 <ListingBookMark item={normalized.type} border="border" />
                 <p className="truncate text-xs font-semibold text-greyscale-grey-800">
@@ -39,7 +40,10 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
 
             <div className="flex w-[65%] flex-col justify-start gap-2 pb-3 pl-4 pr-4 pt-2">
               <div className="flex items-baseline gap-2">
-                <HouseRental {...normalized} />
+                <HouseRental
+                  {...normalized}
+                  query={path ? "listingSearchInfinite" : "listingListInfinite"}
+                />
               </div>
               <div className="max-w-full">
                 <p

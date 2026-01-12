@@ -5,6 +5,10 @@ interface IOAuthState {
   tempUserId: string | null;
   setTempUserId: (userId: string) => void;
   clearTempUserId: () => void;
+  pinPointId: string;
+  userName: string;
+  setUserName: (userName: string) => void;
+  setPinPointId: (pinPointId: string) => void;
 }
 
 export const useOAuthStore = create<IOAuthState>()(
@@ -13,9 +17,13 @@ export const useOAuthStore = create<IOAuthState>()(
       tempUserId: null,
       setTempUserId: (userId: string) => set({ tempUserId: userId }),
       clearTempUserId: () => set({ tempUserId: null }),
+      pinPointId: "",
+      setPinPointId: (pinPointId: string) => set({ pinPointId }),
+      userName: "",
+      setUserName: (userName: string) => set({ userName }),
     }),
     {
-      name: "oauth-temp-user-storage", // localStorage 키 이름
+      name: "oauth-user-storage", // localStorage 키 이름
     }
   )
 );

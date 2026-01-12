@@ -1,5 +1,6 @@
 import { DistanceInfo } from "@/src/entities/listings/model/type";
-import { parseMinutes, parseTotalMinutes, TRANSPORT_ICON_MAP } from "../../../model";
+import { TRANSPORT_ICON_MAP } from "../../../model";
+import { parseMinutes } from "../../../hooks/listingsHooks";
 
 type TransportIconRendererProps = {
   routes: DistanceInfo;
@@ -7,18 +8,18 @@ type TransportIconRendererProps = {
 };
 
 const MIN_PERCENT = 5;
-const BAR_LIMIT = 5; // ✔ 한 줄에 보여줄 최대 bar 수
+const BAR_LIMIT = 5;
 
 export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRendererProps) => {
   if (!totalTime) return null;
 
-  const totalMinutes = parseTotalMinutes(totalTime);
+  const totalMinutes = parseMinutes(totalTime);
 
   //  minutes 파싱 + 0분 제거
-  const parsedRoutes = routes.routes
+  const parsedRoutes = routes.segments
     .map(r => ({
       ...r,
-      minutes: parseMinutes(r.minutesText),
+      minutes: r.minutes,
     }))
     .filter(r => r.minutes > 0);
 
@@ -38,9 +39,6 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
   const finalSum = protectedPercents.reduce((a, b) => a + b, 0);
   const finalPercents = protectedPercents.map(p => (p / finalSum) * 100);
 
-  // 기타 구간 분 합산
-  const extraMinutes = extraRoutes.reduce((sum, r) => sum + r.minutes, 0);
-
   return (
     <div className="relative flex w-full flex-col gap-1">
       {/* 노선도 */}
@@ -55,28 +53,19 @@ export const TransportIconRenderer = ({ totalTime, routes }: TransportIconRender
               className="flex-shrink-0"
               style={{ width: `${finalPercents[index]}%` }}
             >
-              <Icon minutes={item.minutes} color={item.bgColorHex} />
+              <Icon minutes={item.minutes} color={item.colorHex} />
               <div>
                 <p
                   className="flex h-4 items-center text-xs font-semibold"
-                  style={{ color: item.bgColorHex }}
+                  style={{ color: item.colorHex }}
                 >
-                  {item.type !== "BUS" ? item.lineText?.split(" ")[1] : item.lineText}
+                  {item.type !== "BUS" ? item.labelText?.split(" ")[1] : item.labelText}
                 </p>
               </div>
             </div>
           );
         })}
       </div>
-
-      {/* 기타 시간 */}
-      {/* {extraMinutes > 0 && (
-        <div className="flex items-center">
-          <span className="text-xs font-medium text-greyscale-grey-600">
-            기타 이동 {extraMinutes}분
-          </span>
-        </div>
-      )} */}
     </div>
   );
 };

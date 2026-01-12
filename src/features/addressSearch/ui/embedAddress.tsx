@@ -1,8 +1,9 @@
 import { useAddressStore } from "@/src/entities/address";
 import { useDaumPostcode } from "../hook/useDaumPostcode";
 import { IconButton } from "@/src/shared/ui/button/iconButton";
-import { Search } from "@/src/assets/icons/home";
+
 import { AddressTip } from "./addressTip";
+import { SearchLine } from "@/src/assets/icons/home";
 
 export const EmbedAddress = () => {
   const { address, setAddress, isEmbed } = useAddressStore();
@@ -15,7 +16,7 @@ export const EmbedAddress = () => {
     <>
       <IconButton size={"lg"} variant={"ghost"}>
         <div className="flex w-full items-center gap-3" onClick={openEmbed}>
-          <Search />
+          <SearchLine />
           <span className="text-text-tertiary">
             <p className="text-sm">{address === "" ? "주소를 입력해주세요" : address}</p>
           </span>

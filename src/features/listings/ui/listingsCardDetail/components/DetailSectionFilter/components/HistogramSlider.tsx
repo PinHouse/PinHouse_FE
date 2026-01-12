@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useMemo } from "react";
+import { RefObject } from "react";
 
 type Props = {
   minLabel?: string;
@@ -13,6 +13,7 @@ type Props = {
   handleLeftPct: number;
   normalized: number[];
   maxlength: number;
+  histogramRef: RefObject<HTMLDivElement | null>;
 };
 
 export const HistogramSlider = ({
@@ -25,11 +26,12 @@ export const HistogramSlider = ({
   handleLeftPct,
   normalized,
   maxlength,
+  histogramRef,
 }: Props) => {
   return (
     <div className="w-full">
       {/* 히스토그램 */}
-      <div className="relative h-[120px] w-full">
+      <div className="relative h-[120px] w-full" ref={histogramRef}>
         {!disabled && (
           <div
             className="absolute bottom-[100%] mb-2"
@@ -38,11 +40,31 @@ export const HistogramSlider = ({
               transform: "translateX(-50%)",
             }}
           >
-            <div className="relative rounded-md bg-black px-2 py-1 text-xs text-white">
+            <div
+              className={`relative rounded-md bg-black px-2 py-1 text-xs text-white ${
+                activeIndex === 20 ? "-translate-x-1/4" : activeIndex === 0 ? "translate-x-3" : ""
+              }`}
+            >
               {deposit}
-
-              {/* 말풍선 꼬리 */}
-              <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-black" />
+              {activeIndex === 20 ? (
+                <span
+                  className="absolute top-full border-4 border-transparent border-t-black"
+                  style={{
+                    left: `${handleLeftPct}%`,
+                    transform: "translateX(-150%)",
+                  }}
+                />
+              ) : activeIndex === 0 ? (
+                <span
+                  className="absolute top-full border-4 border-transparent border-t-black"
+                  style={{
+                    left: "40%",
+                    transform: "translateX(-150%)",
+                  }}
+                />
+              ) : (
+                <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-black" />
+              )}
             </div>
           </div>
         )}
@@ -65,15 +87,15 @@ export const HistogramSlider = ({
 
         {/* 슬라이더 핸들 */}
         <div
-          className={cn("absolute bottom-[-7px]")}
+          className={cn("absolute bottom-0")}
           style={{
             left: `${handleLeftPct}%`,
-            transform: "translateX(-50%)",
+            transform: "translate(-50%, 50%)",
           }}
         >
           <div
             className={cn(
-              "h-4 w-4 rounded-full border-2 border-blue-500 bg-white",
+              "h-[12px] w-[12px] rounded-full border-2 border-blue-500 bg-white",
               disabled ? "border-greyscale-grey-200" : "border-primary-light"
             )}
           />
