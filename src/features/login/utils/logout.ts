@@ -7,7 +7,7 @@ export const logout = () => {
 
   // 2. localStorage 정리
   localStorage.clear();
-
+  sessionStorage.clear();
   // 3. 로그인 페이지로 리다이렉트
   window.location.href = "/login";
 
