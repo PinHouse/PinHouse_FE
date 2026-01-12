@@ -1,6 +1,8 @@
 import { LeftButton } from "@/src/assets/icons/button";
 import { HomeScreenHomeIcon } from "@/src/assets/icons/home/home";
 import { HomeScreenTask } from "@/src/assets/icons/home/homeScreenTask";
+import { useEffect, useState } from "react";
+import { useOAuthStore } from "../../login/model";
 
 const PERSONAL_SHORTCUTS = [
   {
@@ -33,12 +35,26 @@ const ShortcutMessage = ({ text }: { text: string }) => {
   );
 };
 
+const messageSeenKey = (userId: string) => `home-shortcut-msg-seen:${userId ?? "anon"}`;
+
 export const PersonalShortcutList = () => {
+  const { userName } = useOAuthStore(); // 실제로 쓰는 user 식별자 넣기
+  const [showMessage, setShowMessage] = useState(false);
+
+  useEffect(() => {
+    const key = messageSeenKey(userName);
+    const seen = sessionStorage.getItem(key);
+    if (!seen) {
+      setShowMessage(true);
+      sessionStorage.setItem(key, "1");
+    }
+  }, [userName]);
+
   return (
     <section className="flex flex-col gap-4">
       {PERSONAL_SHORTCUTS.map(item => (
         <div key={item.id} className="relative">
-          {item.message && <ShortcutMessage text={item.message} />}
+          {showMessage && item.message && <ShortcutMessage text={item.message} />}
 
           <button
             className="shadow- flex w-full items-center gap-2 rounded-2xl border border-greyscale-grey-50 bg-white p-4 text-left"

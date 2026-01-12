@@ -58,7 +58,12 @@ function BottomNavigationContent() {
           <span>공고 탐색</span>
         </button>
         <button className="flex flex-col items-center gap-1 text-xs">
-          <PersonLine width={25} height={25} fill={pathname === "/myhome" ? "black" : "none"} />
+          <PersonLine
+            width={25}
+            height={25}
+            onClick={() => router.push("/hometemporary")}
+            fill={pathname === "/hometemporary" ? "black" : "none"}
+          />
           <span>마이</span>
         </button>
       </div>

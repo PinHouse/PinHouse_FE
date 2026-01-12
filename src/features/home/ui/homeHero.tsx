@@ -11,7 +11,7 @@ export const HomeHero = () => {
         </p>
       </div>
       <div className="relative">
-        <span className="absolute right-2 top-[-12px] z-10 flex items-center justify-center text-2xl text-primary-blue-400">
+        <span className="absolute right-2 top-[-17px] z-10 flex items-center justify-center text-2xl text-primary-blue-400">
           <HomeCharacter width={77} height={77} />
         </span>
       </div>
