@@ -2,24 +2,16 @@ import { create } from "zustand";
 
 type RouteState = {
   prevPath: string | null;
+  listingEntry: string | null;
   setPrevPath: (path: string) => void;
-  reset: () => void;
-};
-
-type FirstAccess = {
-  access: boolean;
-  setAccess: (access: boolean) => void;
+  setListingEntry: (entry: string) => void;
   reset: () => void;
 };
 
 export const useRouteStore = create<RouteState>(set => ({
   prevPath: null,
+  listingEntry: null,
   setPrevPath: path => set({ prevPath: path }),
-  reset: () => set({ prevPath: null }),
-}));
-
-export const useFirstAccess = create<FirstAccess>(set => ({
-  access: true,
-  setAccess: access => set({ access: access }),
-  reset: () => set({ access: true }),
+  setListingEntry: entry => set({ listingEntry: entry }),
+  reset: () => set({ prevPath: null, listingEntry: null }),
 }));

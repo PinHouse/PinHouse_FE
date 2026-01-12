@@ -4,13 +4,23 @@ import { useNoticeInfinite } from "@/src/entities/home/hooks/homeHooks";
 import { HomeContentsCard } from "@/src/features/home";
 import { ListingNoSearchResult } from "@/src/features/listings";
 import { Button } from "@/src/shared/lib/headlessUi";
-import { AlignRight, ArrowRight, MoveRightIcon } from "lucide-react";
-import Link from "next/link";
+import { useRouteStore } from "../model/homeStore";
+import { useRouter } from "next/navigation";
+import { useListingsFilterStore } from "../../listings/model";
 
 export const UrgentNoticeList = () => {
   const { data, isFetchingNextPage, isError, hasNextPage, fetchNextPage } = useNoticeInfinite();
   const contents = data?.pages?.flatMap(page => page.content) ?? [];
   const region = data?.pages?.flatMap(page => page.region) ?? [];
+  const { setSortType } = useListingsFilterStore();
+  const router = useRouter();
+  const { setPrevPath } = useRouteStore();
+
+  const pageRouter = () => {
+    setPrevPath("/home");
+    setSortType("마감임박순");
+    router.push("/listings");
+  };
 
   return (
     <section className={cn("flex flex-col", contents.length >= 2 ? "pb-[55px]" : "")}>
@@ -18,11 +28,12 @@ export const UrgentNoticeList = () => {
         <div>
           <p className="mb-3 text-lg font-bold text-greyscale-grey-900">마감임박 공고</p>
         </div>
-        <div className="min-w-auto text-xs font-semibold">
-          <Link href="/listings" className="flex items-center text-greyscale-grey-400">
-            <span>{region}</span>
-            <LeftButton width={20} height={20} className="rotate-180" />
-          </Link>
+        <div
+          className="min-w-auto flex items-center text-xs font-semibold text-greyscale-grey-400"
+          onClick={pageRouter}
+        >
+          <span>{region}</span>
+          <LeftButton width={20} height={20} className="rotate-180" />
         </div>
       </div>
 
