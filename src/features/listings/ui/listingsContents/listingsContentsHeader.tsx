@@ -33,7 +33,15 @@ export const ListingsContentHeader = ({ totalCount }: ListingsContentHeaderProps
 
       <div className="flex items-center">
         <div className="flex items-center gap-1">
-          <CaretDropDown variant="ghost" types="drop" data={listingPoint} />
+          <CaretDropDown
+            variant="ghost"
+            types="drop"
+            data={listingPoint}
+            fullWidth={false}
+            className="w-fit"
+            containerClassName="w-auto"
+            menuClassName="left-[5] w-fit"
+          />
         </div>
 
         <div className="flex items-center gap-1" onClick={e => onChange(e)}>

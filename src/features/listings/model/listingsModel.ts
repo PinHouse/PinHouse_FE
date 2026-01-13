@@ -126,6 +126,17 @@ const listingDrop: PinPoint[] = [
   { key: "recruiting", value: "모집중" },
 ];
 
+const listingsCompare: PinPoint[] = [
+  { key: "deistance", value: "핀포인트 거리 순" },
+  { key: "security", value: "보증금 낮은 순" },
+  { key: "area", value: "면적 넓은 순" },
+  { key: "infra", value: "주변환경 매칭 순" },
+];
+
+export const listingsComparePoint: PinPointMap<PinPoint[]> = {
+  drop: listingsCompare,
+};
+
 // 사용처: 상단 드롭다운 데이터 (listingsContentsHeader.tsx)
 export const listingPoint: PinPointMap<PinPoint[]> = {
   drop: listingDrop,
