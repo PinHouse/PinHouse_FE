@@ -27,9 +27,16 @@ export const quickSearchResetAlertScript: ModalDescriptProps = {
   descript: "탐색 결과가 초기화 됩니다.\n 처음부터 다시할까요?",
   btnlabel: ["취소", "다시하기"],
 };
+
+export const withdrawConfirmScript: ModalDescriptProps = {
+  descript: "회원 탈퇴 시 탈퇴하면\n관심 목록과 자격 진단 기록이 삭제되며\n복구할 수 없습니다.",
+  btnlabel: ["취소", "탈퇴하기"],
+};
+
 export const discription: ModalDescriptMap = {
   filterSearch: filterScript,
   quickSearchEnterCheck: quickSearchEnterCheckScript,
   quickSearchSaveCheck: quickSearchSaveCheckScript,
   quickSearchResetAlert: quickSearchResetAlertScript,
+  withdrawConfirm: withdrawConfirmScript,
 };

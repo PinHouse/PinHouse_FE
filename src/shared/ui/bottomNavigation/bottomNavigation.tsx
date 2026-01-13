@@ -23,6 +23,7 @@ const hiddenExactRoutes = [
   "/quicksearch/chooseCondition",
   "/quicksearch/result",
   "/test",
+  "/mypage/withdraw",
 ];
 const detailPageRegex = /^\/listings\/[A-Za-z0-9_-]+$/;
 const compareDetailPageRegex = /^\/listings\/[A-Za-z0-9_-]+\/compare$/;
