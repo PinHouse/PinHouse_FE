@@ -22,6 +22,9 @@ function CaretDropDownContent({
   types,
   children,
   data,
+  containerClassName,
+  menuClassName,
+  fullWidth = true,
   ...props
 }: DropDownProps) {
   const [open, setOpen] = useState<boolean>(false);
@@ -65,14 +68,21 @@ function CaretDropDownContent({
   }, []);
 
   return (
-    <div className="relative inline-block w-full" ref={wrapperRef}>
+    <div
+      className={cn(
+        "relative inline-block",
+        fullWidth ? "w-full" : "w-auto",
+        containerClassName
+      )}
+      ref={wrapperRef}
+    >
       <button
         className={cn(dropDownVariants({ variant, size }), className)}
         onClick={onChangeButton}
         {...props}
       >
         {children}
-        <span className="flex w-full items-center justify-between gap-1 text-xs font-bold">
+        <span className="flex items-center justify-between gap-1 text-xs font-bold">
           {isSearchPage ? (searchState === "ALL" ? "전체" : "모집중") : status}
           {/* {status || children} */}
           {open ? <CaretUp /> : <CaretDown />}
@@ -82,16 +92,20 @@ function CaretDropDownContent({
       {open && (
         <ul
           className={cn(
-            "absolute left-0 top-full z-10 mt-1 w-full rounded-lg border bg-white font-bold text-text-tertiary shadow-lg"
+            // default placement and sizing; override via menuClassName
+            "absolute left-0 top-8 z-10 rounded-lg border bg-white font-bold text-text-tertiary shadow-lg",
+            // fit to content by default
+            "w-fit min-w-fit",
+            menuClassName
           )}
         >
           {optionData.map(item => (
             <li
               key={item.key}
               onClick={() => onClose({ value: item.value })}
-              className="hover:bg-hover-dropDown flex cursor-pointer flex-col px-3 py-2 hover:text-text-brand"
+              className="hover:bg-hover-dropDown flex cursor-pointer flex-col p-2 hover:text-text-brand"
             >
-              <span className="text-sm">{item.value}</span>
+              <span className="text-xs">{item.value}</span>
             </li>
           ))}
         </ul>
