@@ -1,6 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-
+import { useMemo } from "react";
 import { CaretDown } from "@/src/assets/icons/button/caretDown";
 import { HomeFiveoclock } from "@/src/assets/icons/home/HomeFiveoclock";
 import { HomePushPin } from "@/src/assets/icons/home/homePushpin";
@@ -9,19 +7,20 @@ import { useListingFilterDetail } from "@/src/entities/listings/hooks/useListing
 import { PinPointPlace } from "@/src/entities/listings/model/type";
 import { getDefaultPinPointLabel, mapPinPointToOptions } from "../../listings/hooks/listingsHooks";
 import { useOAuthStore } from "../../login/model";
-import { DropDown, DropDownProps } from "@/src/shared/ui/dropDown/deafult";
+import { DropDown } from "@/src/shared/ui/dropDown/deafult";
 
 export const QuickStatsList = () => {
   const { data, isFetching } = useListingFilterDetail<PinPointPlace>();
   const { setPinPointId } = useOAuthStore();
-  const [open, setOpen] = useState<boolean>(false);
 
   const pinPointOptions = useMemo(() => mapPinPointToOptions(data?.pinPoints), [data?.pinPoints]);
   const pinPointData = pinPointOptions.myPinPoint;
   const dropDownTriggerLabel = getDefaultPinPointLabel(pinPointOptions);
 
   const hasPinPoints = pinPointData.length > 0;
-
+  const onChangePinPoint = (id: string) => {
+    setPinPointId(id);
+  };
   return (
     <div className="relative grid grid-cols-2 grid-rows-[auto,1fr] rounded-2xl bg-white p-4">
       <div className="flex items-center gap-1 text-xs text-greyscale-grey-500">
@@ -41,6 +40,7 @@ export const QuickStatsList = () => {
           icon={<CaretDown />}
           disabled={isFetching || !hasPinPoints}
           className="border-none pl-0 text-left text-sm"
+          onChange={onChangePinPoint}
         >
           {dropDownTriggerLabel}
         </DropDown>

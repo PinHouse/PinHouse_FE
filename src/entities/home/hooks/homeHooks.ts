@@ -10,10 +10,10 @@ export const useNoticeInfinite = () => {
     SliceResponse<NoticeContent>,
     Error,
     InfiniteData<SliceResponse<NoticeContent>>,
-    [string, string, string],
+    [string, string],
     number
   >({
-    queryKey: ["notice", "pinpoint", pinpointId],
+    queryKey: ["notice", pinpointId],
     initialPageParam: 1,
     enabled: !!pinpointId,
     queryFn: ({ pageParam }) =>
