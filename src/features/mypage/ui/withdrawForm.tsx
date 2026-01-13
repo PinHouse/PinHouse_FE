@@ -8,8 +8,8 @@ import { Modal } from "@/src/shared/ui/modal/default/modal";
 
 export const WithdrawForm = () => {
   const {
-    selectedReason,
-    setSelectedReason,
+    selectedReasons,
+    handleReasonsChange,
     handleWithdrawClick,
     handleWithdrawConfirm,
     handleModalCancel,
@@ -21,10 +21,23 @@ export const WithdrawForm = () => {
       // 취소 버튼
       handleModalCancel();
     } else if (buttonIndex === 1) {
-      console.log("탈퇴하기 버튼 클릭됨");
       // 탈퇴하기 버튼
       handleWithdrawConfirm();
     }
+  };
+
+  const handleOptionClick = (optionId: string) => {
+    let newSelectedIds: string[];
+
+    if (selectedReasons.includes(optionId)) {
+      // 이미 선택된 경우 제거
+      newSelectedIds = selectedReasons.filter(id => id !== optionId);
+    } else {
+      // 선택되지 않은 경우 추가
+      newSelectedIds = [...selectedReasons, optionId];
+    }
+
+    handleReasonsChange(newSelectedIds);
   };
 
   return (
@@ -37,13 +50,13 @@ export const WithdrawForm = () => {
           </h3>
           <div className="flex flex-col gap-2">
             {WITHDRAW_REASONS.map(reason => {
-              const isSelected = selectedReason === reason.id;
+              const isSelected = selectedReasons.includes(reason.id);
               return (
                 <SurveyButton
                   key={reason.id}
                   title={reason.label}
                   pressed={isSelected}
-                  onPressedChange={() => setSelectedReason(reason.id)}
+                  onPressedChange={() => handleOptionClick(reason.id)}
                   className={"w-full pl-5 text-sm"}
                 />
               );
@@ -58,10 +71,7 @@ export const WithdrawForm = () => {
           radius="md"
           theme="black"
           onClick={() => {
-            console.log("버튼 onClick 실행됨");
-            console.log("isModalOpen:", isModalOpen);
             handleWithdrawClick();
-            console.log("handleWithdrawClick 호출 후");
           }}
         >
           {WITHDRAW_BUTTON_TEXT}

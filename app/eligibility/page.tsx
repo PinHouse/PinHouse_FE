@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { EligibilitySection } from "@/src/widgets/eligibilitySection";
 import { useEligibilityStore } from "@/src/features/eligibility/model/eligibilityStore";
+import { Spinner } from "@/src/shared/ui/spinner/default";
 
 export default function EligibilityPage() {
   const reset = useEligibilityStore(state => state.reset);
@@ -14,7 +15,9 @@ export default function EligibilityPage() {
 
   return (
     <main className="flex h-full flex-col">
-      <EligibilitySection />
+      <Suspense fallback={<Spinner title="로딩 중" description="페이지를 불러오는 중입니다." />}>
+        <EligibilitySection />
+      </Suspense>
     </main>
   );
 }

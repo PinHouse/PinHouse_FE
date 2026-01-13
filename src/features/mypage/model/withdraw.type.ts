@@ -4,11 +4,10 @@ export interface WithdrawReason {
 }
 
 export interface WithdrawRequest {
-  reason: string;
+  reasons: string[];
 }
 
 export interface WithdrawResponse {
   success: boolean;
   message?: string;
 }
-
