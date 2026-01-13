@@ -24,6 +24,7 @@ const hiddenExactRoutes = [
   "/quicksearch/result",
 ];
 const detailPageRegex = /^\/listings\/[A-Za-z0-9_-]+$/;
+const compareDetailPageRegex = /^\/listings\/[A-Za-z0-9_-]+\/compare$/;
 
 function BottomNavigationContent() {
   const pathname = usePathname();
@@ -34,7 +35,8 @@ function BottomNavigationContent() {
   const shouldHide =
     hiddenRoutes.some(route => pathname.startsWith(route)) ||
     hiddenExactRoutes.includes(currentPath) ||
-    detailPageRegex.test(pathname);
+    detailPageRegex.test(pathname) ||
+    compareDetailPageRegex.test(pathname);
 
   if (shouldHide) return null;
   return (

@@ -63,7 +63,7 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
         <ListingsCardDetailHeader />
         <main>
           <ListingsCardDetailSummary basicInfo={basicInfo} />
-          <ListingsCardDetailCompareButton />
+          <ListingsCardDetailCompareButton paramId={id} />
           <ListingsCardDetailFilterBar />
 
           <ListingsCardDetailComplexSection

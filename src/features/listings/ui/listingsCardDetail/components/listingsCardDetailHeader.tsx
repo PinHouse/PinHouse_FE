@@ -2,7 +2,6 @@
 import { LeftButton } from "@/src/assets/icons/button";
 import { useRouteStore } from "@/src/features/home/model/homeStore";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export const ListingsCardDetailHeader = () => {
   const router = useRouter();
