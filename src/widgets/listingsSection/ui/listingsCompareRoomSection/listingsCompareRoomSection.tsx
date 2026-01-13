@@ -5,8 +5,10 @@ import {
   ListingsCompareContentHeader,
   mapCompareItemToCardProps,
 } from "@/src/features/listings/ui/listingsCompareRoom";
+import { ListingCompareCardSkeleton } from "@/src/features/listings/ui/listingsCompareRoom/components/listingsCompareCardSkeleton";
 
 import { PageTransition } from "@/src/shared/ui/animation";
+import { Skeleton } from "@/src/shared/ui/skeleton/skeleton";
 
 export const LISTING_COMPARE_MOCK: ListingCompareItem[] = [
   {
@@ -83,9 +85,15 @@ export const ListingCompareSection = ({ id }: { id: string }) => {
         <div className="p-4">
           <ListingsCompareContentHeader />
         </div>
-        <div className="grid grid-cols-2 items-stretch gap-2 px-4">
+        {/* <div className="grid grid-cols-2 items-stretch gap-2 px-4">
           {data.map(item => (
             <ListingCompareCard key={item.id} {...mapCompareItemToCardProps(item)} />
+          ))}
+        </div> */}
+
+        <div className="grid grid-cols-2 gap-2 p-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <ListingCompareCardSkeleton key={i} />
           ))}
         </div>
       </PageTransition>
