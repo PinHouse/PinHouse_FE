@@ -3,7 +3,7 @@ import { SVGProps } from "react";
 export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_9776_42469)">
+      <g clipPath="url(#clip0_9776_42469)">
         <path
           d="M29.2631 47.8681L56.2389 40.6129L47.8695 9.26103C47.4492 7.68692 45.8373 6.75277 44.269 7.17456L20.1328 13.666L29.2631 47.8681Z"
           fill="url(#paint0_linear_9776_42469)"
@@ -29,7 +29,7 @@ export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
           fill="url(#paint3_linear_9776_42469)"
         />
       </g>
-      <g clip-path="url(#clip1_9776_42469)">
+      <g clipPath="url(#clip1_9776_42469)">
         <path
           d="M12.2889 60.1603C12.6048 60.1603 12.9201 60.04 13.1614 59.7988L18.703 54.2573C19.1849 53.7754 19.1849 52.9942 18.703 52.5123C18.2211 52.0304 17.4399 52.0304 16.958 52.5123L11.4164 58.0538C10.9345 58.5357 10.9345 59.3169 11.4164 59.7988C11.6577 60.04 11.973 60.1603 12.2889 60.1603Z"
           fill="url(#paint4_linear_9776_42469)"
@@ -48,7 +48,7 @@ export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
           data-figma-bg-blur-radius="2.33143"
           d="M24.1855 38.0923C19.2564 38.0923 15.2464 42.1024 15.2461 47.0308C15.2461 49.4943 16.2494 51.7286 17.8672 53.3472L17.8662 53.3481C19.4848 54.9666 21.7195 55.9691 24.1836 55.9692C29.1122 55.9692 33.123 51.9584 33.123 47.0298C33.123 44.5657 32.1205 42.331 30.502 40.7124C28.8834 39.0944 26.6492 38.0924 24.1855 38.0923Z"
           fill="white"
-          fill-opacity="0.6"
+          fillOpacity="0.6"
         />
         <path
           d="M24.1859 57.0581C29.7147 57.0581 34.2129 52.56 34.2129 47.0311C34.2129 41.5023 29.7147 37.0034 24.1859 37.0034C18.657 37.0034 14.1582 41.5016 14.1582 47.0311C14.1582 52.5607 18.6563 57.0581 24.1859 57.0581ZM24.1859 39.181C28.5142 39.181 32.0353 42.7029 32.0353 47.0311C32.0353 51.3594 28.5135 54.8806 24.1859 54.8806C19.8583 54.8806 16.3357 51.3587 16.3357 47.0311C16.3357 42.7036 19.8576 39.181 24.1859 39.181Z"
@@ -67,8 +67,8 @@ export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
           y2="44.2233"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#6084FF" />
-          <stop offset="1" stop-color="#9FB5FF" />
+          <stop stopColor="#6084FF" />
+          <stop offset="1" stopColor="#9FB5FF" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_9776_42469"
@@ -78,8 +78,8 @@ export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
           y2="14.7498"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#8EA8FF" />
-          <stop offset="1" stop-color="#3E6AFE" />
+          <stop stopColor="#8EA8FF" />
+          <stop offset="1" stopColor="#3E6AFE" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_9776_42469"
@@ -89,8 +89,8 @@ export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
           y2="50.5066"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#91B0FF" />
-          <stop offset="1" stop-color="#E9EEFF" />
+          <stop stopColor="#91B0FF" />
+          <stop offset="1" stopColor="#E9EEFF" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_9776_42469"
@@ -100,8 +100,8 @@ export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
           y2="47.6294"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#91B0FF" />
-          <stop offset="1" stop-color="#E9EEFF" />
+          <stop stopColor="#91B0FF" />
+          <stop offset="1" stopColor="#E9EEFF" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_9776_42469"
@@ -111,8 +111,8 @@ export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
           y2="59.8982"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F59E0B" />
-          <stop offset="1" stop-color="#FFBB18" />
+          <stop stopColor="#F59E0B" />
+          <stop offset="1" stopColor="#FFBB18" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_9776_42469"
@@ -122,8 +122,8 @@ export const InfoButoonImg = (props: SVGProps<SVGSVGElement>) => {
           y2="54.0956"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFBA18" />
-          <stop offset="1" stop-color="#FFD95B" />
+          <stop stopColor="#FFBA18" />
+          <stop offset="1" stopColor="#FFD95B" />
         </linearGradient>
         <clipPath id="clip0_9776_42469">
           <rect

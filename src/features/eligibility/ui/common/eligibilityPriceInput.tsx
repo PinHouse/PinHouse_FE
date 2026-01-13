@@ -26,6 +26,8 @@ export interface EligibilityPriceInputProps {
   onBlur?: () => void;
   /** 플레이스홀더 */
   placeholder?: string;
+  /** 비활성화 여부 */
+  disabled?: boolean;
   /** 추가 클래스명 */
   className?: string;
 }
@@ -41,6 +43,7 @@ export const EligibilityPriceInput = ({
   onFocus,
   onBlur,
   placeholder = "금액을 입력해 주세요",
+  disabled = false,
   className,
 }: EligibilityPriceInputProps) => {
   const [internalValue, setInternalValue] = useState<string>(defaultValue || "");
@@ -51,7 +54,9 @@ export const EligibilityPriceInput = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 숫자만 허용
-    const numericValue = e.target.value.replace(/[^0-9]/g, "");
+    // 포맷팅된 값(예: "1,234")에서 쉼표를 제거하고 숫자만 추출
+    const rawValue = e.target.value.replace(/[^0-9]/g, "");
+    const numericValue = rawValue === "" ? "" : rawValue;
 
     if (isControlled) {
       onChange?.(numericValue);
@@ -99,6 +104,7 @@ export const EligibilityPriceInput = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholder={placeholder}
+          disabled={disabled}
           className={cn(
             "h-12 rounded-lg py-3 pl-5 text-base font-medium leading-[140%] tracking-[-0.01em]"
           )}
