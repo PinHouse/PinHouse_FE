@@ -611,3 +611,39 @@ export interface CostRange {
   rangeEnd: number;
   count: number;
 }
+
+/** 단지 정보 */
+export interface RoomCompareComplex {
+  complexId: string;
+  name: string;
+  address: string;
+}
+
+/** 면적 정보 */
+export interface Area {
+  exclusiveAreaM2: number; // ㎡
+  exclusiveAreaPyeong: number; // 평
+}
+
+/** 비용 정보 */
+export interface Cost {
+  totalDeposit: number; // 보증금 (만원 단위로 보임)
+  monthlyRent: number; // 월세 (원 or 만원 → 백엔드 단위 확인 필요)
+}
+
+/** 유닛 타입 */
+export interface UnitType {
+  typeId: string;
+  typeCode: string;
+  complex: RoomCompareComplex;
+  area: Area;
+  cost: Cost;
+  nearbyFacilities: string[];
+  totalTime: string; // 예: "1시간 17분"
+  isLiked: boolean;
+  group: string[];
+}
+
+export interface UnitTypeRespnse {
+  unitTypes: UnitType[];
+}
