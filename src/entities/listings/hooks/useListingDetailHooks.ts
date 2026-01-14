@@ -1,4 +1,4 @@
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   endPoint,
   Environmnt,
@@ -8,11 +8,17 @@ import {
   ListingRentalDetailVM,
   ListingSummary,
   LstingBody,
-  UseListingsDetailHooksType,
+  UnitTypeRespnse,
   UseListingsHooksType,
   UseListingsHooksWithParam,
 } from "../model/type";
-import { PostBasicRequest, PostParamsBodyRequest, requestListingList } from "../api/listingsApi";
+import {
+  getNoticeParam,
+  PostBasicRequest,
+  PostParamsBodyRequest,
+  QueryParams,
+  requestListingList,
+} from "../api/listingsApi";
 import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
@@ -198,10 +204,10 @@ export const useListingRouteDetail = <T, TParam extends object>({
 };
 
 export const useListingFilterDetail = <T>() => {
-  const pinPointId = useOAuthStore();
+  const { pinPointId } = useOAuthStore();
 
   return useQuery<IResponse<T>, Error, T>({
-    queryKey: ["pinpoint"],
+    queryKey: [pinPointId],
     staleTime: 1000 * 60 * 5,
     queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
     select: response => {
@@ -210,5 +216,21 @@ export const useListingFilterDetail = <T>() => {
       }
       return response.data;
     },
+  });
+};
+
+export const useListingRoomCompare = <T>({ noticeId, sortType, nearbyFacilities }: QueryParams) => {
+  const { pinPointId } = useOAuthStore();
+
+  const params: QueryParams = {
+    pinPointId,
+    sortType,
+    nearbyFacilities,
+  };
+
+  return useQuery<IResponse<T>, Error, T>({
+    queryKey: ["compareNotice", noticeId, sortType, nearbyFacilities],
+    queryFn: () => getNoticeParam<IResponse<T>>(`${NOTICE_ENDPOINT}/${noticeId}/compare`, params),
+    enabled: Boolean(noticeId && noticeId),
   });
 };

@@ -70,3 +70,16 @@ export const getNoticeSheetFilter = async <
   const res = await http.get<TResponse>(url);
   return res as unknown as TData;
 };
+
+export type QueryParams = Record<string, string | string[] | undefined>;
+export const getNoticeParam = async <
+  TData,
+  TResponse extends IResponse<TData> = IResponse<TData>,
+  P extends QueryParams = QueryParams,
+>(
+  url: string,
+  params?: P
+): Promise<TData> => {
+  const res = await http.get<TResponse, P>(url, params);
+  return res.data as unknown as TData;
+};
