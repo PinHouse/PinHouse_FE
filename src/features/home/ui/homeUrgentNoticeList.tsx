@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { LeftButton } from "@/src/assets/icons/button";
 import { useNoticeInfinite } from "@/src/entities/home/hooks/homeHooks";
 import { HomeContentsCard } from "@/src/features/home";
-import { ListingNoSearchResult } from "@/src/features/listings";
+import { ListingNoSearchResult, ListingsContent } from "@/src/features/listings";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { useRouteStore } from "../model/homeStore";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { useListingsFilterStore } from "../../listings/model";
 export const UrgentNoticeList = () => {
   const { data, isFetchingNextPage, isError, hasNextPage, fetchNextPage } = useNoticeInfinite();
   const contents = data?.pages?.flatMap(page => page.content) ?? [];
+  const dataCount = contents.length === 0;
   const region = data?.pages?.flatMap(page => page.region) ?? [];
   const { setSortType } = useListingsFilterStore();
   const router = useRouter();
@@ -39,7 +40,7 @@ export const UrgentNoticeList = () => {
       </div>
 
       <div className="flex flex-col">
-        <HomeContentsCard data={contents} />
+        {isError && dataCount ? <ListingsContent /> : <HomeContentsCard data={contents} />}
       </div>
 
       {isFetchingNextPage && (
