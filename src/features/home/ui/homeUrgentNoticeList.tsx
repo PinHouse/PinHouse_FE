@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { LeftButton } from "@/src/assets/icons/button";
 import { useNoticeInfinite } from "@/src/entities/home/hooks/homeHooks";
 import { HomeContentsCard } from "@/src/features/home";
-import { ListingNoSearchResult } from "@/src/features/listings";
+import { ListingNoSearchResult, ListingsContent } from "@/src/features/listings";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { useRouteStore } from "../model/homeStore";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { useListingsFilterStore } from "../../listings/model";
 export const UrgentNoticeList = () => {
   const { data, isFetchingNextPage, isError, hasNextPage, fetchNextPage } = useNoticeInfinite();
   const contents = data?.pages?.flatMap(page => page.content) ?? [];
+  const dataCount = contents.length === 0;
   const region = data?.pages?.flatMap(page => page.region) ?? [];
   const { setSortType } = useListingsFilterStore();
   const router = useRouter();
@@ -26,7 +27,9 @@ export const UrgentNoticeList = () => {
     <section className={cn("flex flex-col", contents.length >= 2 ? "pb-[55px]" : "")}>
       <div className="flex items-center justify-between">
         <div>
-          <p className="mb-3 text-lg font-bold text-greyscale-grey-900">마감임박 공고</p>
+          <p className="mb-3 text-lg font-bold text-greyscale-grey-900">
+            {isError && dataCount ? "공고 리스트" : "마감임박 공고"}
+          </p>
         </div>
         <div
           className="min-w-auto flex items-center text-xs font-semibold text-greyscale-grey-400"
@@ -39,7 +42,11 @@ export const UrgentNoticeList = () => {
       </div>
 
       <div className="flex flex-col">
-        <HomeContentsCard data={contents} />
+        {isError && dataCount ? (
+          <ListingsContent viewSet={false} />
+        ) : (
+          <HomeContentsCard data={contents} />
+        )}
       </div>
 
       {isFetchingNextPage && (
