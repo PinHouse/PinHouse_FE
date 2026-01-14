@@ -39,7 +39,7 @@ export const ListingCompareCard = ({
 }: ListingCompareCardProps) => {
   return (
     <article className="flex h-full flex-col rounded-xl border bg-white">
-      <div className="relative mb-3 h-[140px] w-full rounded-t-lg bg-greyscale-grey-100">
+      <div className="relative h-[92px] w-full rounded-t-lg bg-greyscale-grey-100">
         {/* <button className="absolute right-2 top-2 rounded-full bg-white p-1 shadow">📌</button> */}
       </div>
       <div className="p-3">
@@ -51,15 +51,13 @@ export const ListingCompareCard = ({
           <p className="line-clamp-1 text-sm font-semibold">{title}</p>
           <button className="text-greyscale-grey-400">⋮</button>
         </div>
-
         <p className="line-clamp-1 text-xs text-greyscale-grey-500">{distance}</p>
-
         <p className="line-clamp-1 text-xs text-greyscale-grey-500">{option}</p>
-        <div className="flex flex-wrap gap-1">
+        <div className="mt-2 grid grid-cols-[64px_64px] gap-1">
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="rounded-md border border-greyscale-grey-200 px-2 py-[2px] text-xs text-greyscale-grey-600"
+              className="rounded-md border border-greyscale-grey-200 py-[2px] text-center text-xs text-greyscale-grey-600"
             >
               {tag}
             </span>
