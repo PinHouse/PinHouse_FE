@@ -85,17 +85,17 @@ export const ListingCompareSection = ({ id }: { id: string }) => {
         <div className="p-4">
           <ListingsCompareContentHeader />
         </div>
-        {/* <div className="grid grid-cols-2 items-stretch gap-2 px-4">
+        <div className="grid grid-cols-2 items-stretch gap-2 px-4">
           {data.map(item => (
             <ListingCompareCard key={item.id} {...mapCompareItemToCardProps(item)} />
           ))}
-        </div> */}
+        </div>
 
-        <div className="grid grid-cols-2 gap-2 p-4">
+        {/* <div className="grid grid-cols-2 gap-2 p-4">
           {Array.from({ length: 6 }).map((_, i) => (
             <ListingCompareCardSkeleton key={i} />
           ))}
-        </div>
+        </div> */}
       </PageTransition>
     </section>
   );

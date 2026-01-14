@@ -32,8 +32,9 @@ export const UrgentNoticeList = () => {
           className="min-w-auto flex items-center text-xs font-semibold text-greyscale-grey-400"
           onClick={pageRouter}
         >
-          <span>{region}</span>
-          <LeftButton width={20} height={20} className="rotate-180" />
+          <span>전체보기</span>
+          {/* <span>{region}</span> */}
+          <LeftButton width={15} height={15} className="rotate-180" />
         </div>
       </div>
 
