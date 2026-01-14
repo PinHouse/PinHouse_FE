@@ -6,7 +6,7 @@ import { ListingContentsList } from "./listingsContentsList";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 
-export const ListingsContent = () => {
+export const ListingsContent = ({ viewSet = true }: { viewSet?: boolean }) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, isLoading, isSuccess } =
     useListingListInfiniteQuery();
 
@@ -23,7 +23,7 @@ export const ListingsContent = () => {
   return (
     <>
       <div className="flex h-full flex-col">
-        <ListingsContentHeader totalCount={totalCount} />
+        {!viewSet ? <span></span> : <ListingsContentHeader totalCount={totalCount} />}
         {totalCount === 0 ? (
           <div className="flex h-full flex-col items-center justify-center pb-[88px]">
             <ListingNoSearchResult
