@@ -6,3 +6,4 @@ export * from "./onOffFalse";
 export * from "./onOffTrue";
 export * from "./downButton";
 export * from "./upButton";
+export * from "./cameraIcon";
