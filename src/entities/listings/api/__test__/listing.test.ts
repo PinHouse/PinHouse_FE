@@ -735,6 +735,7 @@ describe("방비교 API 조회", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   it("비교 API 조회", async () => {
     const MOCK_PRICE_DISTRIBUTION: UnitType[] = [
       {
@@ -760,14 +761,20 @@ describe("방비교 API 조회", () => {
       },
     ];
 
-    (http.get as jest.Mock).mockResolvedValue(MOCK_PRICE_DISTRIBUTION);
+    (http.get as jest.Mock).mockResolvedValue({
+      data: MOCK_PRICE_DISTRIBUTION,
+    });
+
     const params = {
       pinPoint: "fec9aba3-0fd9-4b75-bebf-9cb7641fd251",
       sortType: "핀포인트 거리순",
       nearbyFacilities: ["도서관"],
     };
+
     const url = `${NOTICE_ENDPOINT}/18214/compare`;
     const result = await getNoticeParam<UnitTypeRespnse>(url, params);
+
+    expect(http.get).toHaveBeenCalledWith(url, params);
     expect(result).toMatchObject(MOCK_PRICE_DISTRIBUTION);
   });
 });

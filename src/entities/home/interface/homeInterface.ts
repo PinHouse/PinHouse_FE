@@ -1,13 +1,11 @@
-import { IResponse } from "@/src/shared/types";
-import { NoticeByPinPointParams, NoticeContent, SliceResponse } from "../model/type";
 import { getWithSlice } from "../api/homeApi";
 
-export const getNoticeByPinPoint = ({
+export const getNoticeByPinPoint = <T, P extends Record<string, any> = Record<string, any>>({
   params,
   url,
 }: {
-  params: NoticeByPinPointParams;
+  params?: P;
   url: string;
 }) => {
-  return getWithSlice<SliceResponse<NoticeContent>, NoticeByPinPointParams>(url, params);
+  return getWithSlice<T, P>(url, params);
 };

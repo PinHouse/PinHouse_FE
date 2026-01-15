@@ -4,7 +4,7 @@ import { AxiosRequestConfig } from "axios";
 
 export const getWithSlice = async <T, P extends Record<string, any>>(
   url: string,
-  params: P,
+  params?: P,
   options?: AxiosRequestConfig
 ): Promise<T> => {
   const apiCall = HTTP_METHODS["get"];
