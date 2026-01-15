@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useListingsFilterStore } from "../../listings/model";
 
 export const UrgentNoticeList = () => {
-  const { data, isFetchingNextPage, isError, hasNextPage, fetchNextPage } = useNoticeInfinite();
+  const { data, isFetchingNextPage, isError, fetchNextPage } = useNoticeInfinite();
   const contents = data?.pages?.flatMap(page => page.content) ?? [];
   const dataCount = contents.length === 0;
   const region = data?.pages?.flatMap(page => page.region) ?? [];
@@ -28,7 +28,7 @@ export const UrgentNoticeList = () => {
       <div className="flex items-center justify-between">
         <div>
           <p className="mb-3 text-lg font-bold text-greyscale-grey-900">
-            {isError && dataCount ? "공고 리스트" : "마감임박 공고"}
+            {isError || dataCount ? "공고 리스트" : "마감임박 공고"}
           </p>
         </div>
         <div
@@ -42,7 +42,7 @@ export const UrgentNoticeList = () => {
       </div>
 
       <div className="flex flex-col">
-        {isError && dataCount ? (
+        {isError || dataCount ? (
           <ListingsContent viewSet={false} />
         ) : (
           <HomeContentsCard data={contents} />

@@ -35,3 +35,7 @@ export interface NoticeContent {
   applyPeriod: string; // 신청 기간 (문자열)
   liked: boolean; // 관심 여부
 }
+
+export interface NoticeCount {
+  count: number;
+}
