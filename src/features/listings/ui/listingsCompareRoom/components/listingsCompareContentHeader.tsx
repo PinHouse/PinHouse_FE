@@ -1,4 +1,3 @@
-import { ArrowUpArrowDown } from "@/src/assets/icons/button/arrowUpArrowDown";
 import { CaretDropDown } from "@/src/shared/ui/dropDown/CaretDropDown";
 import { listingsComparePoint } from "../../../model";
 
@@ -15,9 +14,6 @@ export const ListingsCompareContentHeader = ({ count }: { count: string }) => {
           <div className="flex items-center gap-1"></div>
 
           <div className="flex items-center">
-            {/* <span>
-              <p>핀포인트 거리순</p>
-            </span> */}
             <CaretDropDown
               variant="ghost"
               types="drop"
@@ -26,7 +22,7 @@ export const ListingsCompareContentHeader = ({ count }: { count: string }) => {
               fullWidth={false}
               className="w-fit"
               containerClassName="w-auto"
-              menuClassName="left-[-60] w-[100] "
+              menuClassName="left-[-60] w-[100]"
             />
           </div>
         </div>

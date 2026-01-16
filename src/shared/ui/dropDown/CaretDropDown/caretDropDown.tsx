@@ -30,10 +30,10 @@ function CaretDropDownContent({
   const [open, setOpen] = useState<boolean>(false);
   const optionData = types ? data[types] : [];
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { status, setStatus } = useListingState();
+  const { status } = useListingState();
   const searchParams = useSearchParams();
   const isSearchPage = searchParams.has("query");
-
+  const firstValue = optionData.values().next().value?.value;
   const setBaseStatus = useListingState(s => s.setStatus);
   const setSearchStatus = useListingsSearchState(s => s.setStatus);
   const searchState = useListingsSearchState(s => s.status);
@@ -50,6 +50,7 @@ function CaretDropDownContent({
       const nextSearchStatus = statusValue[value] ?? value;
       setSearchStatus(nextSearchStatus);
     } else {
+      console.log(value);
       setBaseStatus(value);
     }
     setOpen(false);
@@ -69,11 +70,7 @@ function CaretDropDownContent({
 
   return (
     <div
-      className={cn(
-        "relative inline-block",
-        fullWidth ? "w-full" : "w-auto",
-        containerClassName
-      )}
+      className={cn("relative inline-block", fullWidth ? "w-full" : "w-auto", containerClassName)}
       ref={wrapperRef}
     >
       <button
@@ -83,7 +80,8 @@ function CaretDropDownContent({
       >
         {children}
         <span className="flex items-center justify-between gap-1 text-xs font-bold">
-          {isSearchPage ? (searchState === "ALL" ? "전체" : "모집중") : status}
+          {isSearchPage && (searchState === "ALL" ? "전체" : "모집중")}
+          {!isSearchPage && status === "전체" ? firstValue : status}
           {/* {status || children} */}
           {open ? <CaretUp /> : <CaretDown />}
         </span>
@@ -92,9 +90,7 @@ function CaretDropDownContent({
       {open && (
         <ul
           className={cn(
-            // default placement and sizing; override via menuClassName
             "absolute left-0 top-8 z-10 rounded-lg border bg-white font-bold text-text-tertiary shadow-lg",
-            // fit to content by default
             "w-fit min-w-fit",
             menuClassName
           )}

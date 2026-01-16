@@ -42,7 +42,10 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
           <motion.div
             key="overlay"
             className="fixed inset-0 bg-black/40"
-            onClick={onClose}
+            onClick={e => {
+              e.stopPropagation();
+              onClose();
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -54,6 +57,7 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
+            onClick={e => e.stopPropagation()}
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
           >
             <section className="flex flex-col">
