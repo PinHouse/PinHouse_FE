@@ -55,7 +55,7 @@ export const QuickStatsList = () => {
         </span>
       </div>
 
-      <div className="flex items-center pl-6">
+      <div className="flex items-center pl-6" onClick={() => onSelectSection("maxTime")}>
         <button className="flex items-center gap-1 text-lg font-semibold leading-none">
           00시간 00분
           <span className="pl-1 text-greyscale-grey-400">
