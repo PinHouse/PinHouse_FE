@@ -1,6 +1,7 @@
 "use client";
 import { useListingRoomCompare } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { UnitTypeRespnse } from "@/src/entities/listings/model/type";
+import { SheetState, useListingState } from "@/src/features/listings/model";
 import {
   ListingCompareCard,
   ListingCompareHeader,
@@ -10,11 +11,14 @@ import { ListingCompareCardSkeleton } from "@/src/features/listings/ui/listingsC
 import { PageTransition } from "@/src/shared/ui/animation";
 
 export const ListingCompareSection = ({ id }: { id: string }) => {
+  const { status } = useListingState();
+
   const { data, isLoading, error } = useListingRoomCompare<UnitTypeRespnse>({
     noticeId: id,
-    sortType: "핀포인트 거리순",
+    sortType: status === "전체" ? "핀포인트 거리순" : status,
     nearbyFacilities: ["도서관"],
   });
+
   const unitData = data?.unitTypes;
   const count = Number(data?.unitTypes?.length);
   const zeroCount = count <= 10 ? `0${count}` : `${count}`;
@@ -36,7 +40,6 @@ export const ListingCompareSection = ({ id }: { id: string }) => {
             {unitData?.map(unit => (
               <div key={unit.typeId}>
                 <ListingCompareCard {...unit} />
-                {/* <ListingCompareCard /> */}
               </div>
             ))}
           </div>

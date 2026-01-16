@@ -19,6 +19,7 @@ export interface DropDownProps<T = PinPoint[]>
   data: PinPointMap<T>;
   setSelect?: any;
   selected?: string;
+  firstValue?: string;
   // layout overrides
   containerClassName?: string; // wrapper div
   menuClassName?: string; // dropdown menu ul

@@ -56,6 +56,7 @@ export const ListingsCardTileDetails = ({
   const [sheetState, setSheetState] = useState<SheetState>({
     open: false,
   });
+
   const route = infra?.distance;
   const infraData = infra?.infra;
   const roomTypes = infra?.unitTypes;

@@ -2,11 +2,22 @@ import { UnitType } from "@/src/entities/listings/model/type";
 import { formatNumber } from "@/src/shared/lib/numberFormat";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { LikeType } from "../../../hooks/listingsHooks";
+import { useState } from "react";
+import { SheetState } from "../../../model";
+import { InfraSheet } from "../../listingsCardDetail/infra/infraSheet";
 
 export const ListingCompareCard = (unit: UnitType) => {
+  const [sheetState, setSheetState] = useState<SheetState>({
+    open: false,
+  });
+
   return (
-    <article className="w-[160px] rounded-xl border bg-white">
-      {/* HEADER */}
+    <article
+      className="w-[160px] rounded-xl border bg-white"
+      onClick={e =>
+        setSheetState({ open: true, section: "room", listingId: unit.complex.complexId })
+      }
+    >
       <div className="h-[92px] w-full rounded-t-lg rounded-tl-xl rounded-tr-xl bg-greyscale-grey-25 p-2">
         <div className="flex justify-between rounded-full">
           {unit.group.map(item => (
@@ -21,14 +32,16 @@ export const ListingCompareCard = (unit: UnitType) => {
               </TagButton>
             </div>
           ))}
-          <LikeType
-            id={unit.typeId}
-            liked={unit.isLiked}
-            type="ROOM"
-            resetQuery={["useListingRoomTypeDetail"]}
-          />
+          <span onClick={e => e.stopPropagation()}>
+            <LikeType
+              id={unit.typeId}
+              liked={unit.isLiked}
+              type="ROOM"
+              resetQuery={["compareNotice"]}
+            />
+          </span>
         </div>
-        {/* <div className="mx-3 h-[120px] rounded-lg bg-[linear-gradient(45deg,#f2f2f2_25%,transparent_25%,transparent_50%,#f2f2f2_50%,#f2f2f2_75%,transparent_75%,transparent)] bg-[length:12px_12px]" /> */}
+        <div className="mx-3 rounded-lg bg-[linear-gradient(45deg,#f2f2f2_25%,transparent_25%,transparent_50%,#f2f2f2_50%,#f2f2f2_75%,transparent_75%,transparent)] bg-[length:12px_12px]" />
       </div>
 
       <div className="p-3">
@@ -73,6 +86,7 @@ export const ListingCompareCard = (unit: UnitType) => {
           ))}
         </div>
       </div>
+      <InfraSheet sheetState={sheetState} onClose={() => setSheetState({ open: false })} />
     </article>
   );
 };

@@ -48,7 +48,7 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
   }
 
   return (
-    <section className="flex h-full flex-col">
+    <section className="flex h-full min-h-0 flex-col overflow-y-auto">
       <div className="relative flex flex-col justify-center bg-greyscale-grey-25">
         <div className="flex justify-between pl-3 pr-3 pt-3">
           <span>
