@@ -65,8 +65,8 @@ function BottomNavigationContent() {
           <PersonLine
             width={25}
             height={25}
-            onClick={() => router.push("/hometemporary")}
-            fill={pathname === "/hometemporary" ? "black" : "none"}
+            onClick={() => router.push("/mypage/settings")}
+            fill={pathname === "/mypage/settings" ? "black" : "none"}
           />
           <span>마이</span>
         </button>
