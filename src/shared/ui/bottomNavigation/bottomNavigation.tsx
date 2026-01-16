@@ -8,10 +8,6 @@ import { Search } from "@/src/assets/icons/home/search";
 
 const hiddenRoutes = ["/login", "/onboarding", "/listings/search"];
 const hiddenExactRoutes = [
-  "/listings?tab=region",
-  "/listings?tab=target",
-  "/listings?tab=rental",
-  "/listings?tab=housing",
   "/quicksearch/init",
   "/quicksearch/choosePinPoint",
   "/quicksearch/chooseDistance",
@@ -31,14 +27,16 @@ const compareDetailPageRegex = /^\/listings\/[A-Za-z0-9_-]+\/compare$/;
 function BottomNavigationContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const queryString = searchParams.toString();
-  const currentPath = queryString ? `${pathname}?${queryString}` : pathname;
+  const tab = searchParams.get("tab");
+
   const router = useRouter();
   const shouldHide =
     hiddenRoutes.some(route => pathname.startsWith(route)) ||
-    hiddenExactRoutes.includes(currentPath) ||
+    hiddenExactRoutes.includes(pathname) ||
+    (pathname === "/listings" && tab !== null) ||
     detailPageRegex.test(pathname) ||
-    compareDetailPageRegex.test(pathname);
+    compareDetailPageRegex.test(pathname) ||
+    (pathname === "/home" && searchParams.has("mode"));
 
   if (shouldHide) return null;
   return (

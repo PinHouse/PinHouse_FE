@@ -1,7 +1,7 @@
 "use client";
 import { useListingRoomCompare } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { UnitTypeRespnse } from "@/src/entities/listings/model/type";
-import { SheetState, useListingState } from "@/src/features/listings/model";
+import { useListingState } from "@/src/features/listings/model";
 import {
   ListingCompareCard,
   ListingCompareHeader,
@@ -36,12 +36,14 @@ export const ListingCompareSection = ({ id }: { id: string }) => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 justify-center gap-4 px-4">
-            {unitData?.map(unit => (
-              <div key={unit.typeId}>
-                <ListingCompareCard {...unit} />
-              </div>
-            ))}
+          <div className="px-4">
+            <div className="grid grid-cols-2 gap-3">
+              {unitData?.map(unit => (
+                <div key={unit.typeId} className="flex justify-center">
+                  <ListingCompareCard {...unit} />
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </PageTransition>
