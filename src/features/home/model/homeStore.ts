@@ -15,3 +15,15 @@ export const useRouteStore = create<RouteState>(set => ({
   setListingEntry: entry => set({ listingEntry: entry }),
   reset: () => set({ prevPath: null, listingEntry: null }),
 }));
+
+type HomeSheet = {
+  open: boolean;
+  openSheet: () => void;
+  closeSheet: () => void;
+};
+
+export const useHomeSheetStore = create<HomeSheet>(set => ({
+  open: false,
+  openSheet: () => set({ open: true }),
+  closeSheet: () => set({ open: false }),
+}));

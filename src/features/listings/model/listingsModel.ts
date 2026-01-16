@@ -326,6 +326,29 @@ export const parseDetailSection = (searchParams: URLSearchParams): DetailFilterT
   return isValid ? (raw as DetailFilterTabKey) : DEFAULT_DETAIL_SECTION;
 };
 
+export const HomeSheetTile = {
+  pinpoints: "핀포인트 선택",
+  maxTime: "최대시간",
+} as const;
+
+type HomeSheetKey = keyof typeof HomeSheetTile;
+type HomeSheetResult = {
+  key: HomeSheetKey;
+  label: string;
+};
+
+export const homeSheetParseObject = (searchParams: URLSearchParams): HomeSheetResult | null => {
+  const raw = searchParams.get("mode") as HomeSheetKey | null;
+  if (!raw) return null;
+
+  const label = HomeSheetTile[raw];
+  if (!label) return null;
+
+  return {
+    key: raw,
+    label,
+  };
+};
 // 사용처: 검색 결과가 없을 때/빈 검색어 화면에서 추천 태그 클릭 핸들러와 인기 키워드 전달
 // - listingsSearchResult/components/searchNoResultView.tsx
 // - listingsSearchResult/components/searchEmptyQueryView.tsx

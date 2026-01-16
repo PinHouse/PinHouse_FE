@@ -13,7 +13,7 @@ export const ListingCompareCard = (unit: UnitType) => {
 
   return (
     <article
-      className="w-[160px] rounded-xl border bg-white"
+      className="w-[200px] rounded-xl border bg-white"
       onClick={e =>
         setSheetState({ open: true, section: "room", listingId: unit.complex.complexId })
       }
@@ -41,7 +41,7 @@ export const ListingCompareCard = (unit: UnitType) => {
             />
           </span>
         </div>
-        <div className="mx-3 rounded-lg bg-[linear-gradient(45deg,#f2f2f2_25%,transparent_25%,transparent_50%,#f2f2f2_50%,#f2f2f2_75%,transparent_75%,transparent)] bg-[length:12px_12px]" />
+        {/* <div className="mx-3 rounded-lg bg-[linear-gradient(45deg,#f2f2f2_25%,transparent_25%,transparent_50%,#f2f2f2_50%,#f2f2f2_75%,transparent_75%,transparent)] bg-[length:12px_12px]" /> */}
       </div>
 
       <div className="p-3">
