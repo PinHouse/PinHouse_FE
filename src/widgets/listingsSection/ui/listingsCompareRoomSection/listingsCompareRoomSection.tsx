@@ -10,7 +10,6 @@ import { ListingCompareCardSkeleton } from "@/src/features/listings/ui/listingsC
 import { PageTransition } from "@/src/shared/ui/animation";
 
 export const ListingCompareSection = ({ id }: { id: string }) => {
-  // const data = LISTING_COMPARE_MOCK;
   const { data, isLoading, error } = useListingRoomCompare<UnitTypeRespnse>({
     noticeId: id,
     sortType: "핀포인트 거리순",
@@ -37,6 +36,7 @@ export const ListingCompareSection = ({ id }: { id: string }) => {
             {unitData?.map(unit => (
               <div key={unit.typeId}>
                 <ListingCompareCard {...unit} />
+                {/* <ListingCompareCard /> */}
               </div>
             ))}
           </div>
