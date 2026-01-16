@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useHomeSheetStore } from "../../model/homeStore";
 import { useMemo } from "react";
 import { PinpointRowBox } from "./pinpointRowBoxs";
+import { MaxTimeSliderBox } from "./maxTime";
 
 export const HomeSheet = () => {
   const open = useHomeSheetStore(s => s.open);
@@ -34,7 +35,7 @@ export const HomeSheet = () => {
           />
 
           <motion.div
-            className="fixed bottom-0 left-0 right-0 flex h-[60vh] flex-col rounded-t-2xl bg-white shadow-xl"
+            className="fixed bottom-0 left-0 right-0 flex h-[55vh] flex-col rounded-t-2xl bg-white shadow-xl"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -42,14 +43,14 @@ export const HomeSheet = () => {
           >
             <div className="mx-auto mb-3 mt-2 h-1.5 w-12 rounded-full bg-gray-300" />
 
-            <div className="flex items-center justify-between px-5 pb-2">
+            <div className="flex items-center justify-between px-8">
               <h2 className="text-lg font-bold">{mode?.label}</h2>
               <button onClick={replaceRouter}>✕</button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-5">
+            <div className="flex-1 overflow-y-auto px-5">
               <motion.div
-                // key={section}
+                key={mode?.key}
                 initial={{ x: 20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -100, opacity: 0 }}
@@ -57,6 +58,7 @@ export const HomeSheet = () => {
                 className="h-full"
               >
                 {mode?.key === "pinpoints" && <PinpointRowBox />}
+                {mode?.key === "maxTime" && <MaxTimeSliderBox />}
               </motion.div>
             </div>
           </motion.div>
