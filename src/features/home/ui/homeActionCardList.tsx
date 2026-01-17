@@ -1,14 +1,22 @@
 import { ArrowUpRight } from "@/src/assets/icons/button/arrowUpRight";
 import { useNoticeCount } from "@/src/entities/home/hooks/homeHooks";
-import { Spinner } from "@/src/shared/ui/spinner/default";
+import { useRouter } from "next/navigation";
 
 export const ActionCardList = () => {
-  const { data, isFetching } = useNoticeCount();
+  const { data } = useNoticeCount();
   const conut = data?.count;
+  const router = useRouter();
+
+  const onListingsPageMove = () => {
+    router.push("/listings");
+  };
 
   return (
     <div className="mb-4 flex gap-4">
-      <div className="flex min-h-[88px] flex-1 flex-col justify-between rounded-lg bg-primary-blue-300 px-4 py-3">
+      <div
+        className="flex min-h-[88px] flex-1 flex-col justify-between rounded-lg bg-primary-blue-300 px-4 py-3"
+        onClick={onListingsPageMove}
+      >
         <div className="flex items-center justify-between text-white">
           <p className="text-sm font-bold leading-tight opacity-[0.7]">핀포인트 기준</p>
           <div className="flex items-center justify-center">
