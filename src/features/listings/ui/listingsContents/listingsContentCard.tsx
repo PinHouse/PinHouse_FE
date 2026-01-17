@@ -38,7 +38,7 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
               </div>
             </div>
 
-            <div className="flex w-[65%] flex-col justify-start gap-2 pb-3 pl-4 pr-4 pt-2">
+            <div className="flex w-[65%] flex-col justify-start gap-2 rounded-br-xl rounded-tr-xl bg-white pb-3 pl-4 pr-4 pt-2">
               <div className="flex items-baseline gap-2">
                 <HouseRental
                   {...normalized}

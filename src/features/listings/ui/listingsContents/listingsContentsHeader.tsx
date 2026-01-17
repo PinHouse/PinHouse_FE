@@ -45,7 +45,7 @@ export const ListingsContentHeader = ({ totalCount }: ListingsContentHeaderProps
         </div>
 
         <div className="flex items-center gap-1" onClick={e => onChange(e)}>
-          <div className="text-xs font-bold">
+          <div className="text-sm font-bold">
             {isSearchPage ? (searchSortType === "LATEST" ? "최신공고순" : "마감임박순") : sortType}
           </div>
           <ArrowUpArrowDown />

@@ -75,7 +75,9 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
               </header>
             </section>
             <div className="flex-1 overflow-hidden">
-              <RenderContent section={sheetState.section} listingId={sheetState.listingId} />
+              {sheetState.open && (
+                <RenderContent section={sheetState.section} listingId={sheetState.listingId} />
+              )}
             </div>
           </motion.div>
         </>

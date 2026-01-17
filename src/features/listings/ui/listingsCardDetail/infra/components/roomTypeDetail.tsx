@@ -9,6 +9,7 @@ import { TypeInfoSection } from "./components/roomType/typeInfoSection";
 import { ListingUnitType } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { LikeType } from "@/src/features/listings/hooks/listingsHooks";
+import { CompareDefaultImage } from "@/src/assets/images/compare/compare";
 
 export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
   const { data, isFetching } = useListingRoomTypeDetail<ListingUnitType>({
@@ -51,7 +52,7 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
     <section className="flex h-full min-h-0 flex-col overflow-y-auto">
       <div className="relative flex flex-col justify-center bg-greyscale-grey-25">
         <div className="flex justify-between pl-3 pr-3 pt-3">
-          <span>
+          <span className="flex gap-1">
             {current.group.map(tag => (
               <TagButton
                 key={tag}
@@ -73,12 +74,15 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
           </span>
         </div>
         <div className="relative flex h-60 w-full items-center justify-center">
-          <div className="flex-[1] items-center justify-center p-10">
-            <img
-              src={current?.thumbnail ?? "/area.png"}
-              alt={current?.typeCode ?? "room-type"}
-              className="h-full w-full object-contain"
-            />
+          <div className="relative aspect-[4/1.5] w-full overflow-hidden">
+            {current?.thumbnail ? (
+              <img src={current.thumbnail} className="h-full w-full object-cover" />
+            ) : (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                <CompareDefaultImage className="object-contain opacity-60" />
+                <p className="text-xs text-greyscale-grey-400">도면 이미지를 준비하고 있어요</p>
+              </div>
+            )}
           </div>
           {items.length > 1 && (
             <TypeInfoSection

@@ -229,6 +229,7 @@ export const useListingRoomCompare = <T>({ noticeId, sortType, nearbyFacilities 
   return useQuery<IResponse<T>, Error, T>({
     queryKey: ["compareNotice", noticeId, sortType, nearbyFacilities, pinPointId],
     queryFn: () => getNoticeParam<IResponse<T>>(`${NOTICE_ENDPOINT}/${noticeId}/compare`, params),
+    placeholderData: prevData => prevData,
     enabled: Boolean(noticeId && pinPointId),
   });
 };
