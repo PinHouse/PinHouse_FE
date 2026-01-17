@@ -1,17 +1,20 @@
 "use client";
 import { useListingRoomCompare } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { UnitTypeRespnse } from "@/src/entities/listings/model/type";
-import { useListingState } from "@/src/features/listings/model";
+import { SheetState, useListingState } from "@/src/features/listings/model";
 import {
   ListingCompareCard,
   ListingCompareHeader,
   ListingsCompareContentHeader,
 } from "@/src/features/listings/ui/listingsCompareRoom";
+import { InfraSheet } from "@/src/features/listings/ui/listingsCardDetail/infra/infraSheet";
 import { ListingCompareCardSkeleton } from "@/src/features/listings/ui/listingsCompareRoom/components/listingsCompareCardSkeleton";
 import { PageTransition } from "@/src/shared/ui/animation";
+import { useState } from "react";
 
 export const ListingCompareSection = ({ id }: { id: string }) => {
   const { status } = useListingState();
+  const [sheetState, setSheetState] = useState<SheetState>({ open: false });
 
   const { data, isLoading, error } = useListingRoomCompare<UnitTypeRespnse>({
     noticeId: id,
@@ -21,12 +24,13 @@ export const ListingCompareSection = ({ id }: { id: string }) => {
 
   const unitData = data?.unitTypes;
   const count = Number(data?.unitTypes?.length);
-  const zeroCount = count <= 10 ? `0${count}` : `${count}`;
+
+  const zeroCount = count > 10 ? `0${count}` : `${count}`;
   return (
     <section className="mx-auto min-h-full w-full">
       <PageTransition>
         <ListingCompareHeader id={id} />
-        <div className="p-5">
+        <div className="px-5 pt-4">
           <ListingsCompareContentHeader count={zeroCount} />
         </div>
         {isLoading ? (
@@ -36,17 +40,18 @@ export const ListingCompareSection = ({ id }: { id: string }) => {
             ))}
           </div>
         ) : (
-          <div className="px-4">
+          <div className="p-4">
             <div className="grid grid-cols-2 gap-3">
               {unitData?.map(unit => (
-                <div key={unit.typeId} className="flex justify-center">
-                  <ListingCompareCard {...unit} />
+                <div key={unit.typeId}>
+                  <ListingCompareCard unitData={unit} onOpenSheet={setSheetState} />
                 </div>
               ))}
             </div>
           </div>
         )}
       </PageTransition>
+      <InfraSheet sheetState={sheetState} onClose={() => setSheetState({ open: false })} />
     </section>
   );
 };

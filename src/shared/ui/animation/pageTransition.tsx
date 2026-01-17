@@ -18,7 +18,18 @@ export const PageTransition = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    handleScroll();
+    const el = scrollRef.current;
+    if (!el) return;
+    const raf = () => requestAnimationFrame(handleScroll);
+    raf();
+    const ro = new ResizeObserver(() => {
+      raf();
+    });
+    ro.observe(el);
+
+    return () => {
+      ro.disconnect();
+    };
   }, [pathname, address, isEmbed]);
 
   return (

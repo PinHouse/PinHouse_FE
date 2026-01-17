@@ -105,9 +105,9 @@ export const ListingsCardTileDetails = ({
             <EmptyDetail>주변 정보가 제공되지 않았어요.</EmptyDetail>
           ) : (
             <div className="flex flex-wrap gap-1">
-              {infraData?.map(tag => (
+              {infraData?.map((tag, index) => (
                 <TagButton
-                  key={tag}
+                  key={`${tag}-${index}`}
                   size="xs"
                   variant="ghost"
                   className="rounded border border-greyscale-grey-75 bg-greyscale-grey-75 px-3 py-1 text-xs text-greyscale-grey-700"
@@ -131,9 +131,9 @@ export const ListingsCardTileDetails = ({
             <EmptyDetail>방 타입 정보가 제공되지 않았어요.</EmptyDetail>
           ) : (
             <div className="flex flex-wrap gap-1">
-              {roomTypes.map(tag => (
+              {roomTypes.map((tag, index) => (
                 <TagButton
-                  key={tag}
+                  key={`${tag}-${index}`}
                   size="xs"
                   variant="ghost"
                   className="rounded border border-greyscale-grey-100 bg-white px-3 py-1 text-xs font-bold text-greyscale-grey-400"

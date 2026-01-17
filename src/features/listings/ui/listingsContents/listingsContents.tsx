@@ -23,7 +23,7 @@ export const ListingsContent = ({ viewSet = true }: { viewSet?: boolean }) => {
   return (
     <>
       <div className="flex h-full flex-col">
-        {!viewSet ? <span></span> : <ListingsContentHeader totalCount={totalCount} />}
+        {!viewSet ? null : <ListingsContentHeader totalCount={totalCount} />}
         {totalCount === 0 ? (
           <div className="flex h-full flex-col items-center justify-center pb-[88px]">
             <ListingNoSearchResult

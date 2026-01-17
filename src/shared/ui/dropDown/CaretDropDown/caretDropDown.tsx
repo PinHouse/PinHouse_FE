@@ -79,7 +79,7 @@ function CaretDropDownContent({
         {...props}
       >
         {children}
-        <span className="flex items-center justify-between gap-1 text-xs font-bold">
+        <span className="flex items-center justify-between gap-1 text-sm font-bold">
           {isSearchPage && (searchState === "ALL" ? "전체" : "모집중")}
           {!isSearchPage && status === "전체" ? firstValue : status}
           {/* {status || children} */}
