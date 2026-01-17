@@ -36,3 +36,37 @@ export const formatApplyPeriod = (str: string) => {
   // 단일 날짜만 있을 때
   return toDotFormat(str);
 };
+
+/**
+ * @param address 피포인트 이름
+ * @returns 핀포인트 이름 이나 핀포인트 이름을 지역이름 으로 할시 구를 기준으로 줄넘기기
+ */
+
+export const splitAddress = (address: string): [string, string] => {
+  const idx = address.indexOf("구");
+  if (idx === -1) {
+    return [address, ""];
+  }
+  return [address.slice(0, idx + 1), address.slice(idx + 1).trim()];
+};
+
+/**
+ * @param time 0분 ~ 120분
+ * @returns 분단위 데이터 60분 부터 1시간 00분 으로 리턴
+ */
+export const transTime = (time: number) => {
+  const storeTime = time;
+
+  if (storeTime < 60) {
+    return `0시간 ${storeTime}분`;
+  }
+
+  const hours = Math.floor(storeTime / 60);
+  const restMinutes = storeTime % 60;
+
+  if (restMinutes === 0) {
+    return `${hours}시간 00분`;
+  }
+
+  return `${hours}시간 ${restMinutes}분`;
+};

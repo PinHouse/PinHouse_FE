@@ -204,10 +204,8 @@ export const useListingRouteDetail = <T, TParam extends object>({
 };
 
 export const useListingFilterDetail = <T>() => {
-  const { pinPointId } = useOAuthStore();
-
   return useQuery<IResponse<T>, Error, T>({
-    queryKey: [pinPointId],
+    queryKey: ["pinpoint"],
     staleTime: 1000 * 60 * 5,
     queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
     select: response => {

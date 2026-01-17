@@ -27,3 +27,15 @@ export const useHomeSheetStore = create<HomeSheet>(set => ({
   openSheet: () => set({ open: true }),
   closeSheet: () => set({ open: false }),
 }));
+
+type HomeMaxSheet = {
+  maxTime: number;
+  setMaxTime: (time: number) => void;
+  reset: (time: number) => void;
+};
+
+export const useHomeMaxTime = create<HomeMaxSheet>(set => ({
+  maxTime: 30,
+  setMaxTime: time => set({ maxTime: time }),
+  reset: () => set({ maxTime: 30 }),
+}));

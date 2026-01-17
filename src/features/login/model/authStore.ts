@@ -9,6 +9,8 @@ interface IOAuthState {
   userName: string;
   setUserName: (userName: string) => void;
   setPinPointId: (pinPointId: string) => void;
+  pinPointName: string;
+  setPinpointName: (pointName: string) => void;
 }
 
 export const useOAuthStore = create<IOAuthState>()(
@@ -21,6 +23,8 @@ export const useOAuthStore = create<IOAuthState>()(
       setPinPointId: (pinPointId: string) => set({ pinPointId }),
       userName: "",
       setUserName: (userName: string) => set({ userName }),
+      pinPointName: "",
+      setPinpointName: (pinPointName: string) => set({ pinPointName }),
     }),
     {
       name: "oauth-user-storage", // localStorage 키 이름

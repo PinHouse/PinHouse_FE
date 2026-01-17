@@ -2,33 +2,23 @@
 import { CaretDown } from "@/src/assets/icons/button/caretDown";
 import { HomeFiveoclock } from "@/src/assets/icons/home/HomeFiveoclock";
 import { HomePushPin } from "@/src/assets/icons/home/homePushpin";
-import { useListingFilterDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
-import { PinPointPlace } from "@/src/entities/listings/model/type";
-import { useHomeSheetStore } from "../model/homeStore";
+import { useHomeMaxTime, useHomeSheetStore } from "../model/homeStore";
 import { useRouter, useSearchParams } from "next/navigation";
-
-const splitAddress = (address: string): [string, string] => {
-  const idx = address.indexOf("구");
-  if (idx === -1) {
-    return [address, ""];
-  }
-  return [address.slice(0, idx + 1), address.slice(idx + 1).trim()];
-};
+import { useOAuthStore } from "../../login/model";
+import { splitAddress, transTime } from "@/src/shared/lib/utils";
 
 export const QuickStatsList = () => {
-  const { data } = useListingFilterDetail<PinPointPlace>();
   const openSheet = useHomeSheetStore(s => s.openSheet);
-  const name = data?.pinPoints.values().next().value?.name;
-  const id = data?.pinPoints.values().next().value?.id;
-
-  const [line1, line2] = splitAddress(name ?? "핀포인트 이름 설정해주세요");
+  const { pinPointId, pinPointName } = useOAuthStore();
+  const { maxTime } = useHomeMaxTime();
+  const [line1, line2] = splitAddress(pinPointName ?? "핀포인트 이름 설정해주세요");
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const onSelectSection = (key: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("mode", key);
-    params.set("id", id ?? "");
+    params.set("id", pinPointId ?? "");
     router.push(`?${params.toString()}`, { scroll: false });
     openSheet();
   };
@@ -57,7 +47,7 @@ export const QuickStatsList = () => {
 
       <div className="flex items-center pl-6" onClick={() => onSelectSection("maxTime")}>
         <button className="flex items-center gap-1 text-lg font-semibold leading-none">
-          00시간 00분
+          {transTime(maxTime)}
           <span className="pl-1 text-greyscale-grey-400">
             <CaretDown />
           </span>
