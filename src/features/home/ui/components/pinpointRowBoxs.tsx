@@ -1,59 +1,30 @@
+import { useListingFilterDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
+import { PinPointPlace } from "@/src/entities/listings/model/type";
+import { useOAuthStore } from "@/src/features/login/model";
+import { PinpointItem } from "./components/pinpointId";
+
 export const PinpointRowBox = () => {
+  const { data } = useListingFilterDetail<PinPointPlace>();
+  const pinpoints = data?.pinPoints;
+  const pinPointId = useOAuthStore(s => s.pinPointId);
+  const setPinPointId = useOAuthStore(s => s.setPinPointId);
+  const setPinPointName = useOAuthStore(s => s.setPinpointName);
+  const onChangePinpoint = ({ id, name }: { id: string; name: string }) => {
+    setPinPointId(id);
+    setPinPointName(name);
+  };
   return (
-    <div className="flex flex-col p-4">
-      {/* 리스트 */}
+    <div className="flex flex-col pt-4">
       <ul className="flex flex-col divide-y">
-        {/* Item */}
-        <li className="py-4">
-          <div className="mb-1 flex items-center gap-2">
-            <span className="text-sm font-semibold text-gray-900">회사</span>
-            <span className="rounded bg-blue-50 px-2 py-[2px] text-xs font-medium text-blue-600">
-              선택됨
-            </span>
-          </div>
-
-          <p className="mb-2 text-sm text-gray-600">○○도 ○○시 ○○동 000-000</p>
-
-          <div className="flex gap-2">
-            <button className="rounded-md border px-3 py-1 text-xs text-gray-700">수정</button>
-            <button className="rounded-md border px-3 py-1 text-xs text-gray-700">삭제</button>
-          </div>
-        </li>
-
-        {/* Item */}
-        <li className="py-4">
-          <div className="mb-1 text-sm font-semibold text-gray-900">본가</div>
-
-          <p className="mb-2 text-sm text-gray-600">○○도 ○○시 ○○동 000-000</p>
-
-          <div className="flex gap-2">
-            <button className="rounded-md border px-3 py-1 text-xs text-gray-700">수정</button>
-            <button className="rounded-md border px-3 py-1 text-xs text-gray-700">삭제</button>
-          </div>
-        </li>
-
-        {/* Item */}
-        <li className="py-4">
-          <div className="mb-1 text-sm font-semibold text-gray-900">여기저기</div>
-
-          <p className="mb-2 text-sm text-gray-600">○○도 ○○시 ○○동 000-000</p>
-
-          <div className="flex gap-2">
-            <button className="rounded-md border px-3 py-1 text-xs text-gray-700">수정</button>
-            <button className="rounded-md border px-3 py-1 text-xs text-gray-700">삭제</button>
-          </div>
-        </li>
+        {pinpoints?.map(item => (
+          <PinpointItem
+            key={item.id}
+            item={item}
+            isSelected={pinPointId === item.id}
+            onSelect={onChangePinpoint}
+          />
+        ))}
       </ul>
-
-      {/* 하단 버튼 영역 */}
-      <div className="mt-6 flex gap-3">
-        <button className="flex-1 rounded-lg border border-gray-300 py-3 text-sm font-medium text-gray-800">
-          핀포인트 설정
-        </button>
-        <button className="flex-1 rounded-lg bg-gray-900 py-3 text-sm font-medium text-white">
-          저장하기
-        </button>
-      </div>
     </div>
   );
 };

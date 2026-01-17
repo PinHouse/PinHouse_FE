@@ -1,8 +1,9 @@
 import { ArrowUpRight } from "@/src/assets/icons/button/arrowUpRight";
 import { useNoticeCount } from "@/src/entities/home/hooks/homeHooks";
+import { Spinner } from "@/src/shared/ui/spinner/default";
 
 export const ActionCardList = () => {
-  const { data } = useNoticeCount();
+  const { data, isFetching } = useNoticeCount();
   const conut = data?.count;
 
   return (

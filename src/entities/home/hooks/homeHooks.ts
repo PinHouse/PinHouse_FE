@@ -1,8 +1,10 @@
-import { InfiniteData, useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getNoticeByPinPoint } from "../interface/homeInterface";
 import { NoticeContent, NoticeCount, SliceResponse } from "../model/type";
 import { useOAuthStore } from "@/src/features/login/model";
 import { HOME_NOTICE_ENDPOINT } from "@/src/shared/api";
+import { useHomeMaxTime } from "@/src/features/home/model/homeStore";
+import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 
 export const useNoticeInfinite = () => {
   const pinpointId = useOAuthStore(state => state.pinPointId);
@@ -28,14 +30,17 @@ export const useNoticeInfinite = () => {
 
 export const useNoticeCount = () => {
   const pinPointId = useOAuthStore(state => state.pinPointId);
+  const maxTime = useHomeMaxTime(s => s.maxTime);
+  const debouncedMaxTime = useDebounce(maxTime, 400);
   const param = {
     pinPointId,
-    maxTime: 30,
+    maxTime: maxTime,
   };
   const url = `${HOME_NOTICE_ENDPOINT}-count`;
   return useQuery({
-    queryKey: ["noticeCount", pinPointId],
+    queryKey: ["noticeCount", pinPointId, debouncedMaxTime],
     enabled: !!pinPointId,
+    placeholderData: previousData => previousData,
     queryFn: () => getNoticeByPinPoint<NoticeCount>({ url: url, params: param }),
   });
 };

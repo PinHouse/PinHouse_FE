@@ -25,7 +25,7 @@ const PERSONAL_SHORTCUTS = [
 
 const ShortcutMessage = ({ text }: { text: string }) => {
   return (
-    <div className="absolute -top-2 left-4 z-10">
+    <div className="z-5 absolute -top-2 left-4">
       <div className="relative rounded-lg bg-greyscale-grey-900 px-3 py-1 text-xs text-white">
         {text}
         {/* 말풍선 꼬리 */}

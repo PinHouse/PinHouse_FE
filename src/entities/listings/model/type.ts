@@ -568,7 +568,7 @@ export const endPoint = {
 
 type EndPointKey = keyof typeof endPoint;
 
-type PionPointData = {
+export type PionPointData = {
   id: string;
   name: string;
   address: string;

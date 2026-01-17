@@ -8,7 +8,7 @@ import { useOAuthStore } from "@/src/features/login/model/authStore";
  * @returns setDefaultPinpoint 함수
  */
 export const useSetDefaultPinpoint = () => {
-  const { setPinPointId, pinPointId, setUserName } = useOAuthStore();
+  const { setPinPointId, pinPointId, setUserName, setPinpointName } = useOAuthStore();
 
   const setDefaultPinpoint = useCallback(async () => {
     try {
@@ -24,6 +24,7 @@ export const useSetDefaultPinpoint = () => {
       if (pinPoints && myPinpoint.length > 0) {
         setPinPointId(myPinpoint[0].id);
         setUserName(userName);
+        setPinpointName(myPinpoint[0].name);
       }
     } catch (error) {
       console.error("❌ 기본 핀포인트 설정 실패:", error);
