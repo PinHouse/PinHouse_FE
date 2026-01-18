@@ -6,14 +6,26 @@
    Global Reset & Base Style
 ============================= */
 
+@font-face {
+  font-family: "Pretendard";
+  src:
+    url("/fonts/PretendardVariable.woff2") format("woff2-variations"),
+    url("/fonts/PretendardVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
 html,
 body {
   height: 100%;
   background-color: #f9fafb;
   color: #111827;
-  font-family: var(--font-suit), system-ui, sans-serif;
+  font-family: var(--font-pretendard), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
 }
 
 a {
@@ -26,6 +38,7 @@ a:hover {
 
 ::-webkit-scrollbar {
   width: 8px;
+  height: 6px;
 }
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.15);
@@ -39,4 +52,138 @@ a:hover {
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scroll-fade-mask {
+  -webkit-mask-image: linear-gradient(to top, black 80%, transparent 100%);
+  mask-image: linear-gradient(to top, black 80%, transparent 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@layer base {
+  :root {
+    --font-pretendard: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-suit: var(--font-pretendard);
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+
+    /* 영구임대 */
+    --rent-permanent-icon: #a593ff;
+    --rent-permanent-tag-bg: #ece7ff;
+    --rent-permanent-tag-text: #6c55f7;
+
+    /* 국민임대 */
+    --rent-nation-icon: #f4c048;
+    --rent-nation-tag-bg: #fff5d9;
+    --rent-nation-tag-text: #d29b00;
+
+    /* 매입임대 */
+    --rent-purchase-icon: #c5a6ff;
+    --rent-purchase-tag-bg: #f3eaff;
+    --rent-purchase-tag-text: #9c6bff;
+
+    /* N년임대 */
+    --rent-nyear-icon: #8fd18f;
+    --rent-nyear-tag-bg: #e5f7e5;
+    --rent-nyear-tag-text: #4bae4b;
+
+    /* 전세임대 */
+    --rent-jeonse-icon: #f2a058;
+    --rent-jeonse-tag-bg: #ffefe2;
+    --rent-jeonse-tag-text: #d36e1c;
+
+    /* 민간임대 */
+    --rent-private-icon: #f48ec2;
+    --rent-private-tag-bg: #ffe5f0;
+    --rent-private-tag-text: #d2508c;
+
+    /* 통합공공임대 */
+    --rent-integrated-icon: #67d3c4;
+    --rent-integrated-tag-bg: #e0f8f5;
+    --rent-integrated-tag-text: #2ab3a3;
+
+    /* 장기전세 */
+    --rent-longterm-icon: #e98571;
+    --rent-longterm-tag-bg: #ffe9e4;
+    --rent-longterm-tag-text: #c2553b;
+
+    /* 행복주택 */
+    --rent-happy-icon: #a4d97a;
+    --rent-happy-tag-bg: #ebf7e3;
+    --rent-happy-tag-text: #6cae47;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Sonner Toast 아이콘 숨기기 */
+[data-sonner-toast] [data-icon],
+[data-sonner-toast] [data-icon-wrapper],
+[data-sonner-toast] > div:first-child {
+  display: none !important;
 }

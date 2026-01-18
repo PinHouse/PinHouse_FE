@@ -1,40 +1,50 @@
 /** @type {import('tailwindcss').Config} */
+import plugin from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 export default {
+  darkMode: ["class"],
   content: ["./app/**/*.{js,ts,jsx,tsx,mdx}", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
-    /** 화면 폭 */
     screens: {
-      sm: "100%",
-      md: "100%",
+      sm: "375px",
+      md: "640px",
       lg: "768px",
     },
-
     extend: {
       fontFamily: {
-        suit: ["var(--font-suit)", ...fontFamily.sans],
+        pretendard: ["var(--font-pretendard)", ...fontFamily.sans],
       },
-      /* 패딩 */
       spacing: {
+        30: "7.5rem",
+        45: "11.25rem",
         xs: "0.5rem",
         sm: "1rem",
         md: "1.5rem",
         lg: "2rem",
         xl: "3rem",
       },
-
       colors: {
         primary: {
           light: "#3b82f6",
           dark: "#1d4ed8",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+          blue: {
+            25: "#E8EDFF",
+            50: "#D1DCFE",
+            75: "#ACC0FF",
+            100: "#8EA8FF",
+            300: "#306FFF",
+            400: "#2751FF",
+            500: "#1434E0",
+          },
         },
-
         secondary: {
           light: "#6b7280",
           dark: "#374151",
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
-
-        /* 상태 색상 */
         success: {
           light: "#34d399",
           dark: "#059669",
@@ -44,6 +54,8 @@ export default {
           dark: "#d97706",
         },
         danger: {
+          400: "#f95e5e",
+          500: "#F03D3D",
           light: "#f87171",
           dark: "#dc2626",
         },
@@ -51,11 +63,26 @@ export default {
           light: "#60a5fa",
           dark: "#1d4ed8",
         },
+        greyscale: {
+          grey: {
+            25: "#F7F7F9",
+            50: "#EFEFF3",
+            75: "#E7E7ED",
+            100: "#DDDDE5",
+            200: "#CECED7",
+            300: "#BBBAC5",
+            400: "#9F9FAB",
+            500: "#7F7FBF",
+            600: "#676472",
+            700: "#4F4B5C",
+            800: "#2E293D",
+            900: "#110C22",
+          },
+        },
 
-        /* 배경/텍스트 계열 */
-        background: {
-          light: "#f9fafb",
-          dark: "#1f2937",
+        background: "hsl(var(--background))",
+        bgColor: {
+          mute: "#F7F7F9",
         },
         surface: {
           light: "#ffffff",
@@ -77,27 +104,120 @@ export default {
           light: "#306FFF",
           dark: "#1E429F",
           active: "#1E429F",
-          muted: "#E5E7EB",
+          muted: "#BBBAC5",
           text: "#FFFFFF",
+          tag: "#EFEFF3",
+          primary: "#111827",
         },
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          primary: "#111827",
+        },
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
+      },
+      fontSize: {
+        "xs-10": "0.625rem", //10px
+        "xs-12": "0.700rem", //11px
+        "xs-13": "0.8125rem", //13px
+        "sm-15": "0.9375rem", //15px
+        "base-17": "1.0625rem", //17px
+        "lg-19": "1.1875rem", //19px
+        "xl-22": "1.375rem", //22px
       },
       keyframes: {
         logoBounce: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-3px)" },
+          "0%, 100%": {
+            transform: "translateY(0)",
+          },
+          "50%": {
+            transform: "translateY(-3px)",
+          },
         },
         logoPop: {
-          "0%": { transform: "translateY(0) scale(1)" },
-          "30%": { transform: "translateY(-6px) scale(1.05)" },
-          "60%": { transform: "translateY(0) scale(1)" },
-          "100%": { transform: "translateY(0)" },
+          "0%": {
+            transform: "translateY(0) scale(1)",
+          },
+          "30%": {
+            transform: "translateY(-6px) scale(1.05)",
+          },
+          "60%": {
+            transform: "translateY(0) scale(1)",
+          },
+          "100%": {
+            transform: "translateY(0)",
+          },
+        },
+        slideOutLeft: {
+          "0%": {
+            transform: "translateX(0)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "translateX(-100%)",
+            opacity: "0",
+          },
+        },
+        slideInRight: {
+          "0%": {
+            transform: "translateX(100%)",
+            opacity: "0",
+          },
+          "100%": {
+            transform: "translateX(0)",
+            opacity: "1",
+          },
+        },
+        glowBlink: {
+          "0%": { opacity: "0.2" },
+          "50%": { opacity: "0.7" },
+          "100%": { opacity: "0.2" },
         },
       },
       animation: {
         logoBounce: "logoBounce 1.5s ease-in-out infinite",
         logoPop: "logoPop 0.8s ease-in-out",
+        leftMove: "slideOutLeft 0.4s ease-in-out forwards",
+        rightMove: "slideInRight 0.4s ease-in-out forwards",
+        glowBlink: "glowBlink 1s ease-in-out infinite",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        "md-16": "0 8px 16px 0 rgba(0, 0, 0, 0.15)",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
 };

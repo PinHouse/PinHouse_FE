@@ -1,0 +1,119 @@
+"use client";
+
+import { Suspense } from "react";
+import { cn } from "@/src/shared/lib/utils";
+import { dropDownVariants } from "./dropDown.bariants";
+import { DropDownProps } from "./type";
+import { useEffect, useRef, useState } from "react";
+import { dropDownPreset } from "./deafultPreset";
+import { CaretDown } from "@/src/assets/icons/button/caretDown";
+import { CaretUp } from "@/src/assets/icons/button/caretUp";
+import {
+  useListingsSearchState,
+  useListingState,
+} from "@/src/features/listings/model/listingsStore";
+import { useSearchParams } from "next/navigation";
+import { Spinner } from "@/src/shared/ui/spinner/default";
+
+function CaretDropDownContent({
+  className,
+  variant = dropDownPreset.variant,
+  size = dropDownPreset.size,
+  types,
+  children,
+  data,
+  containerClassName,
+  menuClassName,
+  fullWidth = true,
+  ...props
+}: DropDownProps) {
+  const [open, setOpen] = useState<boolean>(false);
+  const optionData = types ? data[types] : [];
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { status } = useListingState();
+  const searchParams = useSearchParams();
+  const isSearchPage = searchParams.has("query");
+  const firstValue = optionData.values().next().value?.value;
+  const setBaseStatus = useListingState(s => s.setStatus);
+  const setSearchStatus = useListingsSearchState(s => s.setStatus);
+  const searchState = useListingsSearchState(s => s.status);
+
+  const statusValue: Record<string, string> = {
+    전체: "ALL",
+    모집중: "OPEN",
+    ALL: "전체",
+    OPEN: "모집중",
+  };
+
+  const onClose = ({ value }: { value: string }) => {
+    if (isSearchPage) {
+      const nextSearchStatus = statusValue[value] ?? value;
+      setSearchStatus(nextSearchStatus);
+    } else {
+      console.log(value);
+      setBaseStatus(value);
+    }
+    setOpen(false);
+  };
+  const onChangeButton = () => setOpen(prev => !prev);
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div
+      className={cn("relative inline-block", fullWidth ? "w-full" : "w-auto", containerClassName)}
+      ref={wrapperRef}
+    >
+      <button
+        className={cn(dropDownVariants({ variant, size }), className)}
+        onClick={onChangeButton}
+        {...props}
+      >
+        {children}
+        <span className="flex items-center justify-between gap-1 text-sm font-bold">
+          {isSearchPage && (searchState === "ALL" ? "전체" : "모집중")}
+          {!isSearchPage && status === "전체" ? firstValue : status}
+          {/* {status || children} */}
+          {open ? <CaretUp /> : <CaretDown />}
+        </span>
+      </button>
+
+      {open && (
+        <ul
+          className={cn(
+            "absolute left-0 top-8 z-10 rounded-lg border bg-white font-bold text-text-tertiary shadow-lg",
+            "w-fit min-w-fit",
+            menuClassName
+          )}
+        >
+          {optionData.map(item => (
+            <li
+              key={item.key}
+              onClick={() => onClose({ value: item.value })}
+              className="hover:bg-hover-dropDown flex cursor-pointer flex-col p-2 hover:text-text-brand"
+            >
+              <span className="text-xs">{item.value}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export const CaretDropDown = (props: DropDownProps) => {
+  return (
+    <Suspense fallback={<Spinner title="로딩 중" description="페이지를 불러오는 중입니다" />}>
+      <CaretDropDownContent {...props} />
+    </Suspense>
+  );
+};

@@ -1,19 +1,18 @@
 import { SVGProps } from "react";
 
-export const LeftButton = (props: SVGProps<SVGSVGElement>) => {
+export const LeftButton = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
-      width="20"
-      height="21"
-      viewBox="0 0 20 21"
+      viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
       {...props}
     >
-      <g clip-path="url(#clip0_8454_736)">
+      <g clipPath="url(#clip0_8454_736)">
         <path
           d="M12.5 5.5L7.5 10.5L12.5 15.5"
-          stroke="#9F9FAB"
+          stroke="currentColor"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
