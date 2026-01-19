@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { LeftButton } from "@/src/assets/icons/button";
 import { useNoticeInfinite } from "@/src/entities/home/hooks/homeHooks";
