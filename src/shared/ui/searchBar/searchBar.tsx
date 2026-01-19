@@ -103,6 +103,9 @@ export const SearchBar = ({
               "flex-1 border-none bg-transparent p-0 shadow-none",
               (showInputXButton || showFilledXButton) && "pr-10" // X 버튼 공간
             )}
+            onEnter={(v: string) => {
+              onEnter?.(v);
+            }}
           />
           {showRightSearchIcon && (
             <div className="pointer-events-none flex-shrink-0">

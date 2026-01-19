@@ -9,8 +9,8 @@ export const HomeHeader = () => {
   const { setPrevPath } = useRouteStore();
 
   const pageRouter = () => {
-    setPrevPath("/home");
-    router.push("/listings/search");
+    // setPrevPath("/home");
+    router.push("/home/search");
   };
 
   return (
