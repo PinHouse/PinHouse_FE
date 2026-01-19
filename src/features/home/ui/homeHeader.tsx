@@ -1,3 +1,4 @@
+"use client";
 import { HomeScreenLogo } from "@/src/assets/icons/home/homeScreenLogo";
 import { PinhouseLogo } from "@/src/assets/icons/logo";
 import { useRouter } from "next/navigation";

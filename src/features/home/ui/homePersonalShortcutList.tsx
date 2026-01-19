@@ -1,3 +1,4 @@
+"use client";
 import { LeftButton } from "@/src/assets/icons/button";
 import { HomeScreenHomeIcon } from "@/src/assets/icons/home/home";
 import { HomeScreenTask } from "@/src/assets/icons/home/homeScreenTask";
