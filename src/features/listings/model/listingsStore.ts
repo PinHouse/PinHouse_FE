@@ -121,3 +121,27 @@ export const useListingDetailStore = create<{
   houseType: null,
   setHouseType: value => set({ houseType: value }),
 }));
+
+interface HasRouterState {
+  hasListingsTab: boolean;
+  hasHomeMode: boolean;
+
+  setHasListingsTab: (value: boolean) => void;
+  setHasHomeMode: (value: boolean) => void;
+
+  reset: () => void;
+}
+
+export const useHasRouter = create<HasRouterState>(set => ({
+  hasListingsTab: false,
+  hasHomeMode: false,
+
+  setHasListingsTab: value => set({ hasListingsTab: value }),
+  setHasHomeMode: value => set({ hasHomeMode: value }),
+
+  reset: () =>
+    set({
+      hasListingsTab: false,
+      hasHomeMode: false,
+    }),
+}));
