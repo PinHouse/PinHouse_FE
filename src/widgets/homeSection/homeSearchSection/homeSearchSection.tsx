@@ -12,7 +12,7 @@ export const HomeSerachSection = () => {
   };
 
   return (
-    <div className="items-cente flex items-center gap-2 p-5">
+    <div className="items-cente flex items-center gap-2 border-b px-5 py-2">
       <LeftButton
         onClick={handleRouter}
         className="h-8 w-8 cursor-pointer text-greyscale-grey-400"

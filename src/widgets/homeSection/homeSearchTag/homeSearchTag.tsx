@@ -6,7 +6,7 @@ import { HomeSearchPopuler } from "../../../features/home/ui/search/homeSearchPo
 
 export const HomeSearchTag = () => {
   return (
-    <div className="flex-1 p-5">
+    <div className="flex-1 px-5">
       <AnimatePresence mode="wait">
         <motion.div
           initial={{ x: 100, opacity: 0 }}

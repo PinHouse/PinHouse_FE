@@ -210,7 +210,7 @@ export const HomeResultSection = () => {
   const data = useHomeGlobalSearch();
 
   return (
-    <section className="flex flex-col gap-5 bg-greyscale-grey-25 px-5">
+    <section className="flex flex-col gap-5 bg-greyscale-grey-25 p-5">
       {data.map(section => {
         return (
           <div key={section.category}>
