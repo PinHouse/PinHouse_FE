@@ -1,6 +1,15 @@
-export const HomeStarRender = () => {
+import { SVGProps } from "react";
+
+export const HomeStarRender = (props: SVGProps<SVGSVGElement>) => {
   return (
-    <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="49"
+      height="49"
+      viewBox="0 0 49 49"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <path
         d="M37.4354 3.20609L36.6293 14.7556L48.0982 16.3384L40.0568 24.6677L47.825 33.2523L36.311 34.4639L36.7438 46.0335L27.1447 39.5606L20.0394 48.7015L16.8468 37.5728L5.5282 40.008L10.2359 29.4308L-1.31997e-06 24.0208L10.4052 18.9442L6.04156 8.2204L17.2756 11.0198L20.826 2.84903e-05L27.6323 9.36565L37.4354 3.20609Z"
         fill="#FFD95B"

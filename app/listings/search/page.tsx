@@ -1,5 +1,5 @@
-import { ListingsSearch } from "@/src/widgets/listingsSection";
 import { Suspense } from "react";
+import { ListingsSearch } from "@/src/widgets/listingsSection";
 
 export default function properySearch() {
   return (

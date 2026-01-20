@@ -1,4 +1,5 @@
 "use client";
+
 import { SearchForm, SearchResults } from "@/src/features/listings";
 import { useListingsSearchState } from "@/src/features/listings/model";
 import { useSearchState } from "@/src/shared/hooks/store";
