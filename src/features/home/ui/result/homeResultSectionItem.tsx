@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
+
 import { SearchItem } from "@/src/widgets/homeSection";
+import { HomeBgBookMark } from "./components/HomeBgBookMark";
 
 interface HomeResultSectionItemsProps {
   items: SearchItem[];
@@ -20,7 +22,7 @@ export const HomeResultSectionItems = ({ items, limit = 5 }: HomeResultSectionIt
           <p className="line-clamp-1 text-sm">{item.title}</p>
 
           <span className="shrink-0 rounded bg-gray-100 px-2 py-[2px] text-xs text-gray-600">
-            {item.supplyType}
+            <HomeBgBookMark supplyType={item.supplyType} />
           </span>
         </li>
       ))}
