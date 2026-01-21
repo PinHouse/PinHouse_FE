@@ -6,6 +6,7 @@ import { QueryProvider } from "@/src/app/providers/queryProvider";
 import { Toast } from "@/src/shared/ui/toast";
 import { HomeLandingRender } from "@/src/shared/ui/globalRender/globalRender";
 import { FrameBottomNav } from "@/src/shared/ui/bottomNavigation/frameBottomNavigation";
+import { ClientOnly } from "@/src/shared/ui/clientOnly/clientOnly";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -32,12 +33,14 @@ export default function RootLayout({
 
               <HomeLandingRender
                 bottom={
-                  <div id="bottom-slot">
+                  <ClientOnly>
                     <FrameBottomNav />
-                  </div>
+                  </ClientOnly>
                 }
               >
-                {children}
+                <ClientOnly>
+                  <div>{children}</div>
+                </ClientOnly>
               </HomeLandingRender>
             </div>
           </div>

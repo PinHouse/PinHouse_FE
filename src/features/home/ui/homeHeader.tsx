@@ -10,12 +10,11 @@ export const HomeHeader = () => {
   const { setPrevPath } = useRouteStore();
 
   const pageRouter = () => {
-    // setPrevPath("/home");
     router.push("/home/search");
   };
 
   return (
-    <header className="flex items-center justify-between">
+    <header className="flex items-center justify-between pt-5">
       <div className="flex items-center gap-1">
         <HomeScreenLogo /> <PinhouseLogo className="h-7 w-auto" />
       </div>
