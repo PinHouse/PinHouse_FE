@@ -6,7 +6,6 @@ import { QueryProvider } from "@/src/app/providers/queryProvider";
 import { Toast } from "@/src/shared/ui/toast";
 import { HomeLandingRender } from "@/src/shared/ui/globalRender/globalRender";
 import { FrameBottomNav } from "@/src/shared/ui/bottomNavigation/frameBottomNavigation";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,7 +30,15 @@ export default function RootLayout({
               {/* <main className="flex-1 overflow-y-auto">{children}</main>
               <BottomNavigation /> */}
 
-              <HomeLandingRender bottom={<FrameBottomNav />}>{children}</HomeLandingRender>
+              <HomeLandingRender
+                bottom={
+                  <div id="bottom-slot">
+                    <FrameBottomNav />
+                  </div>
+                }
+              >
+                {children}
+              </HomeLandingRender>
             </div>
           </div>
           <Toast />
