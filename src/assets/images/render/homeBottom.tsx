@@ -124,7 +124,7 @@ export const HomeBottomRender = () => {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="674.519" cy="22.5788" r="16.1255" fill="#EFEFF3" />
+      {/* <circle cx="674.519" cy="22.5788" r="16.1255" fill="#EFEFF3" /> */}
       <defs>
         <filter
           id="filter0_f_10692_73588"

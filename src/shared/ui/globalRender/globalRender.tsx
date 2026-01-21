@@ -15,22 +15,26 @@ export const HomeLandingRender = ({ children, bottom }: Props) => {
   const hasBottom = Boolean(bottom);
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-[#2F6BFF]">
+    <div className="relative h-screen w-full overflow-hidden bg-[#2F6BFF]">
       {/* 최대 폭 컨테이너 */}
       <div className="mx-auto flex h-full max-w-[1350px] px-20 sm:justify-center md:px-20 lg:justify-between lg:px-20">
         {/* LEFT TEXT */}
-        <section className="z-10 hidden max-w-[600px] pt-10 text-white lg:block">
-          <div className="mb-10 flex items-center gap-2 sm:mb-30 md:mb-10 lg:mb-28">
+        <section className="desktop:block z-10 hidden max-w-[600px] pt-10 text-white lg:block">
+          <div className="mb-48 flex items-center gap-2">
             <SecondaryLogoRender />
           </div>
 
           <h1 className="mb-6 leading-tight">
-            <span className="text-[55px] font-light">모두의 꿈인 내 집 마련!</span>
+            <span className="desktop:text-[55px] font-light lg:text-[30px]">
+              모두의 꿈인 내 집 마련!
+            </span>
             <br />
-            <span className="text-[55px] font-extrabold text-white">나에게 맞는 추천 집은?</span>
+            <span className="desktop:text-[55px] font-extrabold text-white lg:text-[30px]">
+              나에게 맞는 추천 집은?
+            </span>
           </h1>
           <div className="mb-10 h-1 w-[73px] border-2 border-white bg-white" />
-          <p className="relative mb-14 text-2xl leading-relaxed text-greyscale-grey-50">
+          <p className="desktop:text-[20px] relative mb-14 text-2xl leading-relaxed text-greyscale-grey-50 lg:text-[20px]">
             <span className="absolute left-[600px]">
               <HomeRectangleRender2 width={60} height={60} />
             </span>
@@ -48,20 +52,20 @@ export const HomeLandingRender = ({ children, bottom }: Props) => {
                 #{tag}
               </span>
             ))}
-            <span className="absolute left-[55px] top-56 h-5 w-5">
+            <span className="absolute left-[55px] top-44 h-5 w-5">
               <HomeStarRender width={40} height={40} />
               <span className="absolute left-[160px] top-[40px] h-4 w-4 rounded-full bg-white" />
             </span>
           </div>
         </section>
 
-        <section className="relative z-10 flex h-full min-h-[812px] justify-center sm:p-5 md:py-28 lg:py-28">
-          <div className="relative z-10 flex min-h-0 w-[375px] flex-col bg-white shadow-2xl sm:rounded-xl sm:p-0 md:rounded-2xl md:p-2 lg:rounded-2xl lg:p-2">
+        <section className="relative z-10 flex h-full min-h-[812px] justify-center sm:p-5 md:pb-[90px] md:pt-16 lg:pb-[90px] lg:pt-16">
+          <div className="relative z-10 flex min-h-0 w-[375px] flex-col bg-white shadow-2xl sm:rounded-xl sm:p-0 md:rounded-2xl lg:rounded-2xl">
             <div className="pointer-events-none absolute inset-0 rounded-2xl" />
 
             <div
               className={cn(
-                "no-scrollbar relative min-h-0 w-[375px] flex-1 overflow-y-auto rounded-t-2xl",
+                "no-scrollbar relative min-h-0 max-w-[375px] flex-1 overflow-y-auto rounded-t-2xl",
                 !hasBottom && "rounded-b-2xl"
               )}
             >
@@ -71,11 +75,14 @@ export const HomeLandingRender = ({ children, bottom }: Props) => {
             <div className={cn("shrink-0", !hasBottom && "hidden")}>{bottom}</div>
           </div>
 
-          <div className="pointer-events-none absolute bottom-0 left-[60px] z-0 w-[520px] -translate-x-1/2">
+          <div className="pointer-events-none absolute bottom-0 left-[75px] z-0 w-[520px] -translate-x-1/2">
             <HomeBottomRender />
           </div>
-          <div className="absolute left-[470px] top-[600px]">
-            <HomeRectangleRender width={50} height={50} />
+          <div className="relative flex flex-col">
+            <div className="absolute md:bottom-[200px] md:left-24 lg:top-[400px]">
+              <div className="mb-20 h-5 w-5 rounded-full bg-white sm:hidden md:block lg:block" />
+              <HomeRectangleRender width={60} height={60} />
+            </div>
           </div>
         </section>
       </div>
