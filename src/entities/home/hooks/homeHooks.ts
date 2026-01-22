@@ -1,8 +1,8 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getNoticeByPinPoint } from "../interface/homeInterface";
-import { NoticeContent, NoticeCount, SliceResponse } from "../model/type";
+import { NoticeContent, NoticeCount, PopularResponse, SliceResponse } from "../model/type";
 import { useOAuthStore } from "@/src/features/login/model";
-import { HOME_NOTICE_ENDPOINT } from "@/src/shared/api";
+import { HOME_NOTICE_ENDPOINT, HOME_SEARCH_POPULAR_ENDPOINT } from "@/src/shared/api";
 import { useHomeMaxTime } from "@/src/features/home/model/homeStore";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 
@@ -42,5 +42,17 @@ export const useNoticeCount = () => {
     enabled: !!pinPointId,
     placeholderData: previousData => previousData,
     queryFn: () => getNoticeByPinPoint<NoticeCount>({ url: url, params: param }),
+  });
+};
+
+export const useGlobalPopular = () => {
+  const param = {
+    limit: 10,
+  };
+  const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/popular`;
+  return useQuery({
+    queryKey: ["globalPopular"],
+    placeholderData: previousData => previousData,
+    queryFn: () => getNoticeByPinPoint<PopularResponse[]>({ url: url, params: param }),
   });
 };

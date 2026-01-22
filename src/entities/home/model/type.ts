@@ -39,3 +39,9 @@ export interface NoticeContent {
 export interface NoticeCount {
   count: number;
 }
+
+export interface PopularResponse {
+  keyword: string;
+  count: number;
+  lastSearchedAt: string;
+}

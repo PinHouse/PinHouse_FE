@@ -2,12 +2,10 @@
 import { HomeScreenLogo } from "@/src/assets/icons/home/homeScreenLogo";
 import { PinhouseLogo } from "@/src/assets/icons/logo";
 import { useRouter } from "next/navigation";
-import { useRouteStore } from "../model/homeStore";
 import { SearchLine } from "@/src/assets/icons/home";
 
 export const HomeHeader = () => {
   const router = useRouter();
-  const { setPrevPath } = useRouteStore();
 
   const pageRouter = () => {
     router.push("/home/search");
