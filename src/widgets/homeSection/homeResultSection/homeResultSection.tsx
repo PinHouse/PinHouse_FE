@@ -13,7 +13,7 @@ export const HomeResultSection = ({ q }: { q: string }) => {
 
   return (
     <PageTransition>
-      <section className="flex flex-col gap-5 bg-greyscale-grey-25 p-5">
+      <section className="flex h-screen flex-col gap-5 bg-greyscale-grey-25 p-5">
         {data.map(section => {
           return (
             <div key={section.category}>
@@ -24,7 +24,7 @@ export const HomeResultSection = ({ q }: { q: string }) => {
                 />
               </span>
               <span className="flex flex-col rounded-xl border">
-                <HomeResultSectionItems items={section.content} limit={5} />
+                <HomeResultSectionItems items={section.content} limit={5} q={q} />
 
                 <HomeResultSectionMore total={section.content.length} limit={5} />
               </span>

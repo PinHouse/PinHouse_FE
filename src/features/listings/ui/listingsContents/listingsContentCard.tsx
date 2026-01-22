@@ -20,7 +20,7 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
     <div className="flex flex-col gap-2">
       {data?.map(item => {
         const normalized = normalizeListing(item);
-
+        console.log(normalized);
         return (
           <div
             key={normalized.id}
