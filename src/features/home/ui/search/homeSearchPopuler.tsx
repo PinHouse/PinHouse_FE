@@ -1,12 +1,13 @@
 "use client";
 import { cn } from "@/lib/utils";
+import { useGlobalPopular } from "@/src/entities/home/hooks/homeHooks";
 import { useSearchState } from "@/src/shared/hooks/store";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { useRouter } from "next/navigation";
 
 export const HomeSearchPopuler = () => {
   const router = useRouter();
-
+  const { data } = useGlobalPopular();
   const { searchQuery } = useSearchState();
   if (searchQuery.length === 0) return;
 
@@ -19,7 +20,7 @@ export const HomeSearchPopuler = () => {
     <section className="mt-6">
       <h3 className="mb-2 text-sm font-semibold">인기 검색어</h3>
       <div className="flex flex-wrap gap-2">
-        {searchQuery?.map((word: any, index: number) => (
+        {data?.map((word, index) => (
           <TagButton
             key={index}
             size="sm"

@@ -1,4 +1,3 @@
-// src/shared/ui/clientOnly.tsx
 "use client";
 import { useEffect, useState } from "react";
 
