@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 
-import { SearchItem } from "@/src/widgets/homeSection";
 import { HomeBgBookMark } from "./components/HomeBgBookMark";
+import { GlobalSearchItem } from "@/src/entities/home/model/type";
 
 interface HomeResultSectionItemsProps {
-  items: SearchItem[];
+  items: GlobalSearchItem[];
   limit?: number;
 }
 

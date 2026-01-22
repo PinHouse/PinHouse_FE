@@ -1,13 +1,16 @@
 "use client";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 import { useRouter } from "next/navigation";
+import { useSearchState } from "@/src/shared/hooks/store";
 
 export const SearchBar = () => {
   const router = useRouter();
+  const { setSearchQuery } = useSearchState();
 
   const handleSearch = async (keyword: string) => {
     if (!keyword) return;
-    router.push(`/home/search/result?query=${keyword}`);
+    setSearchQuery(keyword);
+    router.push(`/home/search/result?q=${encodeURIComponent(keyword)}`);
   };
 
   return (

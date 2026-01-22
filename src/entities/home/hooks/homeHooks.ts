@@ -45,14 +45,14 @@ export const useNoticeCount = () => {
   });
 };
 
-export const useGlobalPopular = () => {
-  const param = {
-    limit: 10,
-  };
-  const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/popular`;
+export const useGlobal = <T>({ params, q }: { params: string; q: string }) => {
+  const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/${params}`;
+
+  const param = params === "popular" ? { limit: 10 } : { q: q };
+
   return useQuery({
-    queryKey: ["globalPopular"],
-    placeholderData: previousData => previousData,
-    queryFn: () => getNoticeByPinPoint<PopularResponse[]>({ url: url, params: param }),
+    queryKey: ["global-search", params, q],
+    queryFn: () => getNoticeByPinPoint<T>({ url, params: param }),
+    enabled: params === "popular" || q?.length > 0,
   });
 };
