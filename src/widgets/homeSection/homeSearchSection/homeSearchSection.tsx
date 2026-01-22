@@ -1,7 +1,6 @@
 "use client";
 import { LeftButton } from "@/src/assets/icons/button";
 import { SearchBar } from "@/src/features/home";
-import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
 import { useRouter } from "next/navigation";
 
 export const HomeSerachSection = () => {

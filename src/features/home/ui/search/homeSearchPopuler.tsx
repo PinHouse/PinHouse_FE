@@ -1,19 +1,17 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { useGlobalPopular } from "@/src/entities/home/hooks/homeHooks";
-import { useSearchState } from "@/src/shared/hooks/store";
+import { useGlobal } from "@/src/entities/home/hooks/homeHooks";
+import { PopularResponse } from "@/src/entities/home/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { useRouter } from "next/navigation";
 
 export const HomeSearchPopuler = () => {
   const router = useRouter();
-  const { data } = useGlobalPopular();
-  const { searchQuery } = useSearchState();
-  if (searchQuery.length === 0) return;
+  const { data } = useGlobal<PopularResponse[]>({ params: "popular", q: "" });
 
   const handleSearchTag = (keyword: string) => {
     if (!keyword) return;
-    router.push(`/listings/search?query=${keyword}`);
+    router.push(`/home/search/result?q=${encodeURIComponent(keyword)}`);
   };
 
   return (

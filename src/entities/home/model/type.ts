@@ -45,3 +45,36 @@ export interface PopularResponse {
   count: number;
   lastSearchedAt: string;
 }
+
+export type SearchCategory = "notices" | "complexes" | "targetGroups" | "regions" | "houseTypes";
+export interface GlobalSearchItem {
+  id: string;
+  title: string;
+  agency: string;
+  housingType: string;
+  supplyType: string;
+  announceDate: string;
+  applyStart: string;
+  applyEnd: string;
+  targetGroups: string[];
+  liked: boolean;
+}
+
+export interface GlobalList<T> {
+  content: T[];
+  hasNext: boolean;
+}
+
+export interface GlobalListType {
+  notices: GlobalList<GlobalSearchItem>;
+  complexes: GlobalList<GlobalSearchItem>;
+  targetGroups: GlobalList<GlobalSearchItem>;
+  regions: GlobalList<GlobalSearchItem>;
+  houseTypes: GlobalList<GlobalSearchItem>;
+}
+
+export interface GlobalSearchSection {
+  category: SearchCategory;
+  content: GlobalSearchItem[];
+  hasNext: boolean;
+}

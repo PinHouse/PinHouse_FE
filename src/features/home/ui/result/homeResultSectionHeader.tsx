@@ -1,4 +1,5 @@
-import { SEARCH_CATEGORY_CONFIG, SearchCategory } from "@/src/widgets/homeSection";
+import { SearchCategory } from "@/src/entities/home/model/type";
+import { SEARCH_CATEGORY_CONFIG } from "../../hooks/hooks";
 
 interface HomeResultSectionHeaderProps {
   category: SearchCategory;
@@ -6,6 +7,7 @@ interface HomeResultSectionHeaderProps {
 }
 
 export const HomeResultSectionHeader = ({ category, count }: HomeResultSectionHeaderProps) => {
+  if (!category) return null;
   const config = SEARCH_CATEGORY_CONFIG[category];
 
   return (
