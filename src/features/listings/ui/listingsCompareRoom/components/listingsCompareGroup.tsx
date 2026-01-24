@@ -14,7 +14,7 @@ interface Props {
 export const ListingsCompareGroup = ({ unit, onOpenSheet }: Props) => {
   return (
     <article
-      className="rounded-xl border bg-white"
+      className="rounded-xl border bg-white hover:cursor-pointer active:bg-blue-50"
       onClick={() =>
         onOpenSheet({
           open: true,
