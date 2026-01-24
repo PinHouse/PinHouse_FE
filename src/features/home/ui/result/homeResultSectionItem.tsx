@@ -11,7 +11,6 @@ interface HomeResultSectionItemsProps {
 }
 
 export const HomeResultSectionItems = ({ items, limit = 5, q }: HomeResultSectionItemsProps) => {
-  console.log(items);
   return (
     <ul className="rounded-xl bg-white px-3">
       {items.slice(0, limit).map(item => (
