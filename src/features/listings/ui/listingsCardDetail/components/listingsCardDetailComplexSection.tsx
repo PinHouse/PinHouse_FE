@@ -33,7 +33,7 @@ export const ListingsCardDetailComplexSection = ({
           <p className="text-base-17 text-greyscale-grey-900">단지</p>
           <p className="text-base-17 text-greyscale-grey-600">{complexesCount}</p>
         </h2>
-        <div className="flex gap-1" onClick={onDangiSortType}>
+        <div className="flex gap-1 hover:cursor-pointer" onClick={onDangiSortType}>
           <span className="text-xs font-semibold text-greyscale-grey-900">
             {sortType === "거리 순" ? "핀포인트 거리순" : "주변환경 매칭순"}
           </span>

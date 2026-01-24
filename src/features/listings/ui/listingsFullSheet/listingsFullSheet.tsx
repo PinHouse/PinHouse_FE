@@ -154,7 +154,7 @@ const Tag = ({
           className="flex flex-col"
         >
           <span
-            className={`rounded-full px-4 py-2 text-xs font-bold ${
+            className={`rounded-full px-4 py-2 text-xs font-bold hover:cursor-pointer ${
               selected ? "bg-button-light text-text-inverse" : "bg-gray-100 text-text-secondary"
             }`}
             onClick={onClick}

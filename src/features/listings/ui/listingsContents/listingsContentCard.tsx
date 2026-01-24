@@ -20,11 +20,11 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
     <div className="flex flex-col gap-2">
       {data?.map(item => {
         const normalized = normalizeListing(item);
-        console.log(normalized);
         return (
           <div
             key={normalized.id}
-            className="flex h-[112px] min-h-[100px] w-full rounded-xl border"
+            className="active: flex h-[112px] min-h-[100px] w-full rounded-xl border bg-blue-50 hover:cursor-pointer"
+            onClick={() => handleRouter(normalized.id)}
           >
             <div className="border-r-1 flex w-[35%] flex-col rounded-l-xl rounded-bl-xl bg-bgColor-mute pl-1 pt-2">
               <div className="flex justify-start gap-1">
@@ -39,17 +39,19 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
             </div>
 
             <div className="flex w-[65%] flex-col justify-start gap-2 rounded-br-xl rounded-tr-xl bg-white pb-3 pl-4 pr-4 pt-2">
-              <div className="flex items-baseline gap-2">
+              <div
+                className="flex items-baseline gap-2"
+                onClick={e => {
+                  e.stopPropagation();
+                }}
+              >
                 <HouseRental
                   {...normalized}
                   query={path ? "listingSearchInfinite" : "listingListInfinite"}
                 />
               </div>
               <div className="max-w-full">
-                <p
-                  className="truncate text-sm font-semibold"
-                  onClick={() => handleRouter(normalized.id)}
-                >
+                <p className="truncate text-sm font-semibold">
                   <HighlightCenteredText text={normalized.name} keyword={keyword} />
                 </p>
               </div>

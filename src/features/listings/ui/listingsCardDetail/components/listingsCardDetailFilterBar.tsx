@@ -33,7 +33,7 @@ export const ListingsCardDetailFilterBar = () => {
   return (
     <section className="overflow-x-auto border-greyscale-grey-75 py-3 scrollbar-hide">
       <div className="flex min-w-max items-center gap-2 border-y border-b-[11px] border-y-gray-200 border-b-greyscale-grey-25 pb-2 pl-5 pr-5 pt-2">
-        <div className="flex-shrink-0" onClick={onOpenAllFilters}>
+        <div className="flex-shrink-0 hover:cursor-pointer" onClick={onOpenAllFilters}>
           {getAllFilterIcon(false)}
         </div>
 
