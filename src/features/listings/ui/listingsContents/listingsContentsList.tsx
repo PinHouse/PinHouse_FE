@@ -4,9 +4,8 @@ import { ListingContentsListProps } from "@/src/entities/listings/model/type";
 import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { ListingContentsCard } from "./listingsContentCard";
-import { AnimatePresence, motion } from "framer-motion";
-import { usePathname, useSearchParams } from "next/navigation";
 import { Spinner } from "@/src/shared/ui/spinner/default";
+import { DataEnterTransition } from "@/src/shared/ui/animation/pageUpTransition";
 
 export const ListingContentsList = ({
   data,
@@ -18,11 +17,9 @@ export const ListingContentsList = ({
 }: ListingContentsListProps) => {
   const items = data?.pages.flatMap(page => page.content) ?? [];
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get("query") ?? "";
-  const pathname = usePathname();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isBottoms, setIsBottoms] = useState(false);
+  const ready = !!items;
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -62,22 +59,14 @@ export const ListingContentsList = ({
 
   return (
     <div
-      className={`flex h-full w-full flex-col overflow-y-auto ${isBottom ? `pb-[88px]` : "pb-0"} scrollbar-hide`}
+      // className={`flex h-full w-full flex-col overflow-y-auto ${isBottom ? `pb-[88px]` : "pb-0"} scrollbar-hide`}
+      className={`flex h-full w-full flex-col overflow-y-auto scrollbar-hide`}
       ref={scrollRef}
       onScroll={handleScroll}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={pathname + keyword}
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -100, opacity: 0 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="relative w-full"
-        >
-          <ListingContentsCard data={items} />
-        </motion.div>
-      </AnimatePresence>
+      <DataEnterTransition ready={ready}>
+        <ListingContentsCard data={items} />
+      </DataEnterTransition>
 
       {!isError && hasNextPage && <div ref={observerRef} className="h-10" />}
 
