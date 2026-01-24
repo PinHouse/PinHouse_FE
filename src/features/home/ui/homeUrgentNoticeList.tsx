@@ -25,8 +25,9 @@ export const UrgentNoticeList = () => {
   };
 
   return (
-    <section className={cn("flex flex-col", contents.length >= 2 ? "pb-[55px]" : "")}>
-      <div className="flex items-center justify-between">
+    // <section className={cn("flex flex-col", contents.length >= 2 ? "pb-[55px]" : "")}>
+    <section className={cn("flex flex-col")}>
+      <div className="flex items-center justify-between pt-4">
         <div>
           <p className="mb-3 text-lg font-bold text-greyscale-grey-900">
             {isError || dataCount ? "공고 리스트" : "마감임박 공고"}

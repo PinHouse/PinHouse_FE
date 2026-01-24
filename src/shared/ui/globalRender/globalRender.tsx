@@ -19,22 +19,22 @@ export const HomeLandingRender = ({ children, bottom }: Props) => {
       {/* 최대 폭 컨테이너 */}
       <div className="mx-auto flex h-full max-w-[1350px] px-20 sm:justify-center md:px-20 lg:justify-between lg:px-20">
         {/* LEFT TEXT */}
-        <section className="desktop:block z-10 hidden max-w-[600px] pt-10 text-white lg:block">
+        <section className="z-10 hidden max-w-[600px] pt-10 text-white lg:block desktop:block">
           <div className="mb-48 flex items-center gap-2">
             <SecondaryLogoRender />
           </div>
 
           <h1 className="mb-6 leading-tight">
-            <span className="desktop:text-[55px] font-light lg:text-[30px]">
+            <span className="font-light lg:text-[30px] desktop:text-[55px]">
               모두의 꿈인 내 집 마련!
             </span>
             <br />
-            <span className="desktop:text-[55px] font-extrabold text-white lg:text-[30px]">
+            <span className="font-extrabold text-white lg:text-[30px] desktop:text-[55px]">
               나에게 맞는 추천 집은?
             </span>
           </h1>
           <div className="mb-10 h-1 w-[73px] border-2 border-white bg-white" />
-          <p className="desktop:text-[20px] relative mb-14 text-2xl leading-relaxed text-greyscale-grey-50 lg:text-[20px]">
+          <p className="relative mb-14 text-2xl leading-relaxed text-greyscale-grey-50 lg:text-[20px] desktop:text-[20px]">
             <span className="absolute left-[600px]">
               <HomeRectangleRender2 width={60} height={60} />
             </span>

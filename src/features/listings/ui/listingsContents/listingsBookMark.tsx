@@ -24,7 +24,6 @@ export const ListingBgBookMark = ({
   text: string;
   border: string;
 }) => {
-  console.log(bg, text, border);
   return (
     <Toggle
       aria-label="Toggle bookmark"

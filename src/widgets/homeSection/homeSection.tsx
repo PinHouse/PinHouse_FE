@@ -12,9 +12,11 @@ import { PageTransition } from "@/src/shared/ui/animation";
 
 export const HomeSection = () => {
   return (
-    <section className="relative min-h-screen w-full overflow-y-auto bg-greyscale-grey-25 text-greyscale-grey-900 scrollbar-hide">
+    // <section className="relative min-h-screen w-full overflow-y-auto bg-greyscale-grey-25 text-greyscale-grey-900 scrollbar-hide"></section>
+    <section className="relative min-h-screen w-full bg-greyscale-grey-25 text-greyscale-grey-900 scrollbar-hide">
       <PageTransition>
-        <div className="flex flex-col pb-6">
+        {/* <div className="flex flex-col pb-6"> */}
+        <div className="flex flex-col">
           <div className="px-4">
             <HomeHeader />
             <HomeHero />
@@ -26,7 +28,7 @@ export const HomeSection = () => {
           <div className="border-b-8 border-greyscale-grey-50 p-4">
             <PersonalShortcutList />
           </div>
-          <div className="px-5 py-3">
+          <div className="px-5">
             <UrgentNoticeList />
           </div>
         </div>
