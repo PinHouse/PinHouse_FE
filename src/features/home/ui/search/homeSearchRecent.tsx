@@ -6,7 +6,7 @@ import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { useRouter } from "next/navigation";
 
 export const HomeSearchRecent = () => {
-  const { searchQuery, removeSearchQuery } = useSearchState();
+  const { searchQuery, removeSearchQuery, setSearchQuery } = useSearchState();
 
   const router = useRouter();
   if (searchQuery.length === 0) return;
@@ -17,6 +17,7 @@ export const HomeSearchRecent = () => {
 
   const handleSearchTag = (keyword: string) => {
     if (!keyword) return;
+    setSearchQuery(keyword);
     router.push(`/home/search/result?q=${encodeURIComponent(keyword)}`);
   };
 

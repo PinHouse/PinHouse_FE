@@ -19,4 +19,5 @@ export interface SearchBarProps
   className?: string;
   onEnter?: (value: string) => void;
   onClear?: () => void;
+  xBtnDef?: string | null;
 }

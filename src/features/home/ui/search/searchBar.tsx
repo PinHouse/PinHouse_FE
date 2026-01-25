@@ -1,16 +1,22 @@
 "use client";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSearchState } from "@/src/shared/hooks/store";
 
 export const SearchBar = () => {
   const router = useRouter();
   const { setSearchQuery } = useSearchState();
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("q") ?? "";
 
   const handleSearch = async (keyword: string) => {
     if (!keyword) return;
     setSearchQuery(keyword);
     router.push(`/home/search/result?q=${encodeURIComponent(keyword)}`);
+  };
+
+  const searchClear = () => {
+    router.push("/home/search");
   };
 
   return (
@@ -20,6 +26,9 @@ export const SearchBar = () => {
       className="rounded-3xl"
       variant={"capsule"}
       onEnter={handleSearch}
+      value={keyword}
+      onClear={searchClear}
+      xBtnDef={"deafult"}
     />
   );
 };

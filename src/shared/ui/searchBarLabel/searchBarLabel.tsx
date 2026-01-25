@@ -6,6 +6,7 @@ import React from "react";
 
 export interface SearchBarLabelProps extends SearchBarProps {
   label?: string;
+  xBtnDef?: string | null;
   direction?: "vertical" | "horizontal";
 }
 
@@ -16,6 +17,7 @@ export const SearchBarLabel = ({
   onEnter,
   onChange,
   onClear,
+  xBtnDef,
   ...props
 }: SearchBarLabelProps) => {
   const isVertical = direction === "vertical";
@@ -28,6 +30,7 @@ export const SearchBarLabel = ({
         onEnter={onEnter}
         onChange={onChange}
         onClear={onClear}
+        xBtnDef={xBtnDef}
       />
     );
   }

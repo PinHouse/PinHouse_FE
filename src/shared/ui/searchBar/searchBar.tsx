@@ -21,6 +21,7 @@ export const SearchBar = ({
   onChange,
   onEnter,
   onClear,
+  xBtnDef = null,
   ...props
 }: SearchBarProps) => {
   const {
@@ -99,6 +100,7 @@ export const SearchBar = ({
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
+            onClear={onClear}
             className={cn(
               "flex-1 border-none bg-transparent p-0 shadow-none",
               (showInputXButton || showFilledXButton) && "pr-10" // X 버튼 공간
@@ -112,7 +114,7 @@ export const SearchBar = ({
               {rightIcon || <SearchLine className="h-5 w-5 text-greyscale-grey-400" />}
             </div>
           )}
-          {showFilledXButton && (
+          {xBtnDef === null && showFilledXButton && (
             <button
               type="button"
               onMouseDown={e => {

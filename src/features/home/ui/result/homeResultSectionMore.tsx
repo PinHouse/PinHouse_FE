@@ -4,20 +4,23 @@ interface HomeResultSectionMoreProps {
   total: number;
   limit: number;
   expanded: boolean;
-  onToggle: () => void;
+  onToggle: (category: string) => void;
+  category: string;
 }
 
 export const HomeResultSectionMore = ({
   total,
   limit,
+  category,
   expanded,
   onToggle,
 }: HomeResultSectionMoreProps) => {
-  if (total <= limit) return null;
+  // 필요하면 다시 활성화
+  // if (total <= limit) return null;
 
   return (
     <button
-      onClick={onToggle}
+      onClick={() => onToggle(category)}
       className="flex w-full items-center justify-center gap-1 rounded-b-xl bg-white p-3 text-xs text-gray-400"
     >
       <p>{expanded ? "접기" : "더보기"}</p>
