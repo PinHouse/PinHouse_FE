@@ -49,3 +49,14 @@ export const useHomeGlobalSearch = (globalData?: GlobalListType): GlobalSearchSe
     },
   ];
 };
+
+export const CATEGORY_MAP = {
+  notices: "NOTICE",
+  complexes: "COMPLEX",
+  targetGroups: "TARGETGROUP",
+  regions: "REGION",
+  houseTypes: "HOUSETYPE",
+} as const;
+
+export type SearchCategoryMap = keyof typeof CATEGORY_MAP;
+export type ApiCategory = (typeof CATEGORY_MAP)[SearchCategoryMap];

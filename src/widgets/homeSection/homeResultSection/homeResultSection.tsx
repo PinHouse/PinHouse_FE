@@ -1,5 +1,4 @@
 "use client";
-
 import { motion, AnimatePresence } from "framer-motion";
 import { useGlobal } from "@/src/entities/home/hooks/homeHooks";
 import { GlobalListType } from "@/src/entities/home/model/type";
