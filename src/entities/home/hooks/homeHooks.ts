@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getNoticeByPinPoint } from "../interface/homeInterface";
 import {
+  GlobalSearchItem,
   NoticeContent,
   NoticeCount,
   PopularResponse,
@@ -64,7 +65,7 @@ export const useGlobal = <T>({ params, q }: { params: string; q: string }) => {
   });
 };
 
-export const useGlobalPageNation = <T>({
+export const useGlobalPageNation = <TItem>({
   q,
   category,
   enabled,
@@ -76,13 +77,13 @@ export const useGlobalPageNation = <T>({
   const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/category`;
   const apiCategory: ApiCategory | null = category ? CATEGORY_MAP[category] : null;
 
-  return useInfiniteQuery({
-    queryKey: ["globalInfinity", enabled],
-    enabled: enabled && Boolean(category),
-    initialPageParam: 2,
+  return useInfiniteQuery<SliceResponse<TItem>, Error>({
+    queryKey: ["globalInfinity", apiCategory],
+    enabled: Boolean(category),
+    initialPageParam: 1,
     queryFn: ({ pageParam }) =>
-      getNoticeByPinPoint<SliceResponse<NoticeContent>>({
-        url: url,
+      getNoticeByPinPoint<SliceResponse<TItem>>({
+        url,
         params: {
           type: apiCategory,
           q,

@@ -46,12 +46,7 @@ export const HomeResultSection = ({ q }: { q: string }) => {
     >
       {data.map(section => (
         <motion.div key={section.category} variants={itemVariants}>
-          <HomeResultSectionBlock
-            category={section.category}
-            items={section.content}
-            limit={5}
-            q={q}
-          />
+          <HomeResultSectionBlock category={section.category} items={section.content} q={q} />
         </motion.div>
       ))}
     </motion.section>
