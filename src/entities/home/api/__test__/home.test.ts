@@ -210,7 +210,7 @@ describe("핀포인트 home 글로벌 서치 인기검색어", () => {
       data: Mock,
     });
 
-    const result = await getNoticeByPinPoint<IResponse<PopularResponse>>({
+    const result = await getNoticeByPinPoint<IResponse<GlobalSearchItem[]>>({
       url,
       params: param,
     });

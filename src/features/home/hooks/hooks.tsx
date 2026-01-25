@@ -53,9 +53,9 @@ export const useHomeGlobalSearch = (globalData?: GlobalListType): GlobalSearchSe
 export const CATEGORY_MAP = {
   notices: "NOTICE",
   complexes: "COMPLEX",
-  targetGroups: "TARGETGROUP",
+  targetGroups: "TARGET_GROUP",
   regions: "REGION",
-  houseTypes: "HOUSETYPE",
+  houseTypes: "HOUSE_TYPE",
 } as const;
 
 export type SearchCategoryMap = keyof typeof CATEGORY_MAP;

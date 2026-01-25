@@ -15,6 +15,7 @@ export interface SliceResponse<T> {
   pages: number;
   totalCount: number;
   totalElements: number;
+  category?: string;
 }
 
 export interface NoticeByPinPointParams {
@@ -77,4 +78,8 @@ export interface GlobalSearchSection {
   category: SearchCategory;
   content: GlobalSearchItem[];
   hasNext: boolean;
+}
+
+export interface GlobalSearchCategoryItem {
+  content: GlobalSearchItem[];
 }

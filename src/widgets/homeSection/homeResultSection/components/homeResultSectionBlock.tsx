@@ -1,58 +1,77 @@
 "use client";
 
 import { useGlobalPageNation } from "@/src/entities/home/hooks/homeHooks";
-import { SearchCategory } from "@/src/entities/home/model/type";
+import {
+  GlobalSearchCategoryItem,
+  GlobalSearchItem,
+  SearchCategory,
+} from "@/src/entities/home/model/type";
 import { HomeResultSectionHeader } from "@/src/features/home";
 import { HomeResultSectionItems } from "@/src/features/home/ui/result/homeResultSectionItem";
 import { HomeResultSectionMore } from "@/src/features/home/ui/result/homeResultSectionMore";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-type ExpendedType = {
-  open: boolean;
-  category: SearchCategory | null;
+type Props = {
+  category: SearchCategory;
+  items: GlobalSearchItem[]; // 최초 미리보기 (최대 5개)
+  q: string;
 };
 
-export const HomeResultSectionBlock = ({
-  category,
-  items,
-  limit,
-  q,
-}: {
-  category: SearchCategory;
-  items: any[];
-  limit: number;
-  q: string;
-}) => {
-  const [expanded, setExpanded] = useState<ExpendedType>({ open: false, category: null });
-  const visibleItems =
-    expanded.open && expanded.category === category ? items : items.slice(0, limit);
-  const isExpanded = expanded.open && expanded.category === category;
-  const {
-    data: categoryData,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  } = useGlobalPageNation({ q, category: expanded.category, enabled: isExpanded });
+export const HomeResultSectionBlock = ({ category, items, q }: Props) => {
+  /**
+   * 현재 펼쳐진 카테고리
+   * - null: 아무 것도 펼쳐지지 않음
+   * - category 값: 해당 카테고리 펼쳐짐
+   */
+  const [expandedCategory, setExpandedCategory] = useState<SearchCategory | null>(null);
+
+  const isExpanded = expandedCategory === category;
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGlobalPageNation<GlobalSearchItem>({
+      q,
+      category,
+      enabled: isExpanded,
+    });
+
+  const serverItems = useMemo<GlobalSearchItem[]>(() => {
+    if (!data?.pages) return [];
+    return data.pages.flatMap(page => (Array.isArray(page.content) ? page.content : []));
+  }, [data]);
+
+  const visibleItems: GlobalSearchItem[] = isExpanded ? serverItems : items;
+
+  /**
+   * 더보기 노출 기준
+   * - 펼쳐진 이후에만 판단
+   * - 서버 기준(hasNextPage)만 신뢰
+   */
+  const hasMore = isExpanded && Boolean(hasNextPage);
+
+  const handleToggle = async (clickedCategory: SearchCategory) => {
+    // 최초 펼침
+    if (!isExpanded) {
+      setExpandedCategory(clickedCategory);
+      return;
+    }
+
+    if (hasNextPage && !isFetchingNextPage) {
+      await fetchNextPage();
+    }
+  };
 
   return (
     <div>
-      <HomeResultSectionHeader category={category} count={items.length} />
+      <HomeResultSectionHeader category={category} count={visibleItems.length} />
 
       <span className="flex flex-col rounded-xl border">
-        <HomeResultSectionItems items={visibleItems} limit={limit} q={q} />
+        <HomeResultSectionItems items={visibleItems} q={q} />
 
         <HomeResultSectionMore
-          total={items.length}
-          limit={limit}
-          expanded={expanded.open}
-          onToggle={() =>
-            setExpanded(prev =>
-              prev.open && prev.category === category
-                ? { open: false, category: null }
-                : { open: true, category }
-            )
-          }
           category={category}
+          expanded={isExpanded}
+          hasNextPage={hasNextPage}
+          onToggle={handleToggle}
         />
       </span>
     </div>
