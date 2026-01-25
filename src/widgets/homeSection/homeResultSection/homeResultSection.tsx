@@ -1,5 +1,5 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useGlobal } from "@/src/entities/home/hooks/homeHooks";
 import { GlobalListType } from "@/src/entities/home/model/type";
 import { useHomeGlobalSearch } from "@/src/features/home/hooks/hooks";
@@ -38,26 +38,22 @@ export const HomeResultSection = ({ q }: { q: string }) => {
   const data = useHomeGlobalSearch(globalData);
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.section
-        key={q}
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
-        exit={{ opacity: 0 }}
-        className="flex h-screen flex-col gap-5 p-5"
-      >
-        {data.map(section => (
-          <motion.div key={section.category} variants={itemVariants}>
-            <HomeResultSectionBlock
-              category={section.category}
-              items={section.content}
-              limit={5}
-              q={q}
-            />
-          </motion.div>
-        ))}
-      </motion.section>
-    </AnimatePresence>
+    <motion.section
+      variants={containerVariants}
+      initial="hidden"
+      animate={data.length > 0 ? "show" : "hidden"}
+      className="flex h-screen flex-col gap-5 p-5"
+    >
+      {data.map(section => (
+        <motion.div key={section.category} variants={itemVariants}>
+          <HomeResultSectionBlock
+            category={section.category}
+            items={section.content}
+            limit={5}
+            q={q}
+          />
+        </motion.div>
+      ))}
+    </motion.section>
   );
 };

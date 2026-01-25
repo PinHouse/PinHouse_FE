@@ -79,7 +79,7 @@ export const useGlobalPageNation = <T>({
   return useInfiniteQuery({
     queryKey: ["globalInfinity", enabled],
     enabled: enabled && Boolean(category),
-    initialPageParam: 1,
+    initialPageParam: 2,
     queryFn: ({ pageParam }) =>
       getNoticeByPinPoint<SliceResponse<NoticeContent>>({
         url: url,
