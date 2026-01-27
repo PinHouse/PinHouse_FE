@@ -56,7 +56,8 @@ export const useListingDetailBasic = (id: string) => {
       debouncedMaxDeposit,
       debouncedMaxMonthPay,
     ],
-    enabled: !!id,
+    placeholderData: prevData => prevData,
+    enabled: typeof id === "string" && id.length > 0,
     staleTime: 1000 * 60 * 5,
     retry: false,
 

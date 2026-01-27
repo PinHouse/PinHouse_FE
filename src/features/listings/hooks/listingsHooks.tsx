@@ -141,7 +141,15 @@ export const LikeType = ({ id, liked, type, resetQuery }: ListingItemMinimal) =>
     mutate(body);
   };
 
-  return <div onClick={toggleLike}>{liked ? <LikeButton /> : <LineLikeButton />}</div>;
+  return (
+    <div onClick={toggleLike}>
+      {liked ? (
+        <LikeButton className="hover:cursor-pointer" />
+      ) : (
+        <LineLikeButton className="hover:cursor-pointer" />
+      )}
+    </div>
+  );
 };
 
 export const HouseICons = (item: ListingNormalized) => {

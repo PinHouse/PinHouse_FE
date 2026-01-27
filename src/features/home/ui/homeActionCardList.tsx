@@ -1,3 +1,4 @@
+"use client";
 import { ArrowUpRight } from "@/src/assets/icons/button/arrowUpRight";
 import { useNoticeCount } from "@/src/entities/home/hooks/homeHooks";
 import { useRouter } from "next/navigation";

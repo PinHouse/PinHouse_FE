@@ -1,14 +1,14 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 
 import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
-import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { TransportIconRenderer } from "./TransportIconRenderer";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { InfraSheet } from "./infraSheet";
 import { SheetState } from "../../../model";
 import { ComplexesInfo } from "../../../hooks/listingsHooks";
+import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 
 interface DetailSectionProps {
   title: string;
@@ -52,7 +52,7 @@ export const ListingsCardTileDetails = ({
 }: {
   listing: ListingsCardTileProps["listing"];
 }) => {
-  const { data: infra, isFetching } = useListingRentalDetail(listing.id);
+  const { data: infra } = useListingRentalDetail(listing.id);
   const [sheetState, setSheetState] = useState<SheetState>({
     open: false,
   });
@@ -60,16 +60,32 @@ export const ListingsCardTileDetails = ({
   const route = infra?.distance;
   const infraData = infra?.infra;
   const roomTypes = infra?.unitTypes;
+  const rentalInfo = infra?.rentalInfo;
 
-  if (isFetching || !route || !roomTypes) {
+  const openRouteSheet = useCallback(() => {
+    if (!infra?.id) return;
+    setSheetState({ open: true, section: "route", listingId: infra.id });
+  }, [infra?.id]);
+
+  const openInfraSheet = useCallback(() => {
+    if (!infra?.id) return;
+    setSheetState({ open: true, section: "infra", listingId: infra.id });
+  }, [infra?.id]);
+
+  const openRoomSheet = useCallback(() => {
+    if (!infra?.id) return;
+    setSheetState({ open: true, section: "room", listingId: infra.id });
+  }, [infra?.id]);
+
+  if (!infra || !route || !roomTypes) {
     return <SmallSpinner />;
   }
   return (
-    <div className="border-t border-greyscale-grey-100 bg-bgColor-mute">
+    <div className="rounded-b-lg border-t border-greyscale-grey-100 bg-bgColor-mute">
       {/* 기본 정보 */}
       <div className="border-b border-greyscale-grey-100 bg-greyscale-grey-25">
         <div className="space-y-1 p-3 text-xs text-greyscale-grey-600">
-          {infra?.rentalInfo.map(info => (
+          {rentalInfo?.map(info => (
             <div key={info.key} className="flex items-center gap-1 leading-relaxed">
               <ComplexesInfo infoKey={info.key} infoValue={info.value} />
             </div>
@@ -79,11 +95,7 @@ export const ListingsCardTileDetails = ({
 
       {/* 주요 노선 */}
       <div className="border-b border-greyscale-grey-100 p-3">
-        <DetailSection
-          title="주요 노선"
-          showAction
-          onOpen={() => setSheetState({ open: true, section: "route", listingId: infra.id })}
-        >
+        <DetailSection title="주요 노선" showAction onOpen={openRouteSheet}>
           <p className="text-sm font-medium text-greyscale-grey-600">
             핀포인트로부터 {route?.totalDistance}Km · 약 {route?.totalTime} 거리
           </p>
@@ -96,11 +108,7 @@ export const ListingsCardTileDetails = ({
 
       {/* 주변 환경 정보 */}
       <div className="border-b border-greyscale-grey-100 p-3">
-        <DetailSection
-          title="주변 환경 정보"
-          showAction
-          onOpen={() => setSheetState({ open: true, section: "infra", listingId: infra.id })}
-        >
+        <DetailSection title="주변 환경 정보" showAction onOpen={openInfraSheet}>
           {infraData?.length === 0 ? (
             <EmptyDetail>주변 정보가 제공되지 않았어요.</EmptyDetail>
           ) : (
@@ -121,17 +129,13 @@ export const ListingsCardTileDetails = ({
       </div>
 
       {/* 방 타입 */}
-      <div className="border-b border-greyscale-grey-100 p-3">
-        <DetailSection
-          title="방 타입"
-          showAction
-          onOpen={() => setSheetState({ open: true, section: "room", listingId: infra.id })}
-        >
-          {roomTypes.length === 0 ? (
+      <div className="p-3">
+        <DetailSection title="방 타입" showAction onOpen={openRoomSheet}>
+          {roomTypes?.length === 0 ? (
             <EmptyDetail>방 타입 정보가 제공되지 않았어요.</EmptyDetail>
           ) : (
             <div className="flex flex-wrap gap-1">
-              {roomTypes.map((tag, index) => (
+              {roomTypes?.map((tag, index) => (
                 <TagButton
                   key={`${tag}-${index}`}
                   size="xs"
@@ -146,7 +150,9 @@ export const ListingsCardTileDetails = ({
         </DetailSection>
       </div>
 
-      <InfraSheet sheetState={sheetState} onClose={() => setSheetState({ open: false })} />
+      {sheetState.open && (
+        <InfraSheet sheetState={sheetState} onClose={() => setSheetState({ open: false })} />
+      )}
     </div>
   );
 };

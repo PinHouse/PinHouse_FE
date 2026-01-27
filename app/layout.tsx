@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { QueryProvider } from "@/src/app/providers/queryProvider";
-import { BottomNavigation } from "@/src/shared/ui/bottomNavigation/";
+// import { BottomNavigation } from "@/src/shared/ui/bottomNavigation/";
 import { Toast } from "@/src/shared/ui/toast";
+import { HomeLandingRender } from "@/src/shared/ui/globalRender/globalRender";
+import { FrameBottomNav } from "@/src/shared/ui/bottomNavigation/frameBottomNavigation";
+import { ClientOnly } from "@/src/shared/ui/clientOnly/clientOnly";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,13 +22,26 @@ export default function RootLayout({
     <html lang="ko" className="h-full bg-gray-100">
       <body className="h-full bg-white text-gray-900 antialiased">
         <QueryProvider>
-          <div className="flex h-full items-stretch justify-center">
-            <div className="relative flex h-full w-full max-w-[768px] flex-col bg-white shadow-md">
+          <div className="flex min-h-screen w-full justify-center">
+            {/* <div className="relative flex h-full w-full max-w-[765px] flex-col bg-white shadow-md"> */}
+            <div className="relative flex min-h-screen w-full flex-col bg-transparent shadow-none">
               {/* 헤더자리 */}
               {/* <header className="flex h-[44px] w-full items-center"></header> */}
               {/* <TempHeaders className="h-full w-full" /> */}
-              <main className="flex-1 overflow-y-auto">{children}</main>
-              <BottomNavigation />
+              {/* <main className="flex-1 overflow-y-auto">{children}</main>
+              <BottomNavigation /> */}
+
+              <HomeLandingRender
+                bottom={
+                  <ClientOnly>
+                    <FrameBottomNav />
+                  </ClientOnly>
+                }
+              >
+                <ClientOnly>
+                  <div>{children}</div>
+                </ClientOnly>
+              </HomeLandingRender>
             </div>
           </div>
           <Toast />

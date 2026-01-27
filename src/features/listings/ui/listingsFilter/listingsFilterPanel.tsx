@@ -24,7 +24,7 @@ export const ListingFilterPanel = () => {
   return (
     <div className="relative w-full select-none border-b-[1px] px-1 py-1">
       <div className="flex items-center gap-2 px-3 py-2">
-        <div className="flex-shrink-0" onClick={onOpenSheet}>
+        <div className="flex-shrink-0 hover:cursor-pointer" onClick={onOpenSheet}>
           {getAllFilterIcon(hasSelectedFilters)}
         </div>
 

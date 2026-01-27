@@ -1,10 +1,18 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getNoticeByPinPoint } from "../interface/homeInterface";
-import { NoticeContent, NoticeCount, SliceResponse } from "../model/type";
+import {
+  GlobalSearchItem,
+  NoticeContent,
+  NoticeCount,
+  PopularResponse,
+  SearchCategory,
+  SliceResponse,
+} from "../model/type";
 import { useOAuthStore } from "@/src/features/login/model";
-import { HOME_NOTICE_ENDPOINT } from "@/src/shared/api";
+import { HOME_NOTICE_ENDPOINT, HOME_SEARCH_POPULAR_ENDPOINT } from "@/src/shared/api";
 import { useHomeMaxTime } from "@/src/features/home/model/homeStore";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
+import { ApiCategory, CATEGORY_MAP } from "@/src/features/home/hooks/hooks";
 
 export const useNoticeInfinite = () => {
   const pinpointId = useOAuthStore(state => state.pinPointId);
@@ -42,5 +50,48 @@ export const useNoticeCount = () => {
     enabled: !!pinPointId,
     placeholderData: previousData => previousData,
     queryFn: () => getNoticeByPinPoint<NoticeCount>({ url: url, params: param }),
+  });
+};
+
+export const useGlobal = <T>({ params, q }: { params: string; q: string }) => {
+  const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/${params}`;
+
+  const param = params === "popular" ? { limit: 10 } : { q: q };
+
+  return useQuery({
+    queryKey: ["global-search", params, q],
+    queryFn: () => getNoticeByPinPoint<T>({ url, params: param }),
+    enabled: params === "popular" || q?.length > 0,
+  });
+};
+
+export const useGlobalPageNation = <TItem>({
+  q,
+  category,
+  enabled,
+}: {
+  q: string;
+  category: SearchCategory | null;
+  enabled: boolean;
+}) => {
+  const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/category`;
+  const apiCategory: ApiCategory | null = category ? CATEGORY_MAP[category] : null;
+
+  return useInfiniteQuery<SliceResponse<TItem>, Error>({
+    queryKey: ["globalInfinity", apiCategory],
+    enabled: Boolean(category),
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) =>
+      getNoticeByPinPoint<SliceResponse<TItem>>({
+        url,
+        params: {
+          type: apiCategory,
+          q,
+          page: Number(pageParam),
+        },
+      }),
+    getNextPageParam: lastPage => {
+      return lastPage.hasNext ? lastPage.pages + 1 : undefined;
+    },
   });
 };

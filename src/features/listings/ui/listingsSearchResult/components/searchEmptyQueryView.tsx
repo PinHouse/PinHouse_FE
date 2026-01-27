@@ -1,8 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { SearchHistory } from "../../listingsHeaders/listingsSearchHistory";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { usePopularSearchQuery } from "@/src/entities/listings/hooks/useListingHooks";
-
 import { cn } from "@/lib/utils";
 import { HandleSearchTag } from "../../../model";
 

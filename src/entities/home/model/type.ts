@@ -15,6 +15,7 @@ export interface SliceResponse<T> {
   pages: number;
   totalCount: number;
   totalElements: number;
+  category?: string;
 }
 
 export interface NoticeByPinPointParams {
@@ -38,4 +39,47 @@ export interface NoticeContent {
 
 export interface NoticeCount {
   count: number;
+}
+
+export interface PopularResponse {
+  keyword: string;
+  count: number;
+  lastSearchedAt: string;
+}
+
+export type SearchCategory = "notices" | "complexes" | "targetGroups" | "regions" | "houseTypes";
+export interface GlobalSearchItem {
+  id: string;
+  title: string;
+  agency: string;
+  housingType: string;
+  supplyType: string;
+  announceDate: string;
+  applyStart: string;
+  applyEnd: string;
+  targetGroups: string[];
+  liked: boolean;
+}
+
+export interface GlobalList<T> {
+  content: T[];
+  hasNext: boolean;
+}
+
+export interface GlobalListType {
+  notices: GlobalList<GlobalSearchItem>;
+  complexes: GlobalList<GlobalSearchItem>;
+  targetGroups: GlobalList<GlobalSearchItem>;
+  regions: GlobalList<GlobalSearchItem>;
+  houseTypes: GlobalList<GlobalSearchItem>;
+}
+
+export interface GlobalSearchSection {
+  category: SearchCategory;
+  content: GlobalSearchItem[];
+  hasNext: boolean;
+}
+
+export interface GlobalSearchCategoryItem {
+  content: GlobalSearchItem[];
 }

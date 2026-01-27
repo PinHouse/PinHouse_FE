@@ -1,6 +1,10 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFilterSheetStore, useListingsFilterStore } from "../../model/listingsStore";
+import {
+  useFilterSheetStore,
+  useHasRouter,
+  useListingsFilterStore,
+} from "../../model/listingsStore";
 import { FILTER_TABS, FilterTabKey, TAB_CONFIG } from "../../model";
 import { useEffect, useRef, useState } from "react";
 import { CloseButton } from "@/src/assets/icons/button";
@@ -19,6 +23,7 @@ export const ListingFilterPartialSheet = () => {
   const { data } = useListingListInfiniteQuery();
   const prevTotalRef = useRef<number | null>(null);
   const newTotal = data?.pages?.[0]?.totalCount;
+  const { setHasListingsTab, reset } = useHasRouter();
 
   if (newTotal !== undefined && newTotal !== null) {
     prevTotalRef.current = newTotal;
@@ -33,6 +38,12 @@ export const ListingFilterPartialSheet = () => {
   useEffect(() => {
     if (open) {
       handleScroll();
+      const hasTab = window.location.search.includes("tab=");
+      setHasListingsTab(hasTab);
+
+      return () => {
+        reset();
+      };
     }
   }, [open]);
   const resetListingsQuery = () => {
@@ -143,7 +154,7 @@ const Tag = ({
           className="flex flex-col"
         >
           <span
-            className={`rounded-full px-4 py-2 text-xs font-bold ${
+            className={`rounded-full px-4 py-2 text-xs font-bold hover:cursor-pointer ${
               selected ? "bg-button-light text-text-inverse" : "bg-gray-100 text-text-secondary"
             }`}
             onClick={onClick}

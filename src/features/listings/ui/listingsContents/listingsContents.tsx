@@ -1,5 +1,4 @@
 "use client";
-
 import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
 import { ListingsContentHeader } from "./listingsContentsHeader";
 import { ListingContentsList } from "./listingsContentsList";
@@ -12,7 +11,7 @@ export const ListingsContent = ({ viewSet = true }: { viewSet?: boolean }) => {
 
   const totalCount = isLoading || !isSuccess ? null : (data?.pages[0]?.totalCount ?? 0);
 
-  if (isLoading) {
+  if (!data) {
     return (
       <div className="flex h-full items-center justify-center pb-[88px]">
         <Spinner title="공고 탐색중..." description="잠시만 기다려주세요" />

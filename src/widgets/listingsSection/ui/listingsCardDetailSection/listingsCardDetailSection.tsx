@@ -1,6 +1,6 @@
 "use client";
+
 import { useListingDetailBasic } from "@/src/entities/listings/hooks/useListingDetailHooks";
-import { ListingDetailResponseWithColor } from "@/src/entities/listings/model/type";
 import {
   ListingsCardDetailCompareButton,
   ListingsCardDetailComplexSection,
@@ -13,41 +13,27 @@ import {
   useDetailFilterSheetStore,
   useListingDetailCountStore,
 } from "@/src/features/listings/model";
-import { PageTransition } from "@/src/shared/ui/animation";
+import { useEffect } from "react";
+import { DataEnterTransition } from "@/src/shared/ui/animation/pageUpTransition";
 import { Spinner } from "@/src/shared/ui/spinner/default";
-import { useEffect, useState } from "react";
-
-type ListingDetailRenderData = {
-  basicInfo: ListingDetailResponseWithColor["data"]["basicInfo"];
-  filtered: ListingDetailResponseWithColor["data"]["filtered"];
-  nonFiltered: ListingDetailResponseWithColor["data"]["nonFiltered"];
-};
 
 export const ListingsCardDetailSection = ({ id }: { id: string }) => {
   const { data, isLoading } = useListingDetailBasic(id);
   const open = useDetailFilterSheetStore(state => state.open);
   const setCounts = useListingDetailCountStore(state => state.setCounts);
 
-  const [renderData, setRenderData] = useState<ListingDetailRenderData | null>(null);
+  const ready = !!id && !!data?.data && !isLoading;
 
   useEffect(() => {
-    if (open) return;
-    if (!data?.data) return;
+    if (!data?.data?.filtered) return;
+    setCounts(data.data.filtered.totalCount);
+  }, [data?.data?.filtered?.totalCount, setCounts]);
 
-    const { basicInfo, filtered, nonFiltered } = data.data;
-    if (!basicInfo || !filtered || !nonFiltered) return;
+  const basicInfo = data?.data?.basicInfo;
+  const filtered = data?.data?.filtered;
+  const nonFiltered = data?.data?.nonFiltered;
 
-    setRenderData({ basicInfo, filtered, nonFiltered });
-  }, [open, data]);
-
-  useEffect(() => {
-    const liveFiltered = data?.data.filtered;
-    if (!liveFiltered) return;
-
-    setCounts(liveFiltered.totalCount);
-  }, [data?.data.filtered?.totalCount, setCounts]);
-
-  if (!renderData) {
+  if (!data?.data || isLoading) {
     return (
       <div className="flex h-full items-center justify-center pb-[88px]">
         <Spinner title="공고 탐색중..." description="잠시만 기다려주세요" />
@@ -55,25 +41,28 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
     );
   }
 
-  const { basicInfo, filtered, nonFiltered } = renderData;
-
   return (
     <div className="mx-auto min-h-full w-full">
-      <PageTransition>
-        <ListingsCardDetailHeader />
-        <main>
-          <ListingsCardDetailSummary basicInfo={basicInfo} />
-          <ListingsCardDetailCompareButton paramId={id} />
-          <ListingsCardDetailFilterBar />
+      <DataEnterTransition ready={ready}>
+        {ready && basicInfo && filtered && nonFiltered && (
+          <>
+            <ListingsCardDetailHeader />
+            <main>
+              {!open && <ListingsCardDetailSummary basicInfo={basicInfo} />}
 
-          <ListingsCardDetailComplexSection
-            listings={filtered}
-            onFilteredCount={nonFiltered.totalCount}
-          />
+              <ListingsCardDetailCompareButton paramId={id} />
+              <ListingsCardDetailFilterBar />
 
-          <ListingsCardDetailOutOfCriteriaSection listings={nonFiltered} />
-        </main>
-      </PageTransition>
+              <ListingsCardDetailComplexSection
+                listings={filtered}
+                onFilteredCount={nonFiltered.totalCount}
+              />
+
+              {!open && <ListingsCardDetailOutOfCriteriaSection listings={nonFiltered} />}
+            </main>
+          </>
+        )}
+      </DataEnterTransition>
     </div>
   );
 };

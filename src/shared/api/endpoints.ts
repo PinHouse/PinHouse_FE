@@ -12,6 +12,7 @@ export const HTTP_METHODS = {
  * HOME API 엔드포인드
  */
 export const HOME_NOTICE_ENDPOINT = "/home/notice";
+export const HOME_SEARCH_POPULAR_ENDPOINT = "/home/search";
 
 /**
  * 공고 API 엔드포인트

@@ -8,9 +8,10 @@ import {
 
 export const ListingsSection = () => {
   return (
-    <section className="flex h-full w-full flex-col justify-between px-5">
+    <section className="flex h-full w-full flex-col justify-between px-4">
       <div className="flex flex-col gap-2">
         <ListingsHeaders />
+
         <div className="-mx-5">
           <ListingFilterPanel />
         </div>
