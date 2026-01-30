@@ -1,9 +1,9 @@
-import { HomeSerachSection } from "@/src/widgets/homeSection";
+import { HomeSearchSection } from "@/src/widgets/homeSection";
 
 export default function SearchLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <HomeSerachSection />
+      <HomeSearchSection />
       {children}
     </div>
   );
