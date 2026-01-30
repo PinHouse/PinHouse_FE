@@ -12,6 +12,8 @@ const authorizeUrl: Record<OAuthProviderType, string> = {
 /**
  * 소셜 로그인 요청 함수
  * @param provider - 로그인할 소셜 플랫폼
+ * 
+ * Mock 모드일 경우 MSW가 OAuth 엔드포인트를 가로채서 처리합니다.
  */
 export const requestOAuthLogin = (provider: OAuthProviderType) => {
   try {

@@ -4,6 +4,7 @@ import "./globals.css";
 import { QueryProvider } from "@/src/app/providers/queryProvider";
 import { BottomNavigation } from "@/src/shared/ui/bottomNavigation/";
 import { Toast } from "@/src/shared/ui/toast";
+import { MockProvider } from "@/src/mocks/MockProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className="h-full bg-gray-100">
       <body className="h-full bg-white text-gray-900 antialiased">
+        <MockProvider />
         <QueryProvider>
           <div className="flex h-full items-stretch justify-center">
             <div className="relative flex h-full w-full max-w-[768px] flex-col bg-white shadow-md">

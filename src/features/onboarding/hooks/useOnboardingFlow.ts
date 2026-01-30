@@ -29,7 +29,8 @@ export const useOnboardingFlow = ({
     onSuccess: async success => {
       if (success) {
         console.log("온보딩 완료 성공");
-        // 핀포인트 설정은 onSuccess에서 처리 (쿠키 설정 후)
+        
+        // 핀포인트 설정은 onSuccess에서 처리
         if (pinpointData) {
           try {
             await requestSetPinpoint(pinpointData);

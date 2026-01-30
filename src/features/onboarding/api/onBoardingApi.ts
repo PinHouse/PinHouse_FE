@@ -24,6 +24,8 @@ export const completeOnboarding = async (data: IOnboardingCompleteRequest) => {
       data
     );
     console.log("response", response);
+    
+    // Mock 모드일 경우 쿠키는 MSW 핸들러에서 설정됩니다.
     return response.success;
   } catch (error) {
     console.error("온보딩 완료 요청 실패:", error);
