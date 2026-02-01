@@ -16,9 +16,7 @@ export const HomeLandingRender = ({ children, bottom }: Props) => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-[#2F6BFF]">
-      {/* 최대 폭 컨테이너 */}
       <div className="mx-auto flex h-full max-w-[1350px] px-20 sm:justify-center md:px-20 lg:justify-between lg:px-20">
-        {/* LEFT TEXT */}
         <section className="z-10 hidden max-w-[600px] pt-10 text-white lg:block desktop:block">
           <div className="mb-48 flex items-center gap-2">
             <SecondaryLogoRender />
@@ -59,8 +57,8 @@ export const HomeLandingRender = ({ children, bottom }: Props) => {
           </div>
         </section>
 
-        <section className="relative z-10 flex h-full min-h-[812px] justify-center sm:p-5 md:pb-[90px] md:pt-16 lg:pb-[90px] lg:pt-16">
-          <div className="relative z-10 flex min-h-0 w-[375px] flex-col bg-white shadow-2xl sm:rounded-xl sm:p-0 md:rounded-2xl lg:rounded-2xl">
+        <section className="relative z-10 flex h-full min-h-[812px] justify-center sm:p-5 md:pb-[90px] md:pt-16 lg:pb-[90px] lg:pt-16 [@media(max-height:700px)]:min-h-0">
+          <div className="relative z-10 flex min-h-0 w-full max-w-[375px] flex-col bg-white shadow-2xl sm:rounded-xl sm:p-0 md:rounded-2xl lg:rounded-2xl [@media(min-width:375px)]:w-[340px]">
             <div className="pointer-events-none absolute inset-0 rounded-2xl" />
 
             <div
