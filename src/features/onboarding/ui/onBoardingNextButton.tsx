@@ -24,7 +24,7 @@ export const OnboardingNextButton = () => {
     pinpointData: isLastStep
       ? {
           address,
-          name: pinPoint,
+          name: pinPoint || "핀 포인트",
           first: false,
         }
       : undefined,

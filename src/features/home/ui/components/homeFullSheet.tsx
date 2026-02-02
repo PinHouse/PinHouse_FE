@@ -24,6 +24,9 @@ export const HomeSheet = () => {
     closeSheet();
   };
 
+  const handleSetPinpoint = () => {
+    router.push("/mypage/pinpoints");
+  };
   return (
     <AnimatePresence>
       {open && (
@@ -70,6 +73,7 @@ export const HomeSheet = () => {
                     )}
                     variant="outline"
                     radius="sm"
+                    onClick={handleSetPinpoint}
                   >
                     핀포인트 설정
                   </Button>

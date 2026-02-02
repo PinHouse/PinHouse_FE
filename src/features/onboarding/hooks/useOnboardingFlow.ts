@@ -28,12 +28,10 @@ export const useOnboardingFlow = ({
     mutationFn: (data: IOnboardingCompleteRequest) => completeOnboarding(data),
     onSuccess: async success => {
       if (success) {
-        console.log("온보딩 완료 성공");
         // 핀포인트 설정은 onSuccess에서 처리 (쿠키 설정 후)
         if (pinpointData) {
           try {
             await requestSetPinpoint(pinpointData);
-            console.log("핀포인트 설정 성공");
           } catch (error) {
             console.error("핀포인트 설정 실패:", error);
           }
