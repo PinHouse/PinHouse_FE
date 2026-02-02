@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  web:
+    container_name: pinhouse-fe
+    image: pinhouse-fe:latest
+    pull_policy: never
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
