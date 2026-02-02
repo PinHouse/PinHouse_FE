@@ -23,6 +23,10 @@ jobs:
           script: |
             set -e
 
+            # Docker Hub 로그인
+            echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+            # 이미지 pull 및 컨테이너 재시작
             docker pull ${{ secrets.DOCKER_USERNAME }}/pinhouse:latest
             docker rm -f pinhouse || true
             docker run -d \
@@ -30,5 +34,3 @@ jobs:
               --restart unless-stopped \
               -p 3000:3000 \
               ${{ secrets.DOCKER_USERNAME }}/pinhouse:latest
-
-
