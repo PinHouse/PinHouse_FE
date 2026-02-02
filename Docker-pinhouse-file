@@ -17,6 +17,13 @@ RUN npm ci
 FROM base AS builder
 COPY --from=deps /pinhouse-fe/node_modules ./node_modules
 COPY . .
+
+# build-args로 전달받은 환경 변수 설정 (빌드 타임에 필요)
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_OAUTH2
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_OAUTH2=$NEXT_PUBLIC_OAUTH2
+
 RUN npm run build
 
 # =========================
