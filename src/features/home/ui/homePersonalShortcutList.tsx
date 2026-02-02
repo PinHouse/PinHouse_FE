@@ -4,6 +4,7 @@ import { HomeScreenHomeIcon } from "@/src/assets/icons/home/home";
 import { HomeScreenTask } from "@/src/assets/icons/home/homeScreenTask";
 import { useEffect, useState } from "react";
 import { useOAuthStore } from "../../login/model";
+import { useRouter } from "next/navigation";
 
 const PERSONAL_SHORTCUTS = [
   {
@@ -13,6 +14,7 @@ const PERSONAL_SHORTCUTS = [
     icon: <HomeScreenHomeIcon />,
     button: <LeftButton width={25} />,
     message: "임대주택 탐색이 처음이라면?",
+    path: "/listings",
   },
   {
     id: "save-condition",
@@ -21,6 +23,7 @@ const PERSONAL_SHORTCUTS = [
     icon: <HomeScreenTask />,
     button: <LeftButton width={25} />,
     message: "나의 공공 임대주택 지원자격을 알고싶다면?",
+    path: "/eligibility",
   },
 ] as const;
 
@@ -37,8 +40,8 @@ const ShortcutMessage = ({ text }: { text: string }) => {
 };
 
 const messageSeenKey = (userId: string) => `home-shortcut-msg-seen:${userId ?? "anon"}`;
-
 export const PersonalShortcutList = () => {
+  const router = useRouter();
   const { userName } = useOAuthStore(); // 실제로 쓰는 user 식별자 넣기
   const [showMessage, setShowMessage] = useState(false);
 
@@ -60,6 +63,7 @@ export const PersonalShortcutList = () => {
           <button
             className="shadow- flex w-full items-center gap-2 rounded-2xl border border-greyscale-grey-50 bg-white p-4 text-left"
             type="button"
+            onClick={() => router.push(item.path)}
           >
             <div>{item.icon}</div>
 

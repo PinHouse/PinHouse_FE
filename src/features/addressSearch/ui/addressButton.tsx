@@ -1,16 +1,19 @@
 import { SearchLine } from "@/src/assets/icons/home";
 import { useAddressStore } from "@/src/entities/address";
-import { PageTransition } from "@/src/shared/ui/animation";
 import { IconButton } from "@/src/shared/ui/button/iconButton";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 export const AddressButton = () => {
   const { address } = useAddressStore();
   const { type } = useParams();
   const router = useRouter();
-
+  const pathname = usePathname();
   const openEmbed = () => {
+    if (pathname?.startsWith("/mypage/pinpoints")) {
+      router.push("/mypage/pinpoints/address");
+      return;
+    }
     if (type === "agent") router.push(`${type}/address`);
     return;
   };
