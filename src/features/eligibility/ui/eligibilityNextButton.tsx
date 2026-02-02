@@ -70,7 +70,11 @@ export const EligibilityNextButton = () => {
       }
       return;
     }
-
+    // diagnosisEnd에서 다음 클릭 시 홈으로 이동
+    if (currentStepId === "diagnosisEnd" && isLastStep) {
+      router.push("/home");
+      return;
+    }
     // 마지막 단계인 경우 진단종료 페이지로 이동
     if (isLastStep) {
       router.push("/eligibility?step=diagnosisEnd");
@@ -91,7 +95,7 @@ export const EligibilityNextButton = () => {
       onClick={handleClick}
       disabled={isDisabled}
     >
-      다음
+      {currentStepId === "diagnosisEnd" ? "홈으로 이동하기" : "다음"}
     </Button>
   );
 };

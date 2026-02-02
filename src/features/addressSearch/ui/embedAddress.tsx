@@ -17,7 +17,7 @@ export const EmbedAddress = () => {
       <IconButton size={"lg"} variant={"ghost"}>
         <div className="flex w-full items-center gap-3" onClick={openEmbed}>
           <SearchLine />
-          <span className="text-text-tertiary">
+          <span className={address ? "text-text-primary" : "text-text-tertiary"}>
             <p className="text-sm">{address === "" ? "주소를 입력해주세요" : address}</p>
           </span>
         </div>

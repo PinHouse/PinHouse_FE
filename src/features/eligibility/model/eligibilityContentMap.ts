@@ -19,6 +19,7 @@ export const ELIGIBILITY_GROUP_IDS = {
   PERSONAL_INFO: "personalInfo", // 개인정보
   IDENTITY_INFO: "identityInfo", // 신분정보
   ASSET_INFO: "assetInfo", // 자산정보
+  DIAGNOSIS_END: "diagnosisEnd", // 진단종료
 } as const;
 
 // 결정트리에서 path 정보 생성 (하위 호환성 유지)
@@ -47,4 +48,8 @@ export const ELIGIBILITY_STEPS: EligibilityStep[] = [
     id: ELIGIBILITY_GROUP_IDS.ASSET_INFO,
     label: "자산정보",
   },
-] as const;
+  {
+    id: ELIGIBILITY_GROUP_IDS.DIAGNOSIS_END,
+    label: "진단종료",
+  },
+];

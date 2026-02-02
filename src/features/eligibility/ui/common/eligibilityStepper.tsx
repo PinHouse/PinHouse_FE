@@ -35,8 +35,9 @@ export const EligibilityStepper = ({
   return (
     <div className={cn("aligin-center flex justify-center", className)}>
       {steps.map((step, index) => {
+        if (index === steps.length - 1) return null;
         const status = getStepStatus(index);
-        const isLast = index === steps.length - 1;
+        const isLast = index === steps.length - 2;
 
         return (
           <div key={step.id} className="flex items-center">

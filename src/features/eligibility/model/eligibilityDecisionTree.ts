@@ -1791,7 +1791,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
   // diagnosisEnd
   {
     id: "diagnosisEnd",
-    groupId: "personalInfo",
+    groupId: "diagnosisEnd",
     components: [
       {
         type: "statusBanner",
@@ -1800,15 +1800,8 @@ export const eligibilityDecisionTree: StepConfig[] = [
           description: "",
         },
       },
-      {
-        type: "infoButton",
-        props: {
-          text: "홈으로 이동",
-          action: "home",
-        },
-      },
     ],
-    validation: () => "진단종료",
+    validation: () => null,
     getNextStep: () => null,
   },
 ];

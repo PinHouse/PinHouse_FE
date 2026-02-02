@@ -12,7 +12,6 @@ declare global {
 
 export const AddressSearch = () => {
   const { address, setPinPoint } = useAddressStore();
-
   const onPinPointChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPinPoint(e.target.value);
   };
@@ -26,7 +25,7 @@ export const AddressSearch = () => {
             <Input
               size={"default"}
               variant={"default"}
-              placeholder="핀포인트 1"
+              placeholder="핀포인트"
               onChange={onPinPointChange}
               className="text-sm placeholder:text-sm placeholder:font-medium placeholder:text-gray-400"
             />

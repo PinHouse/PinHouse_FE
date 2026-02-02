@@ -12,10 +12,13 @@ export const ActionCardList = () => {
     router.push("/listings");
   };
 
+  const onEligibilityPageMove = () => {
+    router.push("/eligibility");
+  };
   return (
     <div className="mb-4 flex gap-4">
       <div
-        className="flex min-h-[88px] flex-1 flex-col justify-between rounded-lg bg-primary-blue-300 px-4 py-3"
+        className="flex min-h-[88px] flex-1 cursor-pointer flex-col justify-between rounded-lg bg-primary-blue-300 px-4 py-3"
         onClick={onListingsPageMove}
       >
         <div className="flex items-center justify-between text-white">
@@ -29,8 +32,9 @@ export const ActionCardList = () => {
       </div>
 
       <div
-        className="flex min-h-[88px] flex-1 flex-col justify-between rounded-lg px-4 py-3"
+        className="flex min-h-[88px] flex-1 cursor-pointer flex-col justify-between rounded-lg px-4 py-3"
         style={{ background: "#FFBA18" }}
+        onClick={onEligibilityPageMove}
       >
         <div className="flex items-center justify-between text-white">
           <p className="text-sm font-bold leading-tight opacity-[0.7]">자격진단 기준</p>
