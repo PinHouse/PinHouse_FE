@@ -22,7 +22,9 @@ export const ActionCardList = () => {
         onClick={onListingsPageMove}
       >
         <div className="flex items-center justify-between text-white">
-          <p className="text-sm font-bold leading-tight opacity-[0.7]">핀포인트 기준</p>
+          <p className="text-sm font-bold leading-tight opacity-[0.7] hover:cursor-pointer">
+            핀포인트 기준
+          </p>
           <div className="flex items-center justify-center">
             <ArrowUpRight />
           </div>
@@ -37,7 +39,9 @@ export const ActionCardList = () => {
         onClick={onEligibilityPageMove}
       >
         <div className="flex items-center justify-between text-white">
-          <p className="text-sm font-bold leading-tight opacity-[0.7]">자격진단 기준</p>
+          <p className="text-sm font-bold leading-tight opacity-[0.7] hover:cursor-pointer">
+            자격진단 기준
+          </p>
 
           <div className="flex items-center justify-center">
             <ArrowUpRight />
