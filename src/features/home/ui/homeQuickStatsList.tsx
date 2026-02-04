@@ -35,7 +35,10 @@ export const QuickStatsList = () => {
         <span>최대시간</span>
       </div>
 
-      <div className="mt-2 flex gap-4" onClick={() => onSelectSection("pinpoints")}>
+      <div
+        className="mt-2 flex gap-4 hover:cursor-pointer"
+        onClick={() => onSelectSection("pinpoints")}
+      >
         <span className="flex flex-col text-lg font-semibold leading-none">
           <p>{line1}</p>
           <p>{line2}</p>
