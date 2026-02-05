@@ -15,6 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ✅ 멀티플랫폼(arm64) 빌드용 에뮬레이터
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       # 2 Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -33,6 +37,8 @@ jobs:
           context: .
           file: ./Docker-pinhouse-file
           push: true
+          # ✅ 핵심: 멀티 플랫폼 manifest 생성
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/pinhouse:latest
             ${{ secrets.DOCKER_USERNAME }}/pinhouse:${{ github.sha }}
