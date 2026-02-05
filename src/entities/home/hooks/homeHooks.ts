@@ -12,7 +12,7 @@ import { useOAuthStore } from "@/src/features/login/model";
 import { HOME_NOTICE_ENDPOINT, HOME_SEARCH_POPULAR_ENDPOINT } from "@/src/shared/api";
 import { useHomeMaxTime } from "@/src/features/home/model/homeStore";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
-import { ApiCategory, CATEGORY_MAP } from "@/src/features/home/hooks/hooks";
+import { ApiCategory, CATEGORY_MAP } from "@/src/features/home/model/model";
 
 export const useNoticeInfinite = () => {
   const pinpointId = useOAuthStore(state => state.pinPointId);

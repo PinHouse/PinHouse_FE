@@ -1,32 +1,24 @@
 "use client";
 import { homeSheetParseObject } from "@/src/features/listings/model";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useHomeSheetStore } from "../../model/homeStore";
 import { useMemo } from "react";
 import { PinpointRowBox } from "./pinpointRowBoxs";
 import { MaxTimeSliderBox } from "./maxTime";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { cn } from "@/lib/utils";
+import { usePinhouseRouter } from "@/src/features/home/hooks/hooks";
+import { PinpointSelectedButton } from "@/src/features/home/ui/components/components/pinpointSelectedButton";
 
 export const HomeSheet = () => {
   const open = useHomeSheetStore(s => s.open);
-  const closeSheet = useHomeSheetStore(s => s.closeSheet);
   const searchParams = useSearchParams();
-
   const mode = useMemo(() => {
     return homeSheetParseObject(searchParams);
   }, [searchParams]);
+  const { replaceRouter, handleSetPinpoint } = usePinhouseRouter();
 
-  const router = useRouter();
-  const replaceRouter = () => {
-    router.replace("/home");
-    closeSheet();
-  };
-
-  const handleSetPinpoint = () => {
-    router.push("/mypage/pinpoints");
-  };
   return (
     <AnimatePresence>
       {open && (
@@ -64,26 +56,28 @@ export const HomeSheet = () => {
               >
                 {mode?.key === "pinpoints" && <PinpointRowBox />}
                 {mode?.key === "maxTime" && <MaxTimeSliderBox />}
-
-                <div className="flex gap-3">
-                  <Button
-                    className={cn(
-                      "flex-1 border-greyscale-grey-100 bg-white text-sm font-medium text-gray-800",
-                      mode?.key === "maxTime" ? "hidden" : "block"
-                    )}
-                    variant="outline"
-                    radius="sm"
-                    onClick={handleSetPinpoint}
-                  >
-                    핀포인트 설정
-                  </Button>
-                  <Button
-                    className="flex-1 bg-[#2E2A3B] text-sm font-medium text-white"
-                    radius="sm"
-                  >
-                    저장하기
-                  </Button>
-                </div>
+                {!mode ? null : (
+                  <PinpointSelectedButton mode={mode?.key} handleSetPinpoint={handleSetPinpoint} />
+                )}
+                {/*<div className="flex gap-3">*/}
+                {/*  <Button*/}
+                {/*    className={cn(*/}
+                {/*      "flex-1 border-greyscale-grey-100 bg-white text-sm font-medium text-gray-800",*/}
+                {/*      mode?.key === "maxTime" ? "hidden" : "block"*/}
+                {/*    )}*/}
+                {/*    variant="outline"*/}
+                {/*    radius="sm"*/}
+                {/*    onClick={handleSetPinpoint}*/}
+                {/*  >*/}
+                {/*    핀포인트 설정*/}
+                {/*  </Button>*/}
+                {/*  <Button*/}
+                {/*    className="flex-1 bg-[#2E2A3B] text-sm font-medium text-white"*/}
+                {/*    radius="sm"*/}
+                {/*  >*/}
+                {/*    저장하기*/}
+                {/*  </Button>*/}
+                {/*</div>*/}
               </motion.div>
             </div>
           </motion.div>

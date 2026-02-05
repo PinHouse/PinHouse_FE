@@ -208,6 +208,7 @@ export const useListingFilterDetail = <T>() => {
   return useQuery<IResponse<T>, Error, T>({
     queryKey: ["pinpoint"],
     staleTime: 1000 * 60 * 5,
+    placeholderData: previousData => previousData,
     queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
     select: response => {
       if (response.data === undefined) {

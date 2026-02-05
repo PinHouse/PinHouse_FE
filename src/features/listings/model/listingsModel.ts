@@ -10,6 +10,7 @@ import {
 } from "@/src/entities/listings/model/type";
 import { PinPoint, PinPointMap } from "@/src/shared/ui/dropDown/deafult/type";
 import { SectionLabelMap, SectionMap } from "./filterPanelModel";
+import { useMemo } from "react";
 
 export const REGION_CHECKBOX = [
   {
@@ -349,6 +350,7 @@ export const homeSheetParseObject = (searchParams: URLSearchParams): HomeSheetRe
     label,
   };
 };
+
 // 사용처: 검색 결과가 없을 때/빈 검색어 화면에서 추천 태그 클릭 핸들러와 인기 키워드 전달
 // - listingsSearchResult/components/searchNoResultView.tsx
 // - listingsSearchResult/components/searchEmptyQueryView.tsx
