@@ -1,18 +1,18 @@
 import { useListingFilterDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { PinPointPlace } from "@/src/entities/listings/model/type";
-import { useOAuthStore } from "@/src/features/login/model";
 import { PinpointItem } from "./components/pinpointId";
+import { PinpointRowBoxSkeleton } from "./skeleton/skeleton";
+import { usePinpointRowBox } from "@/src/features/home/hooks/hooks";
 
 export const PinpointRowBox = () => {
-  const { data } = useListingFilterDetail<PinPointPlace>();
-  const pinpoints = data?.pinPoints;
-  const pinPointId = useOAuthStore(s => s.pinPointId);
-  const setPinPointId = useOAuthStore(s => s.setPinPointId);
-  const setPinPointName = useOAuthStore(s => s.setPinpointName);
-  const onChangePinpoint = ({ id, name }: { id: string; name: string }) => {
-    setPinPointId(id);
-    setPinPointName(name);
-  };
+  const { data, isLoading } = useListingFilterDetail<PinPointPlace>();
+  const pin = data?.pinPoints ?? null;
+  const { pinpoints, pinPointId, onChangePinpoint } = usePinpointRowBox(pin);
+
+  if (!pinpoints) {
+    return <PinpointRowBoxSkeleton />;
+  }
+
   return (
     <div className="flex flex-col pt-4">
       <ul className="flex flex-col divide-y">
