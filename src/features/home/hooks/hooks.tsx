@@ -1,22 +1,8 @@
-import { GlobalBuilding } from "@/src/assets/icons/home/globalBuilding";
-import { GlobalNoticeIncon } from "@/src/assets/icons/home/globalDoc";
-import { GlobalHouse } from "@/src/assets/icons/home/globalHouse";
-import { GlobalMapPin } from "@/src/assets/icons/home/globalMappin";
-import { GlobalPerson } from "@/src/assets/icons/home/globalPerson";
-import {
-  GlobalListType,
-  GlobalSearchSection,
-  SearchCategory,
-} from "@/src/entities/home/model/type";
-import { ReactNode } from "react";
-
-export const SEARCH_CATEGORY_CONFIG: Record<SearchCategory, { label: string; icon: ReactNode }> = {
-  notices: { label: "공고명", icon: <GlobalNoticeIncon /> },
-  complexes: { label: "단지명", icon: <GlobalBuilding /> },
-  targetGroups: { label: "모집대상", icon: <GlobalPerson /> },
-  regions: { label: "지역", icon: <GlobalMapPin /> },
-  houseTypes: { label: "주택유형", icon: <GlobalHouse /> },
-};
+import { GlobalListType, GlobalSearchSection } from "@/src/entities/home/model/type";
+import { useRouter } from "next/navigation";
+import { useHomeSheetStore } from "@/src/features/home/model/homeStore";
+import { useOAuthStore } from "@/src/features/login/model";
+import { PinPointPlace } from "@/src/entities/listings/model/type";
 
 export const useHomeGlobalSearch = (globalData?: GlobalListType): GlobalSearchSection[] => {
   if (!globalData) return [];
@@ -50,13 +36,37 @@ export const useHomeGlobalSearch = (globalData?: GlobalListType): GlobalSearchSe
   ];
 };
 
-export const CATEGORY_MAP = {
-  notices: "NOTICE",
-  complexes: "COMPLEX",
-  targetGroups: "TARGET_GROUP",
-  regions: "REGION",
-  houseTypes: "HOUSE_TYPE",
-} as const;
+export const usePinhouseRouter = () => {
+  const router = useRouter();
+  const closeSheet = useHomeSheetStore(s => s.closeSheet);
+  const replaceRouter = () => {
+    router.replace("/home");
+    closeSheet();
+  };
 
-export type SearchCategoryMap = keyof typeof CATEGORY_MAP;
-export type ApiCategory = (typeof CATEGORY_MAP)[SearchCategoryMap];
+  const handleSetPinpoint = () => {
+    router.push("/mypage/pinpoints");
+  };
+
+  return {
+    replaceRouter,
+    handleSetPinpoint,
+  };
+};
+
+export const usePinpointRowBox = (data: PinPointPlace["pinPoints"] | null) => {
+  const pinpoints = data ?? null;
+  const pinPointId = useOAuthStore(s => s.pinPointId);
+  const setPinPointId = useOAuthStore(s => s.setPinPointId);
+  const setPinPointName = useOAuthStore(s => s.setPinpointName);
+  const onChangePinpoint = ({ id, name }: { id: string; name: string }) => {
+    setPinPointId(id);
+    setPinPointName(name);
+  };
+
+  return {
+    pinpoints,
+    pinPointId,
+    onChangePinpoint,
+  };
+};

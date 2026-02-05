@@ -1,5 +1,5 @@
 import { SearchCategory } from "@/src/entities/home/model/type";
-import { SEARCH_CATEGORY_CONFIG } from "../../hooks/hooks";
+import { SEARCH_CATEGORY_CONFIG } from "@/src/features/home/model/model";
 
 interface HomeResultSectionHeaderProps {
   category: SearchCategory;
