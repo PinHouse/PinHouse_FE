@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import { useHomeSheetStore } from "@/src/features/home/model/homeStore";
 import { useOAuthStore } from "@/src/features/login/model";
 import { PinPointPlace } from "@/src/entities/listings/model/type";
+import { useMemo } from "react";
+import { homeSheetParseObject } from "@/src/features/listings/model";
 
 export const useHomeGlobalSearch = (globalData?: GlobalListType): GlobalSearchSection[] => {
   if (!globalData) return [];
@@ -36,7 +38,7 @@ export const useHomeGlobalSearch = (globalData?: GlobalListType): GlobalSearchSe
   ];
 };
 
-export const usePinhouseRouter = () => {
+export const usePinhouseRouter = (searchParams: URLSearchParams) => {
   const router = useRouter();
   const closeSheet = useHomeSheetStore(s => s.closeSheet);
   const replaceRouter = () => {
@@ -46,11 +48,17 @@ export const usePinhouseRouter = () => {
 
   const handleSetPinpoint = () => {
     router.push("/mypage/pinpoints");
+    closeSheet();
   };
+
+  const mode = useMemo(() => {
+    return homeSheetParseObject(searchParams);
+  }, [searchParams]);
 
   return {
     replaceRouter,
     handleSetPinpoint,
+    mode,
   };
 };
 

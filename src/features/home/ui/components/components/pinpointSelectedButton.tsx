@@ -4,9 +4,14 @@ import { cn } from "@/lib/utils";
 type PinpointSelectedButtonType = {
   mode: "pinpoints" | "maxTime";
   handleSetPinpoint: () => void;
+  replaceRouter:() => void;
 };
 
-export const PinpointSelectedButton = ({ mode, handleSetPinpoint }: PinpointSelectedButtonType) => {
+export const PinpointSelectedButton = ({
+  mode,
+  handleSetPinpoint,
+  replaceRouter,
+}: PinpointSelectedButtonType) => {
   return (
     <div className="flex gap-3">
       <Button
@@ -20,7 +25,11 @@ export const PinpointSelectedButton = ({ mode, handleSetPinpoint }: PinpointSele
       >
         핀포인트 설정
       </Button>
-      <Button className="flex-1 bg-[#2E2A3B] text-sm font-medium text-white" radius="sm">
+      <Button
+        className="flex-1 bg-[#2E2A3B] text-sm font-medium text-white"
+        radius="sm"
+        onClick={replaceRouter}
+      >
         저장하기
       </Button>
     </div>

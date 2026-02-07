@@ -6,22 +6,12 @@ import { useHomeMaxTime, useHomeSheetStore } from "../model/homeStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useOAuthStore } from "../../login/model";
 import { splitAddress, transTime } from "@/src/shared/lib/utils";
+import { useHomeUseHooks } from "@/src/features/home/ui/homeUseHooks/homeUseHooks";
 
 export const QuickStatsList = () => {
-  const openSheet = useHomeSheetStore(s => s.openSheet);
-  const { pinPointId, pinPointName } = useOAuthStore();
-  const { maxTime } = useHomeMaxTime();
-  const [line1, line2] = splitAddress(pinPointName ?? "핀포인트 이름 설정해주세요");
-  const searchParams = useSearchParams();
-  const router = useRouter();
 
-  const onSelectSection = (key: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("mode", key);
-    params.set("id", pinPointId ?? "");
-    router.push(`?${params.toString()}`, { scroll: false });
-    openSheet();
-  };
+  const { maxTime } = useHomeMaxTime();
+  const {line2, line1 , onSelectSection} = useHomeUseHooks();
 
   return (
     <div className="relative grid grid-cols-2 grid-rows-[auto,1fr] rounded-2xl bg-white p-4">

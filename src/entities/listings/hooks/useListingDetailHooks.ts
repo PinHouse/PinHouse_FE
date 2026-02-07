@@ -206,7 +206,7 @@ export const useListingRouteDetail = <T, TParam extends object>({
 
 export const useListingFilterDetail = <T>() => {
   return useQuery<IResponse<T>, Error, T>({
-    queryKey: ["pinpoint"],
+    queryKey: ["pinpointSettings"],
     staleTime: 1000 * 60 * 5,
     placeholderData: previousData => previousData,
     queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
