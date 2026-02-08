@@ -1,25 +1,12 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+
 import { FILTER_OPTIONS, filterMap, getAllFilterIcon } from "../../model";
-import { useFilterSheetStore, useListingsFilterStore } from "../../model/listingsStore";
+import { useListingsFilterStore } from "../../model/listingsStore";
 import { ListingTagButton } from "../listingsButton/listingsTagButton";
+import { ListingHooks } from "@/src/features/listings/ui/listingsFilter/hooks";
 
 export const ListingFilterPanel = () => {
-  const openSheet = useFilterSheetStore(state => state.openSheet);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams.toString());
-  params.set("tab", params.get("tab") ?? "region");
-  const onOpenSheet = () => {
-    openSheet();
-    router.push(`listings?${params}`);
-  };
-
-  const hasSelectedFilters = useListingsFilterStore(state =>
-    [state.regionType, state.rentalTypes, state.supplyTypes, state.houseTypes].some(
-      list => list.length > 0
-    )
-  );
+  const { onOpenSheet, hasSelectedFilters } = ListingHooks();
 
   return (
     <div className="relative w-full select-none border-b-[1px] px-1 py-1">

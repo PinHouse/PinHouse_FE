@@ -1,62 +1,16 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  useFilterSheetStore,
-  useHasRouter,
-  useListingsFilterStore,
-} from "../../model/listingsStore";
+import { useListingsFilterStore } from "../../model/listingsStore";
 import { FILTER_TABS, FilterTabKey, TAB_CONFIG } from "../../model";
-import { useEffect, useRef, useState } from "react";
 import { CloseButton } from "@/src/assets/icons/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";
-import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
+import { ListingFilterPartialSheetHooks } from "./hooks";
 
 export const ListingFilterPartialSheet = () => {
-  const open = useFilterSheetStore(s => s.open);
-  const closeSheet = useFilterSheetStore(s => s.closeSheet);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isAtBottom, setIsAtBottom] = useState(true);
-  const { data } = useListingListInfiniteQuery();
-  const prevTotalRef = useRef<number | null>(null);
-  const newTotal = data?.pages?.[0]?.totalCount;
-  const { setHasListingsTab, reset } = useHasRouter();
-
-  if (newTotal !== undefined && newTotal !== null) {
-    prevTotalRef.current = newTotal;
-  }
-  const displayTotal = prevTotalRef.current;
-  const handleScroll = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 5;
-    setIsAtBottom(atBottom);
-  };
-  useEffect(() => {
-    if (open) {
-      handleScroll();
-      const hasTab = window.location.search.includes("tab=");
-      setHasListingsTab(hasTab);
-
-      return () => {
-        reset();
-      };
-    }
-  }, [open]);
-  const resetListingsQuery = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("tab");
-    const query = params.toString();
-    router.replace(query ? `/listings?${query}` : "/listings", { scroll: false });
-  };
-
-  const handleCloseSheet = () => {
-    closeSheet();
-    resetListingsQuery();
-  };
+  const { open, scrollRef, isAtBottom, displayTotal, handleScroll, handleCloseSheet } =
+    ListingFilterPartialSheetHooks();
 
   return (
     <AnimatePresence>
