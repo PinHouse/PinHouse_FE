@@ -5,7 +5,7 @@ import { PinpointRowBoxSkeleton } from "./skeleton/skeleton";
 import { usePinpointRowBox } from "@/src/features/home/hooks/hooks";
 
 export const PinpointRowBox = () => {
-  const { data, isLoading } = useListingFilterDetail<PinPointPlace>();
+  const { data } = useListingFilterDetail<PinPointPlace>();
   const pin = data?.pinPoints ?? null;
   const { pinpoints, pinPointId, onChangePinpoint } = usePinpointRowBox(pin);
 

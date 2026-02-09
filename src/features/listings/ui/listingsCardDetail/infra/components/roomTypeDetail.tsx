@@ -78,8 +78,8 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
             {current?.thumbnail ? (
               <img src={current.thumbnail} className="h-full w-full object-cover" />
             ) : (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                <CompareDefaultImage className="object-contain opacity-60" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <CompareDefaultImage className="object-contain opacity-60 h-30" />
                 <p className="text-xs text-greyscale-grey-400">도면 이미지를 준비하고 있어요</p>
               </div>
             )}
