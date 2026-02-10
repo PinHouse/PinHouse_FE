@@ -1,0 +1,17 @@
+const MyPageArrow = () => {
+    return (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clipPath="url(#clip0_10323_69270)">
+                <path d="M7.5 5L12.5 10L7.5 15" stroke="#BBBAC5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </g>
+            <defs>
+                <clipPath id="clip0_10323_69270">
+                    <rect width="20" height="20" fill="white" />
+                </clipPath>
+            </defs>
+        </svg>
+
+    );
+};
+
+export default MyPageArrow;
