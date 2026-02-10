@@ -6,4 +6,6 @@ export * from "./profileNicknameInput";
 export * from "./profileLoginInfo";
 export * from "./profilePhotoBottomSheet";
 export * from "./mypageSection";
+export * from "./userInfoCard";
+export * from "./pinReportSection";
 export * from "./mypageMenuItem";

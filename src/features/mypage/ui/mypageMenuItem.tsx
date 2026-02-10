@@ -11,14 +11,14 @@ export interface MypageMenuItemProps {
 
 export const MypageMenuItem = ({ icon, label, onClick }: MypageMenuItemProps) => {
     return (
-        <div className="border-t border-greyscale-grey-50">
+        <div>
             <button
-                className="flex w-full items-center justify-between px-5 py-4"
+                className="flex w-full items-center justify-between gap-4 px-4 py-3.5 "
                 onClick={onClick}
             >
-                <div className="flex items-center gap-3">
-                    <div className="flex h-5 w-5 items-center justify-center">{icon}</div>
-                    <span className="text-sm font-medium leading-5 tracking-[-0.01em] text-greyscale-grey-900">
+                <div className="flex gap-2">
+                    <div className="flex h-4 w-4 items-center justify-center">{icon}</div>
+                    <span className="text-sm font-medium leading-[140%] tracking-[-0.02em] text-greyscale-grey-800">
                         {label}
                     </span>
                 </div>

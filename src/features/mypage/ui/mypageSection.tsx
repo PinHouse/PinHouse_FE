@@ -10,9 +10,9 @@ export interface MypageSectionProps {
 
 export const MypageSection = ({ title, items }: MypageSectionProps) => {
     return (
-        <div className="flex flex-col gap-0 rounded-lg bg-white">
-            <div className="px-5 py-4">
-                <h2 className="text-base font-semibold leading-[140%] tracking-[-0.02em] text-greyscale-grey-900">
+        <div className="flex flex-col rounded-lg bg-white">
+            <div className="pl-4 py-3.5">
+                <h2 className="text-sm font-bold leading-[140%] tracking-[-0.02em] text-greyscale-grey-400">
                     {title}
                 </h2>
             </div>
