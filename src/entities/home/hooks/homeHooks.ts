@@ -1,18 +1,18 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getNoticeByPinPoint } from "../interface/homeInterface";
-import {
-  GlobalSearchItem,
-  NoticeContent,
-  NoticeCount,
-  PopularResponse,
-  SearchCategory,
-  SliceResponse,
-} from "../model/type";
+import { NoticeContent, NoticeCount, SearchCategory, SliceResponse } from "../model/type";
 import { useOAuthStore } from "@/src/features/login/model";
-import { HOME_NOTICE_ENDPOINT, HOME_SEARCH_POPULAR_ENDPOINT } from "@/src/shared/api";
+import {
+  HOME_NOTICE_ENDPOINT,
+  HOME_RECOMMENDED_ENDPOINT,
+  HOME_SEARCH_POPULAR_ENDPOINT,
+} from "@/src/shared/api";
 import { useHomeMaxTime } from "@/src/features/home/model/homeStore";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 import { ApiCategory, CATEGORY_MAP } from "@/src/features/home/model/model";
+import { ListingItem } from "@/src/entities/listings/model/type";
+import axios from "axios";
+import { toast } from "sonner";
 
 export const useNoticeInfinite = () => {
   const pinpointId = useOAuthStore(state => state.pinPointId);
@@ -21,6 +21,7 @@ export const useNoticeInfinite = () => {
     queryKey: ["notice", pinpointId],
     enabled: !!pinpointId,
     initialPageParam: 1,
+    retry: false,
     queryFn: ({ pageParam }) =>
       getNoticeByPinPoint<SliceResponse<NoticeContent>>({
         url: HOME_NOTICE_ENDPOINT,
@@ -48,6 +49,7 @@ export const useNoticeCount = () => {
   return useQuery({
     queryKey: ["noticeCount", pinPointId, debouncedMaxTime],
     enabled: !!pinPointId,
+    retry: false,
     placeholderData: previousData => previousData,
     queryFn: () => getNoticeByPinPoint<NoticeCount>({ url: url, params: param }),
   });
@@ -60,6 +62,7 @@ export const useGlobal = <T>({ params, q }: { params: string; q: string }) => {
 
   return useQuery({
     queryKey: ["global-search", params, q],
+    retry: false,
     queryFn: () => getNoticeByPinPoint<T>({ url, params: param }),
     enabled: params === "popular" || q?.length > 0,
   });
@@ -81,6 +84,7 @@ export const useGlobalPageNation = <TItem>({
     queryKey: ["globalInfinity", apiCategory],
     enabled: Boolean(category),
     initialPageParam: 1,
+    retry: false,
     queryFn: ({ pageParam }) =>
       getNoticeByPinPoint<SliceResponse<TItem>>({
         url,
@@ -90,6 +94,32 @@ export const useGlobalPageNation = <TItem>({
           page: Number(pageParam),
         },
       }),
+    getNextPageParam: lastPage => {
+      return lastPage.hasNext ? lastPage.pages + 1 : undefined;
+    },
+  });
+};
+
+export const useRecommendedNotice = () => {
+  return useInfiniteQuery<SliceResponse<ListingItem>, Error>({
+    queryKey: ["HOME_RECOMMENDED"],
+    initialPageParam: 1,
+    retry: false,
+    queryFn: async ({ pageParam }) => {
+      try {
+        return await getNoticeByPinPoint<SliceResponse<ListingItem>>({
+          url: HOME_RECOMMENDED_ENDPOINT,
+          params: { page: Number(pageParam), offSet: 10 },
+        });
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          const message = e.response?.data?.message ?? e.response?.data?.error ?? e.message;
+          toast.error(message);
+          throw new Error(message);
+        }
+        throw e instanceof Error ? e : new Error("Unknown error");
+      }
+    },
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.pages + 1 : undefined;
     },

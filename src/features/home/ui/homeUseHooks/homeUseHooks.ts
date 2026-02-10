@@ -20,6 +20,23 @@ export const useHomeUseHooks = () => {
   return {
     line1,
     line2,
-    onSelectSection
-  }
-}
+    onSelectSection,
+  };
+};
+
+export const useHomeActionCard = () => {
+  const router = useRouter();
+
+  const onListingsPageMove = () => {
+    router.push("/listings");
+  };
+
+  const onEligibilityPageMove = () => {
+    router.push("/eligibility");
+  };
+
+  return {
+    onListingsPageMove,
+    onEligibilityPageMove,
+  };
+};
