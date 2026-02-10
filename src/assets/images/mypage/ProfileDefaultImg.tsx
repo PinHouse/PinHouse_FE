@@ -1,6 +1,6 @@
-export const ProfileDefaultImg = () => {
+export const ProfileDefaultImg = ({width = 43, height = 43}: {width?: number, height?: number}) => {
   return (
-    <svg width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M29.3907 13.3595C29.3907 17.7865 25.802 21.3753 21.3751 21.3753C16.9482 21.3753 13.3594 17.7865 13.3594 13.3595C13.3594 8.93252 16.9482 5.34375 21.3751 5.34375C25.802 5.34375 29.3907 8.93252 29.3907 13.3595Z"
         fill="#BBBAC5"
