@@ -1,5 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useRef } from "react";
+import { createPortal } from "react-dom";
 import { CloseButton } from "@/src/assets/icons/button";
+import { usePortalTarget } from "@/src/shared/hooks/usePortalTarget";
+import { useScrollLock } from "@/src/shared/hooks/useScrollLock";
 import {
   InfraSheetProps,
   RenderContentProps,
@@ -31,17 +35,20 @@ const RenderContent = ({ section, listingId }: RenderContentProps) => {
 };
 
 export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const portalRoot = usePortalTarget("mobile-overlay-root");
   const roomType: RoomTitleDesType | null = sheetState.open
     ? ROOM_TYPE_TITLE_DES[sheetState.section]
     : null;
+  useScrollLock({ locked: sheetState.open, anchorRef });
 
-  return (
+  const content = (
     <AnimatePresence mode="wait">
       {sheetState.open && (
         <>
           <motion.div
             key="overlay"
-            className="fixed inset-0 bg-black/40"
+            className="pointer-events-auto absolute inset-0 bg-black/40"
             onClick={e => {
               e.stopPropagation();
               onClose();
@@ -53,7 +60,7 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
 
           <motion.div
             key="sheet"
-            className="fixed bottom-0 left-0 right-0 z-50 flex h-[80vh] flex-col rounded-t-2xl bg-white shadow-xl"
+            className="pointer-events-auto absolute bottom-0 left-0 right-0 z-50 flex h-[80vh] flex-col rounded-t-2xl bg-white shadow-xl"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -74,7 +81,7 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
                 </div>
               </header>
             </section>
-            <div className="flex-1 overflow-hidden">
+            <div className="min-h-0 flex-1 overflow-hidden">
               {sheetState.open && (
                 <RenderContent section={sheetState.section} listingId={sheetState.listingId} />
               )}
@@ -83,5 +90,12 @@ export const InfraSheet = ({ onClose, sheetState }: InfraSheetProps) => {
         </>
       )}
     </AnimatePresence>
+  );
+
+  return (
+    <>
+      <span ref={anchorRef} className="hidden" />
+      {portalRoot ? createPortal(content, portalRoot) : content}
+    </>
   );
 };

@@ -2,7 +2,9 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
+import { useRef } from "react";
 import { useDetailFilterSheetStore } from "@/src/features/listings/model";
+import { useScrollLock } from "@/src/shared/hooks/useScrollLock";
 import { DetailFilterTab } from "./DetailFilterTab";
 import { parseDetailSection } from "@/src/features/listings/model";
 import { DistanceFilter } from "./DistanceFilter";
@@ -14,12 +16,16 @@ export const DetailFilterSheet = () => {
   const open = useDetailFilterSheetStore(s => s.open);
   const closeSheet = useDetailFilterSheetStore(s => s.closeSheet);
   const searchParams = useSearchParams();
+  const anchorRef = useRef<HTMLSpanElement>(null);
   const section = parseDetailSection(searchParams);
+  useScrollLock({ locked: open, anchorRef });
 
   return (
-    <AnimatePresence>
-      {open && (
-        <>
+    <>
+      <span ref={anchorRef} className="hidden" />
+      <AnimatePresence>
+        {open && (
+          <>
           <motion.div
             className="fixed inset-0 bg-black/40"
             onClick={closeSheet}
@@ -61,8 +67,9 @@ export const DetailFilterSheet = () => {
               </motion.div>
             </div>
           </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };

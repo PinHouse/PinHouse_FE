@@ -71,6 +71,11 @@ export const HomeLandingRender = ({ children, bottom }: Props) => {
             </div>
 
             <div className={cn("shrink-0", !hasBottom && "hidden")}>{bottom}</div>
+
+            <div
+              id="mobile-overlay-root"
+              className="pointer-events-none absolute inset-0 z-0 overflow-hidden sm:rounded-xl md:rounded-2xl lg:rounded-2xl"
+            />
           </div>
 
           <div className="pointer-events-none absolute bottom-0 left-[75px] z-0 w-[520px] -translate-x-1/2">
