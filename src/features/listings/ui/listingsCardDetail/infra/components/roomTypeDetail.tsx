@@ -1,15 +1,16 @@
-"use cilent";
-import { useState, useEffect } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
+import { CompareDefaultImage } from "@/src/assets/images/compare/compare";
 import { useListingRoomTypeDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
-import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
-import { formatNumber } from "@/src/shared/lib/numberFormat";
+import { ListingUnitType } from "@/src/entities/listings/model/type";
 import { toPyeong } from "@/src/features/listings/model";
+import { LikeType } from "@/src/features/listings/hooks/listingsHooks";
+import { formatNumber } from "@/src/shared/lib/numberFormat";
+import { TagButton } from "@/src/shared/ui/button/tagButton";
+import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
 import { DepositSection } from "./components/roomType/depositSection";
 import { TypeInfoSection } from "./components/roomType/typeInfoSection";
-import { ListingUnitType } from "@/src/entities/listings/model/type";
-import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { LikeType } from "@/src/features/listings/hooks/listingsHooks";
-import { CompareDefaultImage } from "@/src/assets/images/compare/compare";
 
 export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
   const { data, isFetching } = useListingRoomTypeDetail<ListingUnitType>({
@@ -17,11 +18,10 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
     queryK: "useListingRoomTypeDetail",
     url: "unit",
   });
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const items = data ?? [];
   const current = items[currentIndex];
-  const typeId = current?.typeId;
-  const liked = current?.liked;
 
   const goPrev = () => {
     setCurrentIndex(p => (p - 1 + items.length) % Math.max(items.length, 1));
@@ -31,15 +31,16 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
     setCurrentIndex(p => (p + 1) % Math.max(items.length, 1));
   };
 
-  const isLast = currentIndex + 1 < items.length;
+  const hasNext = currentIndex + 1 < items.length;
 
   useEffect(() => {
     setCurrentIndex(0);
   }, [listingId]);
 
   if (isFetching && !items.length) {
-    return <SmallSpinner title="방 타입 불러오는 중.." />;
+    return <SmallSpinner title="방 타입 불러오는 중..." />;
   }
+
   if (!items.length) {
     return (
       <div className="p-6 text-center text-sm text-text-secondary">
@@ -49,7 +50,7 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
   }
 
   return (
-    <section className="flex h-full min-h-0 flex-col overflow-y-auto">
+    <section className="flex h-full flex-col">
       <div className="relative flex flex-col justify-center bg-greyscale-grey-25">
         <div className="flex justify-between pl-3 pr-3 pt-3">
           <span className="flex gap-1">
@@ -64,31 +65,34 @@ export const RoomTypeDetail = ({ listingId }: { listingId: string }) => {
               </TagButton>
             ))}
           </span>
+
           <span className="flex items-center justify-center">
             <LikeType
-              id={typeId}
-              liked={liked}
+              id={current?.typeId}
+              liked={current?.liked}
               type="ROOM"
               resetQuery={["useListingRoomTypeDetail"]}
             />
           </span>
         </div>
+
         <div className="relative flex h-60 w-full items-center justify-center">
           <div className="relative aspect-[4/1.5] w-full overflow-hidden">
             {current?.thumbnail ? (
               <img src={current.thumbnail} className="h-full w-full object-cover" />
             ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <CompareDefaultImage className="object-contain opacity-60 h-30" />
-                <p className="text-xs text-greyscale-grey-400">도면 이미지를 준비하고 있어요</p>
+                <CompareDefaultImage className="h-30 object-contain opacity-60" />
+                <p className="text-xs text-greyscale-grey-400">이미지 준비 중입니다.</p>
               </div>
             )}
           </div>
+
           {items.length > 1 && (
             <TypeInfoSection
               onPrev={goPrev}
               onNext={goNext}
-              isLast={isLast}
+              isLast={hasNext}
               currentIndex={currentIndex}
             />
           )}

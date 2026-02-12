@@ -238,7 +238,7 @@ const FilterSheetContainer = ({
   return (
     <>
       <motion.div
-        className="fixed inset-0 z-40 bg-black/40"
+        className="absolute inset-0 z-40 bg-black/40"
         onClick={onDismiss}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -246,7 +246,7 @@ const FilterSheetContainer = ({
       />
 
       <motion.div
-        className="fixed bottom-0 left-0 right-0 z-50 flex h-[95vh] flex-col rounded-t-2xl bg-white shadow-xl"
+        className="absolute bottom-0 left-0 right-0 z-50 flex flex-col rounded-t-2xl bg-white shadow-xl"
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}

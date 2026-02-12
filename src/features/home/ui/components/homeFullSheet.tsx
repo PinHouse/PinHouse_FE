@@ -2,27 +2,35 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
-import { useHomeSheetStore } from "../../model/homeStore";
-import { PinpointRowBox } from "./pinpointRowBoxs";
-import { MaxTimeSliderBox } from "./maxTime";
+import { useRef } from "react";
+import { createPortal } from "react-dom";
 import { usePinhouseRouter } from "@/src/features/home/hooks/hooks";
 import { PinpointSelectedButton } from "@/src/features/home/ui/components/components/pinpointSelectedButton";
+import { usePortalTarget } from "@/src/shared/hooks/usePortalTarget";
+import { useScrollLock } from "@/src/shared/hooks/useScrollLock";
+import { useHomeSheetStore } from "../../model/homeStore";
+import { MaxTimeSliderBox } from "./maxTime";
+import { PinpointRowBox } from "./pinpointRowBoxs";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 
 export const HomeSheet = () => {
   const open = useHomeSheetStore(s => s.open);
   const searchParams = useSearchParams();
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const portalRoot = usePortalTarget("mobile-overlay-root");
 
   const { replaceRouter, handleSetPinpoint, mode } = usePinhouseRouter(
     searchParams as ReadonlyURLSearchParams
   );
 
-  return (
+  useScrollLock({ locked: open, anchorRef });
+
+  const content = (
     <AnimatePresence>
       {open && (
         <>
           <motion.div
-            className="fixed inset-0 bg-black/40"
+            className="pointer-events-auto absolute inset-0 z-40 bg-black/40"
             onClick={replaceRouter}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -30,13 +38,12 @@ export const HomeSheet = () => {
           />
 
           <motion.div
-            className="fixed bottom-0 left-0 right-0 flex h-[55vh] flex-col rounded-t-2xl bg-white p-5 shadow-xl"
+            className="pointer-events-auto absolute bottom-0 left-0 right-0 z-50 flex h-[55vh] flex-col rounded-t-2xl bg-white p-5 shadow-xl"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
           >
-
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold">{mode?.label}</h2>
               <button onClick={replaceRouter}>✕</button>
@@ -66,5 +73,12 @@ export const HomeSheet = () => {
         </>
       )}
     </AnimatePresence>
+  );
+
+  return (
+    <>
+      <span ref={anchorRef} className="hidden" />
+      {portalRoot ? createPortal(content, portalRoot) : content}
+    </>
   );
 };
