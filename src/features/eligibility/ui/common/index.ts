@@ -8,8 +8,11 @@ export type {
 export { EligibilityHelpButton } from "./eligibilityHelpButton";
 export type { EligibilityHelpButtonProps } from "./eligibilityHelpButton";
 
-export { EligibilityInfoButton } from "./eligibilityInfoButton";
-export type { EligibilityInfoButtonProps } from "./eligibilityInfoButton";
+export { EligibilityInfoButtonWithSheet } from "./eligibilityInfoButtonWithSheet";
+export type {
+  EligibilityInfoButtonWithSheetProps,
+  EligibilityInfoSheetContentType,
+} from "./eligibilityInfoButtonWithSheet";
 
 export { EligibilityPriceInput } from "./eligibilityPriceInput";
 export type { EligibilityPriceInputProps } from "./eligibilityPriceInput";

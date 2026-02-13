@@ -9,7 +9,7 @@ import { EligibilityOptionSelector } from "./eligibilityOptionSelector";
 import { EligibilitySelect } from "./eligibilitySelect";
 import { EligibilityPriceInput } from "./eligibilityPriceInput";
 import { EligibilityNumberInputList } from "./eligibilityNumberInputList";
-import { EligibilityInfoButton } from "./eligibilityInfoButton";
+import { EligibilityInfoButtonWithSheet } from "./eligibilityInfoButtonWithSheet";
 import { DatePicker } from "@/src/shared/ui/datePicker/datePicker";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { motion, AnimatePresence } from "framer-motion";
@@ -296,17 +296,21 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
       }
 
       case "infoButton": {
-        // action prop이 있으면 동적으로 핸들러 생성
+        // sheetContentType이 있으면 클릭 시 바텀시트, 없으면 onClick/action으로 라우팅
+        const sheetContentType = config.props.sheetContentType;
         let onClick = config.props.onClick;
-        if (config.props.action === "home") {
-          onClick = () => router.push("/home");
-        } else if (config.props.action === "back") {
-          onClick = () => router.back();
+        if (!sheetContentType) {
+          if (config.props.action === "home") {
+            onClick = () => router.push("/home");
+          } else if (config.props.action === "back") {
+            onClick = () => router.back();
+          }
         }
 
         return (
-          <EligibilityInfoButton
+          <EligibilityInfoButtonWithSheet
             text={config.props.title}
+            sheetContentType={sheetContentType}
             onClick={onClick}
             className={config.props.className}
           />

@@ -1033,6 +1033,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         props: {
           title: "세대주, 세대원의 차이가 궁금하다면?",
           description: "",
+          sheetContentType: "house",
         },
       },
     ],
@@ -1172,6 +1173,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         props: {
           title: "총자산 계산법이 궁금하다면?",
           description: "",
+          sheetContentType: "asset",
         },
       },
     ],
@@ -1294,6 +1296,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         props: {
           title: "인정되는 자동차 기준이 궁금하다면?",
           description: "",
+          sheetContentType: "car",
         },
       },
       {
@@ -1314,6 +1317,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         props: {
           title: "총자산 계산법이 궁금하다면?",
           description: "",
+          sheetContentType: "asset",
         },
       },
     ],
@@ -1369,6 +1373,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         props: {
           title: "세대주, 세대원의 차이가 궁금하다면?",
           description: "",
+          sheetContentType: "house",
         },
       },
     ],
@@ -1745,6 +1750,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         props: {
           title: "인정되는 자동차 기준이 궁금하다면?",
           description: "",
+          sheetContentType: "car",
         },
       },
       {
