@@ -3,8 +3,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useRef } from "react";
+import { createPortal } from "react-dom";
 import { useDetailFilterSheetStore } from "@/src/features/listings/model";
 import { useScrollLock } from "@/src/shared/hooks/useScrollLock";
+import { usePortalTarget } from "@/src/shared/hooks/usePortalTarget";
 import { DetailFilterTab } from "./DetailFilterTab";
 import { parseDetailSection } from "@/src/features/listings/model";
 import { DistanceFilter } from "./DistanceFilter";
@@ -17,28 +19,31 @@ export const DetailFilterSheet = () => {
   const closeSheet = useDetailFilterSheetStore(s => s.closeSheet);
   const searchParams = useSearchParams();
   const anchorRef = useRef<HTMLSpanElement>(null);
+  const portalRoot = usePortalTarget("mobile-overlay-root");
   const section = parseDetailSection(searchParams);
   useScrollLock({ locked: open, anchorRef });
 
-  return (
-    <>
-      <span ref={anchorRef} className="hidden" />
-      <AnimatePresence>
-        {open && (
-          <>
+  const content = (
+    <AnimatePresence>
+      {open && (
+        <>
           <motion.div
-            className="fixed inset-0 bg-black/40"
-            onClick={closeSheet}
+            className="pointer-events-auto absolute inset-0 bg-black/40"
+            onClick={e => {
+              e.stopPropagation();
+              closeSheet();
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
 
           <motion.div
-            className="fixed bottom-0 left-0 right-0 flex h-[85vh] flex-col rounded-t-2xl bg-white shadow-xl"
+            className="pointer-events-auto absolute bottom-0 left-0 right-0 flex h-[80vh] flex-col rounded-t-2xl bg-white shadow-xl"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
+            onClick={e => e.stopPropagation()}
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
           >
             <div className="mx-auto mb-3 mt-2 h-1.5 w-12 rounded-full bg-gray-300" />
@@ -67,9 +72,15 @@ export const DetailFilterSheet = () => {
               </motion.div>
             </div>
           </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+        </>
+      )}
+    </AnimatePresence>
+  );
+
+  return (
+    <>
+      <span ref={anchorRef} className="hidden" />
+      {portalRoot ? createPortal(content, portalRoot) : content}
     </>
   );
 };
