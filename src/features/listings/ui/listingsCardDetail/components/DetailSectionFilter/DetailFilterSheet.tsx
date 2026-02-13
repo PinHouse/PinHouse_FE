@@ -13,7 +13,7 @@ import { CostFilter } from "./components/CostFilter";
 import { RegionFilter } from "./components/regionFilter";
 import { AreaFilter } from "./components/areaFilter";
 import { ListingCardDetailOut } from "@/src/features/listings/ui/listingsCardDetail/button/button";
-import { useDetailFilterResultButton } from "@/src/features/listings/ui/listingsCardDetail/hooks/hooks";
+import { useDetailFilterResultButton } from "@/src/features/listings/ui/listingsCardDetail/hooks/routerHooks";
 
 export const DetailFilterSheet = () => {
   const open = useDetailFilterSheetStore(s => s.open);
