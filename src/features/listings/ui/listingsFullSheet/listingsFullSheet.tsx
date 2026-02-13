@@ -7,8 +7,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { ListingFilterPartialSheetHooks } from "./hooks";
-import { ReactNode, useRef } from "react";
+import { ReactNode, RefObject, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useScrollLock } from "@/src/shared/hooks/useScrollLock";
+import { usePortalTarget } from "@/src/shared/hooks/usePortalTarget";
 
 export const ListingFilterPartialSheet = () => {
   const { open, scrollRef, isAtBottom, displayTotal, handleScroll, handleCloseSheet } =
@@ -235,20 +237,20 @@ const FilterSheetContainer = ({
 }) => {
   const open = useFilterSheetStore(s => s.open);
   const anchorRef = useRef<HTMLSpanElement>(null);
+  const portalRoot = usePortalTarget("mobile-overlay-root");
   useScrollLock({ locked: open, anchorRef });
 
-  return (
+  const content = (
     <>
-      <span ref={anchorRef} className="hidden" />
       <motion.div
-        className="fixed inset-y-0 left-0 right-0 z-40 mx-auto w-full max-w-[375px] bg-black/40"
+        className="pointer-events-auto absolute inset-0 z-40 bg-black/40"
         onClick={onDismiss}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       />
       <motion.div
-        className="fixed bottom-0 left-0 right-0 z-50 mx-auto flex h-[85vh] w-full max-w-[375px] flex-col rounded-t-2xl bg-white shadow-xl"
+        className="pointer-events-auto absolute bottom-0 left-0 right-0 z-50 flex h-[85vh] flex-col rounded-t-2xl bg-white shadow-xl"
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
@@ -256,6 +258,13 @@ const FilterSheetContainer = ({
       >
         {children}
       </motion.div>
+    </>
+  );
+
+  return (
+    <>
+      <span ref={anchorRef} className="hidden" />
+      {portalRoot ? createPortal(content, portalRoot) : content}
     </>
   );
 };
@@ -283,8 +292,8 @@ const FilterSheetContent = ({
   onScroll,
   isAtBottom,
 }: {
-  children: React.ReactNode;
-  scrollRef: React.RefObject<HTMLDivElement | null>;
+  children: ReactNode;
+  scrollRef: RefObject<HTMLDivElement | null>;
   onScroll: () => void;
   isAtBottom: boolean;
 }) => {
