@@ -48,7 +48,9 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
           <>
             <ListingsCardDetailHeader />
             <main>
-              {!open && <ListingsCardDetailSummary basicInfo={basicInfo} />}
+              <ListingsCardDetailSummary
+                basicInfo={basicInfo}
+              />
 
               <ListingsCardDetailCompareButton paramId={id} />
               <ListingsCardDetailFilterBar />
@@ -58,7 +60,9 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
                 onFilteredCount={nonFiltered.totalCount}
               />
 
-              {!open && <ListingsCardDetailOutOfCriteriaSection listings={nonFiltered} />}
+              <ListingsCardDetailOutOfCriteriaSection
+                listings={nonFiltered}
+              />
             </main>
           </>
         )}

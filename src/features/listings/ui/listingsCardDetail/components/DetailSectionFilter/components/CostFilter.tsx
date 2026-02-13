@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { useListingDetailNoticeSheet } from "@/src/entities/listings/hooks/useListingDetailSheetHooks";
 import { CostResponse } from "@/src/entities/listings/model/type";
 import { useListingDetailCountStore, useListingDetailFilter } from "@/src/features/listings/model";
+import { ListingCardDetailOut } from "@/src/features/listings/ui/listingsCardDetail/button/button";
 
 const DEPOSIT_STEP = 10;
 const WON_UNIT = 1;
@@ -94,7 +95,7 @@ export const CostFilter = () => {
     if (!isManualDeposit) {
       setMaxDeposit(deposit);
     } else {
-      setMaxDeposit(handleDepositInput);
+      setMaxDeposit(handleDepositInput === "" ? "0" :handleDepositInput);
     }
   }, [deposit, handleDepositInput]);
 
@@ -110,6 +111,10 @@ export const CostFilter = () => {
   // 직접 입력 시 숫자만 추려서 포맷
   const handleDepositChangeText = (event: ChangeEvent<HTMLInputElement>) => {
     const values = event.target.value;
+    console.log(values)
+    if(values === ""){
+      return setHandleDepositInput("");
+    }
     const numericValue = Number(values.replace(/[^0-9]/g, ""));
     setHandleDepositInput(formatNumber(toKRW(numericValue)));
   };
@@ -126,7 +131,7 @@ export const CostFilter = () => {
   };
 
   return (
-    <div className="flex h-full flex-col overflow-hidden bg-white">
+    <div className="flex h-full flex-col bg-white">
       <section className="flex flex-col gap-5">
         <div className="flex flex-col gap-1">
           <p className="text-base font-semibold leading-[140%] tracking-[-0.01em] text-greyscale-grey-900">
@@ -169,7 +174,7 @@ export const CostFilter = () => {
           <Input
             size="default"
             variant="default"
-            value={maxDeposit}
+            value={maxDeposit === "" ? "0" : maxDeposit}
             disabled={!isManualDeposit}
             inputMode="numeric"
             onChange={handleDepositChangeText}
@@ -203,15 +208,6 @@ export const CostFilter = () => {
           </div>
         </div>
       </section>
-
-      <div className="mt-auto">
-        <button
-          type="button"
-          className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
-        >
-          {filteredCount}개의 단지가 있어요
-        </button>
-      </div>
     </div>
   );
 };
