@@ -19,6 +19,7 @@ import {
 } from "@/src/features/mypage/model/mypageConstants";
 import {
   MypageMenuSection,
+  MyPageHeader,
   PinReportSection,
   UserInfoCard,
 } from "@/src/features/mypage/ui";
@@ -54,7 +55,9 @@ export const MypageSection = () => {
   }
 
   return (
-    <div className="flex min-h-screen flex-col gap-5 bg-greyscale-grey-25 px-5 pb-6">
+    <div className="flex min-h-screen flex-col bg-greyscale-grey-25 px-5">
+      <MyPageHeader />
+      <div className="flex flex-col gap-5 pb-6">
       <UserInfoCard
         user={data}
         onSettingsClick={() => router.push("/mypage/settings")}
@@ -101,6 +104,7 @@ export const MypageSection = () => {
           },
         ]}
       />
+      </div>
     </div>
   );
 };

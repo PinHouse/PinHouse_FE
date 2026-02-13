@@ -11,8 +11,10 @@ import {
   MYPAGE_PINPOINTS_ADD_BUTTON,
   MYPAGE_PINPOINTS_DEFAULT_NAME,
   MYPAGE_PINPOINTS_DESCRIPTION,
+  MYPAGE_PINPOINTS_HEADER_TITLE,
 } from "@/src/features/mypage/model/mypageConstants";
 import { Button } from "@/src/shared/lib/headlessUi";
+import { DefaultHeader } from "@/src/shared/ui/header";
 
 /**
  * 마이페이지 핀포인트 설정 화면 위젯
@@ -39,32 +41,38 @@ export const PinpointsSection = () => {
   };
 
   return (
-    <div className="p-5">
-      <div className="mb-3 flex flex-1 flex-col items-center justify-start text-center">
-        <div className="inline-flex sm:min-w-[200px] sm:max-w-[250px] md:min-w-[250px] md:max-w-[300px] lg:min-w-[280px] lg:max-w-[340px]">
-          <MapPin />
+    <div>
+        <header className="relative flex items-center py-4 px-5" aria-label={MYPAGE_PINPOINTS_HEADER_TITLE}>
+            <DefaultHeader title={MYPAGE_PINPOINTS_HEADER_TITLE} path="/mypage" />
+        </header>
+        <div className="border-b border-greyscale-grey-25"></div>
+        <div className="mb-3 flex flex-1 flex-col items-center justify-start text-center px-5">
+            <div className="inline-flex sm:min-w-[200px] sm:max-w-[250px] md:min-w-[250px] md:max-w-[300px] lg:min-w-[280px] lg:max-w-[340px]">
+            <MapPin />
+            </div>
+            <h2 className="text-lg font-bold text-greyscale-grey-900">
+            {MYPAGE_LABEL_PINPOINTS}
+            </h2>
+            <p className="mt-1 whitespace-pre-line text-center text-sm text-greyscale-grey-500">
+            {MYPAGE_PINPOINTS_DESCRIPTION}
+            </p>
+            <div className="mt-5 w-full">
+            <AddressSearch />
+            </div>
         </div>
-        <h2 className="text-lg font-bold text-greyscale-grey-900">
-          {MYPAGE_LABEL_PINPOINTS}
-        </h2>
-        <p className="mt-1 whitespace-pre-line text-center text-sm text-greyscale-grey-500">
-          {MYPAGE_PINPOINTS_DESCRIPTION}
-        </p>
-        <div className="mt-5 w-full">
-          <AddressSearch />
-        </div>
-      </div>
-      {address ? (
-        <Button
-          type="button"
-          size="md"
-          variant="solid"
-          disabled={isLoading}
-          onClick={handleAddPinpoint}
-        >
-          {MYPAGE_PINPOINTS_ADD_BUTTON}
-        </Button>
-      ) : null}
+        {address ? (
+            <div className="px-5">
+            <Button
+            type="button"
+            size="md"
+            variant="solid"
+            disabled={isLoading}
+            onClick={handleAddPinpoint}
+            >
+            {MYPAGE_PINPOINTS_ADD_BUTTON}
+            </Button>
+            </div>
+        ) : null}
     </div>
   );
 };

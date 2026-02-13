@@ -1,7 +1,4 @@
 "use client";
-import { LeftButton } from "@/src/assets/icons/button";
-import { SearchBar } from "@/src/features/home";
-import { useRouter } from "next/navigation";
 import { SearchHeader } from "@/src/shared/ui/header/header/searchHeader/searchHeader";
 import { useSearchState } from "@/src/shared/hooks/store";
 

@@ -4,12 +4,14 @@ import { logout } from "@/src/features/login/utils/logout";
 import {
   MYPAGE_SETTINGS_LOGOUT,
   MYPAGE_SETTINGS_PROFILE,
+  MYPAGE_SETTINGS_TITLE,
   MYPAGE_SETTINGS_WITHDRAW,
 } from "@/src/features/mypage/model/mypageConstants";
 import {
   MypageSettingsMenu,
   type MypageSettingsMenuItem,
 } from "@/src/features/mypage/ui";
+import { DefaultHeader } from "@/src/shared/ui/header";
 
 /**
  * 마이페이지 설정 화면 위젯
@@ -23,8 +25,14 @@ export const SettingsSection = () => {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col bg-white px-5">
-      <MypageSettingsMenu items={menuItems} />
+    <div className="flex min-h-screen flex-col bg-white">
+      <header className="relative flex items-center py-4 px-5" aria-label={MYPAGE_SETTINGS_TITLE}>
+        <DefaultHeader title={MYPAGE_SETTINGS_TITLE} path="/mypage" />
+      </header>
+      <div className="border-b border-greyscale-grey-25"></div>
+      <div className="px-5">
+        <MypageSettingsMenu items={menuItems} />
+      </div>
     </div>
   );
 };
