@@ -3,9 +3,11 @@ import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { cn } from "@/lib/utils";
 
 export const ListingsCardDetailSummary = ({
-  basicInfo,
-}: {
-  basicInfo: ListingDetailResponseWithColor["data"]["basicInfo"];
+                                            basicInfo,
+                                            className,
+                                          }: {
+  basicInfo: ListingDetailResponseWithColor["data"]["basicInfo"],
+  className?: string
 }) => {
   return (
     <section className="p-5">

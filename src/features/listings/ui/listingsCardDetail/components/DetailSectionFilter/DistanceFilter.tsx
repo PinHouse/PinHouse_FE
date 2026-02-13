@@ -8,6 +8,7 @@ import {
   getDefaultPinPointLabel,
   mapPinPointToOptions,
 } from "@/src/features/listings/hooks/listingsHooks";
+import { ListingCardDetailOut } from "@/src/features/listings/ui/listingsCardDetail/button/button";
 
 const SLIDER_MIN = 0;
 const SLIDER_MAX = 120;
@@ -20,7 +21,7 @@ export const DistanceFilter = () => {
   const hasPinPoints = pinPointList.myPinPoint.length > 0;
   const { setPinPointId } = useOAuthStore();
   const { distance, setDistance } = useListingDetailFilter();
-  const { filteredCount } = useListingDetailCountStore();
+
 
   const onChageValue = (selectedKey: string) => {
     setPinPointId(selectedKey);
@@ -75,14 +76,6 @@ export const DistanceFilter = () => {
         />
       </section>
 
-      <div className="mt-auto pt-8">
-        <button
-          type="button"
-          className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
-        >
-          {filteredCount}개의 단지가 있어요
-        </button>
-      </div>
     </div>
   );
 };
