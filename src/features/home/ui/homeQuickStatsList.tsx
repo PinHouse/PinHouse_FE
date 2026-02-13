@@ -2,16 +2,13 @@
 import { CaretDown } from "@/src/assets/icons/button/caretDown";
 import { HomeFiveoclock } from "@/src/assets/icons/home/HomeFiveoclock";
 import { HomePushPin } from "@/src/assets/icons/home/homePushpin";
-import { useHomeMaxTime, useHomeSheetStore } from "../model/homeStore";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useOAuthStore } from "../../login/model";
-import { splitAddress, transTime } from "@/src/shared/lib/utils";
+import { useHomeMaxTime } from "../model/homeStore";
+import { transTime } from "@/src/shared/lib/utils";
 import { useHomeUseHooks } from "@/src/features/home/ui/homeUseHooks/homeUseHooks";
 
 export const QuickStatsList = () => {
-
   const { maxTime } = useHomeMaxTime();
-  const {line2, line1 , onSelectSection} = useHomeUseHooks();
+  const { line2, line1, onSelectSection } = useHomeUseHooks();
 
   return (
     <div className="relative grid grid-cols-2 grid-rows-[auto,1fr] rounded-2xl bg-white p-4">
