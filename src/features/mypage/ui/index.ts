@@ -9,3 +9,4 @@ export * from "./mypageSection";
 export * from "./userInfoCard";
 export * from "./pinReportSection";
 export * from "./mypageMenuItem";
+export * from "./mypageSettingsMenu";

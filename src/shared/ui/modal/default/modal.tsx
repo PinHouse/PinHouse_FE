@@ -12,6 +12,7 @@ export const Modal = ({
   className,
   overlayClassName,
   onButtonClick,
+  confirmButtonDisabled = false,
 }: ModalProps) => {
   if (!open) return null;
 
@@ -33,10 +34,12 @@ export const Modal = ({
             {modalScript?.btnlabel?.map((item, index) => (
               <Button
                 key={item}
+                type="button"
                 variant={index === 0 ? "outline" : "solid"}
                 theme={index === 0 ? "black" : "mainBlue"}
                 size="sm"
                 className={cn("min-w-[140px] flex-1")}
+                disabled={index === 1 ? confirmButtonDisabled : undefined}
                 onClick={() => onButtonClick?.(index, item)}
               >
                 {item}

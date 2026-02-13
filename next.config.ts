@@ -3,6 +3,30 @@ import type { Configuration, RuleSetRule } from "webpack";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "img1.kakaocdn.net",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "img1.kakaocdn.net",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "t1.kakaocdn.net",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "t1.kakaocdn.net",
+        pathname: "/**",
+      },
+    ],
+  },
   webpack(config: Configuration) {
     const fileLoaderRule = config.module?.rules?.find(
       (rule): rule is RuleSetRule =>

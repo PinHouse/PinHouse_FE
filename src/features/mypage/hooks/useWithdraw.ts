@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { withdrawUser } from "../api/withdrawApi";
 import { logout } from "@/src/features/login/utils/logout";
 import { WITHDRAW_REASONS } from "../model/mypageConstants";
@@ -29,6 +30,7 @@ export const useWithdraw = () => {
       //router.push("/login");
     } catch (error) {
       console.error("탈퇴 실패:", error);
+      toast.error("탈퇴 처리에 실패했어요. 잠시 후 다시 시도해주세요.");
       setIsLoading(false);
       setIsModalOpen(false);
     }

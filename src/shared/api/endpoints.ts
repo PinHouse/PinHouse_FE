@@ -138,3 +138,8 @@ export const SCHOOL_SEARCH_ENDPOINT = "/school/search";
  * 좋아요 API
  */
 export const LIKE_ENDPOINT = "/likes";
+
+/**
+ * 이미지 API
+ */
+export const IMAGES_PRESIGNED_URL_ENDPOINT = "/images/presigned-url";
