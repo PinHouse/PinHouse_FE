@@ -244,7 +244,10 @@ const FilterSheetContainer = ({
     <>
       <motion.div
         className="pointer-events-auto absolute inset-0 z-40 bg-black/40"
-        onClick={onDismiss}
+        onClick={e => {
+          e.stopPropagation();
+          onDismiss();
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -254,6 +257,7 @@ const FilterSheetContainer = ({
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
+        onClick={e => e.stopPropagation()}
         transition={{ type: "spring", stiffness: 260, damping: 30 }}
       >
         {children}
