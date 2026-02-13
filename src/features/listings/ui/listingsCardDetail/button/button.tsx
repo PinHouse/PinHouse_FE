@@ -1,10 +1,13 @@
-import { useDetailFilterResultButton } from "@/src/features/listings/ui/listingsCardDetail/hooks/hooks";
+import { useDetailFilterResultButton } from "@/src/features/listings/ui/listingsCardDetail/hooks/routerHooks";
 
 type ListingCardDetailProps = {
   filteredCount: number;
   handleCloseSheet: () => void;
 };
-export const ListingCardDetailOut = ({ filteredCount, handleCloseSheet }: ListingCardDetailProps) => {
+export const ListingCardDetailOut = ({
+  filteredCount,
+  handleCloseSheet,
+}: ListingCardDetailProps) => {
   return (
     <div>
       <button

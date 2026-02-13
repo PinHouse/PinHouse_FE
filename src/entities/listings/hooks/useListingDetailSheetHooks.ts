@@ -9,7 +9,7 @@ export const useListingDetailNoticeSheet = <T>({ id, url }: UseListingsHooksWith
 
   return useQuery<T, Error, T | null>({
     queryKey: [url],
-    enabled: !!id,
+    enabled: !!id && !!url,
     staleTime: 1000 * 60 * 5,
 
     queryFn: () =>
