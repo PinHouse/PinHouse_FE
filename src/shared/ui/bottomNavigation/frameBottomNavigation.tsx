@@ -37,16 +37,7 @@ export const FrameBottomNav = () => {
     detailPageRegex.test(pathname) ||
     compareDetailPageRegex.test(pathname) ||
     (pathname === "/listings" && hasListingsTab);
-  // const searchParams = useSearchParams();
-  // const tab = searchParams.get("tab");
-  // const shouldHide =
-  //   hiddenRoutes.some(route => pathname.startsWith(route)) ||
-  //   hiddenExactRoutes.includes(pathname) ||
-  //   pathname.startsWith("/home/search") ||
-  //   (pathname === "/listings" && tab !== null) ||
-  //   detailPageRegex.test(pathname) ||
-  //   compareDetailPageRegex.test(pathname) ||
-  //   (pathname === "/home" && searchParams.has("mode"));
+
   if (shouldHide) return null;
 
   return (

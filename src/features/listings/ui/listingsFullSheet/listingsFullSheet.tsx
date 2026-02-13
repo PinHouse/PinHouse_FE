@@ -1,12 +1,14 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useListingsFilterStore } from "../../model/listingsStore";
+import { useFilterSheetStore, useListingsFilterStore } from "../../model/listingsStore";
 import { FILTER_TABS, FilterTabKey, TAB_CONFIG } from "../../model";
 import { CloseButton } from "@/src/assets/icons/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { ListingFilterPartialSheetHooks } from "./hooks";
+import { ReactNode, useRef } from "react";
+import { useScrollLock } from "@/src/shared/hooks/useScrollLock";
 
 export const ListingFilterPartialSheet = () => {
   const { open, scrollRef, isAtBottom, displayTotal, handleScroll, handleCloseSheet } =
@@ -125,7 +127,6 @@ const UseCheckBox = () => {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
   const tabConfig = currentTab ? TAB_CONFIG[currentTab] : null;
-
   const regionType = useListingsFilterStore(s => s.regionType);
   const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
   const supplyTypes = useListingsFilterStore(s => s.supplyTypes);
@@ -154,12 +155,9 @@ const UseCheckBox = () => {
     rental: supplyTypes,
     housing: houseTypes,
   }[currentTab];
-
   const isAllSelected = selectedList.length === totalItems.length;
-
   const handleAllSelect = (e: boolean) => {
     const checked = e;
-
     // 기존 방식 유지: 기존 값 초기화
     if (currentTab === "region") resetRegionType();
     if (currentTab === "target") resetRentalTypes();
@@ -233,20 +231,24 @@ const FilterSheetContainer = ({
   children,
 }: {
   onDismiss: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) => {
+  const open = useFilterSheetStore(s => s.open);
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  useScrollLock({ locked: open, anchorRef });
+
   return (
     <>
+      <span ref={anchorRef} className="hidden" />
       <motion.div
-        className="absolute inset-0 z-40 bg-black/40"
+        className="fixed inset-y-0 left-0 right-0 z-40 mx-auto w-full max-w-[375px] bg-black/40"
         onClick={onDismiss}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       />
-
       <motion.div
-        className="absolute bottom-0 left-0 right-0 z-50 flex flex-col rounded-t-2xl bg-white shadow-xl"
+        className="fixed bottom-0 left-0 right-0 z-50 mx-auto flex h-[85vh] w-full max-w-[375px] flex-col rounded-t-2xl bg-white shadow-xl"
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
