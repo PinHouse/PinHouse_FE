@@ -8,8 +8,6 @@ import { HomeLandingRender } from "@/src/shared/ui/globalRender/globalRender";
 import { FrameBottomNav } from "@/src/shared/ui/bottomNavigation/frameBottomNavigation";
 import { ClientOnly } from "@/src/shared/ui/clientOnly/clientOnly";
 
-
-
 export const metadata: Metadata = {
   title: "pinhouse",
   description: "pinhosue-fe",
@@ -43,9 +41,7 @@ export default function RootLayout({
                   </ClientOnly>
                 }
               >
-                <ClientOnly>
-                  <div>{children}</div>
-                </ClientOnly>
+                <ClientOnly>{children}</ClientOnly>
               </HomeLandingRender>
             </div>
           </div>

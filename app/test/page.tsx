@@ -1,9 +1,11 @@
 "use client";
 
-export default function DefaultTest() {
+import EligibilityLoadingState from "@/src/features/eligibility/ui/common/eligibilityLoadingState";
 
+export default function DefaultTest() {
   return (
-    <div className="flex flex-col gap-4 px-4 py-10">
-    </div>
+    <main className="flex h-full flex-col">
+      <EligibilityLoadingState />
+    </main>
   );
 }
