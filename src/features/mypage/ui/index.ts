@@ -1,5 +1,6 @@
 export * from "./withdrawForm";
 export * from "./withdrawBanner";
+export * from "./myPageHeader";
 export * from "./profileForm";
 export * from "./profileAvatar";
 export * from "./profileNicknameInput";
@@ -9,3 +10,4 @@ export * from "./mypageSection";
 export * from "./userInfoCard";
 export * from "./pinReportSection";
 export * from "./mypageMenuItem";
+export * from "./mypageSettingsMenu";

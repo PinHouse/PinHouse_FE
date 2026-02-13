@@ -18,4 +18,6 @@ export interface ModalProps {
   className?: string;
   overlayClassName?: string;
   onButtonClick?: (buttonIndex: number, buttonLabel: string) => void;
+  /** 확인(두 번째) 버튼 비활성화 (예: 제출 중) */
+  confirmButtonDisabled?: boolean;
 }

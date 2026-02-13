@@ -38,6 +38,7 @@ export const FrameBottomNav = () => {
     compareDetailPageRegex.test(pathname) ||
     (pathname === "/listings" && hasListingsTab);
 
+  const isMypageActive = pathname === "/mypage" || pathname.startsWith("/mypage/");
   if (shouldHide) return null;
 
   return (
@@ -68,13 +69,13 @@ export const FrameBottomNav = () => {
         </button>
 
         <button
-          onClick={() => router.push("/mypage/settings")}
+          onClick={() => router.push("/mypage")}
           className="flex flex-col items-center gap-1 text-xs"
         >
           <PersonLine
             width={25}
             height={25}
-            fill={pathname === "/mypage/settings" ? "black" : "none"}
+            fill={isMypageActive ? "black" : "none"}
           />
           <span>마이</span>
         </button>
