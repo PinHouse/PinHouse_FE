@@ -28,13 +28,10 @@ export const useDetailFilterResultButton = () => {
     } catch (error) {
       console.error("[ListingFilterPartialSheet] Failed to close sheet", error);
     }
-
   };
 
-
-    return {
-      filteredCount,
-      handleCloseSheet,
-    }
-
+  return {
+    filteredCount,
+    handleCloseSheet,
+  };
 };
