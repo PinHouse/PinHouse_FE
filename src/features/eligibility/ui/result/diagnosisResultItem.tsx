@@ -26,33 +26,32 @@ export const DiagnosisResultItem = ({
   return (
     <article
       className={cn(
-        "flex flex-col gap-3 rounded-lg bg-white px-5 py-4 shadow-result-card",
+        "shadow-result-card flex flex-col gap-3 rounded-lg border border-solid border-greyscale-grey-75 bg-white",
         className
       )}
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-row items-center gap-3 px-3.5 py-3.5">
         <span
           className={cn(
-            "w-fit rounded-full px-3 py-1 text-xs font-medium",
-            tagClass
+            tagClass,
+            "flex min-w-[60px] shrink-0 items-center justify-center rounded-lg px-1 py-[3px] text-xs-10 font-semibold tracking-[-0.01em]"
           )}
         >
           {housingType}
         </span>
-        <p className="text-sm leading-[140%] tracking-[-0.02em] text-greyscale-grey-700">
+        <p className="text-xs-10 font-medium leading-[134%] text-greyscale-grey-800">
           {description}
         </p>
       </div>
-      <div className="h-px bg-greyscale-grey-100" aria-hidden />
-      <div className="flex flex-col gap-2">
-        <span className="text-xs font-medium text-greyscale-grey-500">
+      <div className="flex flex-row gap-3 rounded-b-lg bg-greyscale-grey-25 px-3.5 py-3.5">
+        <span className="shrink-0 text-xs-10 font-semibold leading-[140%] tracking-[-0.02em] text-greyscale-grey-600">
           신청 가능 유형
         </span>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1">
           {applicationTypes.map((type, index) => (
             <span
               key={`${type}-${index}`}
-              className="rounded-full bg-greyscale-grey-100 px-3 py-1 text-xs font-medium text-greyscale-grey-700"
+              className="font-regular rounded border border-greyscale-grey-100 bg-white px-1 py-[0.75px] text-xs-10 tracking-[-0.01em] text-greyscale-grey-600"
             >
               {type}
             </span>

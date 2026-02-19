@@ -35,24 +35,22 @@ export const DiagnosisResultBanner = ({
   return (
     <div
       className={cn(
-        "flex gap-4 rounded-lg bg-white px-5 py-4 shadow-result-card",
+        "shadow-result-card flex gap-4 rounded-lg border border-solid border-greyscale-grey-75 bg-white px-5 py-4",
         className
       )}
       role="banner"
     >
       <div className="relative flex-shrink-0">
-        <ResultBannerImg />
+        <ResultBannerImg width={60} height={60} />
       </div>
       <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
         <p className="text-sm font-medium leading-[140%] tracking-[-0.02em] text-greyscale-grey-900">
           <span className="underline decoration-greyscale-grey-300 underline-offset-2">
-            {userName}
+            {userName}님은 <br />
           </span>
-          님은 소득{" "}
           <span className="underline decoration-greyscale-grey-300 underline-offset-2">
-            {bunwi}
+            소득 {bunwi}
           </span>
-          이고,
         </p>
         <p className="text-sm font-medium leading-[140%] tracking-[-0.02em] text-greyscale-grey-900">
           <span className="underline decoration-greyscale-grey-300 underline-offset-2">

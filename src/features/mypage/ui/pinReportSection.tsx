@@ -13,12 +13,11 @@ import {
   MYPAGE_PIN_REPORT_TARGET_LABEL,
   MYPAGE_PIN_REPORT_HOUSING_LABEL,
 } from "@/src/features/mypage/model/mypageConstants";
-import type { DiagnosisResultData } from "@/src/features/eligibility/api/diagnosisTypes";
-import { useDiagnosisResultStore } from "@/src/features/eligibility/model/diagnosisResultStore";
+import type { DiagnosisLatestData } from "@/src/features/eligibility/api/diagnosisTypes";
 
 interface PinReportSectionProps {
-  /** 자격진단 최신 결과. 있으면 요약 카드, 없으면 '자격진단 하러가기' 빈 상태 표시 */
-  diagnosisResult: DiagnosisResultData | null;
+  /** GET /diagnosis/latest 결과. 있으면 요약 카드, 없으면 '자격진단 하러가기' 빈 상태 표시 */
+  diagnosisResult: DiagnosisLatestData | null;
   onDiagnosisClick?: () => void;
   onRediagnosisClick?: () => void;
   onViewDetailClick?: () => void;
@@ -26,18 +25,16 @@ interface PinReportSectionProps {
 
 const PIN_REPORT_HEADING_ID = "pin-report-heading";
 const TAG_CLASS =
-  "inline-flex items-center rounded-full bg-primary-blue-100 px-2.5 py-1 text-xs font-medium text-primary-blue-700";
+  "inline-flex items-center rounded-full bg-primary-blue-25 px-2.5 py-1 text-xs font-medium text-primary-blue-400";
 
-/** recommended 항목에서 housingType만 추출 (예: "통합공공임대 : 청년 특별공급" → "통합공공임대") */
-function getUniqueHousingTypes(recommended: string[]): string[] {
-  const set = new Set<string>();
-  const sep = " : ";
-  for (const raw of recommended) {
-    const idx = raw.indexOf(sep);
-    const housingType = (idx === -1 ? raw : raw.slice(0, idx)).trim();
-    if (housingType) set.add(housingType);
+/** 나의 지원 가능 대상: gender + availableSupplyTypes */
+function getTargetGroupLabels(data: DiagnosisLatestData): string[] {
+  const list: string[] = [];
+  if (data.gender) list.push(data.gender);
+  if (Array.isArray(data.availableSupplyTypes)) {
+    list.push(...data.availableSupplyTypes);
   }
-  return Array.from(set);
+  return list;
 }
 
 export const PinReportSection = ({
@@ -46,19 +43,16 @@ export const PinReportSection = ({
   onRediagnosisClick,
   onViewDetailClick,
 }: PinReportSectionProps) => {
-  const storeIncomeLevel = useDiagnosisResultStore(s => s.incomeLevel);
-
-  const hasResult = diagnosisResult != null && Array.isArray(diagnosisResult.recommended);
-  const incomeLevel =
-    diagnosisResult?.incomeLevel ?? storeIncomeLevel ?? null;
-  const targetGroups = diagnosisResult?.targetGroups ?? [];
-  const housingTypes = useMemo(
-    () =>
-      hasResult && diagnosisResult?.recommended?.length
-        ? getUniqueHousingTypes(diagnosisResult.recommended)
-        : [],
-    [hasResult, diagnosisResult?.recommended]
+  const hasResult =
+    diagnosisResult != null &&
+    Array.isArray(diagnosisResult.recommended) &&
+    diagnosisResult.recommended.length > 0;
+  const incomeLevel = diagnosisResult?.myIncomeLevel ?? null;
+  const targetGroups = useMemo(
+    () => (diagnosisResult ? getTargetGroupLabels(diagnosisResult) : []),
+    [diagnosisResult]
   );
+  const housingTypes = diagnosisResult?.availableRentalTypes ?? [];
 
   if (hasResult) {
     return (
@@ -86,31 +80,15 @@ export const PinReportSection = ({
         <div className="flex flex-col gap-4 px-4 py-5">
           {incomeLevel != null && incomeLevel !== "" && (
             <div>
-              <h3 className="mb-2 text-sm font-bold leading-[140%] tracking-[-0.02em] text-greyscale-grey-900">
+              <h3 className="mb-2 text-xs-12 font-medium leading-[140%] tracking-[-0.02em] text-greyscale-grey-700">
                 {MYPAGE_PIN_REPORT_INCOME_LABEL}
               </h3>
               <span className={TAG_CLASS}>{incomeLevel}</span>
             </div>
           )}
-
-          {targetGroups.length > 0 && (
-            <div>
-              <h3 className="mb-2 text-sm font-bold leading-[140%] tracking-[-0.02em] text-greyscale-grey-900">
-                {MYPAGE_PIN_REPORT_TARGET_LABEL}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {targetGroups.map(label => (
-                  <span key={label} className={TAG_CLASS}>
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
           {housingTypes.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-bold leading-[140%] tracking-[-0.02em] text-greyscale-grey-900">
+              <h3 className="mb-2 text-xs-12 font-medium leading-[140%] tracking-[-0.02em] text-greyscale-grey-700">
                 {MYPAGE_PIN_REPORT_HOUSING_LABEL}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -128,7 +106,7 @@ export const PinReportSection = ({
               <button
                 type="button"
                 onClick={onViewDetailClick}
-                className="flex items-center gap-1 text-sm font-bold text-primary-blue-600 hover:underline"
+                className="text-primary-blue-600 flex items-center gap-1 text-sm font-bold hover:underline"
               >
                 {MYPAGE_PIN_REPORT_VIEW_DETAIL}
                 <ChevronRight className="h-4 w-4" aria-hidden />
@@ -141,10 +119,7 @@ export const PinReportSection = ({
   }
 
   return (
-    <section
-      aria-labelledby={PIN_REPORT_HEADING_ID}
-      className="flex flex-col rounded-lg bg-white"
-    >
+    <section aria-labelledby={PIN_REPORT_HEADING_ID} className="flex flex-col rounded-lg bg-white">
       <div className="px-4 py-4">
         <h2
           id={PIN_REPORT_HEADING_ID}

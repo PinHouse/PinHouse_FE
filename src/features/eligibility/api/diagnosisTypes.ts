@@ -109,7 +109,7 @@ export interface DiagnosisPostRequest {
   hasSpecialCategory: DiagnosisSpecialCategory[];
 }
 
-/** POST /v2/diagnosis 응답 data (공통 제외). GET /diagnosis/latest 응답에 소득분위·지원대상이 포함 */
+/** POST /v2/diagnosis 응답 data (공통 제외) */
 export interface DiagnosisResultData {
   eligible: boolean;
   decisionMessage: string;
@@ -118,4 +118,19 @@ export interface DiagnosisResultData {
   incomeLevel?: string;
   /** 나의 지원 가능 대상 */
   targetGroups?: string[];
+}
+
+/** GET /v2/diagnosis/latest 응답 data (POST 응답과 별도 구조) */
+export interface DiagnosisLatestData {
+  age: number;
+  availableRentalTypes: string[];
+  availableSupplyTypes: string[];
+  diagnosedAt: string;
+  diagnosisId: number;
+  diagnosisResult: string;
+  eligible: boolean;
+  gender: string;
+  myIncomeLevel: string;
+  nickname: string;
+  recommended: string[];
 }

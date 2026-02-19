@@ -55,9 +55,14 @@ export const MypageSection = () => {
 
   useEffect(() => {
     if (diagnosisLatest) {
-      setDiagnosisResult(diagnosisLatest, {
-        incomeLevel: diagnosisLatest.incomeLevel,
-      });
+      setDiagnosisResult(
+        {
+          eligible: diagnosisLatest.eligible,
+          decisionMessage: diagnosisLatest.diagnosisResult,
+          recommended: diagnosisLatest.recommended,
+        },
+        { incomeLevel: diagnosisLatest.myIncomeLevel }
+      );
     }
   }, [diagnosisLatest, setDiagnosisResult]);
 

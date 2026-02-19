@@ -75,7 +75,7 @@ export const EligibilityFinalResultSection = () => {
             onRightClick={() => router.push("/home")}
           />
         </header>
-        <div className="flex flex-1 flex-col gap-4 bg-greyscale-grey-25 px-5 pb-5">
+        <div className="flex flex-1 flex-col gap-4 px-5 pb-5">
           <DiagnosisResultBanner
             userName={userName ?? "회원"}
             incomeLevel={incomeLevel}
