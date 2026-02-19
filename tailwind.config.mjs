@@ -217,6 +217,7 @@ export default {
       },
       boxShadow: {
         "md-16": "0 8px 16px 0 rgba(0, 0, 0, 0.15)",
+        "result-card": "0px 2px 12px -8px rgba(17, 12, 34, 0.06)",
       },
     },
   },
