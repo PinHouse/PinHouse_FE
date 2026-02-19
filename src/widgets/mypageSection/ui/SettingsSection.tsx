@@ -7,10 +7,8 @@ import {
   MYPAGE_SETTINGS_TITLE,
   MYPAGE_SETTINGS_WITHDRAW,
 } from "@/src/features/mypage/model/mypageConstants";
-import {
-  MypageSettingsMenu,
-  type MypageSettingsMenuItem,
-} from "@/src/features/mypage/ui";
+import { MypageSettingsMenu, type MypageSettingsMenuItem } from "@/src/features/mypage/ui";
+import { PageTransition } from "@/src/shared/ui/animation/pageTransition";
 import { DefaultHeader } from "@/src/shared/ui/header";
 
 /**
@@ -26,13 +24,15 @@ export const SettingsSection = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <header className="relative flex items-center py-4 px-5" aria-label={MYPAGE_SETTINGS_TITLE}>
-        <DefaultHeader title={MYPAGE_SETTINGS_TITLE} path="/mypage" />
-      </header>
-      <div className="border-b border-greyscale-grey-25"></div>
-      <div className="px-5">
-        <MypageSettingsMenu items={menuItems} />
-      </div>
+      <PageTransition>
+        <header className="relative flex items-center px-5 py-4" aria-label={MYPAGE_SETTINGS_TITLE}>
+          <DefaultHeader title={MYPAGE_SETTINGS_TITLE} path="/mypage" />
+        </header>
+        <div className="border-b border-greyscale-grey-25"></div>
+        <div className="px-5">
+          <MypageSettingsMenu items={menuItems} />
+        </div>
+      </PageTransition>
     </div>
   );
 };

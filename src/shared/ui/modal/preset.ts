@@ -5,7 +5,7 @@ export const modalOverlayPreset =
 
 export const modalContainerPreset = [
   "rounded-xl sm:rounded-xl bg-white p-6 shadow-lg transition-all",
-  "w-[90%] min-w-[322px] sm:w-[322px] md:w-[400px] lg:w-[500px]",
+  "w-[90%] min-w-[280px] sm:w-[300px] md:w-[320px]",
 ] as const;
 
 export const filterScript: ModalDescriptProps = {
@@ -33,10 +33,22 @@ export const withdrawConfirmScript: ModalDescriptProps = {
   btnlabel: ["취소", "탈퇴하기"],
 };
 
+export const eligibilityPreviousDiagnosisScript: ModalDescriptProps = {
+  descript: "이전에 진행한 진단 이력이 있어요!\n 새로 시작할까요?",
+  btnlabel: ["새로 시작하기", "결과보기"],
+};
+
+export const eligibilityDiagnosisGoScript: ModalDescriptProps = {
+  descript: "자격진단으로\n나에게 맞는 공고를 확인해볼까요?",
+  btnlabel: ["자격진단 하러가기"],
+};
+
 export const discription: ModalDescriptMap = {
   filterSearch: filterScript,
   quickSearchEnterCheck: quickSearchEnterCheckScript,
   quickSearchSaveCheck: quickSearchSaveCheckScript,
   quickSearchResetAlert: quickSearchResetAlertScript,
   withdrawConfirm: withdrawConfirmScript,
+  eligibilityPreviousDiagnosis: eligibilityPreviousDiagnosisScript,
+  eligibilityDiagnosisGo: eligibilityDiagnosisGoScript,
 };

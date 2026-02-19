@@ -15,6 +15,7 @@ import {
 } from "@/src/features/mypage/model/mypageConstants";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { DefaultHeader } from "@/src/shared/ui/header";
+import { PageTransition } from "@/src/shared/ui/animation/pageTransition";
 
 /**
  * 마이페이지 핀포인트 설정 화면 위젯
@@ -42,37 +43,40 @@ export const PinpointsSection = () => {
 
   return (
     <div>
-        <header className="relative flex items-center py-4 px-5" aria-label={MYPAGE_PINPOINTS_HEADER_TITLE}>
-            <DefaultHeader title={MYPAGE_PINPOINTS_HEADER_TITLE} path="/mypage" />
+      <PageTransition>
+        <header
+          className="relative flex items-center px-5 py-4"
+          aria-label={MYPAGE_PINPOINTS_HEADER_TITLE}
+        >
+          <DefaultHeader title={MYPAGE_PINPOINTS_HEADER_TITLE} path="/mypage" />
         </header>
         <div className="border-b border-greyscale-grey-25"></div>
-        <div className="mb-3 flex flex-1 flex-col items-center justify-start text-center px-5">
-            <div className="inline-flex sm:min-w-[200px] sm:max-w-[250px] md:min-w-[250px] md:max-w-[300px] lg:min-w-[280px] lg:max-w-[340px]">
+        <div className="mb-3 flex flex-1 flex-col items-center justify-start px-5 text-center">
+          <div className="inline-flex sm:min-w-[200px] sm:max-w-[250px] md:min-w-[250px] md:max-w-[300px] lg:min-w-[280px] lg:max-w-[340px]">
             <MapPin />
-            </div>
-            <h2 className="text-lg font-bold text-greyscale-grey-900">
-            {MYPAGE_LABEL_PINPOINTS}
-            </h2>
-            <p className="mt-1 whitespace-pre-line text-center text-sm text-greyscale-grey-500">
+          </div>
+          <h2 className="text-lg font-bold text-greyscale-grey-900">{MYPAGE_LABEL_PINPOINTS}</h2>
+          <p className="mt-1 whitespace-pre-line text-center text-sm text-greyscale-grey-500">
             {MYPAGE_PINPOINTS_DESCRIPTION}
-            </p>
-            <div className="mt-5 w-full">
+          </p>
+          <div className="mt-5 w-full">
             <AddressSearch />
-            </div>
+          </div>
         </div>
         {address ? (
-            <div className="px-5">
+          <div className="px-5">
             <Button
-            type="button"
-            size="md"
-            variant="solid"
-            disabled={isLoading}
-            onClick={handleAddPinpoint}
+              type="button"
+              size="md"
+              variant="solid"
+              disabled={isLoading}
+              onClick={handleAddPinpoint}
             >
-            {MYPAGE_PINPOINTS_ADD_BUTTON}
+              {MYPAGE_PINPOINTS_ADD_BUTTON}
             </Button>
-            </div>
+          </div>
         ) : null}
+      </PageTransition>
     </div>
   );
 };

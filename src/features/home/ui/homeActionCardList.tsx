@@ -1,12 +1,13 @@
 "use client";
 import { ArrowUpRight } from "@/src/assets/icons/button/arrowUpRight";
 import { useNoticeCount, useRecommendedNotice } from "@/src/entities/home/hooks/homeHooks";
-import { useRouter } from "next/navigation";
 import { useHomeActionCard } from "@/src/features/home/ui/homeUseHooks/homeUseHooks";
+import { useDiagnosisResultStore } from "@/src/features/eligibility/model/diagnosisResultStore";
 
 export const ActionCardList = () => {
   const { data } = useNoticeCount();
   const { data: recommend } = useRecommendedNotice();
+  const hasDiagnosisResult = useDiagnosisResultStore(state => state.result != null);
 
   const count = data?.count;
   const { onListingsPageMove, onEligibilityPageMove } = useHomeActionCard();
@@ -46,13 +47,13 @@ export const ActionCardList = () => {
 
         <div className="flex gap-2 text-xl leading-tight">
           <p className="font-bold text-white">
-            {recommend?.pages?.length ? recommend?.pages?.length : "0"}건
+            {recommend?.pages?.[0]?.totalElements ?? 0}건
           </p>
           <span
             className="flex items-center rounded-xl bg-greyscale-grey-25 p-1 text-xs font-bold"
             style={{ color: "#FFBA18" }}
           >
-            <p>0% 완료</p>
+            <p>{hasDiagnosisResult ? "100% 완료" : "0% 완료"}</p>
           </span>
         </div>
       </div>
