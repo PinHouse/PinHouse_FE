@@ -402,7 +402,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
       return null;
     },
     getNextStep: () => {
-      return "diagnosisEnd";
+      return null;
     },
   },
 
@@ -1184,7 +1184,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
       return null;
     },
     getNextStep: () => {
-      return "diagnosisEnd";
+      return null;
     },
   },
 
@@ -1339,7 +1339,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 다음 단계로 이동 (추후 결정)
-      return "diagnosisEnd";
+      return null;
     },
   },
 
@@ -1790,25 +1790,8 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 다음 단계로 이동 (추후 결정)
-      return "diagnosisEnd";
+      return null;
     },
-  },
-
-  // diagnosisEnd
-  {
-    id: "diagnosisEnd",
-    groupId: "diagnosisEnd",
-    components: [
-      {
-        type: "statusBanner",
-        props: {
-          title: "진단이 종료되었습니다",
-          description: "",
-        },
-      },
-    ],
-    validation: () => null,
-    getNextStep: () => null,
   },
 ];
 
