@@ -29,10 +29,7 @@ export const ErrorState = ({
 
   return (
     <div
-      className={
-        className ??
-        "flex h-full min-h-screen flex-col items-center justify-center px-5"
-      }
+      className={className ?? "flex h-full min-h-screen flex-col items-center justify-center px-5"}
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -64,7 +61,7 @@ export const ErrorState = ({
             className="mt-4 w-full max-w-[200px]"
             onClick={handleButtonClick}
           >
-            home으로 돌아가기
+            홈으로 돌아가기
           </Button>
         </motion.div>
       </AnimatePresence>

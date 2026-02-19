@@ -35,6 +35,11 @@ export const MYPAGE_PIN_REPORT_DESCRIPTION_LINES = [
   "맞춤 보고서를 받아보세요",
 ] as const;
 export const MYPAGE_PIN_REPORT_BUTTON = "자격진단 하러가기";
+export const MYPAGE_PIN_REPORT_REDIAGNOSIS = "재진단";
+export const MYPAGE_PIN_REPORT_VIEW_DETAIL = "자세히 보기";
+export const MYPAGE_PIN_REPORT_INCOME_LABEL = "내 소득분위";
+export const MYPAGE_PIN_REPORT_TARGET_LABEL = "나의 지원 가능 대상";
+export const MYPAGE_PIN_REPORT_HOUSING_LABEL = "신청 가능한 임대주택";
 
 /** 설정 화면 (settings) */
 export const MYPAGE_SETTINGS_TITLE = "설정";

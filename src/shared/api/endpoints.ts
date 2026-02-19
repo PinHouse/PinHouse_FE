@@ -93,8 +93,10 @@ export const COMPLEX_INFRA_ENDPOINT = "/complexes/infra";
  * 진단 API
  */
 
-// 청약 진단 API
+// 청약 진단 API (v2)
 export const DIAGNOSIS_ENDPOINT = "/diagnosis";
+// 청약 진단 최신 결과 조회 (v2)
+export const DIAGNOSIS_LATEST_ENDPOINT = "/diagnosis/latest";
 
 // 질문 설명 API
 export const DIAGNOSIS_INFO_ENDPOINT = "/diagnosis/info";

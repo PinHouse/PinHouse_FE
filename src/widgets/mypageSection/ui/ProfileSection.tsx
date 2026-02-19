@@ -8,6 +8,7 @@ import {
   MYPAGE_PROFILE_LOADING_TITLE,
 } from "@/src/features/mypage/model/mypageConstants";
 import { ProfileForm } from "@/src/features/mypage/ui";
+import { PageTransition } from "@/src/shared/ui/animation/pageTransition";
 import { ErrorState } from "@/src/shared/ui/errorState";
 import { DefaultHeader } from "@/src/shared/ui/header";
 import { LoadingState } from "@/src/shared/ui/loadingState";
@@ -41,15 +42,18 @@ export const ProfileSection = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-        <header className="relative flex items-center py-4 px-5" aria-label={MYPAGE_PROFILE_HEADER_TITLE}>
-            <DefaultHeader title={MYPAGE_PROFILE_HEADER_TITLE} path="/mypage/settings" />
+      <PageTransition>
+        <header
+          className="relative flex items-center px-5 py-4"
+          aria-label={MYPAGE_PROFILE_HEADER_TITLE}
+        >
+          <DefaultHeader title={MYPAGE_PROFILE_HEADER_TITLE} path="/mypage/settings" />
         </header>
         <div className="border-b border-greyscale-grey-25"></div>
         <div className="px-5 py-6">
-            <ProfileForm
-            user={data}
-            />
+          <ProfileForm user={data} />
         </div>
+      </PageTransition>
     </div>
   );
 };

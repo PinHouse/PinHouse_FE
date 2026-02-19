@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import FootPrintIcon from "@/src/assets/icons/mypage/footPrintIcon";
 import MapPinIcon from "@/src/assets/icons/mypage/mapPinIcon";
@@ -23,8 +24,12 @@ import {
   PinReportSection,
   UserInfoCard,
 } from "@/src/features/mypage/ui";
+import { useDiagnosisLatest } from "@/src/features/eligibility/hooks/useDiagnosisLatest";
+import { useDiagnosisResultStore } from "@/src/features/eligibility/model/diagnosisResultStore";
 import { ErrorState } from "@/src/shared/ui/errorState";
 import { LoadingState } from "@/src/shared/ui/loadingState";
+import { Modal } from "@/src/shared/ui/modal/default/modal";
+import { PageTransition } from "@/src/shared/ui/animation/pageTransition";
 
 /**
  * 마이페이지 메인 화면 위젯
@@ -33,7 +38,28 @@ import { LoadingState } from "@/src/shared/ui/loadingState";
  */
 export const MypageSection = () => {
   const { data, isLoading, isError } = useMypageUser();
+  const { data: diagnosisLatest } = useDiagnosisLatest();
+  const setDiagnosisResult = useDiagnosisResultStore(s => s.setResult);
   const router = useRouter();
+  const [eligibilityModalOpen, setEligibilityModalOpen] = useState(false);
+
+  const openEligibilityModal = () => setEligibilityModalOpen(true);
+  const handleModalConfirm = () => {
+    setEligibilityModalOpen(false);
+    router.push("/eligibility");
+  };
+  const handleRediagnosis = () => {
+    router.push("/eligibility");
+  };
+  const handleViewDetail = () => router.push("/eligibility/result/final");
+
+  useEffect(() => {
+    if (diagnosisLatest) {
+      setDiagnosisResult(diagnosisLatest, {
+        incomeLevel: diagnosisLatest.incomeLevel,
+      });
+    }
+  }, [diagnosisLatest, setDiagnosisResult]);
 
   if (isLoading) {
     return (
@@ -56,55 +82,65 @@ export const MypageSection = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-greyscale-grey-25 px-5">
-      <MyPageHeader />
-      <div className="flex flex-col gap-5 pb-6">
-      <UserInfoCard
-        user={data}
-        onSettingsClick={() => router.push("/mypage/settings")}
-      />
+      <PageTransition>
+        <MyPageHeader />
+        <div className="flex flex-col gap-5 pb-6">
+          <UserInfoCard user={data} onSettingsClick={() => router.push("/mypage/settings")} />
 
-      <PinReportSection
-        onDiagnosisClick={() => router.push("/eligibility")}
-      />
+          <PinReportSection
+            diagnosisResult={diagnosisLatest}
+            onDiagnosisClick={openEligibilityModal}
+            onRediagnosisClick={handleRediagnosis}
+            onViewDetailClick={diagnosisLatest ? handleViewDetail : undefined}
+          />
 
-      <MypageMenuSection
-        title={MYPAGE_SECTION_MY_INFO}
-        items={[
-          {
-            icon: <FootPrintIcon />,
-            label: MYPAGE_LABEL_INTEREST_ENV,
-            onClick: () => {
-              alert("관심 주변 환경 설정 미구현 상태");
-            },
-          },
-          {
-            icon: <MapPinIcon />,
-            label: MYPAGE_LABEL_PINPOINTS,
-            onClick: () => router.push("/mypage/pinpoints"),
-          },
-        ]}
-      />
+          <Modal
+            type="eligibilityDiagnosisGo"
+            open={eligibilityModalOpen}
+            showCloseButton
+            onClose={() => setEligibilityModalOpen(false)}
+            onButtonClick={handleModalConfirm}
+          />
 
-      <MypageMenuSection
-        title={MYPAGE_SECTION_MY_ACTIVITY}
-        items={[
-          {
-            icon: <PinsetIcon />,
-            label: MYPAGE_LABEL_SAVED_LIST,
-            onClick: () => {
-              alert("저장 목록 이동 미구현 상태");
-            },
-          },
-          {
-            icon: <RecentIcon />,
-            label: MYPAGE_LABEL_RECENT_ADS,
-            onClick: () => {
-              alert("최근 본 공고 이동 미구현 상태");
-            },
-          },
-        ]}
-      />
-      </div>
+          <MypageMenuSection
+            title={MYPAGE_SECTION_MY_INFO}
+            items={[
+              {
+                icon: <FootPrintIcon />,
+                label: MYPAGE_LABEL_INTEREST_ENV,
+                onClick: () => {
+                  alert("관심 주변 환경 설정 미구현 상태");
+                },
+              },
+              {
+                icon: <MapPinIcon />,
+                label: MYPAGE_LABEL_PINPOINTS,
+                onClick: () => router.push("/mypage/pinpoints"),
+              },
+            ]}
+          />
+
+          <MypageMenuSection
+            title={MYPAGE_SECTION_MY_ACTIVITY}
+            items={[
+              {
+                icon: <PinsetIcon />,
+                label: MYPAGE_LABEL_SAVED_LIST,
+                onClick: () => {
+                  alert("저장 목록 이동 미구현 상태");
+                },
+              },
+              {
+                icon: <RecentIcon />,
+                label: MYPAGE_LABEL_RECENT_ADS,
+                onClick: () => {
+                  alert("최근 본 공고 이동 미구현 상태");
+                },
+              },
+            ]}
+          />
+        </div>
+      </PageTransition>
     </div>
   );
 };
