@@ -30,7 +30,7 @@ export const HomeSheet = () => {
       {open && (
         <>
           <motion.div
-            className="pointer-events-auto absolute inset-0 z-40 bg-black/40"
+            className="pointer-events-auto absolute inset-0 bg-black/40"
             onClick={replaceRouter}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -38,7 +38,7 @@ export const HomeSheet = () => {
           />
 
           <motion.div
-            className="pointer-events-auto absolute bottom-0 left-0 right-0 z-50 flex h-[55vh] flex-col rounded-t-2xl bg-white p-5 shadow-xl"
+            className="pointer-events-auto absolute bottom-0 left-0 right-0 flex h-[55vh] flex-col rounded-t-2xl bg-white p-5 shadow-xl"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -56,7 +56,7 @@ export const HomeSheet = () => {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -100, opacity: 0 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="flex h-full flex-col justify-between"
+                className="z-11 flex h-full flex-col justify-between"
               >
                 {mode?.key === "pinpoints" && <PinpointRowBox />}
                 {mode?.key === "maxTime" && <MaxTimeSliderBox />}

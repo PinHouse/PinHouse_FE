@@ -34,7 +34,7 @@ export const UrgentNoticeList = () => {
           </p>
         </div>
         <div
-          className="min-w-auto flex items-center text-xs font-semibold text-greyscale-grey-400"
+          className="min-w-auto hover: flex items-center text-xs font-semibold text-greyscale-grey-400 hover:cursor-pointer"
           onClick={pageRouter}
         >
           <span>전체보기</span>

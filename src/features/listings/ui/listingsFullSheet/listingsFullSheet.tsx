@@ -253,7 +253,7 @@ const FilterSheetContainer = ({
         exit={{ opacity: 0 }}
       />
       <motion.div
-        className="pointer-events-auto absolute bottom-0 left-0 right-0 z-50 flex h-[85vh] flex-col rounded-t-2xl bg-white shadow-xl"
+        className="pointer-events-auto absolute bottom-0 left-0 right-0 z-50 flex h-[85%] max-h-full flex-col rounded-t-2xl bg-white shadow-xl"
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
@@ -278,9 +278,13 @@ const FilterSheetHeader = ({ onClose }: { onClose: () => void }) => {
     <>
       <div className="mx-auto mb-3 mt-2 h-1.5 w-12 rounded-full bg-gray-300" />
 
-      <div className="flex items-center justify-between px-5 pb-2">
+      <div className="flex items-center justify-between px-5 pb-2 pt-1">
         <h2 className="text-sm font-bold">공고 필터</h2>
-        <button onClick={onClose} className="text-xl font-bold">
+        <button
+          onClick={onClose}
+          className="-mr-2 inline-flex h-10 w-10 items-center justify-center rounded-full"
+          aria-label="close filter sheet"
+        >
           <CloseButton />
         </button>
       </div>

@@ -39,7 +39,7 @@ export function MobileFrameWithSheetPortal({
 
         <div
           id="mobile-overlay-root"
-          className="pointer-events-none absolute inset-0 z-0 overflow-hidden sm:rounded-xl md:rounded-2xl lg:rounded-2xl"
+          className="pointer-events-none absolute inset-0 z-20 overflow-hidden sm:rounded-xl md:rounded-2xl lg:rounded-2xl"
         />
 
         {/* 바텀시트가 이 컨테이너에만 렌더되도록 포탈 타깃 */}
