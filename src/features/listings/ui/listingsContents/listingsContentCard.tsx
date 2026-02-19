@@ -27,9 +27,9 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
             onClick={() => handleRouter(normalized.id)}
           >
             <div className="border-r-1 flex w-[35%] flex-col rounded-l-xl rounded-bl-xl bg-bgColor-mute pl-1 pt-2">
-              <div className="flex justify-start gap-1">
+              <div className="flex min-w-0 items-center gap-2">
                 <ListingBookMark item={normalized.type} border="border" />
-                <p className="truncate text-xs font-semibold text-greyscale-grey-800">
+                <p className="min-w-0 flex-1 truncate text-xs font-semibold text-greyscale-grey-800">
                   {normalized.supplier}
                 </p>
               </div>
@@ -38,26 +38,23 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
               </div>
             </div>
 
-            <div className="flex w-[65%] flex-col justify-start gap-2 rounded-br-xl rounded-tr-xl bg-white pb-3 pl-4 pr-4 pt-2">
-              <div
-                className="flex items-baseline gap-2"
-                onClick={e => {
-                  e.stopPropagation();
-                }}
-              >
+            <div className="flex w-[65%] flex-col gap-2 rounded-br-xl rounded-tr-xl bg-white py-3 pl-4 pr-[10px]">
+              <div onClick={e => e.stopPropagation()}>
                 <HouseRental
                   {...normalized}
                   query={path ? "listingSearchInfinite" : "listingListInfinite"}
                 />
               </div>
+
               <div className="max-w-full">
-                <p className="truncate text-sm font-semibold">
+                <p className="truncate text-sm font-semibold leading-tight">
                   <HighlightCenteredText text={normalized.name} keyword={keyword} />
                 </p>
               </div>
+
               <div className="max-w-full">
-                <p className="text-sm text-greyscale-grey-400">모집일정</p>
-                <p className="text-sm text-greyscale-grey-400">
+                <p className="text-sm leading-tight text-greyscale-grey-400">모집일정</p>
+                <p className="text-sm leading-tight text-greyscale-grey-400">
                   {formatApplyPeriod(normalized.applyPeriod)}
                 </p>
               </div>
