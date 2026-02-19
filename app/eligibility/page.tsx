@@ -6,7 +6,7 @@ import { EligibilitySection } from "@/src/widgets/eligibilitySection";
 import { useEligibilityStore } from "@/src/features/eligibility/model/eligibilityStore";
 import { useDiagnosisResultStore } from "@/src/features/eligibility/model/diagnosisResultStore";
 import { getDiagnosisLatest } from "@/src/features/eligibility/api/diagnosisApi";
-import type { DiagnosisResultData } from "@/src/features/eligibility/api/diagnosisTypes";
+import type { DiagnosisLatestData } from "@/src/features/eligibility/api/diagnosisTypes";
 import { Modal } from "@/src/shared/ui/modal/default/modal";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 
@@ -21,11 +21,18 @@ export default function EligibilityPage() {
 
     const checkLatest = async () => {
       try {
-        const response = await getDiagnosisLatest<DiagnosisResultData>();
+        const response = await getDiagnosisLatest<DiagnosisLatestData>();
         if (!mounted) return;
-        const data = response?.data;
+        const data = response?.data as DiagnosisLatestData | undefined;
         if (data != null && typeof data === "object" && "eligible" in data) {
-          setDiagnosisResult(data as DiagnosisResultData);
+          setDiagnosisResult(
+            {
+              eligible: data.eligible,
+              decisionMessage: data.diagnosisResult,
+              recommended: data.recommended,
+            },
+            { incomeLevel: data.myIncomeLevel }
+          );
           setIsModalOpen(true);
         } else {
           reset();

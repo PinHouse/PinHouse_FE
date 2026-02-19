@@ -1,6 +1,20 @@
-const ResultBannerImg = () => {
+import { SVGProps } from "react";
+
+interface ResultBannerImgProps extends SVGProps<SVGSVGElement> {
+  width?: number | string;
+  height?: number | string;
+}
+
+const ResultBannerImg = ({ width = 96, height = 96, ...props }: ResultBannerImgProps) => {
   return (
-    <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 96 96"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <path
         d="M48.8273 75.8059L52.6109 62.0161H42.4414L46.2251 75.8059C46.5892 77.1313 48.4622 77.1313 48.8264 75.8059H48.8273Z"
         fill="url(#paint0_linear_10635_91474)"

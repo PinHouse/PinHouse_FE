@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getDiagnosisLatest } from "../api/diagnosisApi";
-import type { DiagnosisResultData } from "../api/diagnosisTypes";
+import type { DiagnosisLatestData } from "../api/diagnosisTypes";
 
 const QUERY_KEY = ["diagnosis", "latest"];
 
@@ -11,8 +11,8 @@ export function useDiagnosisLatest() {
   const query = useQuery({
     queryKey: QUERY_KEY,
     queryFn: async () => {
-      const res = await getDiagnosisLatest<DiagnosisResultData>();
-      return (res?.data ?? null) as DiagnosisResultData | null;
+      const res = await getDiagnosisLatest<DiagnosisLatestData>();
+      return (res?.data ?? null) as DiagnosisLatestData | null;
     },
     retry: false,
   });

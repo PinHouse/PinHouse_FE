@@ -42,10 +42,7 @@ function groupByHousingType(
   }));
 }
 
-export const DiagnosisResultList = ({
-  recommended,
-  className,
-}: DiagnosisResultListProps) => {
+export const DiagnosisResultList = ({ recommended, className }: DiagnosisResultListProps) => {
   const items = useMemo(() => groupByHousingType(recommended), [recommended]);
 
   if (items.length === 0) return null;
@@ -54,7 +51,7 @@ export const DiagnosisResultList = ({
     <section className={className} aria-labelledby="diagnosis-result-list-title">
       <h2
         id="diagnosis-result-list-title"
-        className="mb-3 text-lg font-bold leading-[140%] tracking-[-0.02em] text-greyscale-grey-900"
+        className="mb-3 text-base font-semibold leading-4 tracking-[-0.01em] text-greyscale-grey-900"
       >
         {SECTION_TITLE}
       </h2>
@@ -64,8 +61,7 @@ export const DiagnosisResultList = ({
             <DiagnosisResultItem
               housingType={housingType}
               description={
-                HOUSING_TYPE_DESCRIPTIONS[housingType] ??
-                "해당 유형의 공공임대주택입니다."
+                HOUSING_TYPE_DESCRIPTIONS[housingType] ?? "해당 유형의 공공임대주택입니다."
               }
               applicationTypes={applicationTypes}
             />
