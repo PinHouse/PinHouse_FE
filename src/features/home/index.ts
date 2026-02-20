@@ -1,5 +1,5 @@
 export * from "./ui/homeContentsCard";
-export * from "./ui/homeActionCardList";
+export * from "./ui/homeAction/homeActionCardList";
 export * from "./ui/homeContentsCard";
 export * from "./ui/homeHeader";
 export * from "./ui/homeHero";
