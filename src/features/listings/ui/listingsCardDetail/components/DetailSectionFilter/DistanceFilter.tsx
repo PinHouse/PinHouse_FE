@@ -8,34 +8,23 @@ import {
   getDefaultPinPointLabel,
   mapPinPointToOptions,
 } from "@/src/features/listings/hooks/listingsHooks";
+import { ListingCardDetailOut } from "@/src/features/listings/ui/listingsCardDetail/button/button";
+import {
+  useDistanceHooks,
+  useDistanceVariable,
+} from "@/src/features/listings/ui/listingsCardDetail/hooks/distanceHooks";
 
 const SLIDER_MIN = 0;
 const SLIDER_MAX = 120;
 
 export const DistanceFilter = () => {
   const { data, isFetching } = useListingFilterDetail<PinPointPlace>();
-  const pinPointData = data?.pinPoints;
-  const pinPointList = mapPinPointToOptions(pinPointData);
-  const dropDownTriggerLabel = getDefaultPinPointLabel(pinPointList);
-  const hasPinPoints = pinPointList.myPinPoint.length > 0;
-  const { setPinPointId } = useOAuthStore();
-  const { distance, setDistance } = useListingDetailFilter();
-  const { filteredCount } = useListingDetailCountStore();
-
-  const onChageValue = (selectedKey: string) => {
-    setPinPointId(selectedKey);
-  };
-
-  const handleDistanceChange = (values: number[]) => {
-    const [nextValue] = values;
-    if (typeof nextValue === "number") {
-      setDistance(nextValue);
-    }
-  };
-
-  const sliderValue = [distance];
-  const formatMinutes = (value: number) => value.toString().padStart(1, "0");
-  const formattedDistance = formatMinutes(distance);
+  const emptyPinPoint: PinPointPlace = { userName: "", pinPoints: [] };
+  const { pinPointList, dropDownTriggerLabel, hasPinPoints } = useDistanceVariable(
+    data ?? emptyPinPoint
+  );
+  const { onChangeValue, handleDistanceChange, sliderValue, formattedDistance } =
+    useDistanceHooks();
 
   return (
     <div className="flex h-full flex-col">
@@ -53,7 +42,7 @@ export const DistanceFilter = () => {
           types="myPinPoint"
           data={pinPointList}
           size="lg"
-          onChange={onChageValue}
+          onChange={onChangeValue}
           disabled={isFetching || !hasPinPoints}
         >
           {dropDownTriggerLabel}
@@ -74,15 +63,6 @@ export const DistanceFilter = () => {
           labelSuffix="분"
         />
       </section>
-
-      <div className="mt-auto pt-8">
-        <button
-          type="button"
-          className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
-        >
-          {filteredCount}개의 단지가 있어요
-        </button>
-      </div>
     </div>
   );
 };

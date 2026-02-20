@@ -2,11 +2,13 @@ import { ListingsCardTile } from "./listingsCardTile";
 import { ComplexList } from "@/src/entities/listings/model/type";
 
 type ListingsCardDetailOutOfCriteriaSectionProps = {
-  listings: ComplexList;
+  listings: ComplexList,
+  className?: string
 };
 
 export const ListingsCardDetailOutOfCriteriaSection = ({
-  listings,
+ listings,
+ className,
 }: ListingsCardDetailOutOfCriteriaSectionProps) => {
   if (listings.complexes.length === 0) return;
   return (

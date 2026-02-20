@@ -73,7 +73,7 @@ export default {
             200: "#CECED7",
             300: "#BBBAC5",
             400: "#9F9FAB",
-            500: "#7F7FBF",
+            500: "#7F7F8F",
             600: "#676472",
             700: "#4F4B5C",
             800: "#2E293D",
@@ -217,6 +217,7 @@ export default {
       },
       boxShadow: {
         "md-16": "0 8px 16px 0 rgba(0, 0, 0, 0.15)",
+        "result-card": "0px 2px 12px -8px rgba(17, 12, 34, 0.06)",
       },
     },
   },

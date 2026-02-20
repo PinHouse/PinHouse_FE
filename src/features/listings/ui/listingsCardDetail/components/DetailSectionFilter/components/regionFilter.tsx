@@ -1,22 +1,15 @@
-import { cn } from "@/lib/utils";
 import { useListingDetailNoticeSheet } from "@/src/entities/listings/hooks/useListingDetailSheetHooks";
 import { DistrictResponse } from "@/src/entities/listings/model/type";
-import {
-  REGION_CHECKBOX,
-  useListingDetailCountStore,
-  useListingDetailFilter,
-} from "@/src/features/listings/model";
+import { REGION_CHECKBOX, useListingDetailFilter } from "@/src/features/listings/model";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
-import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { Tag } from "@/src/features/listings/ui/listingsCardDetail/hooks/regionHooks";
 
 export const RegionFilter = () => {
   const { id } = useParams() as { id: string };
   const regionType = useListingDetailFilter(state => state.region);
   const setRegion = useListingDetailFilter(state => state.toggleRegionType);
-  const { filteredCount } = useListingDetailCountStore();
   const { data } = useListingDetailNoticeSheet<DistrictResponse>({
     id: id,
     url: "districts",
@@ -57,42 +50,6 @@ export const RegionFilter = () => {
           </div>
         ))}
       </div>
-      <div className="mt-auto pt-8">
-        <button
-          type="button"
-          className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
-        >
-          {filteredCount}개의 단지가 있어요
-        </button>
-      </div>
     </div>
-  );
-};
-
-const Tag = ({
-  label,
-  selected,
-  onClick,
-}: {
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-}) => {
-  console.log(selected);
-  return (
-    <>
-      <TagButton
-        key={label}
-        size="xs"
-        variant="chipSelected"
-        className={cn(
-          "border border-greyscale-grey-100 p-3.5 text-xs font-bold text-greyscale-grey-400",
-          selected ? "bg-button-light text-text-inverse" : "bg-gray-100 text-text-secondary"
-        )}
-        onClick={onClick}
-      >
-        {label}
-      </TagButton>
-    </>
   );
 };

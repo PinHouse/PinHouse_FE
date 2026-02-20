@@ -18,6 +18,12 @@ export const pinPointKeys = {
   detail: (id: string) => [...pinPointKeys.details(), id] as const,
 } as const;
 
+// Mypage 관련 QueryKeys
+export const mypageKeys = {
+  all: ["mypage"] as const,
+  user: () => [...mypageKeys.all, "user"] as const,
+} as const;
+
 // Listing 관련 QueryKeys
 export const listingKeys = {
   all: ["listing"] as const,

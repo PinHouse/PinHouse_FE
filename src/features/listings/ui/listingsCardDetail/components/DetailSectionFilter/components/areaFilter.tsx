@@ -10,6 +10,7 @@ import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 import { useParams } from "next/navigation";
+import { ListingCardDetailOut } from "@/src/features/listings/ui/listingsCardDetail/button/button";
 
 export const AreaFilter = () => {
   const { id } = useParams() as { id: string };
@@ -56,14 +57,7 @@ export const AreaFilter = () => {
           </div>
         ))}
       </div>
-      <div className="mt-auto pt-8">
-        <button
-          type="button"
-          className="w-full rounded-xl bg-greyscale-grey-900 py-4 text-base font-semibold leading-[140%] tracking-[-0.01em] text-white"
-        >
-          {filteredCount}개의 단지가 있어요
-        </button>
-      </div>
+
     </div>
   );
 };

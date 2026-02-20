@@ -1,12 +1,16 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useListingsFilterStore } from "../../model/listingsStore";
+import { useFilterSheetStore, useListingsFilterStore } from "../../model/listingsStore";
 import { FILTER_TABS, FilterTabKey, TAB_CONFIG } from "../../model";
 import { CloseButton } from "@/src/assets/icons/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { ListingFilterPartialSheetHooks } from "./hooks";
+import { ReactNode, RefObject, useRef } from "react";
+import { createPortal } from "react-dom";
+import { useScrollLock } from "@/src/shared/hooks/useScrollLock";
+import { usePortalTarget } from "@/src/shared/hooks/usePortalTarget";
 
 export const ListingFilterPartialSheet = () => {
   const { open, scrollRef, isAtBottom, displayTotal, handleScroll, handleCloseSheet } =
@@ -125,7 +129,6 @@ const UseCheckBox = () => {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
   const tabConfig = currentTab ? TAB_CONFIG[currentTab] : null;
-
   const regionType = useListingsFilterStore(s => s.regionType);
   const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
   const supplyTypes = useListingsFilterStore(s => s.supplyTypes);
@@ -154,12 +157,9 @@ const UseCheckBox = () => {
     rental: supplyTypes,
     housing: houseTypes,
   }[currentTab];
-
   const isAllSelected = selectedList.length === totalItems.length;
-
   const handleAllSelect = (e: boolean) => {
     const checked = e;
-
     // 기존 방식 유지: 기존 값 초기화
     if (currentTab === "region") resetRegionType();
     if (currentTab === "target") resetRentalTypes();
@@ -233,27 +233,42 @@ const FilterSheetContainer = ({
   children,
 }: {
   onDismiss: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) => {
-  return (
+  const open = useFilterSheetStore(s => s.open);
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const portalRoot = usePortalTarget("mobile-overlay-root");
+  useScrollLock({ locked: open, anchorRef });
+
+  const content = (
     <>
       <motion.div
-        className="fixed inset-0 z-40 bg-black/40"
-        onClick={onDismiss}
+        className="pointer-events-auto absolute inset-0 z-40 bg-black/40"
+        onClick={e => {
+          e.stopPropagation();
+          onDismiss();
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       />
-
       <motion.div
-        className="fixed bottom-0 left-0 right-0 z-50 flex h-[95vh] flex-col rounded-t-2xl bg-white shadow-xl"
+        className="pointer-events-auto absolute bottom-0 left-0 right-0 z-50 flex h-[85%] max-h-full flex-col rounded-t-2xl bg-white shadow-xl"
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
+        onClick={e => e.stopPropagation()}
         transition={{ type: "spring", stiffness: 260, damping: 30 }}
       >
         {children}
       </motion.div>
+    </>
+  );
+
+  return (
+    <>
+      <span ref={anchorRef} className="hidden" />
+      {portalRoot ? createPortal(content, portalRoot) : content}
     </>
   );
 };
@@ -263,9 +278,13 @@ const FilterSheetHeader = ({ onClose }: { onClose: () => void }) => {
     <>
       <div className="mx-auto mb-3 mt-2 h-1.5 w-12 rounded-full bg-gray-300" />
 
-      <div className="flex items-center justify-between px-5 pb-2">
+      <div className="flex items-center justify-between px-5 pb-2 pt-1">
         <h2 className="text-sm font-bold">공고 필터</h2>
-        <button onClick={onClose} className="text-xl font-bold">
+        <button
+          onClick={onClose}
+          className="-mr-2 inline-flex h-10 w-10 items-center justify-center rounded-full"
+          aria-label="close filter sheet"
+        >
           <CloseButton />
         </button>
       </div>
@@ -281,8 +300,8 @@ const FilterSheetContent = ({
   onScroll,
   isAtBottom,
 }: {
-  children: React.ReactNode;
-  scrollRef: React.RefObject<HTMLDivElement | null>;
+  children: ReactNode;
+  scrollRef: RefObject<HTMLDivElement | null>;
   onScroll: () => void;
   isAtBottom: boolean;
 }) => {

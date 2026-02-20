@@ -46,6 +46,12 @@ const processQueue = (error: any, token: string | null = null) => {
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
+/** v1 base URL을 v2로 치환 (특정 API만 v2 사용 시 baseURL 옵션으로 전달) */
+export const API_BASE_URL_V2 =
+  typeof process.env.NEXT_PUBLIC_API_URL === "string"
+    ? process.env.NEXT_PUBLIC_API_URL.replace(/\/v1\/?$/, "/v2")
+    : "";
+
 const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,

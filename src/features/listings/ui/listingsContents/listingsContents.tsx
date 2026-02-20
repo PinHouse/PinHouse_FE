@@ -2,7 +2,7 @@
 import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
 import { ListingsContentHeader } from "./listingsContentsHeader";
 import { ListingContentsList } from "./listingsContentsList";
-import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
+import { ListingNoSearchResult } from "@/src/features/listings";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 
 export const ListingsContent = ({ viewSet = true }: { viewSet?: boolean }) => {

@@ -6,12 +6,25 @@ export const ListingBookMark = ({ item, border }: { item: string; border: string
       aria-label="Toggle bookmark"
       size="sm"
       variant="outline"
-      className={`data-[state=on]:*:[svg]:fill-blue-500 data-[state=on]:*:[svg]:stroke-blue-500 ${border}`}
+      className={` ${border} data-[state=on]:*:[svg]:fill-blue-500 data-[state=on]:*:[svg]:stroke-blue-500 max-w-full overflow-hidden rounded-[4px]`}
     >
-      <p className="text-xs">{item}</p>
+      <p className="min-w-0 flex-1 truncate text-xs-12">{item}</p>
     </Toggle>
   );
 };
+
+// export const ListingBookMark = ({ item, border }: { item: string; border: string }) => {
+//   return (
+//     <Toggle
+//       aria-label="Toggle bookmark"
+//       size="sm"
+//       variant="outline"
+//       className={` ${border} data-[state=on]:*:[svg]:fill-blue-500 data-[state=on]:*:[svg]:stroke-blue-500 inline-flex w-fit max-w-none rounded-[4px]`}
+//     >
+//       <p className="whitespace-nowrap text-xs-12">{item}</p>
+//     </Toggle>
+//   );
+// };
 
 export const ListingBgBookMark = ({
   item,

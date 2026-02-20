@@ -1,32 +1,33 @@
 "use client";
 
 import { cn } from "@/src/shared/lib/utils";
+import { OAuthProviderType } from "@/src/shared/types";
 import { NaverLogo } from "@/src/assets/icons/button/naverLogo";
 import { KakaoLogo } from "@/src/assets/icons/button/kakaoLogo";
 
 export interface ProfileLoginInfoProps {
   /** 이메일 주소 */
   email: string;
-  /** 로그인 제공자 (naver, kakao, google) */
-  provider?: "naver" | "kakao" | "google";
+  /** 로그인 제공자 (NAVER, KAKAO) */
+  provider?: OAuthProviderType;
   /** 추가 클래스명 */
   className?: string;
 }
 
 export const ProfileLoginInfo = ({
   email,
-  provider = "naver",
+  provider = "NAVER",
   className,
 }: ProfileLoginInfoProps) => {
   const getProviderIcon = () => {
     switch (provider) {
-      case "naver":
+      case "NAVER":
         return (
           <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#03C75A]">
             <NaverLogo width={10} height={10} />
           </div>
         );
-      case "kakao":
+      case "KAKAO":
         return (
           <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#FEE500]">
             <KakaoLogo width={10} height={10} />

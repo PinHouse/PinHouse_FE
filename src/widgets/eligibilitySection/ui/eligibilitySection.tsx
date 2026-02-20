@@ -32,22 +32,24 @@ export const EligibilitySection = () => {
 
   return (
     <section className="flex h-full w-full flex-col">
-      {/* Stepper */}
-      {ELIGIBILITY_STEPS.length > 0 && currentGroup && (
-        <div className="px-5 pt-5">
-          <EligibilityStepper steps={ELIGIBILITY_STEPS} currentStepId={groupId} />
-        </div>
-      )}
-
       <PageTransition>
-        {/* 단계별 폼 컴포넌트 */}
-        <EligibilityStepRenderer stepId={currentStepId} />
-      </PageTransition>
+        {/* Stepper */}
+        {ELIGIBILITY_STEPS.length > 0 && currentGroup && (
+          <div className="px-5 pt-5">
+            <EligibilityStepper steps={ELIGIBILITY_STEPS} currentStepId={groupId} />
+          </div>
+        )}
 
-      {/* 다음 버튼 */}
-      <div className="w-full flex-none px-5 pb-3">
-        <EligibilityNextButton />
-      </div>
+        <PageTransition>
+          {/* 단계별 폼 컴포넌트 */}
+          <EligibilityStepRenderer stepId={currentStepId} />
+        </PageTransition>
+
+        {/* 다음 버튼 */}
+        <div className="w-full flex-none px-5 pb-3">
+          <EligibilityNextButton />
+        </div>
+      </PageTransition>
     </section>
   );
 };

@@ -40,7 +40,7 @@ function BottomNavigationContent() {
     compareDetailPageRegex.test(pathname) ||
     (pathname === "/home" && searchParams.has("mode"));
 
-    const isMypageActive = pathname === "/mypage" || pathname.startsWith("/mypage/");
+  const isMypageActive = pathname === "/mypage" || pathname.startsWith("/mypage/");
   if (shouldHide) return null;
   return (
     <div className="fixed bottom-0 left-1/2 z-50 h-[88px] w-full max-w-[768px] -translate-x-1/2 border-t bg-white p-7">

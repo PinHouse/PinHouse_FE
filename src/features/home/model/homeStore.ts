@@ -35,7 +35,7 @@ type HomeMaxSheet = {
 };
 
 export const useHomeMaxTime = create<HomeMaxSheet>(set => ({
-  maxTime: 30,
+  maxTime: 60,
   setMaxTime: time => set({ maxTime: time }),
   reset: () => set({ maxTime: 30 }),
 }));

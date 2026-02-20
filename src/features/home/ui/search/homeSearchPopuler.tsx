@@ -24,7 +24,7 @@ export const HomeSearchPopuler = () => {
             size="sm"
             onClick={() => handleSearchTag(word.keyword)}
             className={cn(
-              "font-suit text-text-greyscale-grey-85 rounded-full border px-3 py-1 text-sm transition-all"
+              "font-suit text-text-greyscale-grey-85 rounded-full border px-3 py-1 text-sm transition-all hover:border-none hover:bg-primary-blue-300 hover:text-gray-200"
             )}
           >
             {word.keyword}

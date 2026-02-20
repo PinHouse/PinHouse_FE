@@ -1,9 +1,9 @@
-import { cn } from "@/lib/utils";
 import { HomeBottomRender } from "@/src/assets/images/render/homeBottom";
 import { HomeRectangleRender } from "@/src/assets/images/render/homeRectangle";
 import { HomeRectangleRender2 } from "@/src/assets/images/render/homeRectangle_1";
 import { HomeStarRender } from "@/src/assets/images/render/homeStar";
 import { SecondaryLogoRender } from "@/src/assets/images/render/secondaryLogo";
+import { MobileFrameWithSheetPortal } from "@/src/shared/ui/globalRender/mobileFrameWithSheetPortal";
 import { ReactNode } from "react";
 
 interface Props {
@@ -58,20 +58,9 @@ export const HomeLandingRender = ({ children, bottom }: Props) => {
         </section>
 
         <section className="relative z-10 flex h-full min-h-[812px] justify-center sm:p-5 md:pb-[90px] md:pt-16 lg:pb-[90px] lg:pt-16 [@media(max-height:700px)]:min-h-0">
-          <div className="relative z-10 flex min-h-0 w-full max-w-[375px] flex-col bg-white shadow-2xl sm:rounded-xl sm:p-0 md:rounded-2xl lg:rounded-2xl [@media(min-width:375px)]:w-[375px]">
-            <div className="pointer-events-none absolute inset-0 rounded-2xl" />
-
-            <div
-              className={cn(
-                "no-scrollbar relative min-h-0 max-w-[375px] flex-1 overflow-y-auto rounded-t-2xl",
-                !hasBottom && "rounded-b-2xl"
-              )}
-            >
-              {children}
-            </div>
-
-            <div className={cn("shrink-0", !hasBottom && "hidden")}>{bottom}</div>
-          </div>
+          <MobileFrameWithSheetPortal bottom={bottom} hasBottom={hasBottom}>
+            {children}
+          </MobileFrameWithSheetPortal>
 
           <div className="pointer-events-none absolute bottom-0 left-[75px] z-0 w-[520px] -translate-x-1/2">
             <HomeBottomRender />

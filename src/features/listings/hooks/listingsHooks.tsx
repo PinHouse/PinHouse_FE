@@ -37,9 +37,9 @@ const normalizeRentType = (rentType: string) => {
 };
 
 export const getListingIcon = (type: string, housingType: string, size = 78) => {
-  const Nyear = normalizeRentType(type);
+  const Near = normalizeRentType(type);
 
-  const IconComp = LISTING_ICON_MAP[Nyear]?.[housingType];
+  const IconComp = LISTING_ICON_MAP[Near]?.[housingType];
   if (!IconComp) return null;
 
   return <IconComp width={size} height={size} />;
@@ -160,14 +160,15 @@ export const HouseICons = (item: ListingNormalized) => {
 type HouseRentalProps = ListingNormalized & {
   query: "listingListInfinite" | "listingSearchInfinite" | "notice";
 };
-//  ListingNormalized
 
+//  ListingNormalized
 export const HouseRental = ({ query, ...item }: HouseRentalProps) => {
-  const rantalText = getListingsRental(item.type);
-  if (!rantalText) return null;
+  const Near = normalizeRentType(item.type);
+  const rentalText = getListingsRental(Near);
+  if (!rentalText) return null;
   return (
     <span className="flex w-full justify-between">
-      <ListingBgBookMark item={item.type} bg={rantalText.bg} text={rantalText.text} border="none" />
+      <ListingBgBookMark item={item.type} bg={rentalText.bg} text={rentalText.text} border="none" />
       <LikeType liked={item.liked} id={item.id} type={"NOTICE"} resetQuery={[query]} />
     </span>
   );

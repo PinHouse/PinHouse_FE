@@ -22,6 +22,7 @@ export const MaxTimeSliderBox = () => {
           <Slider
             min={0}
             max={120}
+            step={10}
             labelSuffix="분"
             value={[maxTime]}
             onValueChange={onSliderValueChange}

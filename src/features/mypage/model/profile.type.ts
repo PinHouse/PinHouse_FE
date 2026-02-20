@@ -1,8 +1,10 @@
+import { OAuthProviderType } from "@/src/shared/types";
+
 export interface ProfileData {
   nickname: string;
   email: string;
   profileImageUrl?: string | null;
-  provider?: "naver" | "kakao" | "google";
+  provider?: OAuthProviderType;
   badgeCount?: number;
 }
 
