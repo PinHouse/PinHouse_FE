@@ -14,7 +14,6 @@ type PinpointStandardProps = {
 export const PinpointStandard = ({ onListingsPageMove }: PinpointStandardProps) => {
   const { data } = useNoticeCount();
   const count = data?.count;
-  console.log(count);
   return (
     <div
       className="flex min-h-[88px] flex-1 cursor-pointer flex-col justify-between rounded-lg bg-primary-blue-300 px-4 py-3"
