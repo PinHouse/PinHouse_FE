@@ -28,11 +28,7 @@ export const SettingsSection = () => {
     <div className="flex min-h-screen flex-col bg-white">
       <PageTransition>
         <header className="relative flex items-center px-5 py-4" aria-label={MYPAGE_SETTINGS_TITLE}>
-          <DefaultHeader
-            title={MYPAGE_SETTINGS_TITLE}
-            showCloseButton
-            onCloseClick={() => router.push("/mypage")}
-          />
+          <DefaultHeader title={MYPAGE_SETTINGS_TITLE} />
         </header>
         <div className="border-b border-greyscale-grey-25"></div>
         <div className="px-5">
