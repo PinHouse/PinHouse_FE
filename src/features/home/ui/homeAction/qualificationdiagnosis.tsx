@@ -7,8 +7,10 @@ type QualificationDiagnosisProps = {
 };
 export const QualificationDiagnosis = ({ onEligibilityPageMove }: QualificationDiagnosisProps) => {
   const { data: recommend } = useRecommendedNotice();
-  const count = recommend?.pages[0]?.totalCount;
-  const hasDiagnosisResult = useDiagnosisResultStore(state => state.result != null);
+  const count = recommend?.pages[0]?.totalElements;
+  const hasDiagnosisResult = useDiagnosisResultStore(state => {
+    return state.result != null;
+  });
 
   return (
     <div
@@ -32,7 +34,7 @@ export const QualificationDiagnosis = ({ onEligibilityPageMove }: QualificationD
           className="flex items-center rounded-xl bg-greyscale-grey-25 p-1 text-xs font-bold"
           style={{ color: "#FFBA18" }}
         >
-          <p>{hasDiagnosisResult ? "100% 완료" : "0% 완료"}</p>
+          <p>{(count && count > 0) || hasDiagnosisResult ? "100% 완료" : "0% 완료"}</p>
         </span>
       </div>
     </div>
