@@ -91,7 +91,7 @@ export const calculateAge = (birthDate: Date | null): number | null => {
  * 결정트리 정의
  */
 export const eligibilityDecisionTree: StepConfig[] = [
-  // basic info 001
+  // basicInfo001
   {
     id: "basicInfo001",
     groupId: "personalInfo",
@@ -137,7 +137,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // basic info 002
+  // basicInfo002
   {
     id: "basicInfo002",
     groupId: "personalInfo",
@@ -189,7 +189,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // basic info 003
+  // basicInfo003
   {
     id: "basicInfo003",
     groupId: "personalInfo",
@@ -287,7 +287,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // basic info 004
+  // basicInfo004
   {
     id: "basicInfo004",
     groupId: "personalInfo",
@@ -375,7 +375,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // underage 001
+  // underAge001
   {
     id: "underAge001",
     groupId: "identityInfo",

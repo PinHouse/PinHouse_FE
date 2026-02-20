@@ -12,7 +12,11 @@ export const useDefaultHeader = ({ path, prevPath, reset }: DefaultHeaderProps) 
   const handleRouter = () => {
     const nextPath = prevPath ?? path;
     reset();
-    router.push(nextPath);
+    if (prevPath) {
+      router.push(nextPath);
+    } else {
+      router.back();
+    }
   };
   return { handleRouter };
 };
