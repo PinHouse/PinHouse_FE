@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "@/src/assets/icons/button/arrowUpRight";
 import { useRecommendedNotice } from "@/src/entities/home/hooks/homeHooks";
+import { useDiagnosisResultStore } from "@/src/features/eligibility/model/diagnosisResultStore";
 
 type QualificationDiagnosisProps = {
   onEligibilityPageMove: () => void;
@@ -7,6 +8,7 @@ type QualificationDiagnosisProps = {
 export const QualificationDiagnosis = ({ onEligibilityPageMove }: QualificationDiagnosisProps) => {
   const { data: recommend } = useRecommendedNotice();
   const count = recommend?.pages[0]?.totalCount;
+  const hasDiagnosisResult = useDiagnosisResultStore(state => state.result != null);
 
   return (
     <div
@@ -25,12 +27,12 @@ export const QualificationDiagnosis = ({ onEligibilityPageMove }: QualificationD
       </div>
 
       <div className="flex gap-2 text-xl leading-tight">
-        <p className="font-bold text-white">{count ? count : "0"}건</p>
+        <p className="font-bold text-white">{count ?? 0}건</p>
         <span
           className="flex items-center rounded-xl bg-greyscale-grey-25 p-1 text-xs font-bold"
           style={{ color: "#FFBA18" }}
         >
-          <p>0% 완료</p>
+          <p>{hasDiagnosisResult ? "100% 완료" : "0% 완료"}</p>
         </span>
       </div>
     </div>
