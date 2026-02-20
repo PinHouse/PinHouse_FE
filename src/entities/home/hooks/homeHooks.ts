@@ -100,28 +100,33 @@ export const useGlobalPageNation = <TItem>({
   });
 };
 
+const recommendedFetchedKey = (userId: string) => `home-recommended-fetched:${userId ?? "anon"}`;
+
 export const useRecommendedNotice = () => {
+  const { userName } = useOAuthStore();
+  const isBrowser = typeof window !== "undefined";
+
+  const fetched =
+    isBrowser && !!userName
+      ? sessionStorage.getItem(recommendedFetchedKey(userName)) === "query"
+      : false;
+
   return useInfiniteQuery<SliceResponse<ListingItem>, Error>({
-    queryKey: ["HOME_RECOMMENDED"],
+    queryKey: ["HOME_RECOMMENDED", userName],
     initialPageParam: 1,
     retry: false,
+    enabled: isBrowser && !!userName && !fetched,
+    staleTime: Infinity,
+    gcTime: Infinity,
     queryFn: async ({ pageParam }) => {
-      try {
-        return await getNoticeByPinPoint<SliceResponse<ListingItem>>({
-          url: HOME_RECOMMENDED_ENDPOINT,
-          params: { page: Number(pageParam), offSet: 10 },
-        });
-      } catch (e) {
-        if (axios.isAxiosError(e)) {
-          const message = e.response?.data?.message ?? e.response?.data?.error ?? e.message;
-          toast.error(message);
-          throw new Error(message);
-        }
-        throw e instanceof Error ? e : new Error("Unknown error");
-      }
+      const data = await getNoticeByPinPoint<SliceResponse<ListingItem>>({
+        url: HOME_RECOMMENDED_ENDPOINT,
+        params: { page: Number(pageParam), offSet: 10 },
+      });
+
+      sessionStorage.setItem(recommendedFetchedKey(userName), "query");
+      return data;
     },
-    getNextPageParam: lastPage => {
-      return lastPage.hasNext ? lastPage.pages + 1 : undefined;
-    },
+    getNextPageParam: lastPage => (lastPage.hasNext ? lastPage.pages + 1 : undefined),
   });
 };

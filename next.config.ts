@@ -25,6 +25,16 @@ const nextConfig: NextConfig = {
         hostname: "t1.kakaocdn.net",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "k.kakaocdn.net",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "k.kakaocdn.net",
+        pathname: "/**",
+      },
     ],
   },
   webpack(config: Configuration) {
