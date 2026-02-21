@@ -29,7 +29,7 @@ export const getListingsRental = (type: string) => {
   return rental;
 };
 
-const normalizeRentType = (rentType: string) => {
+export const normalizeRentType = (rentType: string) => {
   const v = (rentType ?? "").replace(/\s+/g, "").trim();
   if (/\d+년임대/.test(v)) return "N년임대";
   if (v.includes("공공")) return "통합공공임대";
