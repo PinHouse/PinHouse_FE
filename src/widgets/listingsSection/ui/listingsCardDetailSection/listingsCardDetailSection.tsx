@@ -1,6 +1,4 @@
 "use client";
-
-import { useListingDetailBasic } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import {
   ListingsCardDetailCompareButton,
   ListingsCardDetailComplexSection,
@@ -9,29 +7,13 @@ import {
   ListingsCardDetailOutOfCriteriaSection,
   ListingsCardDetailSummary,
 } from "@/src/features/listings";
-import {
-  useDetailFilterSheetStore,
-  useListingDetailCountStore,
-} from "@/src/features/listings/model";
-import { useEffect } from "react";
 import { DataEnterTransition } from "@/src/shared/ui/animation/pageUpTransition";
 import { Spinner } from "@/src/shared/ui/spinner/default";
+import { useListingsCardDetailSectionHooks } from "@/src/features/listings/hooks";
 
 export const ListingsCardDetailSection = ({ id }: { id: string }) => {
-  const { data, isLoading } = useListingDetailBasic(id);
-  const open = useDetailFilterSheetStore(state => state.open);
-  const setCounts = useListingDetailCountStore(state => state.setCounts);
-
-  const ready = !!id && !!data?.data && !isLoading;
-
-  useEffect(() => {
-    if (!data?.data?.filtered) return;
-    setCounts(data.data.filtered.totalCount);
-  }, [data?.data?.filtered?.totalCount, setCounts]);
-
-  const basicInfo = data?.data?.basicInfo;
-  const filtered = data?.data?.filtered;
-  const nonFiltered = data?.data?.nonFiltered;
+  const { data, isLoading, ready, basicInfo, filtered, nonFiltered } =
+    useListingsCardDetailSectionHooks(id);
 
   if (!data?.data || isLoading) {
     return (
@@ -48,9 +30,7 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
           <>
             <ListingsCardDetailHeader />
             <main>
-              <ListingsCardDetailSummary
-                basicInfo={basicInfo}
-              />
+              <ListingsCardDetailSummary basicInfo={basicInfo} />
 
               <ListingsCardDetailCompareButton paramId={id} />
               <ListingsCardDetailFilterBar />
@@ -60,9 +40,7 @@ export const ListingsCardDetailSection = ({ id }: { id: string }) => {
                 onFilteredCount={nonFiltered.totalCount}
               />
 
-              <ListingsCardDetailOutOfCriteriaSection
-                listings={nonFiltered}
-              />
+              <ListingsCardDetailOutOfCriteriaSection listings={nonFiltered} />
             </main>
           </>
         )}

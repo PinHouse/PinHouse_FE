@@ -1,21 +1,23 @@
 import { ListingDetailResponseWithColor } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { cn } from "@/lib/utils";
+import { useDetailColorHooks } from "@/src/features/listings/hooks";
 
 export const ListingsCardDetailSummary = ({
-                                            basicInfo,
-                                            className,
-                                          }: {
-  basicInfo: ListingDetailResponseWithColor["data"]["basicInfo"],
-  className?: string
+  basicInfo,
+  className,
+}: {
+  basicInfo: ListingDetailResponseWithColor["data"]["basicInfo"];
+  className?: string;
 }) => {
+  const { color } = useDetailColorHooks(basicInfo);
   return (
     <section className="p-5">
       <div className="mb-2 flex items-center gap-1">
         <TagButton
           size="xs"
           className={cn(
-            `rounded-md border-none text-xs ${basicInfo.rentalColor?.text} ${basicInfo.rentalColor?.bg} transition-all`
+            `rounded-md border-none text-xs ${color?.text} ${color?.bg} transition-all`
           )}
         >
           {basicInfo.type}
