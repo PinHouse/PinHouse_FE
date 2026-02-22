@@ -1,11 +1,14 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import { ListingContentsListProps } from "@/src/entities/listings/model/type";
-import { ListingNoSearchResult } from "../listingsNoSearchResult/listingNoSearchResult";
+import { ListingNoSearchResult } from "@/src/features/listings";
 import { Button } from "@/src/shared/lib/headlessUi";
 import { ListingContentsCard } from "./listingsContentCard";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 import { DataEnterTransition } from "@/src/shared/ui/animation/pageUpTransition";
+import {
+  useListingsContentListHooks,
+  useListingsContentsObserveHooks,
+} from "@/src/features/listings/hooks/useListingsContentListHooks";
 
 export const ListingContentsList = ({
   data,
@@ -15,44 +18,15 @@ export const ListingContentsList = ({
   isError,
   isBottom = true,
 }: ListingContentsListProps) => {
-  const items = data?.pages.flatMap(page => page.content) ?? [];
-  const observerRef = useRef<HTMLDivElement | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isBottoms, setIsBottoms] = useState(false);
-  const ready = !!items;
+  const { handleScroll, observerRoot, ready, items, isBottoms, setScrollContainerRef } =
+    useListingsContentListHooks(data);
 
-  const handleScroll = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 5;
-    setIsBottoms(atBottom);
-  };
-
-  useEffect(() => {
-    handleScroll();
-  }, [data]);
-
-  useEffect(() => {
-    if (!observerRef.current) return;
-    const observer = new IntersectionObserver(
-      entries => {
-        const entry = entries[0];
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.1,
-      }
-    );
-    observer.observe(observerRef.current);
-    return () => {
-      observer.disconnect();
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
+  const { observerRef } = useListingsContentsObserveHooks({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    root: observerRoot,
+  });
   if (!data) {
     return <Spinner title="공고 탐색중..." description="잠시만 기다려주세요" />;
   }
@@ -60,15 +34,15 @@ export const ListingContentsList = ({
   return (
     <div
       // className={`flex h-full w-full flex-col overflow-y-auto ${isBottom ? `pb-[88px]` : "pb-0"} scrollbar-hide`}
-      className={`flex h-full w-full flex-col overflow-y-auto scrollbar-hide`}
-      ref={scrollRef}
+      className="flex h-full w-full flex-col overflow-y-auto scrollbar-hide"
+      ref={setScrollContainerRef}
       onScroll={handleScroll}
     >
       <DataEnterTransition ready={ready}>
         <ListingContentsCard data={items} />
       </DataEnterTransition>
 
-      {!isError && hasNextPage && <div ref={observerRef} className="h-10" />}
+      {!isError && hasNextPage && <div ref={observerRef} className="h-20" />}
 
       {isFetchingNextPage && (
         <div className="py-5 text-center text-sm text-gray-400">불러오는 중...</div>
