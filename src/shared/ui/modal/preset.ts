@@ -43,6 +43,11 @@ export const eligibilityDiagnosisGoScript: ModalDescriptProps = {
   btnlabel: ["자격진단 하러가기"],
 };
 
+export const eligibilityLeaveConfirmScript: ModalDescriptProps = {
+  descript: "진단을 마치지 않고 나가면\n지금까지 입력한 내용이 저장되지 않아요!",
+  btnlabel: ["나가기", "계속 진단하기"],
+};
+
 export const discription: ModalDescriptMap = {
   filterSearch: filterScript,
   quickSearchEnterCheck: quickSearchEnterCheckScript,
@@ -51,4 +56,5 @@ export const discription: ModalDescriptMap = {
   withdrawConfirm: withdrawConfirmScript,
   eligibilityPreviousDiagnosis: eligibilityPreviousDiagnosisScript,
   eligibilityDiagnosisGo: eligibilityDiagnosisGoScript,
+  eligibilityLeaveConfirm: eligibilityLeaveConfirmScript,
 };

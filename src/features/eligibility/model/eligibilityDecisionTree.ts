@@ -91,7 +91,8 @@ export const calculateAge = (birthDate: Date | null): number | null => {
  * 결정트리 정의
  */
 export const eligibilityDecisionTree: StepConfig[] = [
-  // basic info 001
+  // 1. 기본 정보
+  // basicInfo001
   {
     id: "basicInfo001",
     groupId: "personalInfo",
@@ -137,7 +138,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // basic info 002
+  // basicInfo002
   {
     id: "basicInfo002",
     groupId: "personalInfo",
@@ -176,12 +177,20 @@ export const eligibilityDecisionTree: StepConfig[] = [
       if (!data.birthDate) return "생년월일을 선택해주세요";
       return null;
     },
-    getNextStep: () => {
+    getNextStep: data => {
+      const age = calculateAge(data.birthDate);
+      if (age === null) {
+        console.log("🔍 age is null:", age);
+        return null;
+      }
+      if (age < 19) {
+        return "underAge001";
+      }
       return "basicInfo003";
     },
   },
 
-  // basic info 003
+  // basicInfo003
   {
     id: "basicInfo003",
     groupId: "personalInfo",
@@ -279,7 +288,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // basic info 004
+  // basicInfo004
   {
     id: "basicInfo004",
     groupId: "personalInfo",
@@ -367,7 +376,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // underage 001
+  // underAge001
   {
     id: "underAge001",
     groupId: "identityInfo",
@@ -559,8 +568,25 @@ export const eligibilityDecisionTree: StepConfig[] = [
       }
       return null;
     },
-    getNextStep: () => {
-      return "adult002";
+    getNextStep: data => {
+      const age = calculateAge(data.birthDate);
+      if (age === null) return null;
+
+      const isMarried = data.marriageStatus === "1";
+      const isSingle = data.marriageStatus === "2";
+
+      // 1. 미혼+청년 (19~39세, 미혼)
+      if (isSingle && age >= 19 && age < 40) {
+        return "youngSingle001";
+      }
+
+      // 2. 미혼+중장년 (40~64세, 미혼)
+      if (isSingle && age >= 40 && age < 65) {
+        return "middleAge001";
+      }
+
+      // 3. 청년+중장년 기혼 (19~64세, 기혼) + 고령자(65세 이상, 미혼+기혼)
+      return "commonAge001";
     },
   },
 
@@ -664,6 +690,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
+  // 2. 신분 정보
   // young single 001 - 청년 미혼 대학생/취업준비생 여부
   {
     id: "youngSingle001",
@@ -719,63 +746,14 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 자동차 소유 여부 단계로 이동
-      return "youngSingle001_2";
-    },
-  },
-
-  // young single 001-2 - 청년 미혼 자동차 소유 여부 및 자산가액
-  {
-    id: "youngSingle001_2",
-    groupId: "identityInfo",
-    components: [
-      {
-        type: "optionSelector",
-        props: {
-          title: "개인 자동차를 소유중인가요?",
-          description: "개인 차량을 소유할 경우 대학생 신분으로 지원이 어려울 수 있어요",
-          options: [
-            { id: "1", label: "예" },
-            { id: "2", label: "아니오" },
-          ],
-          required: true,
-          direction: "horizontal",
-        },
-        storeKey: "hasCar",
-        children: [
-          {
-            type: "priceInput",
-            props: {
-              title: "자동차 자산가액 정보를 알려주세요",
-              placeholder: "0",
-            },
-            storeKey: "carAssetValue",
-            showWhen: data => {
-              return data.hasCar === "1";
-            },
-          },
-        ],
-      },
-    ],
-    validation: data => {
-      if (!data.hasCar) {
-        return "개인 자동차 소유 여부를 선택해주세요";
-      }
-      // 자동차를 소유한 경우 자산가액 입력 필수
-      if (data.hasCar === "1" && (!data.carAssetValue || data.carAssetValue === "0")) {
-        return "자동차 자산가액을 입력해주세요";
-      }
-      return null;
-    },
-    getNextStep: data => {
-      // 특별 자격 요건 단계로 이동
-      return "youngSingle003";
+      return "youngSingle002";
     },
   },
 
   // young single 002 - 청년 미혼 자동차 소유 여부 및 자산가액
   {
     id: "youngSingle002",
-    groupId: "assetInfo",
+    groupId: "identityInfo",
     components: [
       {
         type: "optionSelector",
@@ -1003,6 +981,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
+  // 3. 자산 정보
   // adult single 001 - 중장년 미혼 세대주/세대원 여부
   {
     id: "adultSingle001",
@@ -1066,6 +1045,48 @@ export const eligibilityDecisionTree: StepConfig[] = [
           required: true,
         },
         storeKey: "householdComposition",
+        children: [
+          {
+            type: "numberInputList",
+            props: {
+              title: "나의 세대 구성원을 자세히 알려주세요",
+              options: [
+                {
+                  id: "expectedBirth",
+                  prefix: "출산예정(임시)",
+                  postfix: "명",
+                  placeholder: "0",
+                },
+              ],
+              summary: (values: Record<string, string>) => {
+                const expectedBirth = values.expectedBirth ? Number(values.expectedBirth) || 0 : 0;
+                // 여기 들어온 순간 기혼X 기존 자녀 X 이므로 본인 + 출산예정 자녀
+                const total = 1 + expectedBirth;
+                return `우리집은 총 ${total} 인가구에요`;
+              },
+            },
+            storeKey: "marriedHouseholdChildrenInfo",
+            showWhen: data => {
+              return data.householdComposition === "2";
+            },
+          },
+          {
+            type: "optionSelector",
+            props: {
+              title: "다음 중 해당되는 사항이 있다면 모두 선택해주세요",
+              description: "복수 선택 가능",
+              options: [
+                { id: "1", label: "노부모를 1년이상 부양중이에요" },
+                { id: "2", label: "조손가족이에요" },
+              ],
+              multiselect: 2,
+            },
+            storeKey: "marriedHouseholdFamilyTypes",
+            showWhen: data => {
+              return data.householdComposition === "2";
+            },
+          },
+        ],
       },
     ],
     validation: data => {
@@ -1075,13 +1096,17 @@ export const eligibilityDecisionTree: StepConfig[] = [
       return null;
     },
     getNextStep: data => {
-      return "adultSingle002_2";
+      const isLivinWithFamily = data.householdComposition === "2";
+      if (isLivinWithFamily) {
+        return "adultSingle004_1";
+      }
+      return "adultSingle002_1";
     },
   },
 
   // adult single 002-2 - 중장년 미혼 주택 소유 여부 및 무주택 기간
   {
-    id: "adultSingle002_2",
+    id: "adultSingle002_1",
     groupId: "assetInfo",
     components: [
       {
@@ -1158,6 +1183,40 @@ export const eligibilityDecisionTree: StepConfig[] = [
       {
         type: "optionSelector",
         props: {
+          title: "토지를 소유하고 있나요?",
+          options: [
+            { id: "1", label: "예" },
+            { id: "2", label: "아니오" },
+          ],
+          required: true,
+          direction: "horizontal",
+        },
+        storeKey: "hasOwnLand",
+        children: [
+          {
+            type: "priceInput",
+            props: {
+              title: "토지 자산 금액 정보를 알려주세요",
+              description: "*두대 이상일 경우 총 합산 금액을 입력해주세요",
+              placeholder: "0",
+            },
+            storeKey: "landAssetValue",
+            showWhen: data => {
+              return data.hasOwnLand === "1";
+            },
+          },
+        ],
+      },
+      {
+        type: "infoButton",
+        props: {
+          title: "인정되는 토지 기준이 궁금하다면?",
+          description: "",
+        },
+      },
+      {
+        type: "optionSelector",
+        props: {
           title: "총자산 금액이 3억 3천 7백만원 이하인가요?",
           options: [
             { id: "1", label: "예" },
@@ -1180,6 +1239,12 @@ export const eligibilityDecisionTree: StepConfig[] = [
     validation: data => {
       if (!data.isTotalAssetUnder337Million) {
         return "총자산 금액 여부를 선택해주세요";
+      }
+      if (!data.hasOwnLand) {
+        return "토지 소유 여부를 선택해주세요";
+      }
+      if (data.hasOwnLand === "1" && (!data.landAssetValue || data.landAssetValue === "0")) {
+        return "토지 자산 금액을 입력해주세요";
       }
       return null;
     },
@@ -1267,6 +1332,40 @@ export const eligibilityDecisionTree: StepConfig[] = [
       {
         type: "optionSelector",
         props: {
+          title: "가구원중 토지를 소유하고 있는 가구원이 있나요?",
+          options: [
+            { id: "1", label: "예" },
+            { id: "2", label: "아니오" },
+          ],
+          required: true,
+          direction: "horizontal",
+        },
+        storeKey: "hasHouseholdLand",
+        children: [
+          {
+            type: "priceInput",
+            props: {
+              title: "토지 자산 금액 정보를 알려주세요",
+              description: "*두대 이상일 경우 총 합산 금액을 입력해주세요",
+              placeholder: "0",
+            },
+            storeKey: "householdLandAssetValue",
+            showWhen: data => {
+              return data.hasHouseholdLand === "1";
+            },
+          },
+        ],
+      },
+      {
+        type: "infoButton",
+        props: {
+          title: "인정되는 토지 기준이 궁금하다면?",
+          description: "",
+        },
+      },
+      {
+        type: "optionSelector",
+        props: {
           title: "가구원중 자동차를 소유하고 있는 사람이 있나요?",
           options: [
             { id: "1", label: "예" },
@@ -1322,6 +1421,15 @@ export const eligibilityDecisionTree: StepConfig[] = [
       },
     ],
     validation: data => {
+      if (!data.hasHouseholdLand) {
+        return "토지 소유 여부를 선택해주세요";
+      }
+      if (
+        data.hasHouseholdLand === "1" &&
+        (!data.householdLandAssetValue || data.householdLandAssetValue === "0")
+      ) {
+        return "토지 자산 금액을 입력해주세요";
+      }
       if (!data.hasHouseholdCar) {
         return "가구원 중 자동차 소유 여부를 선택해주세요";
       }
@@ -1401,7 +1509,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           description:
             "기혼일 경우 배우자와 분리된 세대에 거주하더라도 같은 세대로 간주합니다. 자녀는 같은 등본상에 등록되어있어야합니다.",
           options: [
-            { id: "1", label: "1인가구에요" },
+            // { id: "1", label: "1인가구에요" },
             { id: "2", label: "가족과 함께 살고있어요" },
           ],
           required: true,
@@ -1473,151 +1581,6 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 주택 소유 여부 단계로 이동
-      return "adultMarried002_2";
-    },
-  },
-
-  // adult married 002-2 - 중장년 기혼 주택 소유 여부 및 무주택 기간
-  {
-    id: "adultMarried002_2",
-    groupId: "assetInfo",
-    components: [
-      {
-        type: "optionSelector",
-        props: {
-          title: "주택을 소유하고 있나요?",
-          description: "유주택자의 경우 대부분의 공공임대 지원이 제한됩니다",
-          options: [
-            { id: "1", label: "예" },
-            { id: "2", label: "아니오" },
-          ],
-          required: true,
-          direction: "horizontal",
-        },
-        storeKey: "hasOwnHousing",
-        children: [
-          {
-            type: "numberInputList",
-            props: {
-              title: "무주택 기간을 알려주세요",
-              options: [
-                {
-                  id: "housingDisposalYears",
-                  prefix: "주택을 처분한지 만",
-                  postfix: "년이 지났어요",
-                  placeholder: "0",
-                },
-              ],
-            },
-            storeKey: "housingDisposalYears",
-            showWhen: data => {
-              return data.hasOwnHousing === "2";
-            },
-          },
-          {
-            type: "checkbox",
-            props: {
-              label: "한번도 주택을 소유한적이 없어요",
-            },
-            storeKey: "hasNeverOwnedHousing",
-            showWhen: data => {
-              return data.hasOwnHousing === "2";
-            },
-          },
-        ],
-      },
-    ],
-    validation: data => {
-      if (!data.hasOwnHousing) {
-        return "주택 소유 여부를 선택해주세요";
-      }
-      // 주택을 소유하지 않은 경우, 무주택 기간 또는 체크박스 중 하나는 입력되어야 함
-      if (data.hasOwnHousing === "2") {
-        if (
-          !data.hasNeverOwnedHousing &&
-          (!data.housingDisposalYears || data.housingDisposalYears === "0")
-        ) {
-          return "무주택 기간을 입력하거나 체크박스를 선택해주세요";
-        }
-      }
-      return null;
-    },
-    getNextStep: data => {
-      // 토지 및 금융자산 단계로 이동
-      return "adultMarried002_4";
-    },
-  },
-
-  // adult married 002-4 - 중장년 기혼 토지 소유 및 금융자산
-  {
-    id: "adultMarried002_4",
-    groupId: "assetInfo",
-    components: [
-      {
-        type: "optionSelector",
-        props: {
-          title: "토지를 소유하고 있나요?",
-          options: [
-            { id: "1", label: "예" },
-            { id: "2", label: "아니오" },
-          ],
-          required: true,
-          direction: "horizontal",
-        },
-        storeKey: "hasOwnLand",
-        children: [
-          {
-            type: "priceInput",
-            props: {
-              title: "토지 자산 금액 정보를 알려주세요",
-              description: "*두대 이상일 경우 총 합산 금액을 입력해주세요",
-              placeholder: "0",
-            },
-            storeKey: "landAssetValue",
-            showWhen: data => {
-              return data.hasOwnLand === "1";
-            },
-          },
-        ],
-      },
-      {
-        type: "infoButton",
-        props: {
-          title: "인정되는 토지 기준이 궁금하다면?",
-          description: "",
-        },
-      },
-      {
-        type: "priceInput",
-        props: {
-          title: "내 금융자산 총 합 금액을 알려주세요",
-          placeholder: "0",
-        },
-        storeKey: "financialAssetValue",
-      },
-      {
-        type: "infoButton",
-        props: {
-          title: "금융자산 기준이 궁금하다면?",
-          description: "",
-        },
-      },
-    ],
-    validation: data => {
-      if (!data.hasOwnLand) {
-        return "토지 소유 여부를 선택해주세요";
-      }
-      // 토지를 소유한 경우 자산 금액 입력 필수
-      if (data.hasOwnLand === "1" && (!data.landAssetValue || data.landAssetValue === "0")) {
-        return "토지 자산 금액을 입력해주세요";
-      }
-      if (!data.financialAssetValue || data.financialAssetValue === "0") {
-        return "금융자산 총 합 금액을 입력해주세요";
-      }
-      return null;
-    },
-    getNextStep: data => {
-      // 가구원 주택 소유 여부 단계로 이동
       return "adultMarried004_1";
     },
   },
@@ -1701,7 +1664,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
       {
         type: "optionSelector",
         props: {
-          title: "가구원중 토지를 소유하고 있는 사람이 있나요?",
+          title: "가구원중 토지를 소유하고 있는 가구원이 있나요?",
           options: [
             { id: "1", label: "예" },
             { id: "2", label: "아니오" },
@@ -1710,6 +1673,20 @@ export const eligibilityDecisionTree: StepConfig[] = [
           direction: "horizontal",
         },
         storeKey: "hasHouseholdLand",
+        children: [
+          {
+            type: "priceInput",
+            props: {
+              title: "토지 자산 금액 정보를 알려주세요",
+              description: "*두대 이상일 경우 총 합산 금액을 입력해주세요",
+              placeholder: "0",
+            },
+            storeKey: "householdLandAssetValue",
+            showWhen: data => {
+              return data.hasHouseholdLand === "1";
+            },
+          },
+        ],
       },
       {
         type: "infoButton",
@@ -1754,24 +1731,36 @@ export const eligibilityDecisionTree: StepConfig[] = [
         },
       },
       {
-        type: "priceInput",
+        type: "optionSelector",
         props: {
-          title: "가구원의 금융자산 총합 금액을 알려주세요",
-          placeholder: "0",
+          title: "가구원의 총자산 금액이 3억 3천 7백만원 이하인가요?",
+          options: [
+            { id: "1", label: "예" },
+            { id: "2", label: "아니오" },
+          ],
+          required: true,
+          direction: "horizontal",
         },
-        storeKey: "householdFinancialAssetValue",
+        storeKey: "isHouseholdTotalAssetUnder337Million",
       },
       {
         type: "infoButton",
         props: {
-          title: "금융자산 기준이 궁금하다면?",
+          title: "총자산 계산법이 궁금하다면?",
           description: "",
+          sheetContentType: "asset",
         },
       },
     ],
     validation: data => {
       if (!data.hasHouseholdLand) {
         return "가구원 중 토지 소유 여부를 선택해주세요";
+      }
+      if (
+        data.hasHouseholdLand === "1" &&
+        (!data.householdLandAssetValue || data.householdLandAssetValue === "0")
+      ) {
+        return "토지 자산 금액을 입력해주세요";
       }
       if (!data.hasHouseholdCar) {
         return "가구원 중 자동차 소유 여부를 선택해주세요";
@@ -1783,8 +1772,8 @@ export const eligibilityDecisionTree: StepConfig[] = [
       ) {
         return "자동차 자산가액을 입력해주세요";
       }
-      if (!data.householdFinancialAssetValue || data.householdFinancialAssetValue === "0") {
-        return "가구원의 금융자산 총합 금액을 입력해주세요";
+      if (!data.isHouseholdTotalAssetUnder337Million) {
+        return "가구원의 총자산 금액 여부를 선택해주세요";
       }
       return null;
     },

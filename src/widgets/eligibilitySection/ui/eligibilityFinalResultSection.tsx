@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useDiagnosisResultStore } from "@/src/features/eligibility/model/diagnosisResultStore";
 import { DiagnosisResultBanner, DiagnosisResultList } from "@/src/features/eligibility/ui/result";
-import { RightIconDefaultHeader } from "@/src/shared/ui/header";
+import { DefaultHeader } from "@/src/shared/ui/header";
 import { ErrorState } from "@/src/shared/ui/errorState";
 import { useOAuthStore } from "@/src/features/login/model/authStore";
 import { PageTransition } from "@/src/shared/ui/animation/pageTransition";
@@ -47,9 +47,10 @@ export const EligibilityFinalResultSection = () => {
             className="relative flex items-center bg-white px-5 py-4"
             aria-label={FINAL_RESULT_PAGE_TITLE}
           >
-            <RightIconDefaultHeader
+            <DefaultHeader
               title={FINAL_RESULT_PAGE_TITLE}
-              onRightClick={() => router.push("/home")}
+              showCloseButton
+              onCloseClick={() => router.push("/home")}
             />
           </header>
           <div className="flex min-h-0 flex-1 flex-col items-center justify-center bg-greyscale-grey-25 px-5">
@@ -70,9 +71,10 @@ export const EligibilityFinalResultSection = () => {
           className="relative flex items-center bg-white px-5 py-4"
           aria-label={FINAL_RESULT_PAGE_TITLE}
         >
-          <RightIconDefaultHeader
+          <DefaultHeader
             title={FINAL_RESULT_PAGE_TITLE}
-            onRightClick={() => router.push("/home")}
+            showCloseButton
+            onCloseClick={() => router.push("/home")}
           />
         </header>
         <div className="flex flex-1 flex-col gap-4 px-5 pb-5">

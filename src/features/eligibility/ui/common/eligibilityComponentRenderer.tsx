@@ -13,6 +13,8 @@ import { EligibilityInfoButtonWithSheet } from "./eligibilityInfoButtonWithSheet
 import { DatePicker } from "@/src/shared/ui/datePicker/datePicker";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { motion, AnimatePresence } from "framer-motion";
+import { DefaultHeader } from "@/src/shared/ui/header/header/defaultHeader/defaultHeader";
+import { ELIGIBILITY_COMPONENT_RENDERER_PAGE_TITLE } from "../../model/eligibilityConstants";
 
 export interface EligibilityComponentRendererProps {
   /** 컴포넌트 설정 */
