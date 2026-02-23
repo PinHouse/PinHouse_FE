@@ -306,6 +306,8 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
             onClick = () => router.push("/home");
           } else if (config.props.action === "back") {
             onClick = () => router.back();
+          } else if (config.props.action === "path") {
+            onClick = () => router.push(config.props.path);
           }
         }
 

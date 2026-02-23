@@ -735,6 +735,8 @@ export const eligibilityDecisionTree: StepConfig[] = [
           title: "우리 학교가 공공 임대주택에서 인정되는 학교 기준에 해당되는지 궁금하다면?",
           description:
             "학점은행제, 사내대학, 원격대학, 재외국민은 제외합니다\n대안학교, 검정고시는 포함하지만 해외 고등학교 졸업은 제외합니다",
+          action: "path",
+          path: "/eligibility/school",
         },
       },
     ],
