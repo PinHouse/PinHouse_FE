@@ -45,7 +45,14 @@ export const SearchBarLabel = ({
             </span>
           </label>
           <div className="mt-3">
-            <SearchBar className={className} {...props} />
+            <SearchBar
+              className={className}
+              {...props}
+              onEnter={onEnter}
+              onChange={onChange}
+              onClear={onClear}
+              xBtnDef={xBtnDef}
+            />
           </div>
         </>
       ) : (
@@ -56,7 +63,14 @@ export const SearchBarLabel = ({
             </span>
           </label>
           <div className="relative flex-1">
-            <SearchBar className={className} {...props} />
+            <SearchBar
+              className={className}
+              {...props}
+              onEnter={onEnter}
+              onChange={onChange}
+              onClear={onClear}
+              xBtnDef={xBtnDef}
+            />
           </div>
         </>
       )}
