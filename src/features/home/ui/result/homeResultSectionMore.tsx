@@ -1,33 +1,34 @@
-import { DownButton } from "@/src/assets/icons/button";
+import { DownButton, UpButton } from "@/src/assets/icons/button";
 import { SearchCategory } from "@/src/entities/home/model/type";
 
 interface HomeResultSectionMoreProps {
-  expanded: boolean;
   onToggle: (category: SearchCategory) => void;
   category: SearchCategory;
-  hasNextPage?: boolean; // undefined 가능
+  canLoadMore?: boolean; // undefined 가능
+  isFetchingNextPage: boolean;
+  nextPage: boolean;
 }
 
 export const HomeResultSectionMore = ({
   category,
-  expanded,
-  onToggle,
-  hasNextPage,
-}: HomeResultSectionMoreProps) => {
-  // // 아직 펼쳐지지 않았다면 버튼 자체를 숨김
-  // if (!expanded) return null;
 
+  onToggle,
+  canLoadMore,
+  isFetchingNextPage,
+  nextPage,
+}: HomeResultSectionMoreProps) => {
   return (
     <button
       type="button"
       onClick={() => onToggle(category)}
+      disabled={!canLoadMore || isFetchingNextPage}
       className="flex w-full items-center justify-center gap-1 rounded-b-xl bg-white p-3 text-xs text-gray-400"
     >
-      {hasNextPage ? (
+      {canLoadMore ? (
         <>
           <p>{"더보기"}</p>
           <span className="rotate-180 transition-transform">
-            <DownButton width={15} height={15} />
+            {nextPage ? <UpButton width={15} height={15} /> : <DownButton width={15} height={15} />}
           </span>
         </>
       ) : (
