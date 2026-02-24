@@ -34,5 +34,7 @@ jobs:
           build-args: |
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
             NEXT_PUBLIC_OAUTH2=${{ secrets.NEXT_PUBLIC_OAUTH2 }}
+          secrets: |
+            npmrc=${{ secrets.NPM_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
