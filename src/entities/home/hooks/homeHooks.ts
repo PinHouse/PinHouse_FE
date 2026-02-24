@@ -57,9 +57,7 @@ export const useNoticeCount = () => {
 
 export const useGlobal = <T>({ params, q }: { params: string; q: string }) => {
   const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/${params}`;
-
   const param = params === "popular" ? { limit: 10 } : { q: q };
-
   return useQuery({
     queryKey: ["global-search", params, q],
     retry: false,
@@ -82,8 +80,8 @@ export const useGlobalPageNation = <TItem>({
 
   return useInfiniteQuery<SliceResponse<TItem>, Error>({
     queryKey: ["globalInfinity", apiCategory],
-    enabled: Boolean(category),
-    initialPageParam: 1,
+    enabled: enabled,
+    initialPageParam: 2,
     retry: false,
     queryFn: ({ pageParam }) =>
       getNoticeByPinPoint<SliceResponse<TItem>>({
@@ -94,9 +92,7 @@ export const useGlobalPageNation = <TItem>({
           page: Number(pageParam),
         },
       }),
-    getNextPageParam: lastPage => {
-      return lastPage.hasNext ? lastPage.pages + 1 : undefined;
-    },
+    getNextPageParam: (lastPage, allPages) => (lastPage.hasNext ? allPages.length + 2 : undefined),
   });
 };
 

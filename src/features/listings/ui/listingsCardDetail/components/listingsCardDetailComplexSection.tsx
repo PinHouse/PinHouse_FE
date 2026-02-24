@@ -1,9 +1,9 @@
 import { ArrowUpArrowDown } from "@/src/assets/icons/button/arrowUpArrowDown";
 import { ListingsCardTile } from "./listingsCardTile";
 import { ComplexList } from "@/src/entities/listings/model/type";
-import { ListingNoSearchResult } from "../../listingsNoSearchResult/listingNoSearchResult";
+import { ListingNoSearchResult } from "@/src/features/listings";
 import { cn } from "@/lib/utils";
-import { useListingsDetailTypeStore } from "../../../model";
+import { useListingComplexSectionHooks } from "@/src/features/listings/hooks";
 
 type ListingsCardDetailComplexSectionProps = {
   listings?: ComplexList;
@@ -14,16 +14,8 @@ export const ListingsCardDetailComplexSection = ({
   listings,
   onFilteredCount,
 }: ListingsCardDetailComplexSectionProps) => {
-  const { sortType, setSortType } = useListingsDetailTypeStore();
-
   if (!listings) return;
-
-  const complexesCount =
-    listings?.totalCount < 10 ? `0${listings?.totalCount}` : listings?.totalCount;
-
-  const onDangiSortType = () => {
-    setSortType(sortType === "거리 순" ? "주변환경 매칭순" : "거리 순");
-  };
+  const { complexesCount, onDangSortType, sortType } = useListingComplexSectionHooks(listings);
   return (
     <section
       className={cn("p-5", onFilteredCount !== 0 && "border-b-[11px] border-b-greyscale-grey-25")}
@@ -33,7 +25,7 @@ export const ListingsCardDetailComplexSection = ({
           <p className="text-base-17 text-greyscale-grey-900">단지</p>
           <p className="text-base-17 text-greyscale-grey-600">{complexesCount}</p>
         </h2>
-        <div className="flex gap-1 hover:cursor-pointer" onClick={onDangiSortType}>
+        <div className="flex gap-1 hover:cursor-pointer" onClick={onDangSortType}>
           <span className="text-xs font-semibold text-greyscale-grey-900">
             {sortType === "거리 순" ? "핀포인트 거리순" : "주변환경 매칭순"}
           </span>

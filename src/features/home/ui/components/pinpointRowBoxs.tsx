@@ -2,7 +2,7 @@ import { useListingFilterDetail } from "@/src/entities/listings/hooks/useListing
 import { PinPointPlace } from "@/src/entities/listings/model/type";
 import { PinpointItem } from "./components/pinpointId";
 import { PinpointRowBoxSkeleton } from "./skeleton/skeleton";
-import { usePinpointRowBox } from "@/src/features/home/hooks/hooks";
+import { usePinpointRowBox } from "@/src/features/home/ui/homeUseHooks/useHomeHooks";
 
 export const PinpointRowBox = () => {
   const { data } = useListingFilterDetail<PinPointPlace>();

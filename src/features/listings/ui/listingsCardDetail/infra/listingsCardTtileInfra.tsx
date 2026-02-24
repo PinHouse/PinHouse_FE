@@ -1,81 +1,20 @@
 import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { ReactNode, useCallback, useState } from "react";
-
-import { useListingRentalDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { TransportIconRenderer } from "./TransportIconRenderer";
-import { Button } from "@/src/shared/lib/headlessUi";
 import { InfraSheet } from "./infraSheet";
-import { SheetState } from "../../../model";
 import { ComplexesInfo } from "../../../hooks/listingsHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
-
-interface DetailSectionProps {
-  title: string;
-  showAction?: boolean;
-  children: ReactNode;
-  onOpen: () => void;
-}
-
-const DetailSection = ({ title, children, showAction = false, onOpen }: DetailSectionProps) => {
-  return (
-    <section>
-      <div className="mb-2 flex items-center justify-between">
-        <p className="text-sm font-bold text-greyscale-grey-800">{title}</p>
-        {showAction && (
-          <Button
-            type="button"
-            theme={"grey"}
-            variant={"ghost"}
-            className="text-primary-blue-300 hover:text-primary-blue-500"
-            size={"xs"}
-            radius={"sm"}
-            onClick={onOpen}
-          >
-            자세히
-          </Button>
-        )}
-      </div>
-      {children}
-    </section>
-  );
-};
-
-const EmptyDetail = ({ children }: { children: ReactNode }) => (
-  <p className="rounded-lg bg-greyscale-grey-25 px-3 py-2 text-xs font-medium text-greyscale-grey-500">
-    {children}
-  </p>
-);
+import { DetailSection, EmptyDetail } from "@/src/features/listings/hooks/useListingsCardTileHooks";
+import { useListingRentalDetailHooks, useRouteSheetHooks } from "@/src/features/listings/hooks";
 
 export const ListingsCardTileDetails = ({
   listing,
 }: {
   listing: ListingsCardTileProps["listing"];
 }) => {
-  const { data: infra } = useListingRentalDetail(listing.id);
-  const [sheetState, setSheetState] = useState<SheetState>({
-    open: false,
-  });
-
-  const route = infra?.distance;
-  const infraData = infra?.infra;
-  const roomTypes = infra?.unitTypes;
-  const rentalInfo = infra?.rentalInfo;
-
-  const openRouteSheet = useCallback(() => {
-    if (!infra?.id) return;
-    setSheetState({ open: true, section: "route", listingId: infra.id });
-  }, [infra?.id]);
-
-  const openInfraSheet = useCallback(() => {
-    if (!infra?.id) return;
-    setSheetState({ open: true, section: "infra", listingId: infra.id });
-  }, [infra?.id]);
-
-  const openRoomSheet = useCallback(() => {
-    if (!infra?.id) return;
-    setSheetState({ open: true, section: "room", listingId: infra.id });
-  }, [infra?.id]);
+  const { infra, infraData, roomTypes, rentalInfo, route } = useListingRentalDetailHooks(listing);
+  const { sheetState, openRouteSheet, openInfraSheet, openRoomSheet, setSheetState } =
+    useRouteSheetHooks(infra);
 
   if (!infra || !route || !roomTypes) {
     return <SmallSpinner />;

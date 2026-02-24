@@ -13,9 +13,9 @@ interface HomeResultSectionItemsProps {
 export const HomeResultSectionItems = ({ items, limit = 5, q }: HomeResultSectionItemsProps) => {
   return (
     <ul className="rounded-xl bg-white px-3">
-      {items.slice(0, limit).map(item => (
+      {items.slice(0, limit).map((item, index) => (
         <li
-          key={item.id}
+          key={item.id + index}
           className={cn(
             "flex items-center justify-between gap-2 p-3",
             items.length === 1 ? "border-none" : "border-b"

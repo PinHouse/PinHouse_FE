@@ -1,39 +1,13 @@
-import { cn } from "@/lib/utils";
 import { DownButton } from "@/src/assets/icons/button";
-import { ListingsCardTileProps, RoomVariant } from "@/src/entities/listings/model/type";
-import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { containerClass, downButton, infraClass, roomTypeClass, titleClass } from "../../../model";
+import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
+import { containerClass, downButton, titleClass } from "../../../model";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { ListingsCardTileDetails } from "../infra/listingsCardTtileInfra";
-
-const RoomType = ({ roomType, variant }: { roomType: number; variant: RoomVariant }) => {
-  return (
-    <span className={`flex gap-1 rounded-lg text-xs-13 font-semibold ${roomTypeClass[variant]}`}>
-      <p>방타입</p>
-      <p>{roomType}개</p>
-    </span>
-  );
-};
-const InfraCount = ({ infra, variant }: { infra: string[]; variant: RoomVariant }) => {
-  const count = infra.length;
-  return (
-    <TagButton
-      size="xs"
-      className={cn(`gap-1 rounded-3xl border-none text-xs ${infraClass[variant]} transition-all`)}
-    >
-      <p>주변</p>
-      {count}
-    </TagButton>
-  );
-};
+import { ListingsCardTileDetails } from "@/src/features/listings";
+import { InfraCount, RoomType } from "@/src/features/listings/hooks/useListingsCardTileHooks";
+import { useListingsCardTileOpenHooks } from "@/src/features/listings/hooks";
 
 export const ListingsCardTile = ({ listing, variant = "default" }: ListingsCardTileProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleToggle = () => {
-    setIsOpen(prev => !prev);
-  };
+  const { isOpen, handleToggle } = useListingsCardTileOpenHooks();
 
   return (
     <article className={`mb-3 rounded-lg ${containerClass[variant]} flex flex-col gap-1`}>

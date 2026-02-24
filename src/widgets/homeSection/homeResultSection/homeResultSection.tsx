@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useGlobal } from "@/src/entities/home/hooks/homeHooks";
 import { GlobalListType } from "@/src/entities/home/model/type";
-import { useHomeGlobalSearch } from "@/src/features/home/hooks/hooks";
+import { useHomeGlobalSearch } from "@/src/features/home/hooks/useHomeHooks";
 import { HomeResultSectionBlock } from "./components/homeResultSectionBlock";
 
 const containerVariants = {
@@ -46,7 +46,12 @@ export const HomeResultSection = ({ q }: { q: string }) => {
     >
       {data.map(section => (
         <motion.div key={section.category} variants={itemVariants}>
-          <HomeResultSectionBlock category={section.category} items={section.content} q={q} />
+          <HomeResultSectionBlock
+            category={section.category}
+            items={section.content}
+            q={q}
+            nextPage={section.hasNext}
+          />
         </motion.div>
       ))}
     </motion.section>

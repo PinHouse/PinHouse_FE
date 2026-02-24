@@ -21,7 +21,7 @@ export const ListingsContent = ({ viewSet = true }: { viewSet?: boolean }) => {
 
   return (
     <>
-      <div className="flex h-full flex-col">
+      <div className="flex h-full min-h-0 flex-col">
         {!viewSet ? null : <ListingsContentHeader totalCount={totalCount} />}
         {totalCount === 0 ? (
           <div className="flex h-full flex-col items-center justify-center pb-[88px]">

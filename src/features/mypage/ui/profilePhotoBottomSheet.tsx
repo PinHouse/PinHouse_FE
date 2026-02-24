@@ -1,11 +1,13 @@
 "use client";
 
+import { useState, useLayoutEffect } from "react";
 import {
   BottomSheet,
   BottomSheetContent,
   BottomSheetDescription,
   BottomSheetTitle,
 } from "@/src/shared/lib/headlessUi";
+import { useMobileSheetPortal } from "@/src/shared/context/mobileSheetPortalContext";
 
 interface ProfilePhotoBottomSheetProps {
   open: boolean;
@@ -20,9 +22,16 @@ export const ProfilePhotoBottomSheet = ({
   onSelectFromAlbum,
   onRemovePhoto,
 }: ProfilePhotoBottomSheetProps) => {
+  const portalRef = useMobileSheetPortal();
+  const [container, setContainer] = useState<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (portalRef?.current) setContainer(portalRef.current);
+  }, [portalRef]);
+
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
-      <BottomSheetContent className="p-6" showOverlay={false}>
+      <BottomSheetContent className="p-6" showOverlay={false} container={container}>
         <BottomSheetTitle className="sr-only">프로필 사진 설정</BottomSheetTitle>
         <BottomSheetDescription className="sr-only">
           프로필 사진을 선택하거나 삭제할 수 있습니다.
