@@ -15,6 +15,7 @@ export type ComponentType =
   | "priceInput"
   | "numberInputList"
   | "infoButton"
+  | "helpButton"
   | "datePicker"
   | "checkbox";
 
@@ -730,7 +731,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         ],
       },
       {
-        type: "infoButton",
+        type: "helpButton",
         props: {
           title: "우리 학교가 공공 임대주택에서 인정되는 학교 기준에 해당되는지 궁금하다면?",
           description:
