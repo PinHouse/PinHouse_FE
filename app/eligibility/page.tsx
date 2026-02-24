@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { EligibilitySection } from "@/src/widgets/eligibilitySection";
 import { useEligibilityStore } from "@/src/features/eligibility/model/eligibilityStore";
 import { useDiagnosisResultStore } from "@/src/features/eligibility/model/diagnosisResultStore";
@@ -12,6 +12,8 @@ import { Spinner } from "@/src/shared/ui/spinner/default";
 
 export default function EligibilityPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const reset = useEligibilityStore(state => state.reset);
   const setDiagnosisResult = useDiagnosisResultStore(s => s.setResult);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +35,12 @@ export default function EligibilityPage() {
             },
             { incomeLevel: data.myIncomeLevel }
           );
-          setIsModalOpen(true);
+          // 주소가 정확히 /eligibility 일 때만 모달 표시 (쿼리 있으면 표시 안 함)
+          const isEligibilityOnly =
+            pathname === "/eligibility" && searchParams.toString() === "";
+          if (isEligibilityOnly) {
+            setIsModalOpen(true);
+          }
         } else {
           reset();
         }
@@ -46,7 +53,7 @@ export default function EligibilityPage() {
     return () => {
       mounted = false;
     };
-  }, [reset, setDiagnosisResult]);
+  }, [pathname, reset, searchParams, setDiagnosisResult]);
 
   const handleModalButtonClick = (index: number) => {
     setIsModalOpen(false);

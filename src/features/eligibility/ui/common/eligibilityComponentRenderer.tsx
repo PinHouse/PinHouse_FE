@@ -10,6 +10,7 @@ import { EligibilitySelect } from "./eligibilitySelect";
 import { EligibilityPriceInput } from "./eligibilityPriceInput";
 import { EligibilityNumberInputList } from "./eligibilityNumberInputList";
 import { EligibilityInfoButtonWithSheet } from "./eligibilityInfoButtonWithSheet";
+import { EligibilityHelpButton } from "./eligibilityHelpButton";
 import { DatePicker } from "@/src/shared/ui/datePicker/datePicker";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { motion, AnimatePresence } from "framer-motion";
@@ -306,6 +307,8 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
             onClick = () => router.push("/home");
           } else if (config.props.action === "back") {
             onClick = () => router.back();
+          } else if (config.props.action === "path") {
+            onClick = () => router.push(config.props.path);
           }
         }
 
@@ -319,6 +322,23 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
         );
       }
 
+      case "helpButton": {
+        let onClick = config.props.onClick;
+        if (config.props.action === "home") {
+          onClick = () => router.push("/home");
+        } else if (config.props.action === "back") {
+          onClick = () => router.back();
+        } else if (config.props.action === "path") {
+          onClick = () => router.push(config.props.path);
+        }
+        return (
+          <EligibilityHelpButton
+            text={config.props.title}
+            onClick={onClick}
+            className={config.props.className}
+          />
+        );
+      }
       case "datePicker": {
         const value = config.storeKey ? getStoreValue(config.storeKey) : undefined;
         const setter = config.storeKey ? getStoreSetter(config.storeKey) : undefined;

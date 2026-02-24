@@ -39,7 +39,15 @@ export const EligibilityStepRenderer = ({ stepId, className }: EligibilityStepRe
             )}
 
             {/* 컴포넌트 렌더링 */}
-            <div className={componentConfig.type === "statusBanner" ? "px-5 py-10" : "px-5 py-7"}>
+            <div
+              className={
+                componentConfig.type === "statusBanner"
+                  ? "px-5 py-10"
+                  : componentConfig.type === "helpButton"
+                    ? "px-5 pb-7"
+                    : "px-5 py-7"
+              }
+            >
               <EligibilityComponentRenderer config={componentConfig} />
             </div>
           </div>
