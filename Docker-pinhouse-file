@@ -10,8 +10,9 @@ WORKDIR /pinhouse-fe
 # 2️⃣ Dependencies
 # =========================
 FROM base AS deps
-COPY package.json package-lock.json ./
-RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm ci
+COPY package.json package-lock.json .npmrc ./
+RUN --mount=type=secret,id=NPM_TOKEN \
+    NPM_TOKEN="$(cat /run/secrets/NPM_TOKEN)" npm ci
 
 # =========================
 # 3️⃣ Build
