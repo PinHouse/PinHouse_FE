@@ -3,22 +3,14 @@ import { cn } from "@/lib/utils";
 import { CloseButton } from "@/src/assets/icons/button";
 import { useSearchState } from "@/src/shared/hooks/store";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { useRouter } from "next/navigation";
+import { useHomeKeywordRouter } from "@/src/features/home/ui/homeUseHooks/useHomeRouterHooks";
 
 export const HomeSearchRecent = () => {
   const { searchQuery, removeSearchQuery, setSearchQuery } = useSearchState();
-
-  const router = useRouter();
+  const { handleSearchTagQuery } = useHomeKeywordRouter();
   if (searchQuery.length === 0) return;
-
   const handleDelete = (word: string) => {
     removeSearchQuery(word);
-  };
-
-  const handleSearchTag = (keyword: string) => {
-    if (!keyword) return;
-    setSearchQuery(keyword);
-    router.push(`/home/search/result?q=${encodeURIComponent(keyword)}`);
   };
 
   return (
@@ -30,7 +22,7 @@ export const HomeSearchRecent = () => {
             key={index}
             size="sm"
             onClick={() => {
-              handleSearchTag(word);
+              handleSearchTagQuery(word, setSearchQuery);
             }}
             className={cn(
               "transition-al font-suit text-text-greyscale-grey-85 gap-2 rounded-full border px-2 py-1 text-sm"

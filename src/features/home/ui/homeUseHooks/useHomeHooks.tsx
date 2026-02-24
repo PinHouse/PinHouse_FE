@@ -38,30 +38,6 @@ export const useHomeGlobalSearch = (globalData?: GlobalListType): GlobalSearchSe
   ];
 };
 
-export const usePinhouseRouter = (searchParams: URLSearchParams) => {
-  const router = useRouter();
-  const closeSheet = useHomeSheetStore(s => s.closeSheet);
-  const replaceRouter = () => {
-    router.replace("/home");
-    closeSheet();
-  };
-
-  const handleSetPinpoint = () => {
-    router.push("/mypage/pinpoints");
-    closeSheet();
-  };
-
-  const mode = useMemo(() => {
-    return homeSheetParseObject(searchParams);
-  }, [searchParams]);
-
-  return {
-    replaceRouter,
-    handleSetPinpoint,
-    mode,
-  };
-};
-
 export const usePinpointRowBox = (data: PinPointPlace["pinPoints"] | null) => {
   const pinpoints = data ?? null;
   const pinPointId = useOAuthStore(s => s.pinPointId);

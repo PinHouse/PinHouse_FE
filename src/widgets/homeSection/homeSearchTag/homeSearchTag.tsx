@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { HomeSearchRecent } from "../../../features/home/ui/search/homeSearchRecent";
-import { HomeSearchPopuler } from "../../../features/home/ui/search/homeSearchPopuler";
+import { HomeSearchPopular } from "../../../features/home/ui/search/homeSearchPopular";
 
 export const HomeSearchTag = () => {
   return (
@@ -16,7 +16,7 @@ export const HomeSearchTag = () => {
           className="flex flex-col"
         >
           <HomeSearchRecent />
-          <HomeSearchPopuler />
+          <HomeSearchPopular />
         </motion.div>
       </AnimatePresence>
     </div>

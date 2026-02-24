@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useGlobal } from "@/src/entities/home/hooks/homeHooks";
 import { GlobalListType } from "@/src/entities/home/model/type";
-import { useHomeGlobalSearch } from "@/src/features/home/hooks/hooks";
+import { useHomeGlobalSearch } from "@/src/features/home/hooks/useHomeHooks";
 import { HomeResultSectionBlock } from "./components/homeResultSectionBlock";
 
 const containerVariants = {

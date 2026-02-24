@@ -3,16 +3,11 @@ import { cn } from "@/lib/utils";
 import { useGlobal } from "@/src/entities/home/hooks/homeHooks";
 import { PopularResponse } from "@/src/entities/home/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
-import { useRouter } from "next/navigation";
+import { useHomeKeywordRouter } from "@/src/features/home/ui/homeUseHooks/useHomeRouterHooks";
 
-export const HomeSearchPopuler = () => {
-  const router = useRouter();
+export const HomeSearchPopular = () => {
   const { data } = useGlobal<PopularResponse[]>({ params: "popular", q: "" });
-
-  const handleSearchTag = (keyword: string) => {
-    if (!keyword) return;
-    router.push(`/home/search/result?q=${encodeURIComponent(keyword)}`);
-  };
+  const { handleSearchTag } = useHomeKeywordRouter();
 
   return (
     <section className="mt-6">

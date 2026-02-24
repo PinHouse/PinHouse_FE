@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useRef } from "react";
 import { createPortal } from "react-dom";
-import { usePinhouseRouter } from "@/src/features/home/hooks/hooks";
 import { PinpointSelectedButton } from "@/src/features/home/ui/components/components/pinpointSelectedButton";
 import { usePortalTarget } from "@/src/shared/hooks/usePortalTarget";
 import { useScrollLock } from "@/src/shared/hooks/useScrollLock";
@@ -12,6 +11,7 @@ import { useHomeSheetStore } from "../../model/homeStore";
 import { MaxTimeSliderBox } from "./maxTime";
 import { PinpointRowBox } from "./pinpointRowBoxs";
 import type { ReadonlyURLSearchParams } from "next/navigation";
+import { usePinhouseRouter } from "@/src/features/home/ui/homeUseHooks/useHomeRouterHooks";
 
 export const HomeSheet = () => {
   const open = useHomeSheetStore(s => s.open);
