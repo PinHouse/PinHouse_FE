@@ -11,11 +11,10 @@ interface HomeResultSectionMoreProps {
 
 export const HomeResultSectionMore = ({
   category,
-
-  onToggle,
   canLoadMore,
-  isFetchingNextPage,
+  onToggle,
   nextPage,
+  isFetchingNextPage,
 }: HomeResultSectionMoreProps) => {
   return (
     <button
