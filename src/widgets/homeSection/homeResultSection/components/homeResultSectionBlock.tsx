@@ -1,15 +1,14 @@
 "use client";
 
-import { useGlobalPageNation } from "@/src/entities/home/hooks/homeHooks";
-import {
-  GlobalSearchCategoryItem,
-  GlobalSearchItem,
-  SearchCategory,
-} from "@/src/entities/home/model/type";
+import { GlobalSearchItem, SearchCategory } from "@/src/entities/home/model/type";
 import { HomeResultSectionHeader } from "@/src/features/home";
 import { HomeResultSectionItems } from "@/src/features/home/ui/result/homeResultSectionItem";
 import { HomeResultSectionMore } from "@/src/features/home/ui/result/homeResultSectionMore";
-import { useMemo, useState } from "react";
+import {
+  useHomeResultsData,
+  useHomeResultToggle,
+} from "@/src/features/home/ui/homeUseHooks/homeResultHooks/useHomeResultHooks";
+import { useState } from "react";
 
 type Props = {
   category: SearchCategory;
@@ -24,40 +23,23 @@ export const HomeResultSectionBlock = ({ category, items, q, nextPage }: Props) 
    * - null: 아무 것도 펼쳐지지 않음
    * - category 값: 해당 카테고리 펼쳐짐
    */
-
   const [expandedCategory, setExpandedCategory] = useState<SearchCategory | null>(null);
   const isExpanded = expandedCategory === category;
+  const { visibleItems, hasNextPage, isFetchingNextPage, fetchNextPage } = useHomeResultsData({
+    category,
+    q,
+    items,
+    isExpanded,
+  });
+  const { onToggle } = useHomeResultToggle({
+    category,
+    isExpanded,
+    setExpandedCategory,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGlobalPageNation<GlobalSearchItem>({
-      q,
-      category: expandedCategory,
-      enabled: isExpanded,
-    });
-
-  const serverItems = useMemo<GlobalSearchItem[]>(() => {
-    if (!data?.pages) return [];
-    return data.pages.flatMap(page => (Array.isArray(page.content) ? page.content : []));
-  }, [data]);
-
-  const visibleItems: GlobalSearchItem[] = isExpanded ? [...items, ...serverItems] : items;
-
-  /**
-   * 더보기 노출 기준
-   * - 펼쳐진 이후에만 판단
-   * - 서버 기준(hasNextPage)만 신뢰
-   */
-
-  const canLoadMore = isExpanded ? Boolean(hasNextPage) : nextPage;
-  const handleToggle = async (clickedCategory: SearchCategory) => {
-    if (!isExpanded) {
-      setExpandedCategory(clickedCategory);
-      return;
-    }
-    if (hasNextPage && !isFetchingNextPage) {
-      await fetchNextPage();
-    }
-  };
   return (
     <div>
       <HomeResultSectionHeader category={category} count={visibleItems.length} />
@@ -67,8 +49,8 @@ export const HomeResultSectionBlock = ({ category, items, q, nextPage }: Props) 
 
         <HomeResultSectionMore
           category={category}
-          canLoadMore={canLoadMore}
-          onToggle={handleToggle}
+          canLoadMore={isExpanded ? Boolean(hasNextPage) : nextPage}
+          onToggle={onToggle}
           nextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
         />
