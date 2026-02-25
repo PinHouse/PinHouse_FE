@@ -9,6 +9,7 @@ import {
   useHomeResultToggle,
 } from "@/src/features/home/ui/homeUseHooks/homeResultHooks/useHomeResultHooks";
 import { useState } from "react";
+import { useHomeResultAnimationHooks } from "@/src/features/home/ui/homeUseHooks/homeResultHooks/useHomeResultAnimationHooks";
 
 type Props = {
   category: SearchCategory;
@@ -40,12 +41,19 @@ export const HomeResultSectionBlock = ({ category, items, q, nextPage }: Props) 
     fetchNextPage,
   });
 
+  const { animateFromIndex } = useHomeResultAnimationHooks({ visibleCount: visibleItems.length });
+
   return (
     <div>
       <HomeResultSectionHeader category={category} count={visibleItems.length} />
 
       <span className="flex flex-col rounded-xl border">
-        <HomeResultSectionItems items={visibleItems} q={q} limit={visibleItems.length} />
+        <HomeResultSectionItems
+          items={visibleItems}
+          q={q}
+          limit={visibleItems.length}
+          animateFromIndex={animateFromIndex}
+        />
 
         <HomeResultSectionMore
           category={category}

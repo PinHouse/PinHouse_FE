@@ -1,5 +1,7 @@
 import { DownButton, UpButton } from "@/src/assets/icons/button";
 import { SearchCategory } from "@/src/entities/home/model/type";
+import { SearchNoResultDescriptions } from "@/src/features/home/model/model";
+import { cn } from "@/src/shared/lib/utils";
 
 interface HomeResultSectionMoreProps {
   onToggle: (category: SearchCategory) => void;
@@ -16,12 +18,16 @@ export const HomeResultSectionMore = ({
   nextPage,
   isFetchingNextPage,
 }: HomeResultSectionMoreProps) => {
+  console.log(category);
   return (
     <button
       type="button"
       onClick={() => onToggle(category)}
       disabled={!canLoadMore || isFetchingNextPage}
-      className="flex w-full items-center justify-center gap-1 rounded-b-xl bg-white p-3 text-xs text-gray-400"
+      className={cn(
+        "flex w-full items-center justify-center gap-1 rounded-b-xl bg-white p-3 text-xs text-gray-400",
+        canLoadMore ? "rounded-b-xl" : "rounded-t-xl"
+      )}
     >
       {canLoadMore ? (
         <>
@@ -31,7 +37,8 @@ export const HomeResultSectionMore = ({
           </span>
         </>
       ) : (
-        <p>{"데이터가 없습니다."}</p>
+        // <p>{"모집공고가 없습니다."}</p>
+        <p>{SearchNoResultDescriptions[category]}</p>
       )}
     </button>
   );
