@@ -79,7 +79,7 @@ export const useGlobalPageNation = <TItem>({
   const apiCategory: ApiCategory | null = category ? CATEGORY_MAP[category] : null;
 
   return useInfiniteQuery<SliceResponse<TItem>, Error>({
-    queryKey: ["globalInfinity", apiCategory],
+    queryKey: ["globalInfinity", apiCategory, q],
     enabled: enabled,
     initialPageParam: 2,
     retry: false,

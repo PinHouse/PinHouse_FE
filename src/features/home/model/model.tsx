@@ -14,6 +14,14 @@ export const SEARCH_CATEGORY_CONFIG: Record<SearchCategory, { label: string; ico
   houseTypes: { label: "주택유형", icon: <GlobalHouse /> },
 };
 
+export const SearchNoResultDescriptions = {
+  notices: "모집 공고가 없습니다.",
+  complexes: "모집 단지가 없습니다.",
+  targetGroups: "모집 대상이 없습니다.",
+  regions: "모집 지역이 없습니다.",
+  houseTypes: "모집 주택유형이 없습니다.",
+} as const;
+
 export const CATEGORY_MAP = {
   notices: "NOTICE",
   complexes: "COMPLEX",
