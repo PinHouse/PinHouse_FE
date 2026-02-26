@@ -152,6 +152,7 @@ export interface ListingContentsListProps {
   isFetchingNextPage: boolean;
   isError: boolean;
   isBottom?: boolean;
+  enableInfiniteScroll?: boolean;
 }
 /**
  * 총공고 카운트

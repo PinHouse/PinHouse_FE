@@ -5,10 +5,17 @@ import { ListingContentsList } from "./listingsContentsList";
 import { ListingNoSearchResult } from "@/src/features/listings";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 
-export const ListingsContent = ({ viewSet = true }: { viewSet?: boolean }) => {
+type ListingsContentProps = {
+  enableInfiniteScroll?: boolean;
+  viewSet?: boolean;
+};
+
+export const ListingsContent = ({
+  viewSet = true,
+  enableInfiniteScroll = true,
+}: ListingsContentProps) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, isLoading, isSuccess } =
     useListingListInfiniteQuery();
-
   const totalCount = isLoading || !isSuccess ? null : (data?.pages[0]?.totalCount ?? 0);
 
   if (!data) {
@@ -37,6 +44,7 @@ export const ListingsContent = ({ viewSet = true }: { viewSet?: boolean }) => {
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
               isError={isError}
+              enableInfiniteScroll={enableInfiniteScroll}
             />
           </div>
         )}

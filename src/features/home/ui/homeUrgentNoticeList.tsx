@@ -1,31 +1,19 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { LeftButton } from "@/src/assets/icons/button";
-import { useNoticeInfinite } from "@/src/entities/home/hooks/homeHooks";
 import { HomeContentsCard } from "@/src/features/home";
 import { ListingNoSearchResult, ListingsContent } from "@/src/features/listings";
 import { Button } from "@/src/shared/lib/headlessUi";
-import { useRouteStore } from "../model/homeStore";
-import { useRouter } from "next/navigation";
-import { useListingsFilterStore } from "../../listings/model";
+import {
+  useUrgentNoticeListHooks,
+  useUrgentNoticeListRouterHooks,
+} from "@/src/features/home/ui/homeUseHooks";
 
 export const UrgentNoticeList = () => {
-  const { data, isFetchingNextPage, isError, fetchNextPage } = useNoticeInfinite();
-  const contents = data?.pages?.flatMap(page => page.content) ?? [];
-  const dataCount = contents.length === 0;
-  const region = data?.pages?.flatMap(page => page.region) ?? [];
-  const { setSortType } = useListingsFilterStore();
-  const router = useRouter();
-  const { setPrevPath } = useRouteStore();
-
-  const pageRouter = () => {
-    setPrevPath("/home");
-    setSortType("마감임박순");
-    router.push("/listings");
-  };
-
+  const { data, contents, dataCount, isFetchingNextPage, isError, fetchNextPage } =
+    useUrgentNoticeListHooks();
+  const { pageRouter } = useUrgentNoticeListRouterHooks();
   return (
-    // <section className={cn("flex flex-col", contents.length >= 2 ? "pb-[55px]" : "")}>
     <section className={cn("flex flex-col")}>
       <div className="flex items-center justify-between pt-4">
         <div>
@@ -38,17 +26,26 @@ export const UrgentNoticeList = () => {
           onClick={pageRouter}
         >
           <span>전체보기</span>
-          {/* <span>{region}</span> */}
+
           <LeftButton width={15} height={15} className="rotate-180" />
         </div>
       </div>
 
       <div className="flex flex-col">
         {isError || dataCount ? (
-          <ListingsContent viewSet={false} />
+          <ListingsContent viewSet={false} enableInfiniteScroll={false} />
         ) : (
           <HomeContentsCard data={contents} />
         )}
+        <div className="relative z-10 -mt-12 flex justify-center">
+          <button
+            type="button"
+            onClick={pageRouter}
+            className="text-mainBlue text-sm font-semibold"
+          >
+            공고리스트로 이동하기
+          </button>
+        </div>
       </div>
 
       {isFetchingNextPage && (
