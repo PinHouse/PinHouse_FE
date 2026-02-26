@@ -7,6 +7,7 @@ type ListingsFetchingProps = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   root?: Element | null;
+  enableInfiniteScroll?: boolean;
 };
 
 export const useListingsContentListHooks = (data: InfiniteData<ListingListPage> | undefined) => {
@@ -48,10 +49,12 @@ export const useListingsContentsObserveHooks = ({
   hasNextPage,
   isFetchingNextPage,
   root,
+  enableInfiniteScroll = true,
 }: ListingsFetchingProps) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (!observerRef.current) return;
+    if (!enableInfiniteScroll) return;
     const observer = new IntersectionObserver(
       entries => {
         const entry = entries[0];

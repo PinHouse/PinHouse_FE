@@ -16,7 +16,7 @@ import { toast } from "sonner";
 
 export const useNoticeInfinite = () => {
   const pinpointId = useOAuthStore(state => state.pinPointId);
-
+  console.log(pinpointId);
   return useInfiniteQuery({
     queryKey: ["notice", pinpointId],
     enabled: !!pinpointId,

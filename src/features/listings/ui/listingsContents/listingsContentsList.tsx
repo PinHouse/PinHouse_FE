@@ -17,6 +17,7 @@ export const ListingContentsList = ({
   isFetchingNextPage,
   isError,
   isBottom = true,
+  enableInfiniteScroll = true,
 }: ListingContentsListProps) => {
   const { handleScroll, observerRoot, ready, items, isBottoms, setScrollContainerRef } =
     useListingsContentListHooks(data);
@@ -26,6 +27,7 @@ export const ListingContentsList = ({
     hasNextPage,
     isFetchingNextPage,
     root: observerRoot,
+    enableInfiniteScroll,
   });
   if (!data) {
     return <Spinner title="공고 탐색중..." description="잠시만 기다려주세요" />;
