@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-
 import "./globals.css";
 import { QueryProvider } from "@/src/app/providers/queryProvider";
 // import { BottomNavigation } from "@/src/shared/ui/bottomNavigation/";
@@ -7,6 +6,7 @@ import { Toast } from "@/src/shared/ui/toast";
 import { HomeLandingRender } from "@/src/shared/ui/globalRender/globalRender";
 import { FrameBottomNav } from "@/src/shared/ui/bottomNavigation/frameBottomNavigation";
 import { ClientOnly } from "@/src/shared/ui/clientOnly/clientOnly";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "pinhouse",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="ko" className="h-full bg-gray-100">
@@ -41,7 +41,7 @@ export default function RootLayout({
                   </ClientOnly>
                 }
               >
-                <ClientOnly>{children}</ClientOnly>
+                {children}
               </HomeLandingRender>
             </div>
           </div>
