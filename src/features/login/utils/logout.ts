@@ -4,7 +4,8 @@
 export const logout = () => {
   // 1. is_auth 쿠키를 false로 설정
   document.cookie = "is_auth=false; path=/; max-age=900";
-
+  document.cookie = "pinpoint_id=; path=/; max-age=0; samesite=lax";
+  document.cookie = "pinpoint_name=; path=/; max-age=0; samesite=lax";
   // 2. localStorage 정리
   localStorage.clear();
   sessionStorage.clear();

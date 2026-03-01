@@ -1,11 +1,7 @@
-"use client";
+import { HomeSectionPage } from "@/src/widgets/homeSection/homeSectionPage";
 
-import { HomeSection } from "@/src/widgets/homeSection/homeSection";
+export const dynamic = "force-dynamic";
 
-export default function Home() {
-  return (
-    <main className="flex h-full flex-col">
-      <HomeSection />
-    </main>
-  );
+export default function Page() {
+  return <HomeSectionPage />;
 }
