@@ -14,11 +14,14 @@ export async function getDiagnosisLatestOnServer(): Promise<DiagnosisLatestData 
     if (!API_BASE_URL_V2) return null;
 
     const cookieStore = await cookies();
+    const accessToken = cookieStore.get("access_token")?.value;
+    if (!accessToken) return null;
 
     const res = await fetch(`${API_BASE_URL_V2}${DIAGNOSIS_LATEST_ENDPOINT}`, {
       method: "GET",
       headers: {
         cookie: cookieStore.toString(),
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       },
       cache: "no-store",
     });
