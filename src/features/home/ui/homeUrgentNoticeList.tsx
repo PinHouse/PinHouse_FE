@@ -10,7 +10,7 @@ import {
 } from "@/src/features/home/ui/homeUseHooks";
 
 export const UrgentNoticeList = () => {
-  const { data, contents, dataCount, isFetchingNextPage, isError, fetchNextPage } =
+  const { contents, dataCount, isFetchingNextPage, isError, fetchNextPage } =
     useUrgentNoticeListHooks();
   const { pageRouter } = useUrgentNoticeListRouterHooks();
   return (
