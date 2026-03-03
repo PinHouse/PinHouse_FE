@@ -19,6 +19,8 @@ export async function HomeSectionPage() {
   const queryClient = new QueryClient();
 
   let initial: HomeNoticeBffResponse["data"] | null = null;
+  let initialCountBffResponse: HomeCountBffResponse["data"] | null = null;
+
   try {
     const res = await fetch(`/api/home/notice`, {
       method: "GET",
@@ -35,6 +37,22 @@ export async function HomeSectionPage() {
     initial = null;
   }
 
+  try {
+    const res = await fetch(`/api/home/count?maxTime=60`, {
+      method: "GET",
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const body = (await res.json()) as HomeCountBffResponse;
+      if (body.success && body.data) {
+        initialCountBffResponse = body.data;
+      }
+    }
+  } catch {
+    initialCountBffResponse = null;
+  }
+
   if (initial) {
     await queryClient.prefetchInfiniteQuery({
       queryKey: ["notice", initial.pinpointId],
@@ -43,22 +61,12 @@ export async function HomeSectionPage() {
       getNextPageParam: (lastPage: SliceResponse<NoticeContent>) =>
         lastPage.hasNext ? lastPage.pages + 1 : undefined,
     });
+  }
 
+  if (initial && initialCountBffResponse) {
     await queryClient.prefetchQuery({
       queryKey: ["noticeCount", initial.pinpointId, 60],
-      queryFn: async () => {
-        const res = await fetch(`/api/home/count?maxTime=60`, {
-          method: "GET",
-          cache: "no-store",
-        });
-
-        if (!res.ok) throw new Error("Failed to fetch home notice count");
-
-        const body = (await res.json()) as HomeCountBffResponse;
-        if (!body.success || !body.data) throw new Error("Invalid home notice count response");
-
-        return body.data;
-      },
+      queryFn: async () => initialCountBffResponse,
     });
   }
 

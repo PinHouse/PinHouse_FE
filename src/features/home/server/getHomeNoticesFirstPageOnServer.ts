@@ -37,7 +37,7 @@ export async function getHomeNoticesFirstPageOnServer() {
   return { pinpointId, page: body.data };
 }
 
-export async function getHomePinpointCount() {
+export async function getHomePinpointCount(maxTime = 60) {
   const cookieStore = await cookies();
   const pinpointId = cookieStore.get("pinpoint_id")?.value;
   const accessToken = cookieStore.get("access_token")?.value;
@@ -46,7 +46,7 @@ export async function getHomePinpointCount() {
   if (!pinpointId || !API_BASE_URL) return null;
   const query = new URLSearchParams({
     pinPointId: pinpointId,
-    maxTime: String(60),
+    maxTime: String(maxTime),
   });
 
   const res = await fetch(`${API_BASE_URL}${url}?${query.toString()}`, {
