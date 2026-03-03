@@ -28,3 +28,9 @@ export const SCHOOL_RESULT_EMPTY_HINT2 =
   "목록에 없는 학교는 공공임대주택 인정 학교가 아닐 수 있어요.";
 export const SCHOOL_RESULT_TRY_AGAIN_BUTTON = "다시하기";
 export const SCHOOL_RESULT_FILL_HINT = "지원 가능한 지역 범위는 공고를 확인하세요";
+
+/** 진단기반 추천 공고 리스트 화면 문구 */
+export const ELIGIBILITY_RECOMMENDED_LIST_TITLE = "진단기반 추천 공고 리스트";
+
+/** 진단기반 추천 헤더 라벨 (공고 탐색의 "공고"와 동일한 위치) */
+export const ELIGIBILITY_RECOMMENDED_HEADER_LABEL = "추천 공고";

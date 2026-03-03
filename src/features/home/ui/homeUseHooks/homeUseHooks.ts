@@ -32,7 +32,7 @@ export const useHomeActionCard = () => {
   };
 
   const onEligibilityPageMove = () => {
-    router.push("/eligibility");
+    router.push("/eligibility/recommended");
   };
 
   return {

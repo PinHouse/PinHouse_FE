@@ -33,3 +33,10 @@ export const listingKeys = {
   infinite: (filters?: { sortType?: string; status?: string }) =>
     [...listingKeys.all, "infinite", filters] as const,
 } as const;
+
+// Eligibility(자격진단) 관련 QueryKeys
+export const eligibilityKeys = {
+  all: ["eligibility"] as const,
+  recommendedList: (userName?: string) =>
+    [...eligibilityKeys.all, "recommendedList", userName] as const,
+} as const;
