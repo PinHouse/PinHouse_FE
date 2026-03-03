@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { MapPin } from "@/src/assets/icons/onboarding";
 import { useAddressStore } from "@/src/entities/address";
 import { AddressSearch } from "@/src/features/addressSearch";
+import { useUpdatePinpoint } from "@/src/features/home/hooks/useUpdatePinpoint";
 import { useAddPinpoint } from "@/src/features/mypage/hooks/useAddPinpoint";
 import { DefaultHeader } from "@/src/shared/ui/header";
 import { Button } from "@/src/shared/lib/headlessUi";
@@ -12,12 +12,17 @@ import { PageTransition } from "@/src/shared/ui/animation/pageTransition";
 import { HOME_PINPOINT_HEADER_TITLE } from "@/src/features/home/model/homePinpointConstants";
 import { MYPAGE_PINPOINTS_DEFAULT_NAME } from "@/src/features/mypage/model/mypageConstants";
 
-/** 홈 > 핀포인트 추가 주소 검색 화면 */
+/** 홈 > 핀포인트 추가/수정 주소 검색 화면 */
 export function HomePinpointAddressSection() {
   const router = useRouter();
-  const { address, pinPoint } = useAddressStore();
-  const { addPinpoint, isLoading } = useAddPinpoint({
+  const { address, pinPoint, editingPinpointId, clearEditPinpoint } =
+    useAddressStore();
+  const editId = editingPinpointId;
+  const isEditMode = Boolean(editId);
+
+  const { addPinpoint, isLoading: isAdding } = useAddPinpoint({
     onSuccess: () => {
+      clearEditPinpoint();
       router.push("/home/pinpoints");
     },
     onError: () => {
@@ -25,13 +30,30 @@ export function HomePinpointAddressSection() {
     },
   });
 
-  const handleAddPinpoint = () => {
+  const { updatePinpoint, isUpdating } = useUpdatePinpoint({
+    onSuccess: () => {
+      clearEditPinpoint();
+      router.push("/home/pinpoints");
+    },
+    onError: () => {
+      toast.error("핀포인트 수정에 실패했어요. 잠시 후 다시 시도해주세요.");
+    },
+  });
+
+  const isLoading = isAdding || isUpdating;
+
+  const handleSubmit = () => {
     if (!address) return;
-    addPinpoint({
-      address,
-      name: pinPoint || MYPAGE_PINPOINTS_DEFAULT_NAME,
-      first: true,
-    });
+    const name = pinPoint || MYPAGE_PINPOINTS_DEFAULT_NAME;
+    if (isEditMode && editId) {
+      updatePinpoint({ id: editId, name });
+    } else {
+      addPinpoint({
+        address,
+        name,
+        first: true,
+      });
+    }
   };
 
   return (
@@ -45,13 +67,6 @@ export function HomePinpointAddressSection() {
         </header>
         <div className="border-b border-greyscale-grey-25" />
         <div className="mb-3 flex flex-1 flex-col items-center justify-start px-5 pt-6 text-center">
-          <div className="inline-flex sm:min-w-[200px] sm:max-w-[250px] md:min-w-[250px] md:max-w-[300px] lg:min-w-[280px] lg:max-w-[340px]">
-            <MapPin />
-          </div>
-          <h2 className="text-lg font-bold text-greyscale-grey-900">핀포인트 추가</h2>
-          <p className="mt-1 text-center text-sm text-greyscale-grey-500">
-            주소를 검색한 뒤 핀포인트 이름을 입력해 주세요.
-          </p>
           <div className="mt-5 w-full">
             <AddressSearch />
           </div>
@@ -63,9 +78,9 @@ export function HomePinpointAddressSection() {
               size="md"
               variant="solid"
               disabled={isLoading}
-              onClick={handleAddPinpoint}
+              onClick={handleSubmit}
             >
-              핀포인트 추가
+              {isEditMode ? "핀포인트 이름 수정" : "핀포인트 추가"}
             </Button>
           </div>
         ) : null}

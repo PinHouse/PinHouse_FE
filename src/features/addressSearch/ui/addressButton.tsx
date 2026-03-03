@@ -14,6 +14,10 @@ export const AddressButton = () => {
       router.push("/mypage/pinpoints/address");
       return;
     }
+    if (pathname?.startsWith("/home/pinpoints")) {
+      router.push("/home/pinpoints/address");
+      return;
+    }
     if (type === "agent") router.push(`${type}/address`);
     return;
   };

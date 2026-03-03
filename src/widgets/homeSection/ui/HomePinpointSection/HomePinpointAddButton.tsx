@@ -4,11 +4,14 @@ import { useRouter } from "next/navigation";
 import { HOME_PINPOINT_ADD_BUTTON } from "@/src/features/home/model/homePinpointConstants";
 import PinpointsAddImg from "@/src/assets/images/home/pinpointsAddImg";
 import { Button } from "@/src/shared/lib/headlessUi";
+import { useAddressStore } from "@/src/entities/address";
 
 export function HomePinpointAddButton() {
   const router = useRouter();
+  const { clearEditPinpoint } = useAddressStore();
   const handleAddPinpoint = () => {
-    router.push("/home/pinpoints/address");
+    router.push("/home/pinpoints/setting");
+    clearEditPinpoint();
   };
 
   return (
