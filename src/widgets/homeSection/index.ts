@@ -4,3 +4,4 @@ export * from "./homeSection";
 export * from "./homeSearchSection/homeSearchSection";
 export * from "./homeSearchTag/homeSearchTag";
 export * from "./homeResultSection/homeResultSection";
+export * from "./ui/HomePinpointSection";

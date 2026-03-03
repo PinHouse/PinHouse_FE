@@ -12,7 +12,7 @@ export const usePinhouseRouter = (searchParams: URLSearchParams) => {
   };
 
   const handleSetPinpoint = () => {
-    router.push("/mypage/pinpoints");
+    router.push("/home/pinpoints");
     closeSheet();
   };
 

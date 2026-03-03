@@ -1,5 +1,8 @@
 import { http } from "@/src/shared/api/http";
-import { PINPOINTS_READ_ENDPOINT } from "@/src/shared/api/endpoints";
+import {
+  PINPOINTS_READ_ENDPOINT,
+  PINPOINT_DELETE_ENDPOINT,
+} from "@/src/shared/api/endpoints";
 import { IResponse } from "@/src/shared/types";
 import { PinPoint } from "../model/pinpoint.type";
 
@@ -20,4 +23,11 @@ export const getPinPoints = async (): Promise<PinPointsPayload> => {
   }
 
   return response.data;
+};
+
+/**
+ * 핀포인트 삭제 API
+ */
+export const deletePinPoint = async (id: string): Promise<void> => {
+  await http.delete<IResponse<unknown>>(`${PINPOINT_DELETE_ENDPOINT}/${id}`);
 };
