@@ -40,17 +40,21 @@ export const useNoticeCount = () => {
   const pinPointId = useOAuthStore(state => state.pinPointId);
   const maxTime = useHomeMaxTime(s => s.maxTime);
   const debouncedMaxTime = useDebounce(maxTime, 400);
-  const param = {
-    pinPointId,
-    maxTime: maxTime,
-  };
-  const url = `${HOME_NOTICE_ENDPOINT}-count`;
   return useQuery({
     queryKey: ["noticeCount", pinPointId, debouncedMaxTime],
     enabled: !!pinPointId,
     retry: false,
     placeholderData: previousData => previousData,
-    queryFn: () => getNoticeByPinPoint<NoticeCount>({ url: url, params: param }),
+    queryFn: async () => {
+      const res = await fetch(`/api/home/count?maxTime=${debouncedMaxTime}`, {
+        method: "GET",
+        cache: "no-store",
+      });
+      if (!res.ok) throw new Error("Failed to fetch home notice count");
+      const body = (await res.json()) as { success: boolean; data?: NoticeCount };
+      if (!body.success || !body.data) throw new Error("Invalid home notice count response");
+      return body.data;
+    },
   });
 };
 

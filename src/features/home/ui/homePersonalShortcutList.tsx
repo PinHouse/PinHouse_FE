@@ -1,31 +1,10 @@
 "use client";
-import { LeftButton } from "@/src/assets/icons/button";
-import { HomeScreenHomeIcon } from "@/src/assets/icons/home/home";
-import { HomeScreenTask } from "@/src/assets/icons/home/homeScreenTask";
-import { useEffect, useState } from "react";
-import { useOAuthStore } from "../../login/model";
-import { useRouter } from "next/navigation";
 
-const PERSONAL_SHORTCUTS = [
-  {
-    id: "tour",
-    title: "나에게 맞는 방 둘러보기",
-    description: "예산·거리·주변 환경을 기반으로\n나의 조건에 맞는 방을 탐색해 보세요",
-    icon: <HomeScreenHomeIcon />,
-    button: <LeftButton width={25} />,
-    message: "임대주택 탐색이 처음이라면?",
-    path: "/listings",
-  },
-  {
-    id: "save-condition",
-    title: "자격진단 하러가기",
-    description: "나이·소득·자산·결혼 여부에 따른 조건을\n자격진단으로 맞는 공고를 확인해 보세요",
-    icon: <HomeScreenTask />,
-    button: <LeftButton width={25} />,
-    message: "나의 공공 임대주택 지원자격을 알고싶다면?",
-    path: "/eligibility",
-  },
-] as const;
+import {
+  usePersonalRouteHooks,
+  usePersonalShortcutHooks,
+} from "@/src/features/home/ui/homeUseHooks/usePersonalShortcutHooks";
+import { PERSONAL_SHORTCUTS } from "@/src/features/home/model/model";
 
 const ShortcutMessage = ({ text }: { text: string }) => {
   return (
@@ -39,21 +18,9 @@ const ShortcutMessage = ({ text }: { text: string }) => {
   );
 };
 
-const messageSeenKey = (userId: string) => `home-shortcut-msg-seen:${userId ?? "anon"}`;
 export const PersonalShortcutList = () => {
-  const router = useRouter();
-  const { userName } = useOAuthStore(); // 실제로 쓰는 user 식별자 넣기
-  const [showMessage, setShowMessage] = useState(false);
-
-  useEffect(() => {
-    const key = messageSeenKey(userName);
-    const seen = sessionStorage.getItem(key);
-    if (!seen) {
-      setShowMessage(true);
-      sessionStorage.setItem(key, "1");
-    }
-  }, [userName]);
-
+  const { showMessage } = usePersonalShortcutHooks();
+  const { personalRoute } = usePersonalRouteHooks();
   return (
     <section className="flex flex-col gap-4">
       {PERSONAL_SHORTCUTS.map(item => (
@@ -63,7 +30,7 @@ export const PersonalShortcutList = () => {
           <button
             className="shadow- flex w-full items-center gap-2 rounded-2xl border border-greyscale-grey-50 bg-white p-4 text-left"
             type="button"
-            onClick={() => router.push(item.path)}
+            onClick={() => personalRoute(item.path)}
           >
             <div>{item.icon}</div>
 
