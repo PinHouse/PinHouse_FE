@@ -18,7 +18,10 @@ export async function GET(req: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, data: { count: data.count } }, { status: 200 });
+    return NextResponse.json(
+      { success: true, data: { count: data.count } },
+      { status: 200, headers: { "x-route-hit": "home-count" } }
+    );
   } catch {
     return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
   }

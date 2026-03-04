@@ -31,7 +31,6 @@ export async function getHomeNoticesFirstPageOnServer() {
   if (!res.ok) return null;
 
   const body = (await res.json()) as IResponse<SliceResponse<NoticeContent>>;
-  console.log("[SSR body]", body);
   if (!body?.success || !body.data) return null;
 
   return { pinpointId, page: body.data };

@@ -1,14 +1,13 @@
-"use client";
 import {
   ActionCardList,
   HomeHeader,
   HomeHero,
-  PersonalShortcutList,
   QuickStatsList,
   UrgentNoticeList,
 } from "@/src/features/home";
 
 import { PageTransition } from "@/src/shared/ui/animation";
+import { PersonalShortcutList } from "@/src/features/home/ui/server/homePersonalShortcutList.server";
 
 export const HomeSection = () => {
   return (
