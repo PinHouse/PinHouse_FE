@@ -4,26 +4,40 @@ import {
   usePersonalRouteHooks,
   usePersonalShortcutHooks,
 } from "@/src/features/home/ui/homeUseHooks/usePersonalShortcutHooks";
-import { PERSONAL_SHORTCUTS } from "@/src/features/home/model/model";
+import type { ReactNode } from "react";
+
+type PersonalShortcutItem = {
+  id: string;
+  title: string;
+  description: string;
+  icon: ReactNode;
+  button: ReactNode;
+  message: string;
+  path: string;
+};
 
 const ShortcutMessage = ({ text }: { text: string }) => {
   return (
     <div className="z-5 absolute -top-2 left-4">
       <div className="relative rounded-lg bg-greyscale-grey-900 px-3 py-1 text-xs text-white">
         {text}
-        {/* 말풍선 꼬리 */}
         <span className="absolute left-4 top-full h-0 w-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-greyscale-grey-900" />
       </div>
     </div>
   );
 };
 
-export const PersonalShortcutList = () => {
+export const PersonalShortcutListClient = ({
+  items,
+}: {
+  items: readonly PersonalShortcutItem[];
+}) => {
   const { showMessage } = usePersonalShortcutHooks();
   const { personalRoute } = usePersonalRouteHooks();
+
   return (
     <section className="flex flex-col gap-4">
-      {PERSONAL_SHORTCUTS.map(item => (
+      {items.map(item => (
         <div key={item.id} className="relative">
           {showMessage && item.message && <ShortcutMessage text={item.message} />}
 

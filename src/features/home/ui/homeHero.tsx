@@ -1,3 +1,4 @@
+"use client";
 import { HomeCharacter } from "@/src/assets/icons/home/homeCharacter";
 import { useOAuthStore } from "../../login/model";
 

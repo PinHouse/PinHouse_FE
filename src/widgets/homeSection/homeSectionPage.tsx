@@ -1,57 +1,11 @@
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { HomeSection } from "./homeSection";
-import type { NoticeContent, NoticeCount, SliceResponse } from "@/src/entities/home/model/type";
-
-type HomeNoticeBffResponse = {
-  success: boolean;
-  data?: {
-    pinpointId: string;
-    page: SliceResponse<NoticeContent>;
-  };
-};
-
-type HomeCountBffResponse = {
-  success: boolean;
-  data?: NoticeCount;
-};
+import type { NoticeContent, SliceResponse } from "@/src/entities/home/model/type";
+import { getHomeInitialData } from "./server/getHomeInitialData";
 
 export async function HomeSectionPage() {
   const queryClient = new QueryClient();
-
-  let initial: HomeNoticeBffResponse["data"] | null = null;
-  let initialCountBffResponse: HomeCountBffResponse["data"] | null = null;
-
-  try {
-    const res = await fetch(`/api/home/notice`, {
-      method: "GET",
-      cache: "no-store",
-    });
-
-    if (res.ok) {
-      const body = (await res.json()) as HomeNoticeBffResponse;
-      if (body.success && body.data) {
-        initial = body.data;
-      }
-    }
-  } catch {
-    initial = null;
-  }
-
-  try {
-    const res = await fetch(`/api/home/count?maxTime=60`, {
-      method: "GET",
-      cache: "no-store",
-    });
-
-    if (res.ok) {
-      const body = (await res.json()) as HomeCountBffResponse;
-      if (body.success && body.data) {
-        initialCountBffResponse = body.data;
-      }
-    }
-  } catch {
-    initialCountBffResponse = null;
-  }
+  const { initial, initialCount } = await getHomeInitialData();
 
   if (initial) {
     await queryClient.prefetchInfiniteQuery({
@@ -63,10 +17,10 @@ export async function HomeSectionPage() {
     });
   }
 
-  if (initial && initialCountBffResponse) {
+  if (initial && initialCount) {
     await queryClient.prefetchQuery({
       queryKey: ["noticeCount", initial.pinpointId, 60],
-      queryFn: async () => initialCountBffResponse,
+      queryFn: async () => initialCount,
     });
   }
 
