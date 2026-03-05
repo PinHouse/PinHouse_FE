@@ -2,10 +2,10 @@
 import { ListingUnion } from "@/src/entities/listings/model/type";
 import { formatApplyPeriod } from "@/src/shared/lib/utils";
 import { useRouter } from "next/navigation";
-import { normalizeListing } from "../../listings/model";
-import { ListingBookMark } from "../../listings/ui/listingsContents/listingsBookMark";
-import { HouseICons, HouseRental } from "../../listings/hooks/listingsHooks";
-import { useRouteStore } from "../model/homeStore";
+import { normalizeListing } from "../../../listings/model";
+import { ListingBookMark } from "../../../listings/ui/listingsContents/listingsBookMark";
+import { useRouteStore } from "../../model/homeStore";
+import { HouseICons, HouseRental } from "@/src/features/listings/hooks";
 
 export const HomeContentsCard = <T extends ListingUnion>({ data }: { data: T[] }) => {
   const router = useRouter();

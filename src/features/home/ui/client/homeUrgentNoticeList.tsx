@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { LeftButton } from "@/src/assets/icons/button";
-import { HomeContentsCard } from "@/src/features/home";
+import { HomeContentsCard } from "@/src/features/home/ui/client/homeContentsCard";
 import { ListingNoSearchResult, ListingsContent } from "@/src/features/listings";
 import { Button } from "@/src/shared/lib/headlessUi";
 import {
@@ -9,7 +9,7 @@ import {
   useUrgentNoticeListRouterHooks,
 } from "@/src/features/home/ui/homeUseHooks";
 
-export const UrgentNoticeList = () => {
+export const UrgentNoticeListClient = () => {
   const { contents, dataCount, isFetchingNextPage, isError, fetchNextPage } =
     useUrgentNoticeListHooks();
   const { pageRouter } = useUrgentNoticeListRouterHooks();

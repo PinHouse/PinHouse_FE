@@ -6,8 +6,8 @@ export const useHomeHeaderHooks = () => {
 
   const onRouteChange = useCallback(() => {
     router.push("/home/search");
-  },[])
+  }, []);
   return {
     onRouteChange,
-  }
-}
+  };
+};
