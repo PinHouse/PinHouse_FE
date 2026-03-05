@@ -1,7 +1,5 @@
 export * from "./ui/client/homeContentsCard";
 export * from "./ui/homeAction/homeActionCardList";
-export * from "./ui/client/homeContentsCard";
-export * from "./ui/client/homeHeader";
 export * from "./ui/client/homeHero";
 export * from "./ui/client/homePersonalShortcutList";
 export * from "./ui/client/homeQuickStatsList";

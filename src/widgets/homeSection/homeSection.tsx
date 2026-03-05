@@ -1,9 +1,10 @@
-import { ActionCardList, HomeHeader } from "@/src/features/home";
+import { ActionCardList } from "@/src/features/home";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { PersonalShortcutList } from "@/src/features/home/ui/server/homePersonalShortcutList.server";
 import { HomeHeroServer } from "@/src/features/home/ui/server/homeHero.server";
 import { HomeQuickStatsListServer } from "@/src/features/home/ui/server/homeQuickStatsList.server";
 import { HomeUrgentNoticeListServer } from "@/src/features/home/ui/server/homeUrgentNoticeList.server";
+import { HomeHeaderServer } from "@/src/features/home/ui/server/homeHeader.server";
 
 export const HomeSection = () => {
   return (
@@ -11,7 +12,7 @@ export const HomeSection = () => {
       <PageTransition>
         <div className="flex flex-col">
           <div className="px-4">
-            <HomeHeader />
+            <HomeHeaderServer />
             <HomeHeroServer />
           </div>
           <div className="flex flex-col gap-3 border-b-8 border-greyscale-grey-50 px-4">
