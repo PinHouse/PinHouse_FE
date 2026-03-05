@@ -1,5 +1,6 @@
-"use client";
-import { useEffect } from "react";
+﻿"use client";
+
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { http } from "@/src/shared/api/http";
 import { IResponse } from "@/src/shared/types";
@@ -7,61 +8,69 @@ import { USER_JWT_TOKEN_VALIDATE_ENDPOINT } from "@/src/shared/api";
 import { useSetDefaultPinpoint } from "@/src/entities/pinpoint";
 
 interface IJwtTokenValidateResponse extends IResponse<boolean> {
-  data: boolean;
+  data?: boolean;
 }
-/**
- * 쿠키 설정 함수들
- */
+
 const setAuthSuccess = () => {
-  document.cookie = "is_auth=true; path=/; max-age=900"; // 15분=
-  console.log("✅ 인증 성공 - is_auth=true 설정");
+  document.cookie = "is_auth=true; path=/; max-age=900";
 };
 
 const setAuthFailure = () => {
-  document.cookie = "is_auth=false; path=/; max-age=900"; // 15분
-  console.log("❌ 인증 실패 - is_auth=false 설정");
+  document.cookie = "is_auth=false; path=/; max-age=900";
 };
 
-/**
- * 인증 상태를 확인하는 커스텀 훅
- * 백엔드에 /user/mypage 요청을 보내서 인증 상태를 확인하고
- * 결과에 따라 is_auth 쿠키를 설정합니다.
- */
 export const useAuthCheck = () => {
   const router = useRouter();
   const { setDefaultPinpoint } = useSetDefaultPinpoint();
 
+  const hasRunRef = useRef(false);
+  const setDefaultPinpointRef = useRef(setDefaultPinpoint);
+
   useEffect(() => {
+    setDefaultPinpointRef.current = setDefaultPinpoint;
+  }, [setDefaultPinpoint]);
+
+  useEffect(() => {
+    if (hasRunRef.current) return;
+    hasRunRef.current = true;
+
+    let cancelled = false;
+
     const checkAuthStatus = async () => {
       try {
-        // axios instance로 백엔드에 /user/mypage 요청
         const response = await http.get<IJwtTokenValidateResponse>(
           USER_JWT_TOKEN_VALIDATE_ENDPOINT
         );
 
-        if (response.data) {
-          setAuthSuccess();
+        const authed = response.data !== false;
 
-          // 로그인 성공 후 기본 핀포인트 설정
-          try {
-            await setDefaultPinpoint();
-          } catch (error) {
-            console.error("❌ 기본 핀포인트 설정 실패:", error);
-            // 에러가 발생해도 로그인은 계속 진행
-          }
-
-          router.push("/home");
-        } else {
+        if (!authed) {
           setAuthFailure();
-          router.push("/login");
+          if (!cancelled) router.replace("/login");
+          return;
         }
+
+        setAuthSuccess();
+
+        try {
+          await setDefaultPinpointRef.current();
+        } catch (error) {
+          console.error("setDefaultPinpoint failed:", error);
+        }
+
+        if (!cancelled) router.replace("/home");
       } catch (error) {
-        console.error("❌ 인증 확인 중 에러:", error);
+        console.error("auth check failed:", error);
         setAuthFailure();
-        router.push("/login");
+        if (!cancelled) router.replace("/login");
       }
     };
 
     checkAuthStatus();
-  }, [router, setDefaultPinpoint]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 };
+
