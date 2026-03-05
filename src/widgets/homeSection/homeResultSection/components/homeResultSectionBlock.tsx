@@ -1,5 +1,4 @@
 "use client";
-
 import { GlobalSearchItem, SearchCategory } from "@/src/entities/home/model/type";
 import { HomeResultSectionHeader } from "@/src/features/home";
 import { HomeResultSectionItems } from "@/src/features/home/ui/result/homeResultSectionItem";

@@ -30,9 +30,10 @@ const itemVariants = {
 };
 
 export const HomeResultSection = ({ q }: { q: string }) => {
+  const trimmedQ = q.trim();
   const { data: globalData } = useGlobal<GlobalListType>({
     params: "overview",
-    q,
+    q: trimmedQ,
   });
 
   const data = useHomeGlobalSearch(globalData);

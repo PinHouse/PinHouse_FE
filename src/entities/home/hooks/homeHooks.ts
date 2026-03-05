@@ -62,6 +62,8 @@ export const useGlobal = <T>({ params, q }: { params: string; q: string }) => {
     retry: false,
     queryFn: () => getNoticeByPinPoint<T>({ url, params: param }),
     enabled: params === "popular" || q?.length > 0,
+    staleTime: 30_000,
+    gcTime: 5 * 60_000,
   });
 };
 
