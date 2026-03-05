@@ -1,7 +1,6 @@
 "use client";
 import { HomeScreenLogo } from "@/src/assets/icons/home/homeScreenLogo";
 import { PinhouseLogo } from "@/src/assets/icons/logo";
-import { useRouter } from "next/navigation";
 import { SearchLine } from "@/src/assets/icons/home";
 import { useHomeHeaderHooks } from "@/src/widgets/homeSection/hooks/homeHeaderHooks";
 
