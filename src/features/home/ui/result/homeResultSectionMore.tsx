@@ -18,7 +18,6 @@ export const HomeResultSectionMore = ({
   nextPage,
   isFetchingNextPage,
 }: HomeResultSectionMoreProps) => {
-  console.log(category);
   return (
     <button
       type="button"
