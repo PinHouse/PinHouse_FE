@@ -28,25 +28,26 @@ type SearchHeaderProps = {
 
 export const SearchHeader = ({ placeHolder, searchQuery, searchConfig }: SearchHeaderProps) => {
   const { resultPath, clearPath, queryKey, mainUrl } = searchConfig;
-  const { keyword, search, clear, goMain } = useSearchHeader({
+  const { keyword, searchDebounced, clear, goMain } = useSearchHeader({
     resultPath,
     clearPath,
     queryKey,
     mainUrl,
     onSearch: searchQuery,
+    debounceMs: 300,
   });
 
   return (
     <>
       <LeftButton onClick={goMain} className="h-8 w-8 cursor-pointer text-greyscale-grey-400" />
-
       <SearchBarLabel
         direction="vertical"
         placeholder={placeHolder}
         className="rounded-3xl"
         variant="capsule"
         value={keyword}
-        onEnter={search}
+        // onEnter={search}
+        onChange={e => searchDebounced(e.target.value)}
         onClear={clear}
         xBtnDef="default"
       />
