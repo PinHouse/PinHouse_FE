@@ -1,5 +1,9 @@
 import { GlobalListType, GlobalSearchSection } from "@/src/entities/home/model/type";
 
+/**
+ * @globalData 홈 글로벌 검색 응답 데이터
+ * @returns 화면 섹션 렌더링용 카테고리 목록
+ */
 export const useHomeGlobalSearch = (globalData?: GlobalListType): GlobalSearchSection[] => {
   if (!globalData) return [];
 
