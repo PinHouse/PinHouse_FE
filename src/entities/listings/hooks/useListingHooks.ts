@@ -35,16 +35,13 @@ export const useListingListInfiniteQuery = () => {
   const houseTypes = useListingsFilterStore(s => s.houseTypes);
   const sortType = useListingsFilterStore(s => s.sortType);
 
-  const filter = useMemo(
-    () => ({
-      regionType,
-      rentalTypes,
-      supplyTypes,
-      houseTypes,
-      sortType,
-    }),
-    [regionType, rentalTypes, supplyTypes, houseTypes, sortType]
-  );
+  const filter = {
+    regionType,
+    rentalTypes,
+    supplyTypes,
+    houseTypes,
+    sortType,
+  };
 
   return useInfiniteQuery<ListingListPage>({
     queryKey: ["listingListInfinite", filter, status],
