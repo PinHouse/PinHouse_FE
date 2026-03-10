@@ -31,7 +31,7 @@ export const onboardingContentMap = {
     Icon: MapPin,
     title: "핀포인트 설정",
     path: "/onboarding/agent",
-    description: "나만의 핀포인트를 찍고 \n 원하는 거리 안의 임재주택을 찾아보세요!",
+    description: "나만의 핀포인트를 찍고 \n 원하는 거리 안의 임대주택을 찾아보세요!",
   },
   environment: {
     Icon: House,
