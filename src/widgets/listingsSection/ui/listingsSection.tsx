@@ -1,10 +1,11 @@
-﻿import {
+﻿"use client";
+import {
   ListingFilterPanel,
   ListingFilterPartialSheet,
   ListingsContent,
   ListingsHeaders,
 } from "@/src/features/listings";
-import { useSyncSortTypeFromQuery } from "@/src/widgets/listingsSection";
+import { useSyncSortTypeFromQuery } from "@/src/widgets/listingsSection/model/useSyncSortTypeFromQuery";
 
 export const ListingsSection = () => {
   useSyncSortTypeFromQuery();
