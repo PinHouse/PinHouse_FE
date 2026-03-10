@@ -833,9 +833,9 @@ export const eligibilityDecisionTree: StepConfig[] = [
     getNextStep: data => {
       const isMarried = data.marriageStatus === "1";
       const hasChildren = data.hasRegisteredChildren === "1" || data.hasSpouseChildren === "1";
-      // 미혼 + 자녀없음 → adultSingle001
+      // 미혼 + 자녀없음 → assetSingle001
       if (!isMarried && !hasChildren) {
-        return "adultSingle001";
+        return "assetSingle001";
       }
       // 기혼 or 미혼 + 자녀있음 → assetMarried001
       return "assetMarried001";
