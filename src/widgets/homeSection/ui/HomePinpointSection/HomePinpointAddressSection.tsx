@@ -15,14 +15,13 @@ import { MYPAGE_PINPOINTS_DEFAULT_NAME } from "@/src/features/mypage/model/mypag
 /** 홈 > 핀포인트 추가/수정 주소 검색 화면 */
 export function HomePinpointAddressSection() {
   const router = useRouter();
-  const { address, pinPoint, editingPinpointId, clearEditPinpoint } =
-    useAddressStore();
+  const { address, pinPoint, editingPinpointId, reset } = useAddressStore();
   const editId = editingPinpointId;
   const isEditMode = Boolean(editId);
 
   const { addPinpoint, isLoading: isAdding } = useAddPinpoint({
     onSuccess: () => {
-      clearEditPinpoint();
+      reset();
       router.push("/home/pinpoints");
     },
     onError: () => {
@@ -32,7 +31,7 @@ export function HomePinpointAddressSection() {
 
   const { updatePinpoint, isUpdating } = useUpdatePinpoint({
     onSuccess: () => {
-      clearEditPinpoint();
+      reset();
       router.push("/home/pinpoints");
     },
     onError: () => {

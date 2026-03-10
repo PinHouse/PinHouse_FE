@@ -8,10 +8,10 @@ import { useAddressStore } from "@/src/entities/address";
 
 export function HomePinpointAddButton() {
   const router = useRouter();
-  const { clearEditPinpoint } = useAddressStore();
+  const { reset } = useAddressStore();
   const handleAddPinpoint = () => {
+    reset();
     router.push("/home/pinpoints/setting");
-    clearEditPinpoint();
   };
 
   return (
