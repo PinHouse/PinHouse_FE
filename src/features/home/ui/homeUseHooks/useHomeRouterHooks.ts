@@ -19,7 +19,7 @@ export const usePinhouseRouter = (searchParams: URLSearchParams) => {
 
   /** @description 핀포인트 설정 페이지 이동 후 시트 닫기 */
   const handleSetPinpoint = () => {
-    router.push("/mypage/pinpoints");
+    router.push("/home/pinpoints");
     closeSheet();
   };
 

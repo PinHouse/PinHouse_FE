@@ -1,1 +1,2 @@
-export * from "../hooks/useHomeHooks";
+export * from "./useHomeHooks";
+export * from "./useDeletePinpoint";

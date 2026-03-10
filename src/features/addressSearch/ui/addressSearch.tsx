@@ -1,8 +1,8 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
+
 import { Input } from "@/src/shared/ui/input/deafult";
-import { useAddressStore } from "@/src/entities/address";
 import { AddressButton } from "./addressButton";
+import { useAddressSearchInput } from "../hook/useAddressSearchInput";
 
 declare global {
   interface Window {
@@ -10,11 +10,14 @@ declare global {
   }
 }
 
-export const AddressSearch = () => {
-  const { address, setPinPoint } = useAddressStore();
-  const onPinPointChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPinPoint(e.target.value);
-  };
+export interface AddressSearchProps {
+  /** 있으면 input 초기/현재 값으로 사용 */
+  inputValue?: string;
+}
+
+export const AddressSearch = ({ inputValue }: AddressSearchProps) => {
+  const { address, inputDisplayValue, onPinPointChange } =
+    useAddressSearchInput(inputValue);
 
   return (
     <>
@@ -26,6 +29,7 @@ export const AddressSearch = () => {
               size={"default"}
               variant={"default"}
               placeholder="핀포인트"
+              value={inputDisplayValue}
               onChange={onPinPointChange}
               className="text-sm placeholder:text-sm placeholder:font-medium placeholder:text-gray-400"
             />

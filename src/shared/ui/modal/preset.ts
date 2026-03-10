@@ -48,6 +48,11 @@ export const eligibilityLeaveConfirmScript: ModalDescriptProps = {
   btnlabel: ["나가기", "계속 진단하기"],
 };
 
+export const pinpointDeleteConfirmScript: ModalDescriptProps = {
+  descript: "",
+  btnlabel: ["취소", "삭제"],
+};
+
 export const logoutConfirmScript: ModalDescriptProps = {
   descript: "로그아웃하시면 앱을 사용하실 수 없어요.\n로그아웃할까요?",
   btnlabel: ["취소", "로그아웃"],
@@ -62,5 +67,6 @@ export const discription: ModalDescriptMap = {
   eligibilityPreviousDiagnosis: eligibilityPreviousDiagnosisScript,
   eligibilityDiagnosisGo: eligibilityDiagnosisGoScript,
   eligibilityLeaveConfirm: eligibilityLeaveConfirmScript,
+  pinpointDeleteConfirm: pinpointDeleteConfirmScript,
   logoutConfirm: logoutConfirmScript,
 };
