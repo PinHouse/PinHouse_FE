@@ -1,4 +1,4 @@
-import type { NoticeContent, NoticeCount, SliceResponse } from "@/src/entities/home/model/type";
+import type { NoticeCount } from "@/src/entities/home/model/type";
 import { headers } from "next/headers";
 import { ListingListPage } from "@/src/entities/listings/model/type";
 
