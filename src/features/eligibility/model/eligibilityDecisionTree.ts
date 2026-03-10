@@ -191,6 +191,45 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
+  // underAge001
+  {
+    id: "underAge001",
+    groupId: "identityInfo",
+    components: [
+      {
+        type: "statusBanner",
+        props: {
+          title: "아직 미성년자이시네요!",
+          description: "미성년자는 아래 조건에서만 신청할 수 있어요",
+        },
+      },
+      {
+        type: "optionSelector",
+        props: {
+          title: "다음 중 나에게 해당되는 사항을 선택해주세요",
+          options: [
+            { id: "0", label: "해당사항이 없어요" },
+            { id: "1", label: "자녀가 있는 미성년 세대주" },
+            { id: "2", label: "부모 등 보호자의 부재로 형제자매를 부양하는 미성년 세대주" },
+            { id: "3", label: "외국인 한부모가족의 미성년 세대주(내국인 자녀)" },
+          ],
+          required: true,
+          direction: "vertical",
+        },
+        storeKey: "minorEligibilityType",
+      },
+    ],
+    validation: data => {
+      if (!data.minorEligibilityType) {
+        return "해당되는 사항을 선택해주세요";
+      }
+      return null;
+    },
+    getNextStep: () => {
+      return null;
+    },
+  },
+
   // basicInfo003
   {
     id: "basicInfo003",
@@ -363,56 +402,8 @@ export const eligibilityDecisionTree: StepConfig[] = [
       }
       return null;
     },
-    getNextStep: data => {
-      // 19세 미만이면 미성년자 자격 확인 단계로 이동
-      const age = calculateAge(data.birthDate);
-      if (age === null) {
-        console.log("🔍 age:", age);
-        return null;
-      }
-      if (age < 19) {
-        return "underAge001";
-      }
-      return "adult001";
-    },
-  },
-
-  // underAge001
-  {
-    id: "underAge001",
-    groupId: "identityInfo",
-    components: [
-      {
-        type: "statusBanner",
-        props: {
-          title: "아직 미성년자이시네요!",
-          description: "미성년자는 아래 조건에서만 신청할 수 있어요",
-        },
-      },
-      {
-        type: "optionSelector",
-        props: {
-          title: "다음 중 나에게 해당되는 사항을 선택해주세요",
-          options: [
-            { id: "0", label: "해당사항이 없어요" },
-            { id: "1", label: "자녀가 있는 미성년 세대주" },
-            { id: "2", label: "부모 등 보호자의 부재로 형제자매를 부양하는 미성년 세대주" },
-            { id: "3", label: "외국인 한부모가족의 미성년 세대주(내국인 자녀)" },
-          ],
-          required: true,
-          direction: "vertical",
-        },
-        storeKey: "minorEligibilityType",
-      },
-    ],
-    validation: data => {
-      if (!data.minorEligibilityType) {
-        return "해당되는 사항을 선택해주세요";
-      }
-      return null;
-    },
     getNextStep: () => {
-      return null;
+      return "adult001";
     },
   },
 
@@ -449,6 +440,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         },
         storeKey: "marriageStatus",
       },
+      // adult 001-1
       {
         type: "select",
         props: {
@@ -544,6 +536,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
               return data.hasSpouseChildren === "1";
             },
           },
+          // adult 001-3
           {
             type: "optionSelector",
             props: {
@@ -583,7 +576,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
 
       // 2. 미혼+중장년 (40~64세, 미혼)
       if (isSingle && age >= 40 && age < 65) {
-        return "middleAge001";
+        return "middleSingle001";
       }
 
       // 3. 청년+중장년 기혼 (19~64세, 기혼) + 고령자(65세 이상, 미혼+기혼)
@@ -642,6 +635,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
               return data.hasRegisteredChildren === "1";
             },
           },
+          // adult 002-1
           {
             type: "optionSelector",
             props: {
@@ -683,7 +677,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
 
       // 2. 미혼+중장년 (40~64세, 미혼)
       if (isSingle && age >= 40 && age < 65) {
-        return "middleAge001";
+        return "middleSingle001";
       }
 
       // 3. 청년+중장년 기혼 (19~64세, 기혼) + 고령자(65세 이상, 미혼+기혼)
@@ -712,6 +706,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           required: true,
         },
         storeKey: "youngSingleStudentStatus",
+        // young single 001-1
         children: [
           {
             type: "priceInput",
@@ -770,6 +765,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           direction: "horizontal",
         },
         storeKey: "hasCar",
+        // young single 002-1
         children: [
           {
             type: "priceInput",
@@ -803,7 +799,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
 
   // young adult 003 - 청년 미혼 특별 자격 요건(취약계층 판단)
   {
-    id: "youngAdult003",
+    id: "youngSingle003",
     groupId: "identityInfo",
     components: [
       {
@@ -841,14 +837,14 @@ export const eligibilityDecisionTree: StepConfig[] = [
       if (!isMarried && !hasChildren) {
         return "adultSingle001";
       }
-      // 기혼 or 미혼 + 자녀있음 → adultMarried001
-      return "adultMarried001";
+      // 기혼 or 미혼 + 자녀있음 → assetMarried001
+      return "assetMarried001";
     },
   },
 
-  // middle age 001 + middle age 001-1
+  // middle Single 001 + middle Single 001-1
   {
-    id: "middleAge001",
+    id: "middleSingle001",
     groupId: "identityInfo",
     components: [
       {
@@ -863,6 +859,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           direction: "horizontal",
         },
         storeKey: "hasIncomeWorkWithin5Years",
+        // middle Single 001-1
         children: [
           {
             type: "optionSelector",
@@ -894,13 +891,13 @@ export const eligibilityDecisionTree: StepConfig[] = [
       return null;
     },
     getNextStep: () => {
-      return "middleAge002";
+      return "middleSingle002";
     },
   },
 
   //  middle age 002
   {
-    id: "middleAge002",
+    id: "middleSingle002",
     groupId: "identityInfo",
     components: [
       {
@@ -932,12 +929,12 @@ export const eligibilityDecisionTree: StepConfig[] = [
     getNextStep: data => {
       const isMarried = data.marriageStatus === "1";
       const hasChildren = data.hasRegisteredChildren === "1" || data.hasSpouseChildren === "1";
-      // 미혼 + 자녀없음 → adultSingle001
+      // 미혼 + 자녀없음 → assetSingle001
       if (!isMarried && !hasChildren) {
-        return "adultSingle001";
+        return "assetSingle001";
       }
-      // 기혼 or 미혼 + 자녀있음 → adultMarried001
-      return "adultMarried001";
+      // 기혼 or 미혼 + 자녀있음 → assetMarried001
+      return "assetMarried001";
     },
   },
 
@@ -975,19 +972,19 @@ export const eligibilityDecisionTree: StepConfig[] = [
     getNextStep: data => {
       const isMarried = data.marriageStatus === "1";
       const hasChildren = data.hasRegisteredChildren === "1" || data.hasSpouseChildren === "1";
-      // 미혼 + 자녀없음 → adultSingle001
+      // 미혼 + 자녀없음 → assetSingle001
       if (!isMarried && !hasChildren) {
-        return "adultSingle001";
+        return "assetSingle001";
       }
-      // 기혼 or 미혼 + 자녀있음 → adultMarried001
-      return "adultMarried001";
+      // 기혼 or 미혼 + 자녀있음 → assetMarried001
+      return "assetMarried001";
     },
   },
 
   // 3. 자산 정보
   // adult single 001 - 중장년 미혼 세대주/세대원 여부
   {
-    id: "adultSingle001",
+    id: "assetSingle001",
     groupId: "assetInfo",
     components: [
       {
@@ -1027,13 +1024,13 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: () => {
       // 세대 구성 단계로 이동
-      return "adultSingle002";
+      return "assetSingle002";
     },
   },
 
   // adult single 002 - 중장년 미혼 세대 구성
   {
-    id: "adultSingle002",
+    id: "assetSingle002",
     groupId: "assetInfo",
     components: [
       {
@@ -1101,15 +1098,15 @@ export const eligibilityDecisionTree: StepConfig[] = [
     getNextStep: data => {
       const isLivinWithFamily = data.householdComposition === "2";
       if (isLivinWithFamily) {
-        return "adultSingle004_1";
+        return "assetSingle004_1";
       }
-      return "adultSingle002_1";
+      return "assetSingle002_1";
     },
   },
 
   // adult single 002-2 - 중장년 미혼 주택 소유 여부 및 무주택 기간
   {
-    id: "adultSingle002_1",
+    id: "assetSingle002_1",
     groupId: "assetInfo",
     components: [
       {
@@ -1125,6 +1122,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           direction: "horizontal",
         },
         storeKey: "hasOwnHousing",
+        // asset Single 002-2
         children: [
           {
             type: "numberInputList",
@@ -1174,13 +1172,13 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 토지 소유 및 총자산 단계로 이동
-      return "adultSingle002_3";
+      return "assetSingle002_3";
     },
   },
 
   // adult single 002-3 - 중장년 미혼 총자산
   {
-    id: "adultSingle002_3",
+    id: "assetSingle002_3",
     groupId: "assetInfo",
     components: [
       {
@@ -1195,6 +1193,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           direction: "horizontal",
         },
         storeKey: "hasOwnLand",
+        // asset Single 002-4
         children: [
           {
             type: "priceInput",
@@ -1256,9 +1255,9 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
   },
 
-  // adult single 004-1 - 중장년 미혼 가구원 주택 소유 여부 및 무주택 기간
+  // asset single 004-1 - 중장년 미혼 가구원 주택 소유 여부 및 무주택 기간
   {
-    id: "adultSingle004_1",
+    id: "assetSingle004_1",
     groupId: "assetInfo",
     components: [
       {
@@ -1274,6 +1273,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           required: true,
         },
         storeKey: "householdHousingOwnershipStatus",
+        // asset Single 004-1
         children: [
           {
             type: "numberInputList",
@@ -1323,13 +1323,13 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 가구원 자동차 및 총자산 단계로 이동
-      return "adultSingle005_1";
+      return "assetSingle005";
     },
   },
 
   // adult single 005-1 - 중장년 미혼 가구원 자동차 소유 및 총자산
   {
-    id: "adultSingle005_1",
+    id: "assetSingle005",
     groupId: "assetInfo",
     components: [
       {
@@ -1378,6 +1378,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           direction: "horizontal",
         },
         storeKey: "hasHouseholdCar",
+        // asset Single 005-1
         children: [
           {
             type: "priceInput",
@@ -1456,7 +1457,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
 
   // adult married 001 - 중장년 기혼 세대주/세대원 여부
   {
-    id: "adultMarried001",
+    id: "assetMarried001",
     groupId: "assetInfo",
     components: [
       {
@@ -1496,13 +1497,13 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 다음 단계로 이동 (추후 결정)
-      return "adultMarried002";
+      return "assetMarried003";
     },
   },
 
   // adult married 002 - 중장년 기혼 세대 구성
   {
-    id: "adultMarried002",
+    id: "assetMarried003",
     groupId: "assetInfo",
     components: [
       {
@@ -1584,13 +1585,13 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 주택 소유 여부 단계로 이동
-      return "adultMarried004_1";
+      return "assetMarried004";
     },
   },
 
   // adult married 004-1 - 중장년 기혼 가구원 주택 소유 여부 및 무주택 기간
   {
-    id: "adultMarried004_1",
+    id: "assetMarried004",
     groupId: "assetInfo",
     components: [
       {
@@ -1606,6 +1607,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           required: true,
         },
         storeKey: "householdHousingOwnershipStatus",
+        // asset Married 004-1
         children: [
           {
             type: "numberInputList",
@@ -1655,13 +1657,13 @@ export const eligibilityDecisionTree: StepConfig[] = [
     },
     getNextStep: data => {
       // 가구원 토지 및 자동차, 금융자산 단계로 이동
-      return "adultMarried005_1";
+      return "assetMarried005";
     },
   },
 
-  // adult married 005-1 - 중장년 기혼 가구원 토지, 자동차 및 금융자산
+  // adult married 005 - 중장년 기혼 가구원 토지, 자동차 및 금융자산
   {
-    id: "adultMarried005_1",
+    id: "assetMarried005",
     groupId: "assetInfo",
     components: [
       {
@@ -1710,6 +1712,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
           direction: "horizontal",
         },
         storeKey: "hasHouseholdCar",
+        // asset Married 005-1
         children: [
           {
             type: "priceInput",
