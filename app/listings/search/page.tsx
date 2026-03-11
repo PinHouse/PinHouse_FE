@@ -1,10 +1,12 @@
-import { Suspense } from "react";
-import { ListingsSearch } from "@/src/widgets/listingsSection";
+import { ListingsSearchPage } from "@/src/widgets/listingsSection";
 
-export default function properySearch() {
-  return (
-    <Suspense fallback={null}>
-      <ListingsSearch />
-    </Suspense>
-  );
+type Props = {
+  searchParams?: Promise<{
+    query?: string;
+  }>;
+};
+
+export default async function PropertySearch({ searchParams }: Props) {
+  const params = await searchParams;
+  return <ListingsSearchPage query={params?.query ?? ""} />;
 }

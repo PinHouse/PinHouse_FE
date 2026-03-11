@@ -21,13 +21,12 @@ export async function getHomeInitialData() {
   const host = h.get("x-forwarded-host") ?? h.get("host");
   const proto = h.get("x-forwarded-proto") ?? "http";
   const baseUrl = `${proto}://${host}`;
-  const cookieHeader = h.get("cookie") ?? "";
 
   try {
     const res = await fetch(`${baseUrl}/api/home/notice`, {
       method: "GET",
+      credentials: "include",
       cache: "no-store",
-      headers: { cookie: cookieHeader },
     });
 
     if (res.ok) {
@@ -41,8 +40,8 @@ export async function getHomeInitialData() {
   try {
     const res = await fetch(`${baseUrl}/api/home/count?maxTime=60`, {
       method: "GET",
+      credentials: "include",
       cache: "no-store",
-      headers: { cookie: cookieHeader },
     });
 
     if (res.ok) {
