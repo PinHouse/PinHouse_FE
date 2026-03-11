@@ -10,9 +10,7 @@ export async function getHomeNoticesFirstPageOnServer() {
   const cookieStore = await cookies();
   const pinpointId = cookieStore.get("pinpoint_id")?.value;
   const accessToken = cookieStore.get("access_token")?.value;
-
   if (!pinpointId || !API_BASE_URL) return null;
-
   const query = new URLSearchParams({
     pinpointId,
     page: "1",
