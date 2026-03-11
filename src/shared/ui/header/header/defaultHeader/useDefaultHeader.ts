@@ -15,7 +15,7 @@ export const useDefaultHeader = ({ path, prevPath, reset }: DefaultHeaderProps) 
     if (prevPath) {
       router.push(nextPath);
     } else {
-      router.back();
+      router.push(path);
     }
   };
   return { handleRouter };
