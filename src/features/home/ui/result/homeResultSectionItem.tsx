@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import { HomeBgBookMark } from "./components/HomeBgBookMark";
 import { GlobalSearchItem } from "@/src/entities/home/model/type";
-import { HighlightCenteredText } from "@/src/features/listings/hooks/listingsHooks";
+import { HighlightCenteredText } from "@/src/features/listings/hooks/list/components/listingsHooks";
 
 interface HomeResultSectionItemsProps {
   items: GlobalSearchItem[];

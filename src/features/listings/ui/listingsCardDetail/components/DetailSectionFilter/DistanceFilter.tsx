@@ -7,7 +7,7 @@ import { useListingDetailCountStore, useListingDetailFilter } from "@/src/featur
 import {
   getDefaultPinPointLabel,
   mapPinPointToOptions,
-} from "@/src/features/listings/hooks/listingsHooks";
+} from "@/src/features/listings/hooks/list/components/listingsHooks";
 import { ListingCardDetailOut } from "@/src/features/listings/ui/listingsCardDetail/button/button";
 import {
   useDistanceHooks,

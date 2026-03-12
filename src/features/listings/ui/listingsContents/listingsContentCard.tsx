@@ -1,7 +1,11 @@
 "use client";
 import { ListingUnion } from "@/src/entities/listings/model/type";
 import { ListingBookMark } from "./listingsBookMark";
-import { HighlightCenteredText, HouseICons, HouseRental } from "../../hooks/listingsHooks";
+import {
+  HighlightCenteredText,
+  HouseICons,
+  HouseRental,
+} from "../../hooks/list/components/listingsHooks";
 import { formatApplyPeriod } from "@/src/shared/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { normalizeListing } from "../../model";

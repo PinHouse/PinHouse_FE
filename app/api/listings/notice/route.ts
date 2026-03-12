@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getNoticeFirstPageOnServer } from "@/src/features/listings/server/getNoticeFirstPagOnServer";
+import { getNoticeFirstPageOnServer } from "@/src/features/listings/server";
 
 export const dynamic = "force-dynamic";
 

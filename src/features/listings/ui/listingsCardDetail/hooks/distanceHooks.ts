@@ -1,7 +1,7 @@
 import {
   getDefaultPinPointLabel,
   mapPinPointToOptions,
-} from "@/src/features/listings/hooks/listingsHooks";
+} from "@/src/features/listings/hooks/list/components/listingsHooks";
 import { useOAuthStore } from "@/src/features/login/model";
 import { useListingDetailFilter } from "@/src/features/listings/model";
 import { PinPointPlace } from "@/src/entities/listings/model/type";

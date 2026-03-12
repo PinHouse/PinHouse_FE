@@ -1,29 +1,12 @@
 "use client";
 
 import { SearchForm, SearchResults } from "@/src/features/listings";
-import { useListingsSearchState } from "@/src/features/listings/model";
-import { useSearchState } from "@/src/shared/hooks/store";
 import { PageTransition } from "@/src/shared/ui/animation";
 import { SearchBarLabel } from "@/src/shared/ui/searchBarLabel";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useListingsSearchRoute } from "@/src/features/listings/hooks";
 
 export const ListingsSearch = () => {
-  const { setSearchQuery } = useSearchState();
-  const searchRest = useListingsSearchState.getState();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get("query") ?? "";
-
-  const handleSearch = async (keyword: string) => {
-    if (!keyword) return;
-    router.push(`/listings/search?query=${keyword}`);
-    setSearchQuery(keyword);
-  };
-
-  const onClear = () => {
-    router.push("/listings/search?query=");
-    searchRest.reset();
-  };
+  const { keyword, submit, clear } = useListingsSearchRoute();
 
   return (
     <section className="relative h-full overflow-hidden">
@@ -37,13 +20,13 @@ export const ListingsSearch = () => {
                 placeholder="검색어를 입력하세요"
                 className="rounded-3xl"
                 value={keyword}
-                onClear={onClear}
-                onEnter={handleSearch}
+                onClear={clear}
+                onEnter={submit}
               />
             </div>
           </div>
           <div className="min-h-0 flex-1">
-            <SearchResults />
+            <SearchResults keyword={keyword} submit={submit} />
           </div>
         </div>
       </PageTransition>

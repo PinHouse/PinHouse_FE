@@ -10,7 +10,7 @@ import { cn } from "@/src/shared/lib/utils";
 import { VerticalTransitIcon } from "@/src/assets/icons/route/vertical/verticalBusIcon";
 import { VerticalSubWayIcon } from "@/src/assets/icons/route/vertical/verticalSubWayIcon";
 import { VerticalWalkIcon } from "@/src/assets/icons/route/vertical/verticalWalkIcon";
-import { parseMinutes } from "@/src/features/listings/hooks/listingsHooks";
+import { parseMinutes } from "@/src/features/listings/hooks/list/components/listingsHooks";
 import { useOAuthStore } from "@/src/features/login/model";
 
 type RouteSegmentItem = ListingRouteInfo["routes"][number];

@@ -1,5 +1,8 @@
 import { ListingDetailResponseWithColor } from "@/src/entities/listings/model/type";
-import { getListingsRental, normalizeRentType } from "@/src/features/listings/hooks/listingsHooks";
+import {
+  getListingsRental,
+  normalizeRentType,
+} from "@/src/features/listings/hooks/list/components/listingsHooks";
 
 export const useDetailColorHooks = (
   basicInfo: ListingDetailResponseWithColor["data"]["basicInfo"]

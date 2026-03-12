@@ -3,7 +3,7 @@
 //   * 리스트/검색 훅: useListingHooks.ts (요청/응답/필터 타입)
 //   * UI 컴포넌트: listingsContentCard.tsx, listingsFullSheet.tsx, listingsCardTile.tsx 등
 //   * 상세 훅/컴포넌트: useListingDetailHooks.ts, TransportIconRenderer.tsx, Environment.tsx
-import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
+import { getListingsRental } from "@/src/features/listings/hooks/list/components/listingsHooks";
 import { INFRA_LABEL_TO_KEY, RENT_COLOR_CLASS } from "@/src/features/listings/model";
 import { HTTP_METHODS, PINPOINT_CREATE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";

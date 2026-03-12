@@ -1,5 +1,5 @@
 import { DistanceInfo } from "@/src/entities/listings/model/type";
-import { parseMinutes } from "@/src/features/listings/hooks/listingsHooks";
+import { parseMinutes } from "@/src/features/listings/hooks/list/components/listingsHooks";
 const MIN_PERCENT = 5;
 const BAR_LIMIT = 5;
 

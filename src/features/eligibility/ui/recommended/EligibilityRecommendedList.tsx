@@ -9,7 +9,7 @@ import { Button } from "@/src/shared/lib/headlessUi";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 import { DataEnterTransition } from "@/src/shared/ui/animation/pageUpTransition";
 import { useEligibilityRecommendedListHooks } from "@/src/features/eligibility/hooks/useEligibilityRecommendedListHooks";
-import { useListingsContentsObserveHooks } from "@/src/features/listings/hooks/useListingsContentListHooks";
+import { useListingsContentsObserveHooks } from "@/src/features/listings/hooks/list/useListingsContentListHooks";
 
 export type EligibilityRecommendedListProps = {
   data: InfiniteData<SliceResponse<ListingItem>> | undefined;
