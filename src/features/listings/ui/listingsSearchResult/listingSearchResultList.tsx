@@ -1,69 +1,43 @@
 "use client";
-import {
-  useListingSearchInfiniteQuery,
-  usePopularSearchQuery,
-} from "@/src/entities/listings/hooks/useListingHooks";
-import { useRouter, useSearchParams } from "next/navigation";
+
 import { ListingsContentHeader } from "../listingsContents/listingsContentsHeader";
-import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 import { ListingContentsList } from "../listingsContents/listingsContentsList";
 import { SearchEmptyQueryView } from "./components/searchEmptyQueryView";
 import { SearchNoResultView } from "./components/searchNoResultView";
-import { useSearchState } from "@/src/shared/hooks/store";
+import { getSearchViewMode, useListingsSearchData } from "@/src/features/listings/hooks";
 
-export const SearchResults = () => {
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get("query") ?? "";
-  const debouncedKeyword = useDebounce(keyword, 350);
-  const { setSearchQuery } = useSearchState();
-  const router = useRouter();
-  const { data } = usePopularSearchQuery();
+type SearchResultsProps = {
+  keyword: string;
+  submit: (next: string) => void;
+};
 
-  const {
-    data: searchList,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isFetching,
-  } = useListingSearchInfiniteQuery({
-    enabled: !!debouncedKeyword,
-    keepPreviousData: true,
+export const SearchResults = ({ keyword, submit }: SearchResultsProps) => {
+  const { debounced, popular, search } = useListingsSearchData(keyword);
+
+  if (!popular.data) return null;
+  const resultCount = search.data?.pages?.[0]?.content?.length ?? 0;
+  const mode = getSearchViewMode({
+    keyword,
+    debounced,
+    isFetching: search.isFetching,
+    resultCount,
   });
 
-  const resultCount = searchList?.pages?.[0]?.content?.length ?? 0;
-
-  // 상태 분기
-  const noKeyword = keyword.length === 0;
-  const loading = isFetching && debouncedKeyword.length > 0;
-  const noResult = !loading && resultCount === 0 && debouncedKeyword.length > 0;
-
-  if (!data) return;
-
-  const handleSearchTag = (keyword: string) => {
-    if (!keyword) return;
-    router.push(`/listings/search?query=${keyword}`);
-    setSearchQuery(keyword);
-  };
-
-  if (noKeyword) {
-    return <SearchEmptyQueryView handleSearchTag={handleSearchTag} popular={data} />;
-  }
-
-  if (noResult) {
-    return <SearchNoResultView handleSearchTag={handleSearchTag} popular={data} />;
-  }
+  if (mode === "EMPTY")
+    return <SearchEmptyQueryView handleSearchTag={submit} popular={popular.data} />;
+  if (mode === "NO_RESULT")
+    return <SearchNoResultView handleSearchTag={submit} popular={popular.data} />;
 
   return (
     <>
       <div className="flex h-full flex-col pl-5 pr-5">
         <ListingsContentHeader totalCount={resultCount ?? 0} />
         <ListingContentsList
-          data={searchList}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          isError={isError}
+          data={search.data}
+          fetchNextPage={search.fetchNextPage}
+          hasNextPage={search.hasNextPage}
+          isFetchingNextPage={search.isFetchingNextPage}
+          isError={search.isError}
           isBottom={false}
         />
       </div>

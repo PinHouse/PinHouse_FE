@@ -2,7 +2,7 @@ import { ListingListPage, PopularKeywordItem } from "@/src/entities/listings/mod
 import {
   getPopularSearchOnServer,
   getSearchNoticeInitialFromBff,
-} from "@/src/features/listings/server/bff/getSearchNoticeInitialFromBff";
+} from "@/src/features/listings/server";
 
 export const DEFAULT_SEARCH_SORT = "LATEST" as const;
 export const DEFAULT_SEARCH_STATUS = "ALL" as const;

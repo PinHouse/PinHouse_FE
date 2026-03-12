@@ -133,16 +133,12 @@ export const usePopularSearchQuery = () => {
 };
 
 export const useListingSearchInfiniteQuery = (queryOpt: SearchOptions) => {
-  const { enabled = true, keepPreviousData = true, staleTime = 30000 } = queryOpt;
+  const { enabled = true, keepPreviousData = true, staleTime = 30000, keyword } = queryOpt;
   const sortType = useListingsSearchState(s => s.sortType);
   const status = useListingsSearchState(s => s.status);
-  const searchParams = useSearchParams();
-  const keywordRaw = searchParams.get("query") ?? "";
-  const keyword = keywordRaw.trim();
-  const debouncedKeyword = useDebounce(keyword, 350);
 
   return useInfiniteQuery<ListingListPage>({
-    queryKey: ["listingSearchInfinite", debouncedKeyword, sortType, status],
+    queryKey: ["listingSearchInfinite", keyword, sortType, status],
     enabled,
     staleTime,
     initialPageParam: 1,

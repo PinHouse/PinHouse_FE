@@ -1,7 +1,7 @@
 import { DETAIL_FILTERS, DetailFilterTabKey } from "@/src/features/listings/model";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { getDetailIndicatorLeft } from "@/src/features/listings/hooks/listingsHooks";
+import { getDetailIndicatorLeft } from "@/src/features/listings/hooks/list/components/listingsHooks";
 
 export const DetailFilterTab = () => {
   const router = useRouter();

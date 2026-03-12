@@ -1,5 +1,5 @@
 import { useListingState, useListingsFilterStore } from "@/src/features/listings/model";
-import { fetchNoticeInitialFromBff } from "@/src/features/listings/server/bff/getNoticeInitialFromBff";
+import { fetchNoticeInitialFromBff } from "@/src/features/listings/server";
 
 export async function getNoticeInitialData() {
   const { status } = useListingState.getState();

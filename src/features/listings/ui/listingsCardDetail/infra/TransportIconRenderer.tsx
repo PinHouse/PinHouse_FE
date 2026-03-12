@@ -1,6 +1,6 @@
 import { DistanceInfo } from "@/src/entities/listings/model/type";
 import { TRANSPORT_ICON_MAP } from "../../../model";
-import { useTransportIconRenderHooks } from "@/src/features/listings/hooks/useTransportIconRenderHooks";
+import { useTransportIconRenderHooks } from "@/src/features/listings/hooks/list/useTransportIconRenderHooks";
 
 type TransportIconRendererProps = {
   routes: DistanceInfo;

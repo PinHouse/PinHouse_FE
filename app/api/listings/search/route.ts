@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSearchPageOnServer } from "@/src/features/listings/server/getSearchPageOnServer";
+import { getSearchPageOnServer } from "@/src/features/listings/server/callServer/getSearchPageOnServer";
 
 export const dynamic = "force-dynamic";
 

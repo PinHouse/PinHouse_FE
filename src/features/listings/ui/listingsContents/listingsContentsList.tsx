@@ -8,7 +8,7 @@ import { DataEnterTransition } from "@/src/shared/ui/animation/pageUpTransition"
 import {
   useListingsContentListHooks,
   useListingsContentsObserveHooks,
-} from "@/src/features/listings/hooks/useListingsContentListHooks";
+} from "@/src/features/listings/hooks/list/useListingsContentListHooks";
 
 export const ListingContentsList = ({
   data,

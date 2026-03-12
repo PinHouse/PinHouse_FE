@@ -1,4 +1,4 @@
-import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
+import { getListingsRental } from "@/src/features/listings/hooks/list/components/listingsHooks";
 import { ListingBgBookMark } from "@/src/features/listings/ui/listingsContents/listingsBookMark";
 
 export const HomeBgBookMark = ({ supplyType }: { supplyType: string }) => {

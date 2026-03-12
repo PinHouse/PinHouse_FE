@@ -6,7 +6,7 @@
 //   * 이동수단 구간: src/features/listings/ui/listingsCardDetail/infra/TransportIconRenderer.tsx
 //   * 검색 훅 옵션: src/entities/listings/hooks/useListingHooks.ts
 import React, { ReactNode } from "react";
-import { OnOffTrue } from "../../../assets/icons/button/onOffTrue";
+import { OnOffTrue } from "../../../../assets/icons/button/onOffTrue";
 import { OnOffFalse } from "@/src/assets/icons/button";
 import {
   InfraConfig,
@@ -66,6 +66,7 @@ export interface SearchOptions {
   enabled?: boolean;
   keepPreviousData?: boolean;
   staleTime?: number;
+  keyword: string;
 }
 
 //공고상세 거리 , 버스 , 지하철 ,자동차

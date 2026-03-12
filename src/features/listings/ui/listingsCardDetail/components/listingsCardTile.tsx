@@ -3,7 +3,10 @@ import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { containerClass, downButton, titleClass } from "../../../model";
 import { AnimatePresence, motion } from "framer-motion";
 import { ListingsCardTileDetails } from "@/src/features/listings";
-import { InfraCount, RoomType } from "@/src/features/listings/hooks/useListingsCardTileHooks";
+import {
+  InfraCount,
+  RoomType,
+} from "@/src/features/listings/hooks/list/components/useListingsCardTileHooks";
 import { useListingsCardTileOpenHooks } from "@/src/features/listings/hooks";
 
 export const ListingsCardTile = ({ listing, variant = "default" }: ListingsCardTileProps) => {

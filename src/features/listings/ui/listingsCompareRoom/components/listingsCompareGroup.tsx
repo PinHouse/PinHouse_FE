@@ -1,7 +1,7 @@
 // ListingCompareCard.tsx
 import { UnitType } from "@/src/entities/listings/model/type";
 import { formatNumber } from "@/src/shared/lib/numberFormat";
-import { LikeType } from "../../../hooks/listingsHooks";
+import { LikeType } from "../../../hooks/list/components/listingsHooks";
 import { CompareDefaultImage } from "@/src/assets/images/compare/compare";
 import { ListingCompareCardGroup } from "./listingsCompareCardsGroup";
 import { SheetState } from "../../../model";

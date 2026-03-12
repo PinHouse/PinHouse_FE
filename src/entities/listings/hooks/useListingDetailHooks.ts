@@ -21,7 +21,7 @@ import {
 } from "../api/listingsApi";
 import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
-import { getListingsRental } from "@/src/features/listings/hooks/listingsHooks";
+import { getListingsRental } from "@/src/features/listings/hooks/list/components/listingsHooks";
 import {
   INFRA_ENVIRONMENT_CONFIG,
   INFRA_LABEL_TO_KEY,

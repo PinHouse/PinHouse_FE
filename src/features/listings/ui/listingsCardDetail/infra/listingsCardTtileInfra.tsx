@@ -2,9 +2,12 @@ import { ListingsCardTileProps } from "@/src/entities/listings/model/type";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { TransportIconRenderer } from "./TransportIconRenderer";
 import { InfraSheet } from "./infraSheet";
-import { ComplexesInfo } from "../../../hooks/listingsHooks";
+import { ComplexesInfo } from "../../../hooks/list/components/listingsHooks";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";
-import { DetailSection, EmptyDetail } from "@/src/features/listings/hooks/useListingsCardTileHooks";
+import {
+  DetailSection,
+  EmptyDetail,
+} from "@/src/features/listings/hooks/list/components/useListingsCardTileHooks";
 import { useListingRentalDetailHooks, useRouteSheetHooks } from "@/src/features/listings/hooks";
 
 export const ListingsCardTileDetails = ({

@@ -11,7 +11,7 @@ import { CaretUp } from "@/src/assets/icons/button/caretUp";
 import {
   useListingsSearchState,
   useListingState,
-} from "@/src/features/listings/model/listingsStore";
+} from "@/src/features/listings/model/store/listingsStore";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@/src/shared/ui/spinner/default";
 

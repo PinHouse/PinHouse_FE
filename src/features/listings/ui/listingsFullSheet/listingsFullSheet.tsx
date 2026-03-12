@@ -1,10 +1,10 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFilterSheetStore, useListingsFilterStore } from "../../model/listingsStore";
+import { useFilterSheetStore, useListingsFilterStore } from "../../model/store/listingsStore";
 import { FILTER_TABS, FilterTabKey, TAB_CONFIG } from "../../model";
 import { CloseButton } from "@/src/assets/icons/button";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/listingsHooks";
+import { getIndicatorLeft, getIndicatorWidth } from "../../hooks/list/components/listingsHooks";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { ListingFilterPartialSheetHooks } from "./hooks";
 import { ReactNode, RefObject, useRef } from "react";

@@ -6,9 +6,9 @@ import {
   RentType,
   ToggleLikeVariables,
 } from "@/src/entities/listings/model/type";
-import { DetailFilterTabKey, FilterTabKey, RENT_COLOR_CLASS } from "../model";
-import { LISTING_ICON_MAP } from "../model/listingsMap";
-import { ListingBgBookMark } from "../ui/listingsContents/listingsBookMark";
+import { DetailFilterTabKey, FilterTabKey, RENT_COLOR_CLASS } from "../../../model";
+import { LISTING_ICON_MAP } from "../../../model/filter/listingsMap";
+import { ListingBgBookMark } from "../../../ui/listingsContents/listingsBookMark";
 import { useToogleLike } from "@/src/entities/listings/hooks/useListingHooks";
 import { LikeButton } from "@/src/assets/icons/button/likeButton";
 import { LineLikeButton } from "@/src/assets/icons/button/lineLikeButton";

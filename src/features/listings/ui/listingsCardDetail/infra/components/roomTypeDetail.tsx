@@ -5,7 +5,7 @@ import { CompareDefaultImage } from "@/src/assets/images/compare/compare";
 import { useListingRoomTypeDetail } from "@/src/entities/listings/hooks/useListingDetailHooks";
 import { ListingUnitType } from "@/src/entities/listings/model/type";
 import { toPyeong } from "@/src/features/listings/model";
-import { LikeType } from "@/src/features/listings/hooks/listingsHooks";
+import { LikeType } from "@/src/features/listings/hooks/list/components/listingsHooks";
 import { formatNumber } from "@/src/shared/lib/numberFormat";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { SmallSpinner } from "@/src/shared/ui/spinner/small/smallSpinner";

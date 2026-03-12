@@ -1,7 +1,7 @@
 "use client";
 
 import { FILTER_OPTIONS, filterMap, getAllFilterIcon } from "../../model";
-import { useListingsFilterStore } from "../../model/listingsStore";
+import { useListingsFilterStore } from "../../model/store/listingsStore";
 import { ListingTagButton } from "../listingsButton/listingsTagButton";
 import { ListingHooks } from "@/src/features/listings/ui/listingsFilter/hooks";
 
