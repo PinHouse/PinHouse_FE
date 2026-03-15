@@ -168,7 +168,15 @@ export const HouseRental = ({ query, ...item }: HouseRentalProps) => {
   if (!rentalText) return null;
   return (
     <span className="flex w-full justify-between">
-      <ListingBgBookMark item={item.type} bg={rentalText.bg} text={rentalText.text} border="none" />
+      <div className="flex gap-2">
+        <ListingBgBookMark
+          item={item.type}
+          bg={rentalText.bg}
+          text={rentalText.text}
+          border="none"
+        />
+        <span className={"text-xs font-semibold"}>{item.supplier}</span>
+      </div>
       <LikeType liked={item.liked} id={item.id} type={"NOTICE"} resetQuery={[query]} />
     </span>
   );

@@ -30,12 +30,12 @@ export const ListingContentsCard = <T extends ListingUnion>({ data }: { data: T[
             className="active: flex h-[112px] min-h-[100px] w-full rounded-xl border bg-blue-50 hover:cursor-pointer"
             onClick={() => handleRouter(normalized.id)}
           >
-            <div className="border-r-1 flex w-[35%] flex-col rounded-l-xl rounded-bl-xl bg-bgColor-mute pl-1 pt-2">
-              <div className="flex min-w-0 items-center gap-2">
-                <ListingBookMark item={normalized.type} border="border" />
-                <p className="min-w-0 flex-1 truncate text-xs font-semibold text-greyscale-grey-800">
-                  {normalized.supplier}
-                </p>
+            <div className="border-r-1 flex w-[35%] flex-col rounded-l-xl rounded-bl-xl bg-bgColor-mute p-2">
+              <div className="flex min-w-0 items-center">
+                <ListingBookMark item={normalized.housingType} border="border" />
+                {/*<p className="min-w-0 flex-1 truncate text-xs font-semibold text-greyscale-grey-800">*/}
+                {/*  {normalized.supplier}*/}
+                {/*</p>*/}
               </div>
               <div className="flex items-center justify-center">
                 <HouseICons {...normalized} />
