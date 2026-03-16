@@ -5,8 +5,10 @@ import {
 } from "@/src/features/listings/model";
 import { useSearchParams } from "next/navigation";
 
-const LATEST_LABEL = "최신공고";
-const DEADLINE_LABEL = "마감임박";
+const NOTICE_LATEST = "최신공고순";
+const NOTICE_DEADLINE = "마감임박순";
+const SEARCH_LATEST = "LATEST";
+const SEARCH_DEADLINE = "DEADLINE";
 
 export const useListingsContentHeaderController = () => {
   const sortType = useListingsFilterStore(state => state.sortType);
@@ -18,18 +20,18 @@ export const useListingsContentHeaderController = () => {
   const isSearchPage = searchParams.has("query");
 
   const sortLabel = isSearchPage
-    ? searchSortType === "LATEST"
-      ? LATEST_LABEL
-      : DEADLINE_LABEL
+    ? searchSortType === SEARCH_LATEST
+      ? NOTICE_LATEST
+      : NOTICE_DEADLINE
     : sortType;
 
   const onToggleSort = () => {
     if (isSearchPage) {
-      setSearchSortType(searchSortType === "LATEST" ? "DEADLINE" : "LATEST");
+      setSearchSortType(searchSortType === SEARCH_LATEST ? SEARCH_DEADLINE : SEARCH_LATEST);
       return;
     }
 
-    setSortType(sortType === LATEST_LABEL ? DEADLINE_LABEL : LATEST_LABEL);
+    setSortType(sortType === NOTICE_LATEST ? NOTICE_DEADLINE : NOTICE_LATEST);
   };
 
   return {
