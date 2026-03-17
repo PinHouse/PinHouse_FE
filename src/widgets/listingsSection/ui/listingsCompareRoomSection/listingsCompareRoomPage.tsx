@@ -1,7 +1,5 @@
 import { cookies } from "next/headers";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import { useListingState } from "@/src/features/listings/model";
-import { fetchCompareInitialFromBff } from "@/src/features/listings/server/bff/getCompareInitialFromBff";
 import { ListingCompareSection } from "./listingsCompareRoomSection";
 import { getCompareInitialData } from "@/src/widgets/listingsSection/server/compare/getCompareInitialData";
 import { preFetchCompareQueries } from "@/src/widgets/listingsSection/server/compare/prefetchCompareQueries";
