@@ -33,7 +33,12 @@ export async function ListingsCompareRoomPage({ id }: ListingsCompareRoomPagePro
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main className="flex h-full flex-col">
-        <ListingCompareSection id={id} sortType={sortType} nearbyFacilities={nearbyFacilities} />
+        <ListingCompareSection
+          id={id}
+          sortType={sortType}
+          nearbyFacilities={nearbyFacilities}
+          pinPointId={pinPointId}
+        />
       </main>
     </HydrationBoundary>
   );

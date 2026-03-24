@@ -1,6 +1,5 @@
 "use client";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo } from "react";
 import { PostBasicRequest, requestListingList } from "../api/listingsApi";
 import {
   LikeReturn,
@@ -24,8 +23,8 @@ import {
   useListingsSearchState,
   useListingState,
 } from "@/src/features/listings/model";
-import { useSearchParams } from "next/navigation";
-import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
+
+import { listingListInfiniteQueryKey, listingSearchInfiniteQueryKey } from "@/src/shared/config";
 
 export const useListingListInfiniteQuery = () => {
   const status = useListingState(state => state.status);
@@ -44,7 +43,7 @@ export const useListingListInfiniteQuery = () => {
   };
 
   return useInfiniteQuery<ListingListPage>({
-    queryKey: ["listingListInfinite", filter, status],
+    queryKey: listingListInfiniteQueryKey({ filter, status }),
     enabled: !!status,
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
@@ -138,7 +137,7 @@ export const useListingSearchInfiniteQuery = (queryOpt: SearchOptions) => {
   const status = useListingsSearchState(s => s.status);
 
   return useInfiniteQuery<ListingListPage>({
-    queryKey: ["listingSearchInfinite", keyword, sortType, status],
+    queryKey: listingSearchInfiniteQueryKey({ keyword, sortType, status }),
     enabled,
     staleTime,
     initialPageParam: 1,

@@ -40,3 +40,42 @@ export const eligibilityKeys = {
   recommendedList: (userName?: string) =>
     [...eligibilityKeys.all, "recommendedList", userName] as const,
 } as const;
+
+// 방비교 QueryKeys
+export const compareNoticeQueryKey = ({
+  noticeId,
+  sortType,
+  nearbyFacilities = [],
+  pinPointId = "",
+}: {
+  noticeId: string;
+  sortType: string;
+  nearbyFacilities?: string[];
+  pinPointId?: string;
+}) => ["compareNotice", noticeId, sortType, nearbyFacilities, pinPointId] as const;
+
+//공고리스트 무한스크롤 QueryKeys
+export const listingListInfiniteQueryKey = ({
+  filter,
+  status,
+}: {
+  filter: {
+    regionType: string[];
+    rentalTypes: string[];
+    supplyTypes: string[];
+    houseTypes: string[];
+    sortType: string;
+  };
+  status: string;
+}) => ["listingListInfinite", filter, status] as const;
+
+//공고 조회 무한스크롤 QueryKeys
+export const listingSearchInfiniteQueryKey = ({
+  keyword,
+  sortType,
+  status,
+}: {
+  keyword: string;
+  sortType: string;
+  status: string;
+}) => ["listingSearchInfinite", keyword, sortType, status] as const;

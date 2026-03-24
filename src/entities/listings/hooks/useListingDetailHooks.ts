@@ -6,9 +6,9 @@ import {
   InfraLabel,
   ListingDetailResponseWithColor,
   ListingRentalDetailVM,
+  ListingRoomCompareParams,
   ListingSummary,
   LstingBody,
-  UnitTypeRespnse,
   UseListingsHooksType,
   UseListingsHooksWithParam,
 } from "../model/type";
@@ -30,6 +30,7 @@ import {
 } from "@/src/features/listings/model";
 import { useOAuthStore } from "@/src/features/login/model";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
+import { compareNoticeQueryKey } from "@/src/shared/config";
 
 export const useListingDetailBasic = (id: string) => {
   const pinPointId = useOAuthStore(state => state.pinPointId);
@@ -219,8 +220,14 @@ export const useListingFilterDetail = <T>() => {
   });
 };
 
-export const useListingRoomCompare = <T>({ noticeId, sortType, nearbyFacilities }: QueryParams) => {
-  const { pinPointId } = useOAuthStore();
+export const useListingRoomCompare = <T>({
+  noticeId,
+  sortType,
+  nearbyFacilities,
+  pinPointId,
+}: ListingRoomCompareParams) => {
+  const { pinPointId: storePinPointId } = useOAuthStore();
+  const resolvedPinPointId = pinPointId ?? storePinPointId;
 
   const params: QueryParams = {
     pinPointId,
@@ -229,9 +236,15 @@ export const useListingRoomCompare = <T>({ noticeId, sortType, nearbyFacilities 
   };
 
   return useQuery<IResponse<T>, Error, T>({
-    queryKey: ["compareNotice", noticeId, sortType, nearbyFacilities, pinPointId],
+    queryKey: compareNoticeQueryKey({
+      noticeId,
+      sortType,
+      nearbyFacilities,
+      pinPointId: resolvedPinPointId,
+    }),
     queryFn: () => getNoticeParam<IResponse<T>>(`${NOTICE_ENDPOINT}/${noticeId}/compare`, params),
     placeholderData: prevData => prevData,
-    enabled: Boolean(noticeId && pinPointId),
+    staleTime: 1000 * 60 * 60 * 24,
+    enabled: Boolean(noticeId && resolvedPinPointId),
   });
 };

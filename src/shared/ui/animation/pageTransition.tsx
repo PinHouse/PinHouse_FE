@@ -34,7 +34,11 @@ export const PageTransition = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="relative h-full min-h-0 w-full overflow-hidden">
-      <div className="no-scrollbar h-full min-h-0 overflow-y-auto" ref={scrollRef} onScroll={handleScroll}>
+      <div
+        className="no-scrollbar h-full min-h-0 overflow-y-auto"
+        ref={scrollRef}
+        onScroll={handleScroll}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname}

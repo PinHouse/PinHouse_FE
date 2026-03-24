@@ -1,9 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { useListingRoomCompare } from "@/src/entities/listings/hooks/useListingDetailHooks";
-import { UnitTypeRespnse } from "@/src/entities/listings/model/type";
-import { SheetState, useListingState } from "@/src/features/listings/model";
 import {
   ListingCompareCard,
   ListingCompareHeader,
@@ -12,32 +8,28 @@ import {
 import { InfraSheet } from "@/src/features/listings/ui/listingsCardDetail/infra/infraSheet";
 import { ListingCompareCardSkeleton } from "@/src/features/listings/ui/listingsCompareRoom/components/listingsCompareCardSkeleton";
 import { PageTransition } from "@/src/shared/ui/animation";
+import { useListingCompareSectionHooks } from "@/src/features/listings/hooks";
 
 type ListingCompareSectionProps = {
   id: string;
   sortType?: string;
   nearbyFacilities?: string[];
+  pinPointId: string;
 };
 
 export const ListingCompareSection = ({
   id,
   sortType,
   nearbyFacilities,
+  pinPointId,
 }: ListingCompareSectionProps) => {
-  const { status } = useListingState();
-  const [sheetState, setSheetState] = useState<SheetState>({ open: false });
-  const resolvedSortType = sortType ?? status;
-  const resolvedNearbyFacilities = nearbyFacilities ?? [];
-
-  const { data, isLoading } = useListingRoomCompare<UnitTypeRespnse>({
-    noticeId: id,
-    sortType: resolvedSortType,
-    nearbyFacilities: resolvedNearbyFacilities,
-  });
-
-  const unitData = data?.unitTypes;
-  const count = Number(data?.unitTypes?.length);
-  const zeroCount = count > 10 ? `0${count}` : `${count}`;
+  const { sheetState, setSheetState, isLoading, unitData, zeroCount } =
+    useListingCompareSectionHooks({
+      id,
+      sortType,
+      nearbyFacilities,
+      pinPointId,
+    });
 
   return (
     <section className="mx-auto min-h-full w-full">

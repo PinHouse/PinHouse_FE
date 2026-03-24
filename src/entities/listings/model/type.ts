@@ -648,3 +648,10 @@ export interface UnitType {
 export interface UnitTypeRespnse {
   unitTypes: UnitType[];
 }
+
+export type ListingRoomCompareParams = {
+  noticeId: string;
+  sortType: string;
+  nearbyFacilities?: string[];
+  pinPointId?: string;
+};
