@@ -11,7 +11,7 @@ import { EligibilityPriceInput } from "./eligibilityPriceInput";
 import { EligibilityNumberInputList } from "./eligibilityNumberInputList";
 import { EligibilityInfoButtonWithSheet } from "./eligibilityInfoButtonWithSheet";
 import { EligibilityHelpButton } from "./eligibilityHelpButton";
-import { DatePicker } from "@/src/shared/ui/datePicker/datePicker";
+import { BottomSheetDatePicker } from "@/src/shared/ui/datePicker/bottomSheetDatePicker";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 import { motion, AnimatePresence } from "framer-motion";
 import { DefaultHeader } from "@/src/shared/ui/header/header/defaultHeader/defaultHeader";
@@ -344,7 +344,7 @@ export const EligibilityComponentRenderer = ({ config }: EligibilityComponentRen
         const setter = config.storeKey ? getStoreSetter(config.storeKey) : undefined;
 
         return (
-          <DatePicker
+          <BottomSheetDatePicker
             value={value || undefined}
             onChange={date => {
               if (setter) {

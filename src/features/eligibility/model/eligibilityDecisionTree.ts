@@ -168,7 +168,7 @@ export const eligibilityDecisionTree: StepConfig[] = [
         type: "datePicker",
         props: {
           label: "생년월일을 선택해주세요",
-          placeholder: "생년월일 선택",
+          placeholder: "YYYY년 MM월 DD일",
         },
         storeKey: "birthDate",
       },
