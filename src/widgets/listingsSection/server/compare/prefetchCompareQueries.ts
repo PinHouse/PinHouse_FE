@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { CompareBffResponse } from "@/src/features/listings/server/bff/getCompareInitialFromBff";
-import { cookies } from "next/headers";
+import { compareNoticeQueryKey } from "@/src/shared/config";
 
 type CompareInitialData = CompareBffResponse["data"];
 type PrefetchNoticeArgs = {
@@ -22,8 +22,14 @@ export async function preFetchCompareQueries({
 }: PrefetchNoticeArgs) {
   if (initial) {
     await queryClient.prefetchQuery({
-      queryKey: ["compareNotice", id, sortType, nearbyFacilities, pinPointId],
+      queryKey: compareNoticeQueryKey({
+        noticeId: id,
+        sortType,
+        nearbyFacilities,
+        pinPointId,
+      }),
       queryFn: async () => initial,
+      staleTime: 1000 * 60 * 60 * 24,
     });
   }
 }

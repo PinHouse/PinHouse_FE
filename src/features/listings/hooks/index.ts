@@ -7,3 +7,4 @@ export * from "./list/useDetailColorHooks";
 export * from "./search/useListingsSearchData";
 export * from "./search/getSearchViewMode";
 export * from "./search/useListingsSearchRoute";
+export * from "./compare/useListingCompareSectionHooks";
