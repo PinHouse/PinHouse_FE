@@ -48,11 +48,8 @@ export async function getHomePinpointCount(maxTime = 60) {
 
   const res = await fetch(`${API_BASE_URL}${url}?${query.toString()}`, {
     method: "GET",
-    headers: {
-      cookie: cookieStore.toString(),
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-    },
     cache: "no-store",
+    credentials: "include",
   });
 
   if (!res.ok) return null;
