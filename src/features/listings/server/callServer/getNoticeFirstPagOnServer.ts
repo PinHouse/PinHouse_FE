@@ -25,10 +25,11 @@ export async function getNoticeFirstPageOnServer({ status, sortType }: getNotice
 
   const res = await fetch(`${API_BASE_URL}${url}?${query.toString()}`, {
     method: "POST",
-    headers: {
-      cookie: cookieStore.toString(),
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-    },
+    credentials: "include",
+    // headers: {
+    //   cookie: cookieStore.toString(),
+    //   ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    // },
     cache: "no-store",
     body: JSON.stringify({
       status: status,

@@ -38,10 +38,11 @@ export async function getCompareFirstPageOnServer({
   const res = await fetch(url, {
     method: "GET",
     cache: "no-store",
-    headers: {
-      cookie: cookieStore.toString(),
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-    },
+    credentials: "include",
+    // headers: {
+    //   cookie: cookieStore.toString(),
+    //   ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    // },
   });
 
   if (!res.ok) return null;

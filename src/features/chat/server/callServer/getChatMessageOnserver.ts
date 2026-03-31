@@ -28,6 +28,7 @@ export async function getChatMessageOnServer({
   const response = await openai.responses.create({
     model: "gpt-4o",
     input,
+    credentials: "include",
   });
 
   return response.output_text || "응답 없음";
