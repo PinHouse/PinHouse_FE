@@ -5,6 +5,7 @@ import { HomeHeroServer } from "@/src/features/home/ui/server/homeHero.server";
 import { HomeQuickStatsListServer } from "@/src/features/home/ui/server/homeQuickStatsList.server";
 import { HomeUrgentNoticeListServer } from "@/src/features/home/ui/server/homeUrgentNoticeList.server";
 import { HomeHeaderServer } from "@/src/features/home/ui/server/homeHeader.server";
+import { ChatEntry } from "@/src/features/chat";
 
 export const HomeSection = () => {
   return (
@@ -25,6 +26,7 @@ export const HomeSection = () => {
           <div className="px-5">
             <HomeUrgentNoticeListServer />
           </div>
+          <ChatEntry />
         </div>
       </PageTransition>
     </section>
