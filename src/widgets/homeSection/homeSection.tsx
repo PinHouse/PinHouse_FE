@@ -7,7 +7,11 @@ import { HomeUrgentNoticeListServer } from "@/src/features/home/ui/server/homeUr
 import { HomeHeaderServer } from "@/src/features/home/ui/server/homeHeader.server";
 import { ChatEntry } from "@/src/features/chat";
 
-export const HomeSection = () => {
+interface ChatEntryProps {
+  initialChatOpen?: boolean;
+}
+
+export const HomeSection = ({ initialChatOpen = false }: ChatEntryProps) => {
   return (
     <section className="relative min-h-screen w-full bg-greyscale-grey-25 text-greyscale-grey-900 scrollbar-hide">
       <PageTransition>
@@ -26,7 +30,7 @@ export const HomeSection = () => {
           <div className="px-5">
             <HomeUrgentNoticeListServer />
           </div>
-          <ChatEntry />
+          <ChatEntry initialChatOpen={initialChatOpen} />
         </div>
       </PageTransition>
     </section>

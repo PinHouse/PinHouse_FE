@@ -1,27 +1,33 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
-export const useChatHooks = () => {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const isChatOpen = searchParams.has("chat");
+interface ChatEntryProps {
+  initialChatOpen?: boolean;
+}
 
-  const chatPanelMov = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("chat", "");
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+export const useChatHooks = ({ initialChatOpen = false }) => {
+  const [isChatOpen, setIsChatOpen] = useState(initialChatOpen);
+
+  const setChatQuery = (open: boolean) => {
+    const url = new URL(window.location.href);
+    if (open) url.searchParams.set("chat", "");
+    else url.searchParams.delete("chat");
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   };
 
-  const chatPanelClose = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("chat");
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  const openChat = () => {
+    setIsChatOpen(true);
+    setChatQuery(true);
+  };
+
+  const closeChat = () => {
+    setIsChatOpen(false);
+    setChatQuery(false);
   };
 
   return {
-    chatPanelClose,
-    chatPanelMov,
+    openChat,
+    closeChat,
     isChatOpen,
   };
 };
