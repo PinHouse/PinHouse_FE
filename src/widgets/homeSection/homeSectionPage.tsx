@@ -3,7 +3,11 @@ import { HomeSection } from "./homeSection";
 import type { NoticeContent, SliceResponse } from "@/src/entities/home/model/type";
 import { getHomeInitialData } from "./server/getHomeInitialData";
 
-export async function HomeSectionPage() {
+interface HomeSectionPageProps {
+  initialChatOpen?: boolean;
+}
+
+export async function HomeSectionPage({ initialChatOpen = false }: HomeSectionPageProps) {
   const queryClient = new QueryClient();
   const { initial, initialCount } = await getHomeInitialData();
 
@@ -27,7 +31,7 @@ export async function HomeSectionPage() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main className="flex h-full flex-col">
-        <HomeSection />
+        <HomeSection initialChatOpen={initialChatOpen} />
       </main>
     </HydrationBoundary>
   );
