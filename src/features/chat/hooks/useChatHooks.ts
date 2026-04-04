@@ -1,7 +1,7 @@
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 
 export const useChatHooks = ({ initialChatOpen = false }) => {
-  const [isChatOpen, setIsChatOpen] = useState(initialChatOpen);
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(initialChatOpen);
 
   const setChatQuery = (open: boolean) => {
     const url = new URL(window.location.href);
@@ -27,8 +27,8 @@ export const useChatHooks = ({ initialChatOpen = false }) => {
   };
 };
 
-export const useChangeChat = () => {
-  const [query, setQuery] = useState("");
+export const useChangeChat = ({ initialQuery = "" }: { initialQuery: string }) => {
+  const [query, setQuery] = useState<string>(initialQuery);
   const hasQuery = query.trim().length > 0;
 
   const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
