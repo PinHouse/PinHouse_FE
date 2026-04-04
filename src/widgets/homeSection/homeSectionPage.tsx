@@ -5,9 +5,13 @@ import { getHomeInitialData } from "./server/getHomeInitialData";
 
 interface HomeSectionPageProps {
   initialChatOpen?: boolean;
+  initialQuery?: string;
 }
 
-export async function HomeSectionPage({ initialChatOpen = false }: HomeSectionPageProps) {
+export async function HomeSectionPage({
+  initialChatOpen = false,
+  initialQuery = "",
+}: HomeSectionPageProps) {
   const queryClient = new QueryClient();
   const { initial, initialCount } = await getHomeInitialData();
 
@@ -31,7 +35,7 @@ export async function HomeSectionPage({ initialChatOpen = false }: HomeSectionPa
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main className="flex h-full flex-col">
-        <HomeSection initialChatOpen={initialChatOpen} />
+        <HomeSection initialChatOpen={initialChatOpen} initialQuery={initialQuery} />
       </main>
     </HydrationBoundary>
   );

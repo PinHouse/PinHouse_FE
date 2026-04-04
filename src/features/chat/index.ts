@@ -1,1 +1,1 @@
-export { default as ChatEntry } from "@/src/features/chat/ui/chatEntry";
+export * from "./server/ui/chatEntry";

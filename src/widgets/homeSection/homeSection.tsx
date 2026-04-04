@@ -5,13 +5,14 @@ import { HomeHeroServer } from "@/src/features/home/ui/server/homeHero.server";
 import { HomeQuickStatsListServer } from "@/src/features/home/ui/server/homeQuickStatsList.server";
 import { HomeUrgentNoticeListServer } from "@/src/features/home/ui/server/homeUrgentNoticeList.server";
 import { HomeHeaderServer } from "@/src/features/home/ui/server/homeHeader.server";
-import { ChatEntry } from "@/src/features/chat";
+import ChatEntry from "@/src/features/chat/server/ui/chatEntry";
 
 interface ChatEntryProps {
   initialChatOpen?: boolean;
+  initialQuery?: string;
 }
 
-export const HomeSection = ({ initialChatOpen = false }: ChatEntryProps) => {
+export const HomeSection = ({ initialChatOpen = false, initialQuery = "" }: ChatEntryProps) => {
   return (
     <section className="relative min-h-screen w-full bg-greyscale-grey-25 text-greyscale-grey-900 scrollbar-hide">
       <PageTransition>
@@ -30,7 +31,7 @@ export const HomeSection = ({ initialChatOpen = false }: ChatEntryProps) => {
           <div className="px-5">
             <HomeUrgentNoticeListServer />
           </div>
-          <ChatEntry initialChatOpen={initialChatOpen} />
+          <ChatEntry initialChatOpen={initialChatOpen} initialQuery={initialQuery} />
         </div>
       </PageTransition>
     </section>
