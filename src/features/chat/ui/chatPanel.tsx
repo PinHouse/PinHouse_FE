@@ -1,15 +1,25 @@
 "use client";
 
+import { ChangeEvent, KeyboardEvent } from "react";
 import { ArrowUp } from "lucide-react";
 import { LeftButton } from "@/src/assets/icons/button/leftButton";
-import { ChatIcon } from "@/src/assets/images/chat/chatIcon";
 import { ChatCounselor } from "@/src/assets/images/chat/chatCounselor";
 
 type ChatPanelProps = {
   onClose: () => void;
+  query: string;
+  hasQuery: boolean;
+  onChangeQuery: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSubmitQuery: (event: KeyboardEvent<HTMLInputElement>) => void;
 };
 
-export default function ChatPanel({ onClose }: ChatPanelProps) {
+export default function ChatPanel({
+  onClose,
+  query,
+  hasQuery,
+  onChangeQuery,
+  onSubmitQuery,
+}: ChatPanelProps) {
   return (
     <section className="flex h-full min-h-0 flex-col bg-white">
       <header className="relative flex items-center justify-center px-5 pb-4 pt-6">
@@ -42,12 +52,17 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
           <div className="flex items-center gap-3">
             <input
               type="text"
+              value={query}
               placeholder="궁금한 질문이 있으면 물어보세요."
               className="flex-1 bg-transparent text-[14px] text-[#191F28] outline-none placeholder:text-[#B8BED3]"
+              onChange={onChangeQuery}
+              onKeyDown={onSubmitQuery}
             />
             <button
               type="button"
-              className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D9DEEC] text-white"
+              className={`flex h-6 w-6 items-center justify-center rounded-full transition-colors ${
+                hasQuery ? "bg-[#4E80FF] text-white" : "bg-[#D9DEEC] text-white"
+              }`}
               aria-label="메시지 전송"
             >
               <ArrowUp className="h-3.5 w-3.5" strokeWidth={2.5} />
