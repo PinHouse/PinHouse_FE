@@ -1,9 +1,4 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-
-interface ChatEntryProps {
-  initialChatOpen?: boolean;
-}
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 
 export const useChatHooks = ({ initialChatOpen = false }) => {
   const [isChatOpen, setIsChatOpen] = useState(initialChatOpen);
@@ -29,5 +24,33 @@ export const useChatHooks = ({ initialChatOpen = false }) => {
     openChat,
     closeChat,
     isChatOpen,
+  };
+};
+
+export const useChangeChat = () => {
+  const [query, setQuery] = useState("");
+  const hasQuery = query.trim().length > 0;
+
+  const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== "Enter") return;
+    if (event.nativeEvent.isComposing) return;
+    onSubmitQuery(query);
+  };
+
+  const onSubmitQuery = (query: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("chat", query);
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  };
+
+  return {
+    query,
+    handleChangeQuery,
+    handleKeyDown,
+    hasQuery,
   };
 };
