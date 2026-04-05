@@ -12,7 +12,13 @@ export type ChatRequest = {
 };
 
 export type ChatResponse = {
-  message: string;
+  summary: string;
+  followUpQuestion?: string;
+  cta?: {
+    label: string;
+    action: "open_listing";
+    keyword?: string;
+  };
 };
 
 export async function postChatMessage(request: ChatRequest): Promise<ChatResponse> {
