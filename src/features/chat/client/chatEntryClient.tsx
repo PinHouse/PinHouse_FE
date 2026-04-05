@@ -14,17 +14,21 @@ export default function ChatEntryClient({
   initialQuery = "",
 }: ChatEntryProps) {
   const { isChatOpen, openChat, closeChat } = useChatHooks({ initialChatOpen: initialChatOpen });
-  const { query, hasQuery, handleChangeQuery, handleKeyDown } = useChangeChat({ initialQuery });
+  const { query, hasQuery, handleChangeQuery, handleKeyDown, items, isPending, onSubmitQuery } =
+    useChangeChat({ initialQuery });
   return (
     <>
       <ChatWidgets onClick={openChat} />
       <ChatSheet open={isChatOpen} onClose={closeChat}>
         <ChatPanel
           onClose={closeChat}
+          items={items}
+          isPending={isPending}
           query={query}
           hasQuery={hasQuery}
           onChangeQuery={handleChangeQuery}
           onSubmitQuery={handleKeyDown}
+          onClickSubmit={onSubmitQuery}
         />
       </ChatSheet>
     </>

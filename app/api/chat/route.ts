@@ -9,9 +9,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid messages" }, { status: 400 });
     }
 
-    const message = await getChatMessageOnServer({ messages, promptType });
+    const response = await getChatMessageOnServer({ messages, promptType });
 
-    return NextResponse.json({ message });
+    return NextResponse.json(response);
   } catch (error: any) {
     console.error("GPT 요청 실패:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

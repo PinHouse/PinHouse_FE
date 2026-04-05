@@ -2,7 +2,14 @@ import { SVGProps } from "react";
 
 export const ChatCounselor = (props: SVGProps<SVGSVGElement>) => {
   return (
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <rect width="40" height="40" rx="20" fill="url(#paint0_linear_11126_38838)" />
       <path
         d="M19.6001 29.3751C19.7068 29.7148 20.3343 29.7148 20.441 29.3751L22.1121 24.0525H17.9291L19.6001 29.3751Z"
