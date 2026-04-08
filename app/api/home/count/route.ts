@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getHomePinpointCount } from "@/src/features/home/server/getHomeNoticesFirstPageOnServer";
+import { getHomePinpointCount } from "@/src/features/home/server/callServer/getHomeNoticesFirstPageOnServer";
 
 export const dynamic = "force-dynamic";
 
