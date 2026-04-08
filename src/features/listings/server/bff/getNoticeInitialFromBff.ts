@@ -29,10 +29,7 @@ export async function fetchNoticeInitialFromBff({
   const res = await fetch(`${baseUrl}/api/listings/notice`, {
     method: "POST",
     cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: cookieHeader,
-    },
+    credentials: "include",
     body: JSON.stringify({ status, sortType }),
   });
 

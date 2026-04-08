@@ -35,9 +35,7 @@ export async function fetchCompareInitialFromBff({
   const res = await fetch(`${baseUrl}/api/listings/compare?${query.toString()}`, {
     method: "GET",
     cache: "no-store",
-    headers: {
-      cookie: cookieHeader,
-    },
+    credentials: "include",
   });
 
   if (!res.ok) return null;

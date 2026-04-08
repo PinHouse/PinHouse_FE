@@ -36,7 +36,6 @@ export const HomeResultSectionMore = ({
           </span>
         </>
       ) : (
-        // <p>{"모집공고가 없습니다."}</p>
         <p>{SearchNoResultDescriptions[category]}</p>
       )}
     </button>

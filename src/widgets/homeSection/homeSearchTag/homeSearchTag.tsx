@@ -1,5 +1,4 @@
 "use client";
-
 import { AnimatePresence, motion } from "framer-motion";
 import { HomeSearchRecent } from "../../../features/home/ui/search/homeSearchRecent";
 import { HomeSearchPopular } from "../../../features/home/ui/search/homeSearchPopular";

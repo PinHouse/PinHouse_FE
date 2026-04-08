@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { getHomeNoticesFirstPageOnServer } from "@/src/features/home/server/callServer/getHomeNoticesFirstPageOnServer";
+import { getHomeSearchTagInitialOnServer } from "@/src/features/home/server/callServer/getHomeSearchTagInitialOnServer";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const data = await getHomeNoticesFirstPageOnServer();
+    const data = await getHomeSearchTagInitialOnServer();
 
     if (!data) {
       return NextResponse.json(
