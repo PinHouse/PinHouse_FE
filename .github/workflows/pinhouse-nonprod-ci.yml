@@ -45,7 +45,6 @@ jobs:
     environment: ${{ startsWith(github.ref_name, 'release/') && 'PinHouse_stg' || 'PinHouse_dev' }}
     outputs:
       image_tag: ${{ steps.timestamp.outputs.image_tag }}
-      full_image: ${{ steps.timestamp.outputs.full_image }}
       env_type: ${{ steps.timestamp.outputs.env_type }}
     steps:
       - name: 체크아웃
@@ -119,7 +118,7 @@ jobs:
             - Build: ${{ needs.build.result == 'success' && ' ✅' || ' ❌' }}
 
             **Docker 이미지**: `${{ needs.build.outputs.image_tag }}`
-            **이미지 경로**: `${{ needs.build.outputs.full_image }}`
+            **이미지 경로**: `${{ env.GCP_ARTIFACT_REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ env.GCP_ARTIFACT_REPO }}/${{ env.IMAGE_NAME }}:${{ needs.build.outputs.image_tag }}`
 
             **다음 단계**: ArgoCD에서 배포가 진행됩니다. 배포 결과는 ArgoCD 알림을 확인해주세요.
 
