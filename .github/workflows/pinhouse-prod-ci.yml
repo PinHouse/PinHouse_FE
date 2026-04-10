@@ -98,6 +98,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     needs: [build]
+    environment: PinHouse_prod
     if: always()
     steps:
       - name: 운영용 Discord 알림 전송
