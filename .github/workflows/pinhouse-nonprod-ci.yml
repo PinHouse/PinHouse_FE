@@ -102,6 +102,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     needs: [build]
+    environment: ${{ startsWith(github.ref_name, 'release/') && 'PinHouse_stg' || 'PinHouse_dev' }}
     if: always() && !github.event.created
     steps:
       - name: Discord 알림 전송
