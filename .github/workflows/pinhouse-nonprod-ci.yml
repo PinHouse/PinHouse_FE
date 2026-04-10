@@ -42,7 +42,7 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
-    environment: ${{ startsWith(github.ref_name, 'release/') && 'PinHouse-stg' || 'PinHouse-dev' }}
+    environment: ${{ startsWith(github.ref_name, 'release/') && 'PinHouse_stg' || 'PinHouse_dev' }}
     outputs:
       image_tag: ${{ steps.timestamp.outputs.image_tag }}
       full_image: ${{ steps.timestamp.outputs.full_image }}
