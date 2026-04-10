@@ -2,7 +2,7 @@ name: PinHouse-FE 비운영용 CI 파이프라인
 
 env:
   # 공통 설정
-  NODE_VERSION: '22.x'
+  NODE_VERSION: '20.x'
   BRANCH_NAME: ${{ github.ref_name }}
   IS_STAGING: ${{ startsWith(github.ref_name, 'release/') }}
   ENV_TYPE: ${{ startsWith(github.ref_name, 'release/') && '🧪 스테이징(STAGING)' || '🛠️ 개발(DEV)' }}

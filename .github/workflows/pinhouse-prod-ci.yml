@@ -2,7 +2,7 @@ name: PinHouse-FE 운영용 CI 파이프라인
 
 env:
   # 공통 설정
-  NODE_VERSION: '22.x'
+  NODE_VERSION: '20.x'
   BRANCH_NAME: ${{ github.ref_name }}
   ENV_TYPE: '🚀 운영(PROD)'
 
