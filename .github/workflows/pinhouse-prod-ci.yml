@@ -39,7 +39,7 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
-    environment: PinHouse-prod
+    environment: PinHouse_prod
     outputs:
       image_tag: ${{ steps.timestamp.outputs.image_tag }}
       full_image: ${{ steps.timestamp.outputs.full_image }}
