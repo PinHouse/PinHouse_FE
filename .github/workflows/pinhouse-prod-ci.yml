@@ -16,7 +16,7 @@ env:
   SERVICE_ACCOUNT_EMAIL: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
 
   # Discord 설정
-  DISCORD_WEBHOOK_URL_PROD: ${{ secrets.DISCORD_WEBHOOK_PROD_URL }}
+  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
   DISCORD_AVATAR_URL: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
 
 on:
@@ -24,46 +24,22 @@ on:
     branches:
       - main
 
+# 권한
 permissions:
   contents: read
   id-token: write
 
+# 동시 실행 파이프라인 조절
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # 1. 통합 품질 검사 (Lint + Prettier + TypeCheck)
-  lint:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 15
-    steps:
-      - name: 체크아웃
-        uses: actions/checkout@v4
-
-      - name: pnpm 설치
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-          run_install: false
-
-      - name: 노드 JS 설치
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: 의존성 설치
-        run: pnpm install --frozen-lockfile
-
-      - name: 통합 코드 검사
-        run: pnpm check
-
-  # 2. Docker 이미지 빌드 및 GCP Artifact Registry 업로드
+  # GitHub Environment 기반, Docker 이미지 빌드 및 GCP Artifact Registry 업로드
   build:
-    needs: [lint]
     runs-on: ubuntu-22.04
     timeout-minutes: 15
+    environment: PinHouse-prod
     outputs:
       image_tag: ${{ steps.timestamp.outputs.image_tag }}
       full_image: ${{ steps.timestamp.outputs.full_image }}
@@ -93,16 +69,6 @@ jobs:
           echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
           echo "full_image=$FULL_IMAGE" >> $GITHUB_OUTPUT
 
-      - name: 환경 변수 파일 생성
-        run: |
-          echo "${{ secrets.ENV_FILE_PROD }}" > .env.production
-
-          echo "📝 빌드용 환경 변수 파일 생성 완료"
-          echo "환경: prod"
-          echo "파일: .env.production"
-          ENV_VAR_COUNT=$(grep -c '^[A-Za-z_][A-Za-z0-9_]*=' .env.production || true)
-          echo "변수 개수: $ENV_VAR_COUNT"
-
       - name: Docker Buildx 설정
         uses: docker/setup-buildx-action@v3
 
@@ -113,41 +79,48 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Docker-pinhouse-file
           push: true
+          platforms: linux/amd64
           tags: |
             ${{ env.FULL_IMAGE }}
             ${{ env.GCP_ARTIFACT_REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ env.GCP_ARTIFACT_REPO }}/${{ env.IMAGE_NAME }}:latest
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_OAUTH2=${{ secrets.NEXT_PUBLIC_OAUTH2 }}
+          secrets: |
+            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          provenance: false
 
   # 3. CI 결과 알림
   notify-ci:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
-    needs: [lint, build]
+    needs: [build]
     if: always()
     steps:
       - name: 운영용 Discord 알림 전송
         uses: sarisia/actions-status-discord@v1
         with:
-          webhook: ${{ env.DISCORD_WEBHOOK_URL_PROD }}
-          status: ${{ (needs.lint.result == 'success' && needs.build.result == 'success') && 'success' || 'failure' }}
-          title: "PinHouse 운영용 CI 결과 [${{ (needs.lint.result == 'success' && needs.build.result == 'success') && '✅성공' || '❌실패' }}]"
+          webhook: ${{ env.DISCORD_WEBHOOK_URL }}
+          status: ${{ needs.build.result == 'success' && 'success' || 'failure' }}
+          title: "PinHouse 운영용 CI 결과 [${{ needs.build.result == 'success' && '✅성공' || '❌실패' }}]"
           description: |
             **커밋 메시지**: ${{ github.event.head_commit.message }}
             **브랜치**: `${{ env.BRANCH_NAME }}`
             **환경**: ${{ env.ENV_TYPE }}
 
-            **📊 상세 결과**:
-            - Lint/Type: ${{ needs.lint.result == 'success' && ' ✅' || ' ❌' }}
+            **상세 결과**:
             - Build: ${{ needs.build.result == 'success' && ' ✅' || ' ❌' }}
 
-            **🐳 Docker 이미지**: `${{ needs.build.outputs.image_tag }}`
-            **📦 이미지 경로**: `${{ needs.build.outputs.full_image }}`
+            **Docker 이미지**: `${{ needs.build.outputs.image_tag }}`
+            **이미지 경로**: `${{ needs.build.outputs.full_image }}`
+            
+            **다음 단계**: ArgoCD에서 배포가 진행됩니다. 배포 결과는 ArgoCD 알림을 확인해주세요.
+            
+            **링크**: [커밋 확인하기](${{ github.event.repository.html_url }}/commit/${{ github.sha }})
 
-            **🔗 링크**: [커밋 확인하기](${{ github.event.repository.html_url }}/commit/${{ github.sha }})
-
-          color: "${{ (needs.lint.result == 'success' && needs.build.result == 'success') && 65280 || 16711680 }}"
+          color: "${{ needs.build.result == 'success' && 65280 || 16711680 }}"
           username: PinHouse Production FE CI Bot
           avatar_url: ${{ env.DISCORD_AVATAR_URL }}
