@@ -11,9 +11,14 @@ env:
   GCP_REGION: ${{ secrets.GCP_REGION }}
   GCP_ARTIFACT_REGISTRY: ${{ secrets.GCP_REGION }}-docker.pkg.dev
   GCP_ARTIFACT_REPO: ${{ secrets.GCP_ARTIFACT_REPO }}
-  IMAGE_NAME: pinhouse-web
+  IMAGE_NAME: ${{ secrets.GCP_ARTIFACT_IMAGE_NAME }}
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   SERVICE_ACCOUNT_EMAIL: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+  # 변수 주입 설정
+  NEXT_PUBLIC_API_URL: ${{secrets.NEXT_PUBLIC_API_URL}}
+  NEXT_PUBLIC_OAUTH2: ${{secrets.NEXT_PUBLIC_OAUTH2}}
+  NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   # Discord 설정
   DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -85,10 +90,10 @@ jobs:
             ${{ env.FULL_IMAGE }}
             ${{ env.GCP_ARTIFACT_REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ env.GCP_ARTIFACT_REPO }}/${{ env.IMAGE_NAME }}:latest
           build-args: |
-            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
-            NEXT_PUBLIC_OAUTH2=${{ secrets.NEXT_PUBLIC_OAUTH2 }}
+            NEXT_PUBLIC_API_URL=${{ env.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_OAUTH2=${{ env.NEXT_PUBLIC_OAUTH2 }}
           secrets: |
-            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
+            NPM_TOKEN=${{ env.NPM_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
