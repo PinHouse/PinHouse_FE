@@ -9,6 +9,7 @@ export const dropDownVariants = cva(
         menu: "w-auto text-greyscale-grey-400",
       },
       size: {
+        xs: "h-8 px-1 text-sm",
         sm: "h-8 px-3 text-sm",
         md: "h-10 px-4 py-[0.8125rem] text-sm leading-[132%] tracking-[-0.01em]",
         lg: "h-12 pl-5 pr-4 py-[0.9375rem] text-sm leading-[140%] tracking-[-0.01em]",

@@ -1,5 +1,9 @@
 "use client";
-import { useChangeChat, useChatHooks } from "@/src/features/chat/hooks/useChatHooks";
+import {
+  useChangeChat,
+  useChatHooks,
+  useChatSelectedType,
+} from "@/src/features/chat/hooks/useChatHooks";
 import ChatWidgets from "@/src/features/chat/ui/chat";
 import ChatSheet from "@/src/features/chat/ui/chatSheet";
 import ChatPanel from "@/src/features/chat/ui/chatPanel";
@@ -14,8 +18,9 @@ export default function ChatEntryClient({
   initialQuery = "",
 }: ChatEntryProps) {
   const { isChatOpen, openChat, closeChat } = useChatHooks({ initialChatOpen: initialChatOpen });
+  const { setSelectedTags, selectedTags } = useChatSelectedType();
   const { query, hasQuery, handleChangeQuery, handleKeyDown, items, isPending, onSubmitQuery } =
-    useChangeChat({ initialQuery });
+    useChangeChat({ initialQuery, selectedTags });
   return (
     <>
       <ChatWidgets onClick={openChat} />
@@ -26,6 +31,8 @@ export default function ChatEntryClient({
           isPending={isPending}
           query={query}
           hasQuery={hasQuery}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
           onChangeQuery={handleChangeQuery}
           onSubmitQuery={handleKeyDown}
           onClickSubmit={onSubmitQuery}
