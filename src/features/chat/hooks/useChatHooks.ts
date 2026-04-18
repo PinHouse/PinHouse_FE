@@ -7,7 +7,8 @@ import {
 } from "@kyungchan3007/pinhouse-chat";
 import type { ChatHistoryMessage } from "@kyungchan3007/pinhouse-chat";
 import { useSendChatMutation } from "@/src/entities/chat/hooks/useChatHooks";
-import type { ChatRenderItem } from "@/src/features/chat/model/chatResponse";
+import { ChatCategoryKey, ChatRenderItem } from "@/src/features/chat/model/chatResponse";
+import { buildChatPayload } from "@/src/features/chat/model/buildChatPayload";
 
 export const useChatHooks = ({ initialChatOpen = false }) => {
   const [isChatOpen, setIsChatOpen] = useState<boolean>(initialChatOpen);
@@ -40,7 +41,13 @@ const normalizeChatMessageId = (id: string) => {
   return id.startsWith("msg") ? id : `msg_${id}`;
 };
 
-export const useChangeChat = ({ initialQuery = "" }: { initialQuery: string }) => {
+export const useChangeChat = ({
+  initialQuery = "",
+  selectedTags = [],
+}: {
+  initialQuery: string;
+  selectedTags?: ChatCategoryKey[];
+}) => {
   const [query, setQuery] = useState<string>(initialQuery);
   const [sessionId] = useState(() => crypto.randomUUID());
   const [messages, setMessages] = useState<ChatHistoryMessage[]>([]);
@@ -84,10 +91,15 @@ export const useChangeChat = ({ initialQuery = "" }: { initialQuery: string }) =
       ...message,
       id: normalizeChatMessageId(message.id),
     }));
+    const payload = buildChatPayload({
+      message: trimmed,
+      selectedKeys: selectedTags,
+    });
 
     mutate(
       {
         messages: requestMessages,
+        promptType: payload.promptType,
       },
       {
         onSuccess: response => {
@@ -95,7 +107,7 @@ export const useChangeChat = ({ initialQuery = "" }: { initialQuery: string }) =
 
           const assistantSummary = createAssistantMessage(sessionId, response.summary);
           nextItems.push({
-            id: assistantSummary.id,
+            id: `${assistantSummary.id}_summary`,
             type: "message",
             role: "assistant",
             content: assistantSummary.content,
@@ -107,20 +119,20 @@ export const useChangeChat = ({ initialQuery = "" }: { initialQuery: string }) =
             const followUpMessage = createAssistantMessage(sessionId, response.followUpQuestion);
             assistantMessages.push(followUpMessage);
             nextItems.push({
-              id: followUpMessage.id,
+              id: `${followUpMessage.id}_followup`,
               type: "message",
               role: "assistant",
               content: followUpMessage.content,
             });
           }
 
-          if (response.cta) {
+          response.ctas?.forEach((cta, index) => {
             nextItems.push({
-              id: `cta_${Date.now().toString()}`,
+              id: `cta_${Date.now().toString()}_${index}`,
               type: "cta",
-              cta: response.cta,
+              cta,
             });
-          }
+          });
 
           setMessages(prev => [...prev, ...assistantMessages]);
           setItems(prev => [...prev, ...nextItems]);
@@ -151,5 +163,14 @@ export const useChangeChat = ({ initialQuery = "" }: { initialQuery: string }) =
     handleChangeQuery,
     handleKeyDown,
     onSubmitQuery,
+  };
+};
+
+export const useChatSelectedType = () => {
+  const [selectedTags, setSelectedTags] = useState<ChatCategoryKey[]>(["term"]);
+
+  return {
+    selectedTags,
+    setSelectedTags,
   };
 };

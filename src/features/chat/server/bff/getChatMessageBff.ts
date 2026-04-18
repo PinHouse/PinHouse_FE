@@ -14,11 +14,11 @@ export type ChatRequest = {
 export type ChatResponse = {
   summary: string;
   followUpQuestion?: string;
-  cta?: {
+  ctas?: Array<{
     label: string;
     action: "open_listing";
     keyword?: string;
-  };
+  }>;
 };
 
 export async function postChatMessage(request: ChatRequest): Promise<ChatResponse> {

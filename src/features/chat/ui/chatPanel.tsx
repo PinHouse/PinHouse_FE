@@ -6,7 +6,14 @@ import { ArrowUp } from "lucide-react";
 import { LeftButton } from "@/src/assets/icons/button/leftButton";
 import { ChatCounselor } from "@/src/assets/images/chat/chatCounselor";
 import { cn } from "@/src/shared/lib/utils";
-import type { ChatRenderItem } from "@/src/features/chat/model/chatResponse";
+import {
+  CHAT_TAG_OPTIONS,
+  ChatCategoryKey,
+  ChatRenderItem,
+} from "@/src/features/chat/model/chatResponse";
+import { DropDown } from "@/src/shared/ui/dropDown/deafult";
+import type { PinPoint } from "@/src/shared/ui/dropDown/deafult/type";
+import { TagDropDown } from "@/src/shared/ui/dropDown/TagDropDown/TagDropDown";
 
 type ChatPanelProps = {
   onClose: () => void;
@@ -17,6 +24,8 @@ type ChatPanelProps = {
   onChangeQuery: (event: ChangeEvent<HTMLInputElement>) => void;
   onSubmitQuery: (event: KeyboardEvent<HTMLInputElement>) => void;
   onClickSubmit: () => void;
+  selectedTags: ChatCategoryKey[];
+  setSelectedTags: (selectedTags: ChatCategoryKey[]) => void;
 };
 
 export default function ChatPanel({
@@ -28,11 +37,14 @@ export default function ChatPanel({
   onChangeQuery,
   onSubmitQuery,
   onClickSubmit,
+  selectedTags,
+  setSelectedTags,
 }: ChatPanelProps) {
   const router = useRouter();
 
   const handleClickCta = (keyword?: string) => {
-    const nextKeyword = keyword?.trim() ?? "";
+    const nextKeyword = keyword?.trim();
+    if (!nextKeyword) return;
     router.push(`/listings/search?query=${encodeURIComponent(nextKeyword)}`);
   };
 
@@ -86,7 +98,7 @@ export default function ChatPanel({
                     {item.content}
                   </div>
                 </div>
-              ) : (
+              ) : selectedTags.find(type => type === "listing") ? (
                 <div
                   key={item.id}
                   className="max-w-[85%] rounded-[28px] rounded-bl-md bg-white p-4 shadow-[0_8px_24px_rgba(47,84,255,0.08)]"
@@ -105,7 +117,7 @@ export default function ChatPanel({
                     </p>
                   ) : null}
                 </div>
-              )
+              ) : null
             )}
             {isPending && (
               <div className="flex items-center gap-2">
@@ -121,7 +133,7 @@ export default function ChatPanel({
         </div>
       </div>
       <div className="px-5 pb-4 pt-3">
-        <div className="rounded-[999px] border border-[#4E80FF] bg-white px-4 py-3 shadow-[0_4px_10px_rgba(48,111,255,0.08)]">
+        <div className="rounded-[999px] border border-[#4E80FF] bg-white px-4 py-2 shadow-[0_4px_10px_rgba(48,111,255,0.08)]">
           <div className="flex items-center gap-3">
             <input
               type="text"
@@ -131,6 +143,14 @@ export default function ChatPanel({
               onChange={onChangeQuery}
               onKeyDown={onSubmitQuery}
             />
+
+            <TagDropDown
+              options={CHAT_TAG_OPTIONS}
+              value={selectedTags}
+              onChange={setSelectedTags}
+              placeholder="질문 유형 선택"
+            />
+
             <button
               type="button"
               onClick={onClickSubmit}
