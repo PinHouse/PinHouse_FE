@@ -50,7 +50,6 @@ function CaretDropDownContent({
       const nextSearchStatus = statusValue[value] ?? value;
       setSearchStatus(nextSearchStatus);
     } else {
-      console.log(value);
       setBaseStatus(value);
     }
     setOpen(false);

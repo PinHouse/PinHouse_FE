@@ -32,7 +32,6 @@ function isAuthenticated(request: NextRequest): boolean {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAuth = isAuthenticated(request);
-
   // OAuth 콜백(/signup?state=...)은 인증 여부와 무관하게 통과
   // (소셜 로그인 리다이렉트 흐름 보장)
   if (pathname.startsWith("/signup") && request.nextUrl.searchParams.get("state")) {

@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { HomeSearchRecent } from "../../../features/home/ui/search/homeSearchRecent";
-import { HomeSearchPopular } from "../../../features/home/ui/search/homeSearchPopular";
+import { HomeSearchRecent } from "@/src/features/home/ui/search/homeSearchRecent";
+import { HomeSearchPopular } from "@/src/features/home/ui/search/homeSearchPopular";
 
 export const HomeSearchTag = () => {
   return (
