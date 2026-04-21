@@ -57,7 +57,6 @@ export const AreaFilter = () => {
           </div>
         ))}
       </div>
-
     </div>
   );
 };
@@ -71,7 +70,6 @@ const Tag = ({
   selected: boolean;
   onClick: () => void;
 }) => {
-  console.log(selected);
   return (
     <>
       <TagButton

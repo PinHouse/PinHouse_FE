@@ -9,6 +9,10 @@ export const HTTP_METHODS = {
 } as const;
 
 /**
+ * 로그인 kakzoOAuth 토큰 으로 서비스 토큰 요청
+ */
+export const LOGIN_AUTH_EXCHANGES = "/auth/exchange";
+/**
  * HOME API 엔드포인드
  */
 export const HOME_NOTICE_ENDPOINT = "/home/notice";

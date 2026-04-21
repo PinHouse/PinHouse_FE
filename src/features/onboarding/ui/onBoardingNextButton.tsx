@@ -44,7 +44,7 @@ export const OnboardingNextButton = () => {
       /*
        * TODO: 백엔드에 FacilityType 동기화 완료 여부 문의 후 반영
        */
-      console.log(envTag);
+
       try {
         await onCompleteOnboarding({ facilityTypes: [] });
       } catch (error) {
