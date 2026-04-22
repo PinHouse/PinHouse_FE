@@ -16,13 +16,11 @@ export function useEligibilityRecommendedList() {
     retry: false,
     staleTime: Infinity,
     gcTime: Infinity,
-    queryFn: async ({ pageParam }) => {
-      const res = await getRecommendedList({
+    queryFn: ({ pageParam }) =>
+      getRecommendedList({
         page: Number(pageParam),
         offSet: OFF_SET,
-      });
-      return (res as { data?: SliceResponse<ListingItem> }).data as SliceResponse<ListingItem>;
-    },
+      }),
     getNextPageParam: (lastPage, _allPages, lastPageParam) =>
       lastPage.hasNext ? (lastPageParam as number) + 1 : undefined,
   });

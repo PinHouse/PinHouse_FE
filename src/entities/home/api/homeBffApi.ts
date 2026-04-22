@@ -1,4 +1,5 @@
 import type { NoticeContent, NoticeCount, SliceResponse } from "@/src/entities/home/model/type";
+import type { ListingItem } from "@/src/entities/listings/model/type";
 
 type HomeNoticeBffResponse = {
   success: boolean;
@@ -16,11 +17,18 @@ type HomeCountBffResponse = {
   };
 };
 
+type HomeRecommendedBffResponse = {
+  success: boolean;
+  data?: SliceResponse<ListingItem>;
+};
+
 export async function getHomeNoticePageFromBff(
   page = 1,
-  offSet = 10
+  offSet = 10,
+  pinpointId: string
 ): Promise<SliceResponse<NoticeContent>> {
   const query = new URLSearchParams({
+    pinpointId,
     page: String(page),
     offSet: String(offSet),
   });
@@ -58,4 +66,27 @@ export async function getHomeNoticeCountFromBff(maxTime = 60): Promise<NoticeCou
   }
 
   return { count: body.data.count };
+}
+
+export async function getHomeRecommendedPageFromBff(
+  page = 1,
+  offSet = 10
+): Promise<SliceResponse<ListingItem>> {
+  const query = new URLSearchParams({
+    page: String(page),
+    offSet: String(offSet),
+  });
+
+  const res = await fetch(`/api/home/recommended?${query.toString()}`, {
+    method: "GET",
+    cache: "no-store",
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch home recommended page.");
+
+  const body = (await res.json()) as HomeRecommendedBffResponse;
+  if (!body.success || !body.data) throw new Error("Invalid home recommended response.");
+
+  return body.data;
 }

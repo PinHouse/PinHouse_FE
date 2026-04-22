@@ -5,12 +5,14 @@ import { useOAuthStore } from "@/src/features/login/model";
 import {
   getHomeNoticeCountFromBff,
   getHomeNoticePageFromBff,
+  getHomeRecommendedPageFromBff,
 } from "@/src/entities/home/api/homeBffApi";
 import { HOME_RECOMMENDED_ENDPOINT, HOME_SEARCH_POPULAR_ENDPOINT } from "@/src/shared/api";
 import { useHomeMaxTime } from "@/src/features/home/model/homeStore";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 import { ApiCategory, CATEGORY_MAP } from "@/src/features/home/model/model";
 import { ListingItem } from "@/src/entities/listings/model/type";
+import { eligibilityKeys } from "@/src/shared/config";
 
 export const useNoticeInfinite = () => {
   const pinpointId = useOAuthStore(state => state.pinPointId);
@@ -22,7 +24,7 @@ export const useNoticeInfinite = () => {
     retry: false,
     staleTime: 5 * 60 * 1000,
     refetchOnMount: false,
-    queryFn: ({ pageParam }) => getHomeNoticePageFromBff(Number(pageParam), 10),
+    queryFn: ({ pageParam }) => getHomeNoticePageFromBff(Number(pageParam), 10, pinpointId),
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.pages + 1 : undefined;
     },
@@ -99,17 +101,14 @@ export const useRecommendedNotice = () => {
       : false;
 
   return useInfiniteQuery<SliceResponse<ListingItem>, Error>({
-    queryKey: ["HOME_RECOMMENDED", userName],
+    queryKey: eligibilityKeys.recommendedList(userName),
     initialPageParam: 1,
     retry: false,
     enabled: isBrowser && !!userName && !fetched,
     staleTime: Infinity,
     gcTime: Infinity,
     queryFn: async ({ pageParam }) => {
-      const data = await getNoticeByPinPoint<SliceResponse<ListingItem>>({
-        url: HOME_RECOMMENDED_ENDPOINT,
-        params: { page: Number(pageParam), offSet: 10 },
-      });
+      const data = await getHomeRecommendedPageFromBff(Number(pageParam), 10);
 
       sessionStorage.setItem(recommendedFetchedKey(userName), "query");
       return data;

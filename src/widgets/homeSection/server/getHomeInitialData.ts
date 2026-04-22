@@ -1,5 +1,6 @@
 import type { NoticeContent, SliceResponse } from "@/src/entities/home/model/type";
 import type { PinPoint } from "@/src/entities/pinpoint/model/pinpoint.type";
+import type { ListingItem } from "@/src/entities/listings/model/type";
 import { getBffRequestContext } from "@/src/shared/api/server/fowardHeaders";
 
 type HomeNoticeBffResponse = {
@@ -26,10 +27,16 @@ type HomePinpointsBffResponse = {
   };
 };
 
+type HomeRecommendedBffResponse = {
+  success: boolean;
+  data?: SliceResponse<ListingItem>;
+};
+
 export async function getHomeInitialData() {
   let initial: HomeNoticeBffResponse["data"] | null = null;
   let initialCount: HomeCountBffResponse["data"] | null = null;
   let initialPinpoints: HomePinpointsBffResponse["data"] | null = null;
+  let initialRecommended: HomeRecommendedBffResponse["data"] | null = null;
 
   const { baseUrl, forwardedHeaders } = await getBffRequestContext();
 
@@ -78,5 +85,20 @@ export async function getHomeInitialData() {
     initialPinpoints = null;
   }
 
-  return { initial, initialCount, initialPinpoints };
+  try {
+    const res = await fetch(`${baseUrl}/api/home/recommended?page=1&offSet=10`, {
+      method: "GET",
+      headers: forwardedHeaders,
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const body = (await res.json()) as HomeRecommendedBffResponse;
+      if (body.success && body.data) initialRecommended = body.data;
+    }
+  } catch {
+    initialRecommended = null;
+  }
+
+  return { initial, initialCount, initialPinpoints, initialRecommended };
 }
