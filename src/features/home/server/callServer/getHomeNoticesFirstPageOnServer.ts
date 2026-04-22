@@ -30,7 +30,6 @@ export async function getHomeNoticesPageOnServer(page = 1, offSet = 10) {
 
   const body = (await res.json()) as IResponse<SliceResponse<NoticeContent>>;
   if (!body?.success || !body.data) return null;
-
   return { pinpointId, page: body.data };
 }
 

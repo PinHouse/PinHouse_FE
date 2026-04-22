@@ -31,6 +31,7 @@ import {
 import { useOAuthStore } from "@/src/features/login/model";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 import { compareNoticeQueryKey } from "@/src/shared/config";
+import { getPinPoints, PinPointsPayload } from "@/src/entities/pinpoint";
 
 export const useListingDetailBasic = (id: string) => {
   const pinPointId = useOAuthStore(state => state.pinPointId);
@@ -205,18 +206,28 @@ export const useListingRouteDetail = <T, TParam extends object>({
   });
 };
 
-export const useListingFilterDetail = <T>() => {
-  return useQuery<IResponse<T>, Error, T>({
+// export const useListingFilterDetail = <T>() => {
+//   return useQuery<IResponse<T>, Error, T>({
+//     queryKey: ["pinpointSettings"],
+//     staleTime: 1000 * 60 * 5,
+//     placeholderData: previousData => previousData,
+//     queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
+//     select: response => {
+//       if (response.data === undefined) {
+//         throw new Error("Response data is undefined");
+//       }
+//       return response.data;
+//     },
+//   });
+// };
+
+export const useListingFilterDetail = <T = PinPointsPayload>() => {
+  return useQuery<PinPointsPayload, Error, T>({
     queryKey: ["pinpointSettings"],
     staleTime: 1000 * 60 * 5,
     placeholderData: previousData => previousData,
-    queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
-    select: response => {
-      if (response.data === undefined) {
-        throw new Error("Response data is undefined");
-      }
-      return response.data;
-    },
+    queryFn: getPinPoints,
+    select: data => data as T,
   });
 };
 

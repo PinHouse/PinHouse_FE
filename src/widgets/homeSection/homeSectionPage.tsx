@@ -1,8 +1,9 @@
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { HomeSection } from "./homeSection";
 import type { NoticeContent, SliceResponse } from "@/src/entities/home/model/type";
+import type { ListingItem } from "@/src/entities/listings/model/type";
 import { getHomeInitialData } from "./server/getHomeInitialData";
-import { pinPointKeys } from "@/src/shared/config/queryKeys";
+import { eligibilityKeys, pinPointKeys } from "@/src/shared/config/queryKeys";
 import { HomeStoreBootstrap } from "./ui/homeStoreBootstrap";
 
 interface HomeSectionPageProps {
@@ -15,7 +16,7 @@ export async function HomeSectionPage({
   initialQuery = "",
 }: HomeSectionPageProps) {
   const queryClient = new QueryClient();
-  const { initial, initialCount, initialPinpoints } = await getHomeInitialData();
+  const { initial, initialCount, initialPinpoints, initialRecommended } = await getHomeInitialData();
 
   if (initial) {
     await queryClient.prefetchInfiniteQuery({
@@ -38,6 +39,16 @@ export async function HomeSectionPage({
     await queryClient.prefetchQuery({
       queryKey: pinPointKeys.list(),
       queryFn: async () => initialPinpoints,
+    });
+  }
+
+  if (initialRecommended && initialPinpoints?.userName) {
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: eligibilityKeys.recommendedList(initialPinpoints.userName),
+      initialPageParam: 1,
+      queryFn: async () => initialRecommended,
+      getNextPageParam: (lastPage: SliceResponse<ListingItem>) =>
+        lastPage.hasNext ? lastPage.pages + 1 : undefined,
     });
   }
 
