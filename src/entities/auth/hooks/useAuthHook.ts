@@ -45,7 +45,7 @@ export const useAuthCheck = () => {
         const authed = response.data !== false;
 
         if (!authed) {
-          setAuthFailure();
+          // setAuthFailure();
           if (!cancelled) router.replace("/login");
           return;
         }
@@ -61,7 +61,7 @@ export const useAuthCheck = () => {
         if (!cancelled) router.replace("/home");
       } catch (error) {
         console.error("auth check failed:", error);
-        setAuthFailure();
+        // setAuthFailure();
         if (!cancelled) router.replace("/login");
       }
     };
@@ -73,4 +73,3 @@ export const useAuthCheck = () => {
     };
   }, [router]);
 };
-

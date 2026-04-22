@@ -1,5 +1,6 @@
-import type { NoticeContent, NoticeCount, SliceResponse } from "@/src/entities/home/model/type";
-import { headers } from "next/headers";
+import type { NoticeContent, SliceResponse } from "@/src/entities/home/model/type";
+import type { PinPoint } from "@/src/entities/pinpoint/model/pinpoint.type";
+import { getBffRequestContext } from "@/src/shared/api/server/fowardHeaders";
 
 type HomeNoticeBffResponse = {
   success: boolean;
@@ -11,21 +12,31 @@ type HomeNoticeBffResponse = {
 
 type HomeCountBffResponse = {
   success: boolean;
-  data?: NoticeCount;
+  data?: {
+    pinpointId: string;
+    count: number;
+  };
+};
+
+type HomePinpointsBffResponse = {
+  success: boolean;
+  data?: {
+    userName: string;
+    pinPoints: PinPoint[];
+  };
 };
 
 export async function getHomeInitialData() {
   let initial: HomeNoticeBffResponse["data"] | null = null;
   let initialCount: HomeCountBffResponse["data"] | null = null;
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "http";
-  const baseUrl = `${proto}://${host}`;
+  let initialPinpoints: HomePinpointsBffResponse["data"] | null = null;
+
+  const { baseUrl, forwardedHeaders } = await getBffRequestContext();
 
   try {
     const res = await fetch(`${baseUrl}/api/home/notice`, {
       method: "GET",
-      credentials: "include",
+      headers: forwardedHeaders,
       cache: "no-store",
     });
 
@@ -40,7 +51,7 @@ export async function getHomeInitialData() {
   try {
     const res = await fetch(`${baseUrl}/api/home/count?maxTime=60`, {
       method: "GET",
-      credentials: "include",
+      headers: forwardedHeaders,
       cache: "no-store",
     });
 
@@ -48,9 +59,24 @@ export async function getHomeInitialData() {
       const body = (await res.json()) as HomeCountBffResponse;
       if (body.success && body.data) initialCount = body.data;
     }
-  } catch (e) {
+  } catch {
     initialCount = null;
   }
 
-  return { initial, initialCount };
+  try {
+    const res = await fetch(`${baseUrl}/api/home/pinpoints`, {
+      method: "GET",
+      headers: forwardedHeaders,
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const body = (await res.json()) as HomePinpointsBffResponse;
+      if (body.success && body.data) initialPinpoints = body.data;
+    }
+  } catch {
+    initialPinpoints = null;
+  }
+
+  return { initial, initialCount, initialPinpoints };
 }

@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const result = await exchangeOAuthCodeOnServer(code);
-    console.log(result, "result");
+
     if (!result.success) {
       return NextResponse.redirect(new URL("/login?error=oauth_failed", req.url));
     }
@@ -27,7 +27,14 @@ export async function GET(req: NextRequest) {
       path: "/",
       maxAge: 60 * 60,
     });
-    res.cookies.set("refreshToken:", result.data.refreshToken, {
+    res.cookies.set("pinpoint_id", result.data.pinpointId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60,
+    });
+    res.cookies.set("refresh_token", result.data.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

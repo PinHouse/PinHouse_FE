@@ -1,35 +1,28 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getNoticeByPinPoint } from "../interface/homeInterface";
-import { NoticeContent, NoticeCount, SearchCategory, SliceResponse } from "../model/type";
+import { NoticeContent, SearchCategory, SliceResponse } from "../model/type";
 import { useOAuthStore } from "@/src/features/login/model";
 import {
-  HOME_NOTICE_ENDPOINT,
-  HOME_RECOMMENDED_ENDPOINT,
-  HOME_SEARCH_POPULAR_ENDPOINT,
-} from "@/src/shared/api";
+  getHomeNoticeCountFromBff,
+  getHomeNoticePageFromBff,
+} from "@/src/entities/home/api/homeBffApi";
+import { HOME_RECOMMENDED_ENDPOINT, HOME_SEARCH_POPULAR_ENDPOINT } from "@/src/shared/api";
 import { useHomeMaxTime } from "@/src/features/home/model/homeStore";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 import { ApiCategory, CATEGORY_MAP } from "@/src/features/home/model/model";
 import { ListingItem } from "@/src/entities/listings/model/type";
-import axios from "axios";
-import { toast } from "sonner";
 
 export const useNoticeInfinite = () => {
   const pinpointId = useOAuthStore(state => state.pinPointId);
+
   return useInfiniteQuery({
     queryKey: ["notice", pinpointId],
     enabled: !!pinpointId,
     initialPageParam: 1,
     retry: false,
-    queryFn: ({ pageParam }) =>
-      getNoticeByPinPoint<SliceResponse<NoticeContent>>({
-        url: HOME_NOTICE_ENDPOINT,
-        params: {
-          pinpointId,
-          page: Number(pageParam),
-          offSet: 10,
-        },
-      }),
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
+    queryFn: ({ pageParam }) => getHomeNoticePageFromBff(Number(pageParam), 10),
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.pages + 1 : undefined;
     },
@@ -40,17 +33,14 @@ export const useNoticeCount = () => {
   const pinPointId = useOAuthStore(state => state.pinPointId);
   const maxTime = useHomeMaxTime(s => s.maxTime);
   const debouncedMaxTime = useDebounce(maxTime, 400);
-  const param = {
-    pinPointId,
-    maxTime: maxTime,
-  };
-  const url = `${HOME_NOTICE_ENDPOINT}-count`;
   return useQuery({
     queryKey: ["noticeCount", pinPointId, debouncedMaxTime],
     enabled: !!pinPointId,
     retry: false,
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
     placeholderData: previousData => previousData,
-    queryFn: () => getNoticeByPinPoint<NoticeCount>({ url: url, params: param }),
+    queryFn: () => getHomeNoticeCountFromBff(debouncedMaxTime),
   });
 };
 

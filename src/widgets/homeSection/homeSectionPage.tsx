@@ -2,6 +2,8 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { HomeSection } from "./homeSection";
 import type { NoticeContent, SliceResponse } from "@/src/entities/home/model/type";
 import { getHomeInitialData } from "./server/getHomeInitialData";
+import { pinPointKeys } from "@/src/shared/config/queryKeys";
+import { HomeStoreBootstrap } from "./ui/homeStoreBootstrap";
 
 interface HomeSectionPageProps {
   initialChatOpen?: boolean;
@@ -13,7 +15,7 @@ export async function HomeSectionPage({
   initialQuery = "",
 }: HomeSectionPageProps) {
   const queryClient = new QueryClient();
-  const { initial, initialCount } = await getHomeInitialData();
+  const { initial, initialCount, initialPinpoints } = await getHomeInitialData();
 
   if (initial) {
     await queryClient.prefetchInfiniteQuery({
@@ -25,16 +27,24 @@ export async function HomeSectionPage({
     });
   }
 
-  if (initial && initialCount) {
+  if (initialCount) {
     await queryClient.prefetchQuery({
-      queryKey: ["noticeCount", initial.pinpointId, 60],
-      queryFn: async () => initialCount,
+      queryKey: ["noticeCount", initialCount.pinpointId, 60],
+      queryFn: async () => ({ count: initialCount.count }),
+    });
+  }
+
+  if (initialPinpoints) {
+    await queryClient.prefetchQuery({
+      queryKey: pinPointKeys.list(),
+      queryFn: async () => initialPinpoints,
     });
   }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main className="flex h-full flex-col">
+        <HomeStoreBootstrap initialPinpoints={initialPinpoints} />
         <HomeSection initialChatOpen={initialChatOpen} initialQuery={initialQuery} />
       </main>
     </HydrationBoundary>

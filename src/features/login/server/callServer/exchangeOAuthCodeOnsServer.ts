@@ -2,7 +2,7 @@ import "server-only";
 import { LOGIN_AUTH_EXCHANGES } from "@/src/shared/api";
 
 type ExchangeData =
-  | { result: "TOKEN_ISSUED"; accessToken: string; refreshToken: string }
+  | { result: "TOKEN_ISSUED"; accessToken: string; refreshToken: string; pinpointId: string }
   | { result: "TOKEN_REQUIRED"; tempKey: string };
 
 type ExchangeApiResponse =
