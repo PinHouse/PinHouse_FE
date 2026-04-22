@@ -30,7 +30,7 @@ export const useSetDefaultPinpoint = () => {
       console.error("❌ 기본 핀포인트 설정 실패:", error);
       throw error;
     }
-  }, [pinPointId, setPinPointId]);
+  }, [pinPointId, setPinPointId, setPinpointName, setUserName]);
 
   return { setDefaultPinpoint };
 };

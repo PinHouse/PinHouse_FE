@@ -19,7 +19,7 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json(
-      { success: true, data: { count: data.count } },
+      { success: true, data: { pinpointId: data.pinpointId, count: data.count } },
       { status: 200, headers: { "x-route-hit": "home-count" } }
     );
   } catch {

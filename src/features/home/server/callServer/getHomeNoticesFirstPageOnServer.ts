@@ -6,15 +6,15 @@ import type { NoticeContent, NoticeCount, SliceResponse } from "@/src/entities/h
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
-export async function getHomeNoticesFirstPageOnServer() {
+export async function getHomeNoticesPageOnServer(page = 1, offSet = 10) {
   const cookieStore = await cookies();
   const pinpointId = cookieStore.get("pinpoint_id")?.value;
   const accessToken = cookieStore.get("access_token")?.value;
   if (!pinpointId || !API_BASE_URL) return null;
   const query = new URLSearchParams({
     pinpointId,
-    page: "1",
-    offSet: "10",
+    page: String(page),
+    offSet: String(offSet),
   });
 
   const res = await fetch(`${API_BASE_URL}${HOME_NOTICE_ENDPOINT}?${query.toString()}`, {
@@ -34,12 +34,15 @@ export async function getHomeNoticesFirstPageOnServer() {
   return { pinpointId, page: body.data };
 }
 
+export async function getHomeNoticesFirstPageOnServer() {
+  return getHomeNoticesPageOnServer(1, 10);
+}
+
 export async function getHomePinpointCount(maxTime = 60) {
   const cookieStore = await cookies();
   const pinpointId = cookieStore.get("pinpoint_id")?.value;
   const accessToken = cookieStore.get("access_token")?.value;
   const url = `${HOME_NOTICE_ENDPOINT}-count`;
-
   if (!pinpointId || !API_BASE_URL) return null;
   const query = new URLSearchParams({
     pinPointId: pinpointId,
@@ -49,7 +52,10 @@ export async function getHomePinpointCount(maxTime = 60) {
   const res = await fetch(`${API_BASE_URL}${url}?${query.toString()}`, {
     method: "GET",
     cache: "no-store",
-    credentials: "include",
+    headers: {
+      cookie: cookieStore.toString(),
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
   });
 
   if (!res.ok) return null;
@@ -57,5 +63,5 @@ export async function getHomePinpointCount(maxTime = 60) {
   const body = (await res.json()) as IResponse<NoticeCount>;
   if (!body?.success || !body.data) return null;
 
-  return { pinpointId, count: body.data };
+  return { pinpointId, count: body.data.count };
 }

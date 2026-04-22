@@ -1,9 +1,5 @@
 import { http } from "@/src/shared/api/http";
-import {
-  PINPOINTS_READ_ENDPOINT,
-  PINPOINT_DELETE_ENDPOINT,
-  PINPOINT_UPDATE_ENDPOINT,
-} from "@/src/shared/api/endpoints";
+import { PINPOINT_DELETE_ENDPOINT, PINPOINT_UPDATE_ENDPOINT } from "@/src/shared/api/endpoints";
 import { IResponse } from "@/src/shared/types";
 import { PinPoint } from "../model/pinpoint.type";
 
@@ -22,7 +18,17 @@ export interface PinPointsPayload {
  * 핀포인트 목록 조회 API
  */
 export const getPinPoints = async (): Promise<PinPointsPayload> => {
-  const response = await http.get<PinPointsResponse>(PINPOINTS_READ_ENDPOINT);
+  const res = await fetch("/api/home/pinpoints", {
+    method: "GET",
+    cache: "no-store",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch pinPoints");
+  }
+
+  const response = (await res.json()) as PinPointsResponse;
 
   if (!response.data) {
     throw new Error("Invalid pinPoints response");
@@ -41,10 +47,7 @@ export const deletePinPoint = async (id: string): Promise<void> => {
 /**
  * 핀포인트 수정 API - PATCH /pinpoints/{id}, body는 name만
  */
-export const updatePinPoint = async (
-  id: string,
-  body: UpdatePinpointBody
-): Promise<void> => {
+export const updatePinPoint = async (id: string, body: UpdatePinpointBody): Promise<void> => {
   await http.patch<IResponse<unknown>, UpdatePinpointBody>(
     `${PINPOINT_UPDATE_ENDPOINT}/${id}`,
     body
