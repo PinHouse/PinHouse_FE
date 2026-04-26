@@ -35,12 +35,11 @@ export async function getSearchPageOnServer({
 
   const res = await fetch(`${API_BASE_URL}${LISTING_SEARCH_ENDPOINT}?${query.toString()}`, {
     method: "GET",
-    credentials: "include",
-    // headers: {
-    //   cookie: cookieStore.toString(),
-    //   ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-    // },
     cache: "no-store",
+    headers: {
+      cookie: cookieStore.toString(),
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
   });
 
   if (!res.ok) return null;
@@ -58,11 +57,10 @@ export async function getPopularSearchOnServer(limit = 5) {
   const res = await fetch(`${API_BASE_URL}${POPULAR_SEARCH_ENDPOINT}?${query.toString()}`, {
     method: "GET",
     cache: "no-store",
-    credentials: "include",
-    // headers: {
-    //   cookie: cookieStore.toString(),
-    //   ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-    // },
+    headers: {
+      cookie: cookieStore.toString(),
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
   });
 
   if (!res.ok) return null;

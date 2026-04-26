@@ -1,21 +1,14 @@
 "use client";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getListingNoticePageFromBff, getListingSearchPageFromBff } from "../api/listingsBffApi";
 import { PostBasicRequest, requestListingList } from "../api/listingsApi";
 import {
   LikeReturn,
-  ListingListFilterBody,
   ListingListPage,
-  ListingListParams,
-  ListingSearchParams,
   PopularKeywordItem,
   ToggleLikeVariables,
 } from "../model/type";
-import {
-  LIKE_ENDPOINT,
-  LISTING_SEARCH_ENDPOINT,
-  NOTICE_ENDPOINT,
-  POPULAR_SEARCH_ENDPOINT,
-} from "@/src/shared/api";
+import { LIKE_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import {
   SearchOptions,
@@ -46,27 +39,17 @@ export const useListingListInfiniteQuery = () => {
     queryKey: listingListInfiniteQueryKey({ filter, status }),
     enabled: !!status,
     initialPageParam: 1,
-    queryFn: async ({ pageParam = 1 }) => {
-      const body = {
+    queryFn: ({ pageParam = 1 }) =>
+      getListingNoticePageFromBff({
         regionType,
         rentalTypes,
         supplyTypes,
         houseTypes,
         status,
         sortType,
-      };
-
-      return requestListingList<
-        ListingListPage,
-        IResponse<ListingListPage>,
-        ListingListFilterBody,
-        ListingListParams,
-        ListingListPage
-      >(NOTICE_ENDPOINT, "post", {
-        params: { page: Number(pageParam), offSet: 10 },
-        body,
-      });
-    },
+        page: Number(pageParam),
+        offSet: 10,
+      }),
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.page + 1 : undefined;
     },
@@ -117,18 +100,12 @@ export const useToogleLike = (resetQuery: string[]) => {
 };
 
 export const usePopularSearchQuery = () => {
-  return useQuery<PopularKeywordItem[]>({
-    queryKey: ["popularSearch"],
-    queryFn: () =>
-      requestListingList<
-        PopularKeywordItem[],
-        IResponse<PopularKeywordItem[]>,
-        undefined,
-        { limit: number },
-        PopularKeywordItem[]
-      >(POPULAR_SEARCH_ENDPOINT, "get", { params: { limit: 5 } }),
-    staleTime: 1000 * 60 * 5,
-  });
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData<PopularKeywordItem[]>(["popularSearch"]) ?? null;
+
+  return {
+    data,
+  };
 };
 
 export const useListingSearchInfiniteQuery = (queryOpt: SearchOptions) => {
@@ -142,23 +119,14 @@ export const useListingSearchInfiniteQuery = (queryOpt: SearchOptions) => {
     staleTime,
     initialPageParam: 1,
     placeholderData: keepPreviousData ? oldData => oldData : undefined,
-    queryFn: async ({ pageParam = 1 }) => {
-      return requestListingList<
-        ListingListPage,
-        IResponse<ListingListPage>,
-        undefined,
-        ListingSearchParams,
-        ListingListPage
-      >(LISTING_SEARCH_ENDPOINT, "get", {
-        params: {
-          q: keyword,
-          page: Number(pageParam),
-          offSet: 10,
-          sortType: sortType,
-          status: status,
-        },
-      });
-    },
+    queryFn: ({ pageParam = 1 }) =>
+      getListingSearchPageFromBff({
+        q: keyword,
+        page: Number(pageParam),
+        offSet: 10,
+        sortType,
+        status,
+      }),
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.page + 1 : undefined;
     },

@@ -1,6 +1,6 @@
 import { ListingListPage, PopularKeywordItem } from "@/src/entities/listings/model/type";
 import {
-  getPopularSearchOnServer,
+  getPopularSearchFromBff,
   getSearchNoticeInitialFromBff,
 } from "@/src/features/listings/server";
 
@@ -35,7 +35,7 @@ export async function getNoticeSearchInitialData({
   const status = DEFAULT_SEARCH_STATUS;
 
   const [popular, initialPage] = await Promise.all([
-    getPopularSearchOnServer(5),
+    getPopularSearchFromBff(5),
     keyword
       ? getSearchNoticeInitialFromBff({ q: keyword, sortType, status })
       : Promise.resolve(null),
