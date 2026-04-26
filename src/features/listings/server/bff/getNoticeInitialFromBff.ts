@@ -1,5 +1,5 @@
-import { headers } from "next/headers";
-import type { ListingListPage } from "@/src/entities/listings/model/type";
+import type { ListingListFilterBody, ListingListPage } from "@/src/entities/listings/model/type";
+import { getBffRequestContext } from "@/src/shared/api/server/fowardHeaders";
 
 export type NoticeFirstPage = {
   pinpointId: string;
@@ -11,26 +11,37 @@ export type ListingsNoticeBffResponse = {
   data?: NoticeFirstPage;
 };
 
-type FetchNoticeInitialArgs = {
-  status: string;
-  sortType: string;
-};
+type FetchNoticeInitialArgs = ListingListFilterBody;
 
 export async function fetchNoticeInitialFromBff({
+  regionType,
+  rentalTypes,
+  supplyTypes,
+  houseTypes,
   status,
   sortType,
 }: FetchNoticeInitialArgs): Promise<NoticeFirstPage | null> {
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "http";
-  const baseUrl = `${proto}://${host}`;
-  const cookieHeader = h.get("cookie") ?? "";
+  const { baseUrl, forwardedHeaders } = await getBffRequestContext();
+  const query = new URLSearchParams({
+    page: "1",
+    offSet: "10",
+  });
 
-  const res = await fetch(`${baseUrl}/api/listings/notice`, {
+  const res = await fetch(`${baseUrl}/api/listings/notice?${query.toString()}`, {
     method: "POST",
     cache: "no-store",
-    credentials: "include",
-    body: JSON.stringify({ status, sortType }),
+    headers: {
+      ...Object.fromEntries(forwardedHeaders.entries()),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      regionType,
+      rentalTypes,
+      supplyTypes,
+      houseTypes,
+      status,
+      sortType,
+    }),
   });
 
   if (!res.ok) return null;
