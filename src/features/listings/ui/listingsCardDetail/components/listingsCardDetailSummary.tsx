@@ -23,20 +23,18 @@ export const ListingsCardDetailSummary = ({
           {basicInfo.type}
         </TagButton>
 
-        <span className="flex items-center gap-2 text-xs text-greyscale-grey-500">
-          <div>
-            <TagButton
-              size="xs"
-              variant={"ghost"}
-              className={cn(`rounded-md border text-xs transition-all`)}
-            >
-              {basicInfo.housingType}
-            </TagButton>
-          </div>
+        <div className="flex items-center gap-2 text-xs text-greyscale-grey-500">
+          <TagButton
+            size="xs"
+            variant={"ghost"}
+            className={cn(`rounded-md border text-xs transition-all`)}
+          >
+            {basicInfo.housingType}
+          </TagButton>
           <p className="font-semibold">{basicInfo.supplier}</p>
-        </span>
+        </div>
       </div>
-      <h1 className="line-clamp-2 truncate text-lg font-semibold leading-snug text-greyscale-grey-900">
+      <h1 className="line-clamp-2 text-lg font-semibold leading-snug text-greyscale-grey-900">
         {basicInfo.name}
       </h1>
       <p className="mt-1 text-sm font-semibold text-greyscale-grey-400">{basicInfo.period}</p>

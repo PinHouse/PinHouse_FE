@@ -1,8 +1,6 @@
-import { IResponse } from "@/src/shared/types";
-import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { UseListingsHooksWithSheet } from "../model/type";
-import { getNoticeSheetFilter, PostParamsBodyRequest } from "../api/listingsApi";
-import { NOTICE_ENDPOINT } from "@/src/shared/api";
+import { getListingDetailFilterFromBff } from "../api/listingDetailBffApi";
 
 export const useListingDetailNoticeSheet = <T>({ id, url }: UseListingsHooksWithSheet) => {
   const encodedId = encodeURIComponent(id);
@@ -13,10 +11,13 @@ export const useListingDetailNoticeSheet = <T>({ id, url }: UseListingsHooksWith
     staleTime: 1000 * 60 * 5,
 
     queryFn: () =>
-      getNoticeSheetFilter<IResponse<T>, T>(`${NOTICE_ENDPOINT}/${encodedId}/filter/${url}`),
+      getListingDetailFilterFromBff<T>({
+        noticeId: id,
+        filterType: url,
+      }),
 
-    select: (response: any) => {
-      return response?.data ?? response ?? null;
+    select: response => {
+      return response ?? null;
     },
   });
 };
