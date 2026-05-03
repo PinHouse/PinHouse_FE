@@ -1,5 +1,5 @@
-import { headers } from "next/headers";
 import { UnitTypeRespnse } from "@/src/entities/listings/model/type";
+import { getBffRequestContext } from "@/src/shared/api/server/fowardHeaders";
 
 export type CompareBffResponse = {
   success: boolean;
@@ -19,12 +19,7 @@ export async function fetchCompareInitialFromBff({
 }: FetchCompareInitialFromBffArgs) {
   if (!noticeId) return null;
 
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "http";
-  const baseUrl = `${proto}://${host}`;
-  const cookieHeader = h.get("cookie") ?? "";
-
+  const { baseUrl, forwardedHeaders } = await getBffRequestContext();
   const query = new URLSearchParams({
     noticeId,
     sortType,
@@ -35,7 +30,7 @@ export async function fetchCompareInitialFromBff({
   const res = await fetch(`${baseUrl}/api/listings/compare?${query.toString()}`, {
     method: "GET",
     cache: "no-store",
-    credentials: "include",
+    headers: forwardedHeaders,
   });
 
   if (!res.ok) return null;

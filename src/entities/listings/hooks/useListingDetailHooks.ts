@@ -1,26 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  endPoint,
   Environmnt,
   InfraConfig,
   InfraLabel,
+  ListingDetailResponse,
   ListingDetailResponseWithColor,
   ListingRentalDetailVM,
   ListingRoomCompareParams,
   ListingSummary,
-  LstingBody,
   UseListingsHooksType,
   UseListingsHooksWithParam,
 } from "../model/type";
 import {
-  getNoticeParam,
-  PostBasicRequest,
-  PostParamsBodyRequest,
-  QueryParams,
-  requestListingList,
-} from "../api/listingsApi";
-import { COMPLEXES_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
-import { IResponse } from "@/src/shared/types";
+  getListingCompareFromBff,
+  getListingComplexInfraFromBff,
+  getListingComplexResourceFromBff,
+  getListingComplexSummaryFromBff,
+  getListingComplexTransitFromBff,
+  getListingDetailBasicFromBff,
+} from "../api/listingDetailBffApi";
 import { getListingsRental } from "@/src/features/listings/hooks/list/components/listingsHooks";
 import {
   INFRA_ENVIRONMENT_CONFIG,
@@ -46,7 +44,7 @@ export const useListingDetailBasic = (id: string) => {
   const debouncedMaxMonthPay = useDebounce(maxMonthPay, 500);
   const parseMoney = (value: string) => (value ? Number(value.replace(/[^0-9]/g, "")) : 0);
 
-  return useQuery<ListingDetailResponseWithColor>({
+  return useQuery<ListingDetailResponse, Error, ListingDetailResponseWithColor>({
     queryKey: [
       "listingDetailBasic",
       id,
@@ -64,12 +62,7 @@ export const useListingDetailBasic = (id: string) => {
     retry: false,
 
     queryFn: async () => {
-      return PostBasicRequest<
-        ListingDetailResponseWithColor,
-        IResponse<ListingDetailResponseWithColor>,
-        LstingBody,
-        ListingDetailResponseWithColor
-      >(`${NOTICE_ENDPOINT}/${id}`, "post", {
+      return getListingDetailBasicFromBff(id, {
         sortType,
         pinPointId,
         transitTime: debouncedDistance,
@@ -82,12 +75,13 @@ export const useListingDetailBasic = (id: string) => {
       });
     },
     select: response => {
-      const basic = response.data?.basicInfo;
+      const data = response.data!;
+      const basic = data.basicInfo;
 
       return {
         ...response,
         data: {
-          ...response.data,
+          ...data,
           basicInfo: {
             ...basic,
             rentalColor: getListingsRental(basic.type),
@@ -107,14 +101,9 @@ export const useListingRentalDetail = (id: string) => {
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
-      return await requestListingList<
-        ListingSummary,
-        IResponse<ListingSummary>,
-        undefined,
-        { pinPointId: string },
-        ListingSummary
-      >(`${COMPLEXES_ENDPOINT}/${encodedId}`, "get", {
-        params: { pinPointId: pinPointId },
+      return await getListingComplexSummaryFromBff({
+        complexId: id,
+        pinPointId,
       });
     },
     select: (response): ListingRentalDetailVM => {
@@ -139,18 +128,14 @@ export const useListingRentalDetail = (id: string) => {
 export const useListingInfraDetail = (id: string) => {
   const encodedId = encodeURIComponent(id);
 
-  return useQuery<IResponse<Environmnt>, Error, InfraConfig[]>({
+  return useQuery<Environmnt, Error, InfraConfig[]>({
     queryKey: ["useListingInfraDetail", encodedId],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
-    queryFn: () =>
-      PostBasicRequest<Environmnt, IResponse<Environmnt>, {}, IResponse<Environmnt>>(
-        `${COMPLEXES_ENDPOINT}/infra/${encodedId}`,
-        "get"
-      ),
+    queryFn: () => getListingComplexInfraFromBff(id),
 
     select: response => {
-      const infraLabels = (response.data?.infra ?? []) as InfraLabel[];
+      const infraLabels = (response.infra ?? []) as InfraLabel[];
 
       return infraLabels
         .map(label => {
@@ -166,16 +151,16 @@ export const useListingInfraDetail = (id: string) => {
 
 export const useListingRoomTypeDetail = <T>({ id, queryK, url }: UseListingsHooksType) => {
   const encodedId = encodeURIComponent(id);
-  return useQuery<IResponse<T[]>, Error, T[]>({
+  return useQuery<T[], Error, T[]>({
     queryKey: [queryK, encodedId],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
     queryFn: () =>
-      PostBasicRequest<T[], IResponse<T[]>, {}, IResponse<T[]>>(
-        `${COMPLEXES_ENDPOINT}/${url}/${encodedId}`,
-        "get"
-      ),
-    select: response => response.data ?? [],
+      getListingComplexResourceFromBff<T[]>({
+        complexId: id,
+        resource: url,
+      }),
+    select: response => response ?? [],
   });
 };
 
@@ -187,39 +172,35 @@ export const useListingRouteDetail = <T, TParam extends object>({
 }: UseListingsHooksWithParam<TParam>) => {
   const encodedId = encodeURIComponent(id);
 
-  return useQuery<IResponse<T>, Error, T | null>({
+  return useQuery<T, Error, T | null>({
     queryKey: [queryK, encodedId, params],
     enabled: !!id,
     staleTime: 1000 * 60 * 5,
 
-    queryFn: () =>
-      PostParamsBodyRequest<T, IResponse<T>, {}, IResponse<T>, TParam>(
-        `${COMPLEXES_ENDPOINT}/${url}/${encodedId}`,
-        "get",
-        {},
-        { query: params }
-      ),
+    queryFn: () => {
+      const pinPointId =
+        "pinPointId" in params && typeof params.pinPointId === "string"
+          ? params.pinPointId
+          : undefined;
+
+      if (url === "transit") {
+        return getListingComplexTransitFromBff<T>({
+          complexId: id,
+          pinPointId,
+        });
+      }
+
+      return getListingComplexResourceFromBff<T>({
+        complexId: id,
+        resource: url,
+      });
+    },
 
     select: response => {
-      return response.data ?? null;
+      return response ?? null;
     },
   });
 };
-
-// export const useListingFilterDetail = <T>() => {
-//   return useQuery<IResponse<T>, Error, T>({
-//     queryKey: ["pinpointSettings"],
-//     staleTime: 1000 * 60 * 5,
-//     placeholderData: previousData => previousData,
-//     queryFn: () => PostBasicRequest<T, IResponse<T>, {}, IResponse<T>>(endPoint["pinpoint"], "get"),
-//     select: response => {
-//       if (response.data === undefined) {
-//         throw new Error("Response data is undefined");
-//       }
-//       return response.data;
-//     },
-//   });
-// };
 
 export const useListingFilterDetail = <T = PinPointsPayload>() => {
   return useQuery<PinPointsPayload, Error, T>({
@@ -240,20 +221,20 @@ export const useListingRoomCompare = <T>({
   const { pinPointId: storePinPointId } = useOAuthStore();
   const resolvedPinPointId = pinPointId ?? storePinPointId;
 
-  const params: QueryParams = {
-    pinPointId,
-    sortType,
-    nearbyFacilities,
-  };
-
-  return useQuery<IResponse<T>, Error, T>({
+  return useQuery<T, Error, T>({
     queryKey: compareNoticeQueryKey({
       noticeId,
       sortType,
       nearbyFacilities,
       pinPointId: resolvedPinPointId,
     }),
-    queryFn: () => getNoticeParam<IResponse<T>>(`${NOTICE_ENDPOINT}/${noticeId}/compare`, params),
+    queryFn: () =>
+      getListingCompareFromBff({
+        noticeId,
+        sortType,
+        nearbyFacilities,
+        pinPointId: resolvedPinPointId,
+      }) as Promise<T>,
     placeholderData: prevData => prevData,
     staleTime: 1000 * 60 * 60 * 24,
     enabled: Boolean(noticeId && resolvedPinPointId),

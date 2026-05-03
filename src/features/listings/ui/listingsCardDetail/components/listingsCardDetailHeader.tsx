@@ -9,11 +9,7 @@ export const ListingsCardDetailHeader = () => {
   const handleRouter = () => {
     const nextPath = prevPath ?? "/listings";
     reset();
-    if (!prevPath) {
-      router.back();
-    } else {
-      router.push(nextPath);
-    }
+    router.push(nextPath);
   };
 
   return (
