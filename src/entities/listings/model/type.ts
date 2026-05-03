@@ -505,6 +505,7 @@ export interface RouteStep {
   stopName?: string | number | null;
   type?: TransportType | string | null;
   secondaryText: string;
+  distanceMeters: number;
 }
 
 // 사용처: 경로 요약 정보 (총 시간/거리) — routeDetail header

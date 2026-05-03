@@ -22,6 +22,7 @@ export const ListingsCardTileDetails = ({
   if (!infra || !route || !roomTypes) {
     return <SmallSpinner />;
   }
+
   return (
     <div className="rounded-b-lg border-t border-greyscale-grey-100 bg-bgColor-mute">
       {/* 기본 정보 */}
