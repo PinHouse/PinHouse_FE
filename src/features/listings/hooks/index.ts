@@ -4,6 +4,7 @@ export * from "./list/useListingDetailsHooks";
 export * from "./list/components/listingsHooks";
 export * from "./list/useTransportIconRenderHooks";
 export * from "./list/useDetailColorHooks";
+export * from "./list/useRouteDetailHooks";
 export * from "./search/useListingsSearchData";
 export * from "./search/getSearchViewMode";
 export * from "./search/useListingsSearchRoute";

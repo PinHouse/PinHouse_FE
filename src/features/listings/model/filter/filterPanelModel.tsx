@@ -38,6 +38,9 @@ import {
   WashingMachineInfraIcon,
   WheelchairInfraIcon,
 } from "@/src/assets/icons/infra";
+import { VerticalTransitIcon } from "@/src/assets/icons/route/vertical/verticalBusIcon";
+import { VerticalSubWayIcon } from "@/src/assets/icons/route/vertical/verticalSubWayIcon";
+import { VerticalWalkIcon } from "@/src/assets/icons/route/vertical/verticalWalkIcon";
 
 // 사용처: TAB_CONFIG 제네릭 타입에서 섹션 구성에 사용 (listingsModel.ts)
 export type City = { code: string; name: string };
@@ -46,7 +49,7 @@ export type SectionMap = Record<string, ReadonlyArray<City>>;
 // 사용처: TAB_CONFIG 제네릭 타입에서 섹션 라벨에 사용 (listingsModel.ts)
 export type SectionLabelMap = Record<string, string>;
 // 미사용: TransportType (내부에서 직접 참조하지 않음)
-export type TransportType = "BUS" | "TRAIN" | "WALK";
+export type TransportType = "BUS" | "TRAIN" | "WALK" | "AIR" | "SUBWAY";
 export type TransportIconProps = {
   color?: string;
   minutes: number;
@@ -272,4 +275,23 @@ export const TransitAction: TransitActionType = {
   START: "출발",
   TRANSFER: "환승",
   ARRIVAL: "도착",
+};
+
+export const ModeIcon = ({
+  type,
+  color,
+  minutes,
+}: {
+  type?: TransportType | null;
+  color: string;
+  minutes: number;
+}) => {
+  if (type === "BUS" || type === "AIR") {
+    return <VerticalTransitIcon color={color} minutes={minutes} showLine={false} />;
+  }
+  if (type === "WALK") return <VerticalWalkIcon color={color} minutes={minutes} />;
+  if (type === "SUBWAY" || type === "TRAIN") {
+    return <VerticalSubWayIcon color={color} minutes={minutes} showLine={false} />;
+  }
+  return <VerticalTransitIcon color={color} minutes={minutes} showLine={false} />;
 };

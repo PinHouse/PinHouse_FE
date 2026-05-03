@@ -77,7 +77,7 @@ export async function getListingDetailBasicOnServer(noticeId: string, body: Lsti
   const { pinPointId } = await getServerRequestContext();
   const resolvedPinPointId = body.pinPointId || pinPointId;
   if (!resolvedPinPointId) return null;
-
+  console.log(body, "body");
   return fetchFromApi<ListingDetailData>(`${NOTICE_ENDPOINT}/${encodeURIComponent(noticeId)}`, {
     method: "POST",
     headers: {
@@ -106,12 +106,9 @@ export async function getListingComplexSummaryOnServer(complexId: string, pinPoi
 export async function getListingComplexInfraOnServer(complexId: string) {
   if (!complexId) return null;
 
-  return fetchFromApi<Environmnt>(
-    `${COMPLEXES_ENDPOINT}/infra/${encodeURIComponent(complexId)}`,
-    {
-      method: "GET",
-    }
-  );
+  return fetchFromApi<Environmnt>(`${COMPLEXES_ENDPOINT}/infra/${encodeURIComponent(complexId)}`, {
+    method: "GET",
+  });
 }
 
 export async function getListingComplexResourceOnServer<T>(complexId: string, resource: string) {
