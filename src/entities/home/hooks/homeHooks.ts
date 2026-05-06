@@ -1,13 +1,19 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getNoticeByPinPoint } from "../interface/homeInterface";
-import { NoticeContent, SearchCategory, SliceResponse } from "../model/type";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  GlobalListType,
+  NoticeContent,
+  PopularResponse,
+  SearchCategory,
+  SliceResponse,
+} from "../model/type";
 import { useOAuthStore } from "@/src/features/login/model";
 import {
   getHomeNoticeCountFromBff,
   getHomeNoticePageFromBff,
   getHomeRecommendedPageFromBff,
+  getHomeSearchCategoryFromBff,
+  getHomeSearchOverviewFromBff,
 } from "@/src/entities/home/api/homeBffApi";
-import { HOME_RECOMMENDED_ENDPOINT, HOME_SEARCH_POPULAR_ENDPOINT } from "@/src/shared/api";
 import { useHomeMaxTime } from "@/src/features/home/model/homeStore";
 import { useDebounce } from "@/src/shared/hooks/useDebounce/useDebounce";
 import { ApiCategory, CATEGORY_MAP } from "@/src/features/home/model/model";
@@ -46,14 +52,21 @@ export const useNoticeCount = () => {
   });
 };
 
-export const useGlobal = <T>({ params, q }: { params: string; q: string }) => {
-  const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/${params}`;
-  const param = params === "popular" ? { limit: 10 } : { q: q };
+export const useHomePopularSearchCache = () => {
+  const queryClient = useQueryClient();
+  return {
+    data: queryClient.getQueryData<PopularResponse[]>(["global-search", "popular", ""]) ?? [],
+  };
+};
+
+export const useGlobal = <T = GlobalListType>({ params, q }: { params: string; q: string }) => {
+  const keyword = q.trim();
+
   return useQuery({
     queryKey: ["global-search", params, q],
     retry: false,
-    queryFn: () => getNoticeByPinPoint<T>({ url, params: param }),
-    enabled: params === "popular" || q?.length > 0,
+    queryFn: async () => getHomeSearchOverviewFromBff(keyword) as Promise<T>,
+    enabled: params === "overview" && keyword.length > 0,
     staleTime: 30_000,
     gcTime: 5 * 60_000,
   });
@@ -68,23 +81,20 @@ export const useGlobalPageNation = <TItem>({
   category: SearchCategory | null;
   enabled: boolean;
 }) => {
-  const url = `${HOME_SEARCH_POPULAR_ENDPOINT}/category`;
   const apiCategory: ApiCategory | null = category ? CATEGORY_MAP[category] : null;
+  const keyword = q.trim();
 
   return useInfiniteQuery<SliceResponse<TItem>, Error>({
     queryKey: ["globalInfinity", apiCategory, q],
-    enabled: enabled,
+    enabled: enabled && !!apiCategory && keyword.length > 0,
     initialPageParam: 2,
     retry: false,
     queryFn: ({ pageParam }) =>
-      getNoticeByPinPoint<SliceResponse<TItem>>({
-        url,
-        params: {
-          type: apiCategory,
-          q,
-          page: Number(pageParam),
-        },
-      }),
+      getHomeSearchCategoryFromBff({
+        type: apiCategory ?? "",
+        q: keyword,
+        page: Number(pageParam),
+      }) as Promise<SliceResponse<TItem>>,
     getNextPageParam: (lastPage, allPages) => (lastPage.hasNext ? allPages.length + 2 : undefined),
   });
 };
