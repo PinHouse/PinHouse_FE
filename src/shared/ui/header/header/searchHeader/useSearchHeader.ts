@@ -47,7 +47,10 @@ export const useSearchHeader = ({
   const submitSearch = useCallback(
     (value: string) => {
       if (!value.trim()) return;
-      onSearch(value); // 최근검색어 저장은 즉시
+      // 1. 검색어를 최근 검색어 저장소에 먼저 반영한다.
+      onSearch(value);
+      // 2. BFF를 직접 호출하지 않고 결과 페이지로 이동한다.
+      // 3. /home/search/result 페이지가 q를 읽고 SSR 단계에서 BFF를 호출한다.
       router.push(`${resultPath}?${queryKey}=${encodeURIComponent(value)}`);
     },
     [onSearch, queryKey, resultPath, router]

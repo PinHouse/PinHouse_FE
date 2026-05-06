@@ -1,12 +1,11 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { useGlobal } from "@/src/entities/home/hooks/homeHooks";
-import { PopularResponse } from "@/src/entities/home/model/type";
+import { useHomePopularSearchCache } from "@/src/entities/home/hooks/homeHooks";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { useHomeKeywordRouter } from "@/src/features/home/ui/homeUseHooks/useHomeRouterHooks";
 
 export const HomeSearchPopular = () => {
-  const { data } = useGlobal<PopularResponse[]>({ params: "popular", q: "" });
+  const { data } = useHomePopularSearchCache();
   const { handleSearchTag } = useHomeKeywordRouter();
 
   return (
