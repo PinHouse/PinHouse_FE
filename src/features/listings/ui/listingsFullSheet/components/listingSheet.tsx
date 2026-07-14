@@ -1,6 +1,7 @@
 import { useSearchParams } from "next/navigation";
 import { FilterTabKey, TAB_CONFIG } from "../../../model";
 import { useListingsFilterStore } from "../../../model/store/listingsStore";
+import { ListingsFilterState } from "@/src/entities/listings/model/type";
 import { Tag } from "./tag";
 
 export const ListingSheet = () => {
@@ -8,25 +9,22 @@ export const ListingSheet = () => {
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
   const tabConfig = currentTab ? TAB_CONFIG[currentTab] : null;
 
-  const regionType = useListingsFilterStore(s => s.regionType);
-  const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
-  const supplyTypes = useListingsFilterStore(s => s.supplyTypes);
-  const houseTypes = useListingsFilterStore(s => s.houseTypes);
+  const draft = useListingsFilterStore((state: ListingsFilterState) => state.draft);
 
-  const toggleRegion = useListingsFilterStore(s => s.toggleRegionType);
-  const toggleRental = useListingsFilterStore(s => s.toggleRentalType);
-  const toggleSupply = useListingsFilterStore(s => s.toggleSupplyType);
-  const toggleHouse = useListingsFilterStore(s => s.toggleHouseType);
+  const toggleRegion = useListingsFilterStore((state: ListingsFilterState) => state.toggleDraftRegionType);
+  const toggleRental = useListingsFilterStore((state: ListingsFilterState) => state.toggleDraftRentalType);
+  const toggleSupply = useListingsFilterStore((state: ListingsFilterState) => state.toggleDraftSupplyType);
+  const toggleHouse = useListingsFilterStore((state: ListingsFilterState) => state.toggleDraftHouseType);
   if (!tabConfig) {
     return null;
   }
   const { sections, labels } = TAB_CONFIG[currentTab];
 
   const isSelected = (name: string) => {
-    if (currentTab === "region") return regionType.includes(name);
-    if (currentTab === "target") return rentalTypes.includes(name);
-    if (currentTab === "rental") return supplyTypes.includes(name);
-    if (currentTab === "housing") return houseTypes.includes(name);
+    if (currentTab === "region") return draft.regionType.includes(name);
+    if (currentTab === "target") return draft.rentalTypes.includes(name);
+    if (currentTab === "rental") return draft.supplyTypes.includes(name);
+    if (currentTab === "housing") return draft.houseTypes.includes(name);
     return false;
   };
 

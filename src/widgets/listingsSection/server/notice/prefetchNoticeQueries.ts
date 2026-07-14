@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import type { ListingListPage } from "@/src/entities/listings/model/type";
-import { useListingsFilterStore, useListingState } from "@/src/features/listings/model";
+import { ListingsFilterCriteria } from "@/src/features/listings/model";
 import { ListingsNoticeBffResponse } from "@/src/features/listings/server/bff/getNoticeInitialFromBff";
 import { listingListInfiniteQueryKey } from "@/src/shared/config";
 
@@ -8,16 +8,17 @@ type NoticeInitialData = ListingsNoticeBffResponse["data"];
 type PrefetchNoticeArgs = {
   queryClient: QueryClient;
   initial: NoticeInitialData | null;
+  filter: ListingsFilterCriteria;
+  status: string;
 };
 
-export async function prefetchNoticeQueries({ queryClient, initial }: PrefetchNoticeArgs) {
+export async function prefetchNoticeQueries({
+  queryClient,
+  initial,
+  filter,
+  status,
+}: PrefetchNoticeArgs) {
   if (!initial) return;
-
-  const { regionType, rentalTypes, supplyTypes, houseTypes, sortType } =
-    useListingsFilterStore.getState();
-  const { status } = useListingState.getState();
-
-  const filter = { regionType, rentalTypes, supplyTypes, houseTypes, sortType };
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: listingListInfiniteQueryKey({ filter, status }),

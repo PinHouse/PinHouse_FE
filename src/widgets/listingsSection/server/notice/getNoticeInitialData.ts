@@ -1,18 +1,20 @@
-import { useListingState, useListingsFilterStore } from "@/src/features/listings/model";
+import { ListingsFilterCriteria } from "@/src/features/listings/model";
 import { fetchNoticeInitialFromBff } from "@/src/features/listings/server";
 
-export async function getNoticeInitialData() {
-  const { status } = useListingState.getState();
-  const { regionType, rentalTypes, supplyTypes, houseTypes, sortType } =
-    useListingsFilterStore.getState();
+type GetNoticeInitialDataArgs = {
+  filter: ListingsFilterCriteria;
+  status: string;
+};
+
+export async function getNoticeInitialData({ filter, status }: GetNoticeInitialDataArgs) {
   const [initial] = await Promise.all([
     fetchNoticeInitialFromBff({
-      regionType,
-      rentalTypes,
-      supplyTypes,
-      houseTypes,
+      regionType: filter.regionType,
+      rentalTypes: filter.rentalTypes,
+      supplyTypes: filter.supplyTypes,
+      houseTypes: filter.houseTypes,
       status,
-      sortType,
+      sortType: filter.sortType,
     }),
   ]);
   return { initial };

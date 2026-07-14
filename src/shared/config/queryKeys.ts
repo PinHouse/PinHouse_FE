@@ -3,6 +3,11 @@
  * 모든 queryKey는 여기서 정의하고 export합니다.
  */
 
+import {
+  ListingSearchCriteria,
+  normalizeListingSearchCriteria,
+} from "@/src/features/listings/model/searchCriteria";
+
 // QuickSearch 관련 QueryKeys
 export const quickSearchKeys = {
   all: ["quickSearch"] as const,
@@ -32,6 +37,13 @@ export const listingKeys = {
     [...listingKeys.lists(), filters] as const,
   infinite: (filters?: { sortType?: string; status?: string }) =>
     [...listingKeys.all, "infinite", filters] as const,
+} as const;
+
+export const listingSearchKeys = {
+  all: ["listingSearch"] as const,
+  infiniteLists: () => [...listingSearchKeys.all, "infinite"] as const,
+  infinite: (criteria: ListingSearchCriteria) =>
+    [...listingSearchKeys.infiniteLists(), normalizeListingSearchCriteria(criteria)] as const,
 } as const;
 
 // Eligibility(자격진단) 관련 QueryKeys
@@ -70,12 +82,7 @@ export const listingListInfiniteQueryKey = ({
 }) => ["listingListInfinite", filter, status] as const;
 
 //공고 조회 무한스크롤 QueryKeys
-export const listingSearchInfiniteQueryKey = ({
-  keyword,
-  sortType,
-  status,
-}: {
-  keyword: string;
-  sortType: string;
-  status: string;
-}) => ["listingSearchInfinite", keyword, sortType, status] as const;
+export const listingSearchInfiniteQueryKey = (criteria: ListingSearchCriteria) =>
+  listingSearchKeys.infinite(
+    normalizeListingSearchCriteria(criteria)
+  );

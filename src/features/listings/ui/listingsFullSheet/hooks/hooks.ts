@@ -1,4 +1,10 @@
-import { useFilterSheetStore, useHasRouter } from "@/src/features/listings/model";
+import {
+  createListingsFilterSearchParams,
+  useFilterSheetStore,
+  useHasRouter,
+  useListingsFilterStore,
+} from "@/src/features/listings/model";
+import { ListingsFilterState } from "@/src/entities/listings/model/type";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useListingListInfiniteQuery } from "@/src/entities/listings/hooks/useListingHooks";
@@ -53,6 +59,9 @@ const useListingsTabSync = (open: boolean, handleScroll: () => void) => {
 export const ListingFilterPartialSheetHooks = () => {
   const open = useFilterSheetStore(s => s.open);
   const closeSheet = useFilterSheetStore(s => s.closeSheet);
+  const syncDraftFromApplied = useListingsFilterStore((state: ListingsFilterState) => state.syncDraftFromApplied);
+  const applyDraft = useListingsFilterStore((state: ListingsFilterState) => state.applyDraft);
+  const draft = useListingsFilterStore((state: ListingsFilterState) => state.draft);
   const router = useRouter();
   const searchParams = useSearchParams();
   const displayTotal = useListingTotal();
@@ -71,13 +80,30 @@ export const ListingFilterPartialSheetHooks = () => {
     }
   };
 
+  const replaceListingsQueryFromDraft = () => {
+    const params = createListingsFilterSearchParams(draft, new URLSearchParams(searchParams.toString()));
+    const query = params.toString();
+    router.replace(query ? `/listings?${query}` : "/listings", { scroll: false });
+  };
+
   const handleCloseSheet = () => {
     try {
       // UI를 먼저 닫고, 이어서 URL을 정리하는 흐름으로 고정한다.
       closeSheet();
+      syncDraftFromApplied();
       resetListingsQuery();
     } catch (error) {
       console.error("[ListingFilterPartialSheet] Failed to close sheet", error);
+    }
+  };
+
+  const handleApplySheet = () => {
+    try {
+      applyDraft();
+      closeSheet();
+      replaceListingsQueryFromDraft();
+    } catch (error) {
+      console.error("[ListingFilterPartialSheet] Failed to apply sheet", error);
     }
   };
 
@@ -88,5 +114,6 @@ export const ListingFilterPartialSheetHooks = () => {
     displayTotal,
     handleScroll,
     handleCloseSheet,
+    handleApplySheet,
   };
 };

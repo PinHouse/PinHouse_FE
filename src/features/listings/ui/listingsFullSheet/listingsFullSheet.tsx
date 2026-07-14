@@ -9,7 +9,7 @@ import { UseCheckBox } from "./components/useCheckBox";
 import { ListingSheet } from "./components/listingSheet";
 
 export const ListingFilterPartialSheet = () => {
-  const { open, scrollRef, isAtBottom, displayTotal, handleScroll, handleCloseSheet } =
+  const { open, scrollRef, isAtBottom, displayTotal, handleScroll, handleCloseSheet, handleApplySheet } =
     ListingFilterPartialSheetHooks();
 
   return (
@@ -23,7 +23,7 @@ export const ListingFilterPartialSheet = () => {
               <ListingSheet />
             </div>
           </FilterSheetContent>
-          <FilterSheetFooter total={displayTotal} onApply={handleCloseSheet} />
+          <FilterSheetFooter total={displayTotal} onApply={handleApplySheet} />
         </FilterSheetContainer>
       )}
     </AnimatePresence>

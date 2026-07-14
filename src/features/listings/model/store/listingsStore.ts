@@ -7,16 +7,35 @@
 //   * useListingDetailStore: 상세 보기에서 방 타입 선택 상태
 import { create } from "zustand";
 import {
+  DEFAULT_LISTING_SEARCH_SORT_TYPE,
+  DEFAULT_LISTING_SEARCH_STATUS,
+} from "@/src/features/listings/model/searchCriteria";
+import {
+  DEFAULT_LISTINGS_STATUS,
+  createDefaultListingsFilterCriteria,
+  normalizeListingsFilterCriteria,
+} from "@/src/features/listings/model/listFilterCriteria";
+import {
   FilterSheetState,
   ListingDetailFilterState,
+  ListingListFilterBody,
   ListingsFilterState,
   ListingState,
   SearchState,
 } from "@/src/entities/listings/model/type";
 
+function hasSelectedListingsFilter(criteria: ListingListFilterBody): boolean {
+  return [
+    criteria.regionType,
+    criteria.rentalTypes,
+    criteria.supplyTypes,
+    criteria.houseTypes,
+  ].some(list => list.length > 0);
+}
+
 // 사용처: 공고 리스트 상단 상태 드롭다운/쿼리 필터 (useListingHooks.ts, listingsContentsHeader.tsx)
 export const useListingState = create<ListingState>(set => ({
-  status: "전체",
+  status: DEFAULT_LISTINGS_STATUS,
   setStatus: value => set({ status: value }),
   reset: () => set({ status: "" }),
 }));
@@ -35,82 +54,145 @@ export const useDetailFilterSheetStore = create<FilterSheetState>(set => ({
 }));
 
 // 사용처: 필터 바/시트에서 선택한 값 저장 및 토글 (listingsFullSheet.tsx, listingsFilterPanel.tsx, useListingHooks.ts)
-export const useListingsFilterStore = create<ListingsFilterState>(set => ({
-  regionType: [],
-  rentalTypes: [],
-  supplyTypes: [],
-  houseTypes: [],
-  status: "",
-  sortType: "최신공고순",
+export const useListingsFilterStore = create<ListingsFilterState>((set, get) => ({
+  draft: createDefaultListingsFilterCriteria(),
+  applied: createDefaultListingsFilterCriteria(),
 
-  toggleRegionType: region =>
+  syncDraftFromApplied: () =>
+    set(state => ({
+      draft: {
+        ...state.applied,
+        regionType: [...state.applied.regionType],
+        rentalTypes: [...state.applied.rentalTypes],
+        supplyTypes: [...state.applied.supplyTypes],
+        houseTypes: [...state.applied.houseTypes],
+      },
+    })),
+
+  applyDraft: () =>
     set(state => {
-      const exists = state.regionType.includes(region);
+      const next = normalizeListingsFilterCriteria(state.draft);
       return {
-        regionType: exists
-          ? state.regionType.filter(i => i !== region)
-          : [...state.regionType, region],
+        applied: next,
+        draft: next,
       };
     }),
 
-  toggleRentalType: rental =>
+  toggleDraftRegionType: region =>
     set(state => {
-      const exists = state.rentalTypes.includes(rental);
+      const exists = state.draft.regionType.includes(region);
       return {
-        rentalTypes: exists
-          ? state.rentalTypes.filter(i => i !== rental)
-          : [...state.rentalTypes, rental],
+        draft: {
+          ...state.draft,
+          regionType: exists
+            ? state.draft.regionType.filter(i => i !== region)
+            : [...state.draft.regionType, region],
+        },
       };
     }),
 
-  toggleSupplyType: supply =>
+  toggleDraftRentalType: rental =>
     set(state => {
-      const exists = state.supplyTypes.includes(supply);
+      const exists = state.draft.rentalTypes.includes(rental);
       return {
-        supplyTypes: exists
-          ? state.supplyTypes.filter(i => i !== supply)
-          : [...state.supplyTypes, supply],
+        draft: {
+          ...state.draft,
+          rentalTypes: exists
+            ? state.draft.rentalTypes.filter(i => i !== rental)
+            : [...state.draft.rentalTypes, rental],
+        },
       };
     }),
 
-  toggleHouseType: house =>
+  toggleDraftSupplyType: supply =>
     set(state => {
-      const exists = state.houseTypes.includes(house);
+      const exists = state.draft.supplyTypes.includes(supply);
       return {
-        houseTypes: exists
-          ? state.houseTypes.filter(i => i !== house)
-          : [...state.houseTypes, house],
+        draft: {
+          ...state.draft,
+          supplyTypes: exists
+            ? state.draft.supplyTypes.filter(i => i !== supply)
+            : [...state.draft.supplyTypes, supply],
+        },
       };
     }),
 
-  setStatus: status => set({ status }),
-  setSortType: sort => set({ sortType: sort }),
+  toggleDraftHouseType: house =>
+    set(state => {
+      const exists = state.draft.houseTypes.includes(house);
+      return {
+        draft: {
+          ...state.draft,
+          houseTypes: exists
+            ? state.draft.houseTypes.filter(i => i !== house)
+            : [...state.draft.houseTypes, house],
+        },
+      };
+    }),
 
-  resetRegionType: () =>
-    set({
-      regionType: [],
-    }),
-  resetRentalTypes: () =>
-    set({
-      rentalTypes: [],
-    }),
-  resetSupplyTypes: () =>
-    set({
-      supplyTypes: [],
-    }),
-  resetHouseTypes: () =>
-    set({
-      houseTypes: [],
-    }),
+  setDraftStatus: status =>
+    set(state => ({
+      draft: {
+        ...state.draft,
+        status,
+      },
+    })),
+  setSortType: sort =>
+    set(state => ({
+      draft: {
+        ...state.draft,
+        sortType: sort,
+      },
+      applied: {
+        ...state.applied,
+        sortType: sort,
+      },
+    })),
+
+  resetDraftRegionType: () =>
+    set(state => ({
+      draft: {
+        ...state.draft,
+        regionType: [],
+      },
+    })),
+  resetDraftRentalTypes: () =>
+    set(state => ({
+      draft: {
+        ...state.draft,
+        rentalTypes: [],
+      },
+    })),
+  resetDraftSupplyTypes: () =>
+    set(state => ({
+      draft: {
+        ...state.draft,
+        supplyTypes: [],
+      },
+    })),
+  resetDraftHouseTypes: () =>
+    set(state => ({
+      draft: {
+        ...state.draft,
+        houseTypes: [],
+      },
+    })),
+
+  hasAppliedFilters: () => hasSelectedListingsFilter(get().applied),
+  hasDraftFilters: () => hasSelectedListingsFilter(get().draft),
 }));
 
 // 사용처: 검색 페이지 상태/정렬 (useListingHooks.ts, shared dropdown 등)
 export const useListingsSearchState = create<SearchState>(set => ({
-  sortType: "LATEST",
-  status: "ALL",
+  sortType: DEFAULT_LISTING_SEARCH_SORT_TYPE,
+  status: DEFAULT_LISTING_SEARCH_STATUS,
   setStatus: value => set({ status: value }),
   setSortType: value => set({ sortType: value }),
-  reset: () => set({ status: "", sortType: "" }),
+  reset: () =>
+    set({
+      status: DEFAULT_LISTING_SEARCH_STATUS,
+      sortType: DEFAULT_LISTING_SEARCH_SORT_TYPE,
+    }),
 }));
 
 // 사용처: 상세 페이지 내 방 타입 선택 상태

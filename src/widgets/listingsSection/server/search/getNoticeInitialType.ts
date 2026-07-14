@@ -3,25 +3,24 @@ import {
   getPopularSearchFromBff,
   getSearchNoticeInitialFromBff,
 } from "@/src/features/listings/server";
-
-export const DEFAULT_SEARCH_SORT = "LATEST" as const;
-export const DEFAULT_SEARCH_STATUS = "ALL" as const;
+import {
+  DEFAULT_LISTING_SEARCH_OFFSET,
+  DEFAULT_LISTING_SEARCH_PAGE,
+  DEFAULT_LISTING_SEARCH_SORT_TYPE,
+  DEFAULT_LISTING_SEARCH_STATUS,
+  ListingSearchCriteria,
+  normalizeListingSearchCriteria,
+} from "@/src/features/listings/model";
+import { listingSearchInfiniteQueryKey } from "@/src/shared/config";
 
 export type SearchInitialParams = {
   query?: string;
 };
 
-export type ListingSearchInfiniteKey = readonly [
-  "listingSearchInfinite",
-  string, // keyword
-  typeof DEFAULT_SEARCH_SORT,
-  typeof DEFAULT_SEARCH_STATUS,
-];
+export type ListingSearchInfiniteKey = ReturnType<typeof listingSearchInfiniteQueryKey>;
 
 export type NoticeSearchInitialData = {
-  keyword: string;
-  sortType: typeof DEFAULT_SEARCH_SORT;
-  status: typeof DEFAULT_SEARCH_STATUS;
+  criteria: ListingSearchCriteria;
   queryKey: ListingSearchInfiniteKey;
   popular: PopularKeywordItem[] | null;
   initialPage: ListingListPage | null;
@@ -30,22 +29,24 @@ export type NoticeSearchInitialData = {
 export async function getNoticeSearchInitialData({
   query = "",
 }: SearchInitialParams): Promise<NoticeSearchInitialData> {
-  const keyword = query.trim();
-  const sortType = DEFAULT_SEARCH_SORT;
-  const status = DEFAULT_SEARCH_STATUS;
+  const criteria = normalizeListingSearchCriteria({
+    query,
+    sortType: DEFAULT_LISTING_SEARCH_SORT_TYPE,
+    status: DEFAULT_LISTING_SEARCH_STATUS,
+    page: DEFAULT_LISTING_SEARCH_PAGE,
+    offSet: DEFAULT_LISTING_SEARCH_OFFSET,
+  });
 
   const [popular, initialPage] = await Promise.all([
     getPopularSearchFromBff(5),
-    keyword
-      ? getSearchNoticeInitialFromBff({ q: keyword, sortType, status })
+    criteria.keyword
+      ? getSearchNoticeInitialFromBff(criteria)
       : Promise.resolve(null),
   ]);
 
   return {
-    keyword,
-    sortType,
-    status,
-    queryKey: ["listingSearchInfinite", keyword, sortType, status] as const,
+    criteria,
+    queryKey: listingSearchInfiniteQueryKey(criteria),
     popular,
     initialPage,
   };

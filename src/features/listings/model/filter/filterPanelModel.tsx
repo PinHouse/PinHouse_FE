@@ -13,6 +13,7 @@ import {
   ListingItem,
   ListingNormalized,
   ListingSearchItem,
+  ListingsFilterSelectionState,
   ListingsFilterState,
   RouteType,
 } from "@/src/entities/listings/model/type";
@@ -94,17 +95,17 @@ export const AllFitler_OPTIONS: AllFilterOption = {
 };
 
 export type ListingFilterMap = {
-  region: (s: ListingsFilterState) => ListingsFilterState["regionType"];
-  target: (s: ListingsFilterState) => ListingsFilterState["rentalTypes"];
-  rental: (s: ListingsFilterState) => ListingsFilterState["supplyTypes"];
-  housing: (s: ListingsFilterState) => ListingsFilterState["houseTypes"];
+  region: (s: ListingsFilterState) => ListingsFilterSelectionState["regionType"];
+  target: (s: ListingsFilterState) => ListingsFilterSelectionState["rentalTypes"];
+  rental: (s: ListingsFilterState) => ListingsFilterSelectionState["supplyTypes"];
+  housing: (s: ListingsFilterState) => ListingsFilterSelectionState["houseTypes"];
 };
 // 사용처: 각 필터 탭의 선택값 접근 (listingsFilterPanel.tsx)
 export const filterMap: ListingFilterMap = {
-  region: s => s.regionType,
-  target: s => s.rentalTypes,
-  rental: s => s.supplyTypes,
-  housing: s => s.houseTypes,
+  region: s => s.applied.regionType,
+  target: s => s.applied.rentalTypes,
+  rental: s => s.applied.supplyTypes,
+  housing: s => s.applied.houseTypes,
 };
 
 // 사용처: 최근 검색어 컴포넌트에서 검색 실행 핸들러 타입 (listingsSearchHistory.tsx)

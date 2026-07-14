@@ -5,12 +5,17 @@ import { PostBasicRequest, requestListingList } from "../api/listingsApi";
 import {
   LikeReturn,
   ListingListPage,
+  ListingsFilterState,
   PopularKeywordItem,
   ToggleLikeVariables,
 } from "../model/type";
 import { LIKE_ENDPOINT, NOTICE_ENDPOINT } from "@/src/shared/api";
 import { IResponse } from "@/src/shared/types";
 import {
+  normalizeListingsFilterCriteria,
+  DEFAULT_LISTING_SEARCH_PAGE,
+  DEFAULT_LISTING_SEARCH_OFFSET,
+  normalizeListingSearchCriteria,
   SearchOptions,
   useListingsFilterStore,
   useListingsSearchState,
@@ -21,19 +26,8 @@ import { listingListInfiniteQueryKey, listingSearchInfiniteQueryKey } from "@/sr
 
 export const useListingListInfiniteQuery = () => {
   const status = useListingState(state => state.status);
-  const regionType = useListingsFilterStore(s => s.regionType);
-  const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
-  const supplyTypes = useListingsFilterStore(s => s.supplyTypes);
-  const houseTypes = useListingsFilterStore(s => s.houseTypes);
-  const sortType = useListingsFilterStore(s => s.sortType);
-
-  const filter = {
-    regionType,
-    rentalTypes,
-    supplyTypes,
-    houseTypes,
-    sortType,
-  };
+  const applied = useListingsFilterStore((state: ListingsFilterState) => state.applied);
+  const filter = normalizeListingsFilterCriteria(applied);
 
   return useInfiniteQuery<ListingListPage>({
     queryKey: listingListInfiniteQueryKey({ filter, status }),
@@ -41,12 +35,12 @@ export const useListingListInfiniteQuery = () => {
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) =>
       getListingNoticePageFromBff({
-        regionType,
-        rentalTypes,
-        supplyTypes,
-        houseTypes,
+        regionType: filter.regionType,
+        rentalTypes: filter.rentalTypes,
+        supplyTypes: filter.supplyTypes,
+        houseTypes: filter.houseTypes,
         status,
-        sortType,
+        sortType: filter.sortType,
         page: Number(pageParam),
         offSet: 10,
       }),
@@ -90,6 +84,12 @@ export const useToogleLike = (resetQuery: string[]) => {
     },
 
     onSettled: () => {
+      fetch("/api/listings/cache", {
+        method: "POST",
+      }).catch(() => {
+        // Query invalidation remains the primary client-side recovery path.
+      });
+
       resetQuery.forEach(key => {
         queryClient.invalidateQueries({
           queryKey: [key],
@@ -112,20 +112,27 @@ export const useListingSearchInfiniteQuery = (queryOpt: SearchOptions) => {
   const { enabled = true, keepPreviousData = true, staleTime = 30000, keyword } = queryOpt;
   const sortType = useListingsSearchState(s => s.sortType);
   const status = useListingsSearchState(s => s.status);
+  const criteria = normalizeListingSearchCriteria({
+    keyword,
+    sortType,
+    status,
+    page: DEFAULT_LISTING_SEARCH_PAGE,
+    offSet: DEFAULT_LISTING_SEARCH_OFFSET,
+  });
 
   return useInfiniteQuery<ListingListPage>({
-    queryKey: listingSearchInfiniteQueryKey({ keyword, sortType, status }),
+    queryKey: listingSearchInfiniteQueryKey(criteria),
     enabled,
     staleTime,
     initialPageParam: 1,
     placeholderData: keepPreviousData ? oldData => oldData : undefined,
     queryFn: ({ pageParam = 1 }) =>
       getListingSearchPageFromBff({
-        q: keyword,
+        keyword: criteria.keyword,
         page: Number(pageParam),
-        offSet: 10,
-        sortType,
-        status,
+        offSet: criteria.offSet,
+        sortType: criteria.sortType,
+        status: criteria.status,
       }),
     getNextPageParam: lastPage => {
       return lastPage.hasNext ? lastPage.page + 1 : undefined;

@@ -1,25 +1,23 @@
 import { useSearchParams } from "next/navigation";
 import { FilterTabKey, TAB_CONFIG } from "../../../model";
 import { useListingsFilterStore } from "../../../model/store/listingsStore";
+import { ListingsFilterState } from "@/src/entities/listings/model/type";
 import { Checkbox } from "@/src/shared/lib/headlessUi/checkBox/checkbox";
 
 export const UseCheckBox = () => {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get("tab") as FilterTabKey) || "region";
   const tabConfig = currentTab ? TAB_CONFIG[currentTab] : null;
-  const regionType = useListingsFilterStore(s => s.regionType);
-  const rentalTypes = useListingsFilterStore(s => s.rentalTypes);
-  const supplyTypes = useListingsFilterStore(s => s.supplyTypes);
-  const houseTypes = useListingsFilterStore(s => s.houseTypes);
+  const draft = useListingsFilterStore((state: ListingsFilterState) => state.draft);
 
-  const toggleRegionType = useListingsFilterStore(s => s.toggleRegionType);
-  const toggleRentalType = useListingsFilterStore(s => s.toggleRentalType);
-  const toggleSupplyType = useListingsFilterStore(s => s.toggleSupplyType);
-  const toggleHouseType = useListingsFilterStore(s => s.toggleHouseType);
-  const resetRegionType = useListingsFilterStore(s => s.resetRegionType);
-  const resetRentalTypes = useListingsFilterStore(s => s.resetRentalTypes);
-  const resetSupplyTypes = useListingsFilterStore(s => s.resetSupplyTypes);
-  const resetHouseTypes = useListingsFilterStore(s => s.resetHouseTypes);
+  const toggleRegionType = useListingsFilterStore((state: ListingsFilterState) => state.toggleDraftRegionType);
+  const toggleRentalType = useListingsFilterStore((state: ListingsFilterState) => state.toggleDraftRentalType);
+  const toggleSupplyType = useListingsFilterStore((state: ListingsFilterState) => state.toggleDraftSupplyType);
+  const toggleHouseType = useListingsFilterStore((state: ListingsFilterState) => state.toggleDraftHouseType);
+  const resetRegionType = useListingsFilterStore((state: ListingsFilterState) => state.resetDraftRegionType);
+  const resetRentalTypes = useListingsFilterStore((state: ListingsFilterState) => state.resetDraftRentalTypes);
+  const resetSupplyTypes = useListingsFilterStore((state: ListingsFilterState) => state.resetDraftSupplyTypes);
+  const resetHouseTypes = useListingsFilterStore((state: ListingsFilterState) => state.resetDraftHouseTypes);
 
   if (!tabConfig) {
     return null;
@@ -30,10 +28,10 @@ export const UseCheckBox = () => {
     .map(i => i.name);
   // 현재 탭에 따라 현재 선택된 값 가져오기
   const selectedList = {
-    region: regionType,
-    target: rentalTypes,
-    rental: supplyTypes,
-    housing: houseTypes,
+    region: draft.regionType,
+    target: draft.rentalTypes,
+    rental: draft.supplyTypes,
+    housing: draft.houseTypes,
   }[currentTab];
   const isAllSelected = selectedList.length === totalItems.length;
   const handleAllSelect = (e: boolean) => {

@@ -1,21 +1,28 @@
 import {
+  createListingsFilterSearchParams,
+  DEFAULT_LISTING_SEARCH_SORT_TYPE,
   listingPoint,
   useListingsFilterStore,
   useListingsSearchState,
 } from "@/src/features/listings/model";
-import { useSearchParams } from "next/navigation";
+import type { ListingsFilterState, SearchState } from "@/src/entities/listings/model/type";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const NOTICE_LATEST = "최신공고순";
 const NOTICE_DEADLINE = "마감임박순";
-const SEARCH_LATEST = "LATEST";
+const SEARCH_LATEST = DEFAULT_LISTING_SEARCH_SORT_TYPE;
 const SEARCH_DEADLINE = "DEADLINE";
 
 export const useListingsContentHeaderController = () => {
-  const sortType = useListingsFilterStore(state => state.sortType);
-  const setSortType = useListingsFilterStore(state => state.setSortType);
-  const setSearchSortType = useListingsSearchState(state => state.setSortType);
-  const searchSortType = useListingsSearchState(state => state.sortType);
+  const sortType = useListingsFilterStore(
+    (state: ListingsFilterState) => state.applied.sortType
+  );
+  const setSortType = useListingsFilterStore((state: ListingsFilterState) => state.setSortType);
+  const applied = useListingsFilterStore((state: ListingsFilterState) => state.applied);
+  const setSearchSortType = useListingsSearchState((state: SearchState) => state.setSortType);
+  const searchSortType = useListingsSearchState((state: SearchState) => state.sortType);
 
+  const router = useRouter();
   const searchParams = useSearchParams();
   const isSearchPage = searchParams.has("query");
 
@@ -31,7 +38,17 @@ export const useListingsContentHeaderController = () => {
       return;
     }
 
-    setSortType(sortType === NOTICE_LATEST ? NOTICE_DEADLINE : NOTICE_LATEST);
+    const nextSortType = sortType === NOTICE_LATEST ? NOTICE_DEADLINE : NOTICE_LATEST;
+    setSortType(nextSortType);
+    const nextParams = createListingsFilterSearchParams(
+      {
+        ...applied,
+        sortType: nextSortType,
+      },
+      new URLSearchParams(searchParams.toString())
+    );
+    const query = nextParams.toString();
+    router.replace(query ? `/listings?${query}` : "/listings", { scroll: false });
   };
 
   return {
