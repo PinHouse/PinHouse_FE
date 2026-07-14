@@ -16,7 +16,8 @@
 
 ### 구현 요청
 
-- 기능 구현, UI 수정, Next.js App Router, React Query, API 연동, 인증 UX, 사주 도메인 변경은 `saju-frontend`를 사용한다.
+- 기능 구현, UI 수정, Next.js App Router, TanStack Query/React Query, Zustand, BFF/API 연동, 인증 UX, 검색/필터/캐시/무효화, 핀하우스 도메인 변경은 `pinhouse-frontend`를 먼저 사용한다.
+- `pinhouse-frontend`가 트리거되면 구현 전에 반드시 `.agents/skills/pinhouse-frontend/SKILL.md`를 읽고, Query/BFF/캐시 작업이면 `references/query-cache-bff-architecture.md`까지 추가로 읽는다.
 - React/Next.js 성능, 렌더링, 번들, 데이터 패칭 품질이 관련되면 `vercel-react-best-practices`를 추가로 사용한다.
 - 역할 프롬프트가 필요하면 `.agents/agents/implementer.md`를 따른다.
 

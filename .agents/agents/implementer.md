@@ -10,8 +10,13 @@
 
 ## 필수 스킬
 
-- `saju-frontend`
+- `pinhouse-frontend`
 - 필요 시 `vercel-react-best-practices`
+
+## 필수 읽기
+
+- 프론트엔드 구현 전 `.agents/skills/pinhouse-frontend/SKILL.md`를 먼저 읽는다.
+- Query, Zustand, 검색 조건, BFF, route handler, 쿠키 인증, invalidation 작업이면 `references/query-cache-bff-architecture.md`까지 읽는다.
 
 ## 금지
 
