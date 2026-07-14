@@ -1,4 +1,9 @@
 import type { ListingListFilterBody, ListingListPage } from "@/src/entities/listings/model/type";
+import {
+  createListingSearchParams,
+  ListingSearchCriteria,
+  normalizeListingSearchCriteria,
+} from "@/src/features/listings/model";
 
 type ListingsNoticeBffResponse = {
   success: boolean;
@@ -18,12 +23,8 @@ type GetListingNoticePageFromBffArgs = ListingListFilterBody & {
   offSet?: number;
 };
 
-type GetListingSearchPageFromBffArgs = {
-  q: string;
-  sortType: string;
-  status: string;
-  page?: number;
-  offSet?: number;
+type GetListingSearchPageFromBffArgs = Partial<ListingSearchCriteria> & {
+  q?: string;
 };
 
 export async function getListingNoticePageFromBff({
@@ -72,18 +73,13 @@ export async function getListingNoticePageFromBff({
 
 export async function getListingSearchPageFromBff({
   q,
-  sortType,
-  status,
-  page = 1,
-  offSet = 10,
+  ...criteriaInput
 }: GetListingSearchPageFromBffArgs): Promise<ListingListPage> {
-  const query = new URLSearchParams({
+  const criteria = normalizeListingSearchCriteria({
     q,
-    page: String(page),
-    offSet: String(offSet),
-    sortType,
-    status,
+    ...criteriaInput,
   });
+  const query = createListingSearchParams(criteria);
 
   const res = await fetch(`/api/listings/search?${query.toString()}`, {
     method: "GET",

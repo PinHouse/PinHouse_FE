@@ -241,22 +241,31 @@ export interface FilterOption {
 
 // 사용처: 목록 필터 값/토글/리셋 (Zustand) — listingsStore.ts
 export interface ListingsFilterState {
+  draft: ListingListFilterBody;
+  applied: ListingListFilterBody;
+  syncDraftFromApplied: () => void;
+  applyDraft: () => void;
+  toggleDraftRegionType: (item: string) => void;
+  toggleDraftRentalType: (item: string) => void;
+  toggleDraftSupplyType: (item: string) => void;
+  toggleDraftHouseType: (item: string) => void;
+  setDraftStatus: (status: string) => void;
+  setSortType: (sort: string) => void;
+  resetDraftRegionType: () => void;
+  resetDraftRentalTypes: () => void;
+  resetDraftSupplyTypes: () => void;
+  resetDraftHouseTypes: () => void;
+  hasAppliedFilters: () => boolean;
+  hasDraftFilters: () => boolean;
+}
+
+export interface ListingsFilterSelectionState {
   regionType: string[];
   rentalTypes: string[];
   supplyTypes: string[];
   houseTypes: string[];
   status: string;
   sortType: string;
-  toggleRegionType: (item: string) => void;
-  toggleRentalType: (item: string) => void;
-  toggleSupplyType: (item: string) => void;
-  toggleHouseType: (item: string) => void;
-  setStatus: (status: string) => void;
-  setSortType: (sort: string) => void;
-  resetRegionType: () => void;
-  resetRentalTypes: () => void;
-  resetSupplyTypes: () => void;
-  resetHouseTypes: () => void;
 }
 
 /** 공고탐색상세조회 */

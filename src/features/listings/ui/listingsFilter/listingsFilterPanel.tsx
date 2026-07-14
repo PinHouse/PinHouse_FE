@@ -4,6 +4,7 @@ import { FILTER_OPTIONS, filterMap, getAllFilterIcon } from "../../model";
 import { useListingsFilterStore } from "../../model/store/listingsStore";
 import { ListingTagButton } from "../listingsButton/listingsTagButton";
 import { ListingHooks } from "@/src/features/listings/ui/listingsFilter/hooks";
+import type { ListingsFilterState } from "@/src/entities/listings/model/type";
 
 export const ListingFilterPanel = () => {
   const { onOpenSheet, hasSelectedFilters } = ListingHooks();
@@ -18,7 +19,9 @@ export const ListingFilterPanel = () => {
         <div className="no-scrollbar flex flex-1 overflow-x-auto">
           <div className="flex min-w-max items-center gap-2">
             {FILTER_OPTIONS.map(item => {
-              const selectedValues = useListingsFilterStore(state => filterMap[item.key](state));
+              const selectedValues = useListingsFilterStore((state: ListingsFilterState) =>
+                filterMap[item.key](state)
+              );
               const count = selectedValues.length;
               return (
                 <div key={item.key} className="flex-shrink-0">

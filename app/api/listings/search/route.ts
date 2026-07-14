@@ -1,26 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
+import { parseListingSearchCriteriaFromSearchParams } from "@/src/features/listings/model";
+import {
+  createListingSearchRouteCacheKey,
+  getOrLoadListingsRouteCache,
+  resolveListingsRouteCacheScope,
+} from "@/src/features/listings/server/bff/listingsRouteCache";
 import { getSearchPageOnServer } from "@/src/features/listings/server/callServer/getSearchPageOnServer";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
-    const sp = req.nextUrl.searchParams;
-    const q = sp.get("q") ?? "";
-    const page = Number(sp.get("page") ?? "1");
-    const offSet = Number(sp.get("offSet") ?? "10");
-    const sortType = sp.get("sortType") ?? "LATEST";
-    const status = sp.get("status") ?? "ALL";
-
-    const data = await getSearchPageOnServer({ q, page, offSet, sortType, status });
+    const criteria = parseListingSearchCriteriaFromSearchParams(req.nextUrl.searchParams);
+    const cacheScope = resolveListingsRouteCacheScope(req);
+    const cacheKey = createListingSearchRouteCacheKey(criteria, cacheScope);
+    const { cacheStatus, data } = await getOrLoadListingsRouteCache(cacheKey, () =>
+      getSearchPageOnServer(criteria)
+    );
     if (!data) {
       return NextResponse.json(
         { success: false, message: "Failed to fetch listings search page." },
-        { status: 401 }
+        { status: 404, headers: { "x-pinhouse-cache": cacheStatus } }
       );
     }
 
-    return NextResponse.json({ success: true, data }, { status: 200 });
+    return NextResponse.json(
+      { success: true, data },
+      { status: 200, headers: { "x-pinhouse-cache": cacheStatus } }
+    );
   } catch {
     return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
   }

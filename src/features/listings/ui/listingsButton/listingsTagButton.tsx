@@ -2,7 +2,7 @@
 import { DownButton } from "@/src/assets/icons/button";
 import { TagButton } from "@/src/shared/ui/button/tagButton";
 import { useFilterSheetStore } from "../../model";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type BaseLabel = {
   key: string;
@@ -20,9 +20,12 @@ export const ListingTagButton = ({
 }) => {
   const openSheet = useFilterSheetStore(state => state.openSheet);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleClick = async () => {
-    await router.push(`/listings?${param}=${label.key}`, { scroll: false });
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(param, label.key);
+    await router.push(`/listings?${params.toString()}`, { scroll: false });
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {

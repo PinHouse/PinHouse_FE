@@ -1,11 +1,6 @@
 import { ListingListPage } from "@/src/entities/listings/model/type";
+import { createListingSearchParams, ListingSearchCriteria } from "@/src/features/listings/model";
 import { getBffRequestContext } from "@/src/shared/api/server/fowardHeaders";
-
-type GetSearchFirstPageProps = {
-  q: string;
-  sortType: string;
-  status: string;
-};
 
 type SearchBffResponse = {
   success: boolean;
@@ -13,21 +8,25 @@ type SearchBffResponse = {
 };
 
 export async function getSearchNoticeInitialFromBff({
-  q,
+  keyword,
   sortType,
   status,
-}: GetSearchFirstPageProps) {
-  const keyword = q.trim();
+  page,
+  offSet,
+}: ListingSearchCriteria) {
   if (!keyword) return null;
 
   const { baseUrl, forwardedHeaders } = await getBffRequestContext();
-  const query = new URLSearchParams({
-    q: keyword,
-    page: "1",
-    offSet: "10",
-    sortType,
-    status,
-  });
+  const query = createListingSearchParams(
+    {
+      keyword,
+      page,
+      offSet,
+      sortType,
+      status,
+    },
+    "q"
+  );
 
   const res = await fetch(`${baseUrl}/api/listings/search?${query.toString()}`, {
     method: "GET",
